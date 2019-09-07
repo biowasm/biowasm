@@ -3,15 +3,25 @@ DIR_BUILD = build
 DIR_TOOLS = tools
 
 
+# -----------------------------------------------------------------------------
 # Initialization
+# -----------------------------------------------------------------------------
+
+# Clean
+clean:
+	rm -rf $(DIR_BUILD)
+
+# Initialize repo + folders
 init:
 	git submodule update --init
 	for tool in $(DIR_TOOLS)/*; do \
 	  mkdir -p $(DIR_BUILD)/`basename $$tool`; \
 	done
 
-clean:
-	rm -rf $(DIR_BUILD)
+
+# -----------------------------------------------------------------------------
+# Compile tools to WebAssembly
+# -----------------------------------------------------------------------------
 
 seqtk: init
 	emcc $(DIR_TOOLS)/$@/$@.c \
