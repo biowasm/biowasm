@@ -4,3 +4,6 @@
 [submodule "tools/samtools"]
 	path = tools/samtools
 	url = https://github.com/samtools/samtools.git
+[submodule "tools/htslib"]
+	path = tools/htslib
+	url = https://github.com/samtools/htslib.git
