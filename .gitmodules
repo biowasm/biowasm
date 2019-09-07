@@ -1,0 +1,3 @@
+[submodule "tools/seqtk"]
+	path = tools/seqtk
+	url = https://github.com/lh3/seqtk.git
