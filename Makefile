@@ -69,3 +69,47 @@ samtools: htslib
 	  -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
 	  -s INVOKE_RUN=0 \
 	  -s ALLOW_MEMORY_GROWTH=1
+
+
+# ------------------------------------------------------------------------------
+# bedtools2: BED wrangling (C)
+# TODO: look into:
+#   shared:WARNING: emcc: cannot find library "bz2"
+#   shared:WARNING: emcc: cannot find library "lzma"
+#   warning: undefined symbol: bam_aux_append
+#   warning: undefined symbol: bam_aux_get
+#   warning: undefined symbol: bam_copy1
+#   warning: undefined symbol: bam_endpos
+#   warning: undefined symbol: bam_hdr_destroy
+#   warning: undefined symbol: bam_hdr_init
+#   warning: undefined symbol: bgzf_hopen
+#   warning: undefined symbol: bgzf_read
+#   warning: undefined symbol: cram_get_refs
+#   warning: undefined symbol: hopen_callback
+#   warning: undefined symbol: hts_close
+#   warning: undefined symbol: hts_idx_destroy
+#   warning: undefined symbol: hts_itr_destroy
+#   warning: undefined symbol: hts_itr_next
+#   warning: undefined symbol: hts_open
+#   warning: undefined symbol: hts_open_callback
+#   warning: undefined symbol: hts_set_fai_filename
+#   warning: undefined symbol: hts_set_opt
+#   warning: undefined symbol: sam_hdr_read
+#   warning: undefined symbol: sam_hdr_write
+#   warning: undefined symbol: sam_index_load
+#   warning: undefined symbol: sam_itr_queryi
+#   warning: undefined symbol: sam_read1
+#   warning: undefined symbol: sam_write1
+# ------------------------------------------------------------------------------
+
+bedtools2: init
+	cd $(DIR_TOOLS)/$@/; \
+	  sed -i 's/^CXX.*$/CXX = emcc -s USE_ZLIB=1/' Makefile; \
+	  emmake make;
+
+	emcc \
+	  -s USE_ZLIB=1 \
+	  -s FORCE_FILESYSTEM=1 \
+	  $(DIR_TOOLS)/$@/obj/*.o \
+	  -o $(DIR_BUILD)/$@/$@.html \
+	  -s ERROR_ON_UNDEFINED_SYMBOLS=0

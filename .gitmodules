@@ -7,3 +7,6 @@
 [submodule "tools/htslib"]
 	path = tools/htslib
 	url = https://github.com/samtools/htslib.git
+[submodule "tools/bedtools2"]
+	path = tools/bedtools2
+	url = https://github.com/arq5x/bedtools2.git
