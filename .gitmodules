@@ -1,12 +1,19 @@
 [submodule "tools/seqtk"]
 	path = tools/seqtk
 	url = https://github.com/lh3/seqtk.git
+
 [submodule "tools/samtools"]
 	path = tools/samtools
 	url = https://github.com/samtools/samtools.git
+
 [submodule "tools/htslib"]
 	path = tools/htslib
 	url = https://github.com/samtools/htslib.git
+
 [submodule "tools/bedtools2"]
 	path = tools/bedtools2
 	url = https://github.com/arq5x/bedtools2.git
+
+[submodule "tools/wgsim"]
+	path = tools/wgsim
+	url = https://github.com/lh3/wgsim.git

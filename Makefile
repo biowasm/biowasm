@@ -1,4 +1,3 @@
-
 DIR_BUILD = build
 DIR_TOOLS = tools
 
@@ -24,6 +23,17 @@ init:
 # ==============================================================================
 
 # ------------------------------------------------------------------------------
+# wgsim: Simulate sequencing reads
+# ------------------------------------------------------------------------------
+
+wgsim: init
+	emcc $(DIR_TOOLS)/$@/$@.c \
+	  -s USE_ZLIB=1 -lm \
+	  -O2 -Wall \
+	  -o $(DIR_BUILD)/$@/$@.js
+
+
+# ------------------------------------------------------------------------------
 # seqtk: FASTA/FASTQ wrangling and QC (C)
 # ------------------------------------------------------------------------------
 
@@ -31,7 +41,6 @@ seqtk: init
 	emcc $(DIR_TOOLS)/$@/$@.c \
 	  -s USE_ZLIB=1 \
 	  -s FORCE_FILESYSTEM=1 \
-	  -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' \
 	  -s ALLOW_MEMORY_GROWTH=1 \
 	  -o $(DIR_BUILD)/$@/$@.js
 
@@ -42,7 +51,7 @@ seqtk: init
 # ------------------------------------------------------------------------------
 
 htslib: init
-	@# Install dependencies
+	# Install dependencies
 	apt-get install -y zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev libssl-dev
 	cd $(DIR_TOOLS)/$@/; \
 	  autoheader; \
@@ -50,8 +59,8 @@ htslib: init
 	  emconfigure ./configure CFLAGS="-s USE_ZLIB=1" --disable-bz2 --disable-lzma
 
 samtools: htslib
-	@# - Need to reset "opt" variables so that it works properly when call main() multiple times
-	@# - Use autoheader/autoconf to generate config.h.in and configure
+	# - Need to reset "opt" variables so that it works properly when call main() multiple times
+	# - Use autoheader/autoconf to generate config.h.in and configure
 	cd $(DIR_TOOLS)/$@/; \
 	  sed -i "s/int ret = 0;/int ret = 0; optind = 1; opterr = 1; optopt = 0;/g" bamtk.c; \
 	  autoheader; \
@@ -59,10 +68,10 @@ samtools: htslib
 	  emconfigure ./configure --without-curses CFLAGS="-s USE_ZLIB=1"; \
 	  emmake make
 
-	@# Rename output to .o so it's recognizable by Emscripten
+	# Rename output to .o so it's recognizable by Emscripten
 	cd $(DIR_TOOLS)/$@/; \
 	  cp samtools samtools.o
-	@# Generate .wasm/.js files 
+	# Generate .wasm/.js files 
 	emcc \
 	  -o $(DIR_BUILD)/$@/$@.html $(DIR_TOOLS)/$@/samtools.o \
 	  -s USE_ZLIB=1 \
@@ -103,10 +112,12 @@ samtools: htslib
 # ------------------------------------------------------------------------------
 
 bedtools2: init
+	# Build all tools
 	cd $(DIR_TOOLS)/$@/; \
 	  sed -i 's/^CXX.*$/CXX = emcc -s USE_ZLIB=1/' Makefile; \
 	  emmake make;
 
+	# Generate .wasm/.js files
 	emcc \
 	  -s USE_ZLIB=1 \
 	  -s FORCE_FILESYSTEM=1 \
