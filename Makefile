@@ -27,10 +27,21 @@ init:
 # ------------------------------------------------------------------------------
 
 wgsim: init
+	# Comment out a few lines of code that generate unused stdout, which
+	# introduces very expensive JS <--> Wasm calls
+	sed -i '/skip sequence .* as it is shorter than/d' $(DIR_TOOLS)/$@/$@.c
+	sed -i '/wgsim_print_mutref(ks->name.s/d' wgsim.c $(DIR_TOOLS)/$@/$@.c
+
+	# Compile to WebAssembly
 	emcc $(DIR_TOOLS)/$@/$@.c \
 	  -s USE_ZLIB=1 -lm \
+	  -s FORCE_FILESYSTEM=1 \
+	  -s ALLOW_MEMORY_GROWTH=1 \
+	  -s EXTRA_EXPORTED_RUNTIME_METHODS='["callMain"]' \
+	  -s INVOKE_RUN=0 \
 	  -O2 -Wall \
 	  -o $(DIR_BUILD)/$@/$@.js
+
 
 
 # ------------------------------------------------------------------------------
