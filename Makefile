@@ -30,7 +30,7 @@ wgsim: init
 	# Comment out a few lines of code that generate unused stdout, which
 	# introduces very expensive JS <--> Wasm calls
 	sed -i '/skip sequence .* as it is shorter than/d' $(DIR_TOOLS)/$@/$@.c
-	sed -i '/wgsim_print_mutref(ks->name.s/d' wgsim.c $(DIR_TOOLS)/$@/$@.c
+	sed -i '/wgsim_print_mutref(ks->name.s/d' $(DIR_TOOLS)/$@/$@.c
 
 	# Compile to WebAssembly
 	emcc $(DIR_TOOLS)/$@/$@.c \
