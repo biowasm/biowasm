@@ -1,7 +1,12 @@
 DIR_BUILD = build
 DIR_TOOLS = tools
 
-EM_FLAGS = -s EXTRA_EXPORTED_RUNTIME_METHODS='["callMain"]' -s ALLOW_MEMORY_GROWTH=1 -s INVOKE_RUN=0 -s USE_ZLIB=1 -s FORCE_FILESYSTEM=1
+EM_FLAGS = \
+  -s USE_ZLIB=1 \
+  -s INVOKE_RUN=0 \
+  -s ALLOW_MEMORY_GROWTH=1 \
+  -s FORCE_FILESYSTEM=1 \
+  -s EXTRA_EXPORTED_RUNTIME_METHODS='["callMain"]'
 
 
 # ==============================================================================
