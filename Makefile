@@ -1,6 +1,8 @@
 DIR_BUILD = build
 DIR_TOOLS = tools
 
+EM_FLAGS = -s EXTRA_EXPORTED_RUNTIME_METHODS='["callMain"]' -s ALLOW_MEMORY_GROWTH=1 -s INVOKE_RUN=0 -s USE_ZLIB=1 -s FORCE_FILESYSTEM=1
+
 
 # ==============================================================================
 # Initialization
@@ -34,13 +36,9 @@ wgsim: init
 
 	# Compile to WebAssembly
 	emcc $(DIR_TOOLS)/$@/$@.c \
-	  -s USE_ZLIB=1 -lm \
-	  -s FORCE_FILESYSTEM=1 \
-	  -s ALLOW_MEMORY_GROWTH=1 \
-	  -s EXTRA_EXPORTED_RUNTIME_METHODS='["callMain"]' \
-	  -s INVOKE_RUN=0 \
-	  -O2 -Wall \
-	  -o $(DIR_BUILD)/$@/$@.html
+	  -o $(DIR_BUILD)/$@/$@.html \
+	  $(EM_FLAGS) \
+	  -lm -O2 -Wall
 
 
 # ==============================================================================
@@ -53,11 +51,8 @@ wgsim: init
 
 seqtk: init
 	emcc $(DIR_TOOLS)/$@/$@.c \
-	  -s USE_ZLIB=1 \
-	  -s FORCE_FILESYSTEM=1 \
-	  -s ALLOW_MEMORY_GROWTH=1 \
-	  -o $(DIR_BUILD)/$@/$@.html
-
+	  -o $(DIR_BUILD)/$@/$@.html \
+	  $(EM_FLAGS)
 
 
 # ------------------------------------------------------------------------------
@@ -87,12 +82,10 @@ samtools: htslib
 	cd $(DIR_TOOLS)/$@/; \
 	  cp samtools samtools.o
 	# Generate .wasm/.js files 
-	emcc \
-	  -o $(DIR_BUILD)/$@/$@.html $(DIR_TOOLS)/$@/samtools.o \
-	  -s USE_ZLIB=1 \
-	  -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
-	  -s INVOKE_RUN=0 \
-	  -s ALLOW_MEMORY_GROWTH=1
+	emcc $(DIR_TOOLS)/$@/samtools.o \
+	  -o $(DIR_BUILD)/$@/$@.html \
+	  $(EM_FLAGS) \
+	  -s ERROR_ON_UNDEFINED_SYMBOLS=0
 
 
 # ------------------------------------------------------------------------------
@@ -133,9 +126,7 @@ bedtools2: init
 	  emmake make;
 
 	# Generate .wasm/.js files
-	emcc \
-	  -s USE_ZLIB=1 \
-	  -s FORCE_FILESYSTEM=1 \
-	  $(DIR_TOOLS)/$@/obj/*.o \
+	emcc $(DIR_TOOLS)/$@/obj/*.o \
 	  -o $(DIR_BUILD)/$@/$@.html \
+	  $(EM_FLAGS) \
 	  -s ERROR_ON_UNDEFINED_SYMBOLS=0
