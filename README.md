@@ -2,11 +2,19 @@
 WebAssembly modules for common genomics utilities
 
 
-```
-REPOS=("https://github.com/lh3/seqtk.git" "https://github.com/samtools/samtools.git" "https://github.com/samtools/htslib.git" "https://github.com/arq5x/bedtools2.git")
+## Installation
 
-cd tools/
-for REPO in ${REPOS[@]}; do
-  git submodule add $REPO
-done
+### Setup
+
+  TODO
+
+Using Emscripten 1.38.26
+
+
+### Contribute new tool
+
+  TODO
+
+```
+git submodule add "<URL>.git"
 ```
