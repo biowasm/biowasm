@@ -135,3 +135,23 @@ bedtools2: init
 	  -o $(DIR_BUILD)/$@/$@.html \
 	  $(EM_FLAGS) \
 	  -s ERROR_ON_UNDEFINED_SYMBOLS=0
+
+
+# ==============================================================================
+# Tertiary analysis
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# bhtsne: t-SNE
+# ------------------------------------------------------------------------------
+
+bhtsne: init
+    cd $(DIR_TOOLS)/$@/; \
+	  sed -i 's/t-sne:/t-sne.html:/g' Makefile
+      gunzip brain8.snd.gz; \
+      emmake make \
+	    PROG="t-sne.html" \
+	    CC=emcc CXX=em++ \
+	    CFLAGS+="-s USE_ZLIB=1" \
+	    LIBS="-s USE_ZLIB=1 -lm --preload-file brain8.snd";
+	  mv $(DIR_TOOLS)/$@/t-sne.{data,html,js,wasm} $(DIR_BUILD)/$@/

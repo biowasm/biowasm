@@ -16,5 +16,7 @@ Using Emscripten 1.38.26
   TODO
 
 ```
-git submodule add "<URL>.git"
+REPO="https://github.com/samtools/samtools.git"
+cd tools/
+git submodule add $REPO
 ```
