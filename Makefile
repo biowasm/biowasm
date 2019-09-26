@@ -146,6 +146,7 @@ bedtools2: init
 # ------------------------------------------------------------------------------
 
 bhtsne: init
+	# Compile to .wasm and pre-load sample data
 	cd $(DIR_TOOLS)/$@; \
 	  sed -i 's/t-sne:/t-sne.html:/g' Makefile; \
 	  gunzip brain8.snd.gz; \
@@ -153,5 +154,9 @@ bhtsne: init
 		PROG="t-sne.html" \
 		CC=emcc CXX=em++ \
 		CFLAGS+="-s USE_ZLIB=1" \
-		LIBS="-s USE_ZLIB=1 -lm --preload-file brain8.snd"; \
-	  mv $(DIR_TOOLS)/$@/t-sne.{data,html,js,wasm} $(DIR_BUILD)/$@/
+		LIBS="-s USE_ZLIB=1 -lm --preload-file brain8.snd";
+
+	# Move files to build folder
+	for ext in data html js wasm; do \
+	  mv $(DIR_TOOLS)/$@/t-sne.$$ext $(DIR_BUILD)/$@/; \
+	done
