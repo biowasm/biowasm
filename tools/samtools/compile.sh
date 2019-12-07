@@ -35,7 +35,7 @@ cd src/
 autoheader
 autoconf -Wno-syntax
 emconfigure ./configure --without-curses --with-htslib="../../htslib/src/" CFLAGS="-s USE_ZLIB=1"
-emmake make
+emmake make CC=emcc AR=emar
 
 # Rename output to .o so it's recognizable by Emscripten
 cp samtools samtools.o
