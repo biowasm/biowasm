@@ -3,7 +3,7 @@
 	url = https://github.com/arq5x/bedtools2.git
 
 [submodule "tools/bhtsne"]
-	path = tools/bhtsne
+	path = tools/bhtsne/src
 	url = https://github.com/lh3/bhtsne.git
 
 [submodule "tools/htslib"]
