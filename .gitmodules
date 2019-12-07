@@ -1,17 +1,18 @@
 [submodule "tools/bedtools2"]
-	path = tools/bedtools2
+	path = tools/bedtools2/src
 	url = https://github.com/arq5x/bedtools2.git
 
 [submodule "tools/bhtsne"]
 	path = tools/bhtsne/src
 	url = https://github.com/lh3/bhtsne.git
 
+# 1.10
 [submodule "tools/htslib"]
-	path = tools/htslib
+	path = tools/htslib/src
 	url = https://github.com/samtools/htslib.git
 
 [submodule "tools/samtools"]
-	path = tools/samtools
+	path = tools/samtools/src
 	url = https://github.com/samtools/samtools.git
 
 [submodule "seqtk"]
