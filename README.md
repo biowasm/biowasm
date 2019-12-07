@@ -16,7 +16,11 @@ Using Emscripten 1.38.26
   TODO
 
 ```
-REPO="https://github.com/samtools/samtools.git"
+REPO="https://github.com/brentp/mosdepth.git"
 cd tools/
 git submodule add $REPO
 ```
+
+### Todo
+
+- Add tests

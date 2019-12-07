@@ -1,66 +1,36 @@
-DIR_BUILD = build
 DIR_TOOLS = tools
 
-EM_FLAGS = \
-  -s USE_ZLIB=1 \
-  -s INVOKE_RUN=0 \
-  -s ALLOW_MEMORY_GROWTH=1 \
-  -s FORCE_FILESYSTEM=1 \
-  -s EXTRA_EXPORTED_RUNTIME_METHODS='["callMain"]'
-
-
-# ==============================================================================
-# Initialization
-# ==============================================================================
 
 # Clean
+# TODO: update dir_build
 clean:
 	rm -rf $(DIR_BUILD)
 
-# Initialize repo + folders
-init:
-	git submodule update --init --recursive
-	for tool in $(DIR_TOOLS)/*; do \
-	  mkdir -p $(DIR_BUILD)/`basename $$tool`; \
-	done
-
-
 all: wgsim seqtk samtools bedtools2 bhtsne
 
+init:
+	@ \
+	echo "——————————————————————————————————————————————————"; \
+	echo "🧬 Updating git submodules..."; \
+	echo "——————————————————————————————————————————————————"; \
+	git submodule update --init --recursive; \
+	git submodule status; \
 
-# ==============================================================================
-# Simulation tools
-# ==============================================================================
-
-# ------------------------------------------------------------------------------
-# wgsim: Simulate sequencing reads
-# ------------------------------------------------------------------------------
-
-wgsim: init
-	# Comment out a few lines of code that generate unused stdout, which
-	# introduces very expensive JS <--> Wasm calls
-	sed -i '/skip sequence .* as it is shorter than/d' $(DIR_TOOLS)/$@/$@.c
-	sed -i '/wgsim_print_mutref(ks->name.s/d' $(DIR_TOOLS)/$@/$@.c
-
-	# Compile to WebAssembly
-	emcc $(DIR_TOOLS)/$@/$@.c \
-	  -o $(DIR_BUILD)/$@/$@.html \
-	  $(EM_FLAGS) \
-	  -lm -O2 -Wall
-
-
-# ==============================================================================
-# Wrangle file formats
-# ==============================================================================
-
-# ------------------------------------------------------------------------------
-# seqtk: FASTA/FASTQ wrangling and QC
-# ------------------------------------------------------------------------------
-
-seqtk: init
-	emcc $(DIR_TOOLS)/$@/$@.c \
-	  -o $(DIR_BUILD)/$@/$@.html \
-	  $(EM_FLAGS)
+wgsim seqtk: init
+	@ \
+	. ./shared.sh; \
+	cd $(DIR_TOOLS)/$@/; \
+	mkdir -p build; \
+	\
+	echo "\n——————————————————————————————————————————————————"; \
+	echo "🧬 Applying patches..."; \
+	echo "——————————————————————————————————————————————————"; \
+	test -f patch && (cd src && git stash && git apply -v ../patch && cd ..) || echo "No patches"; \
+	\
+	echo "\n——————————————————————————————————————————————————"; \
+	echo "🧬 Compiling to WebAssembly..."; \
+	echo "——————————————————————————————————————————————————"; \
+	./compile.sh
 
 
 # ------------------------------------------------------------------------------
@@ -77,8 +47,8 @@ htslib: init
 	  emconfigure ./configure CFLAGS="-s USE_ZLIB=1" --disable-bz2 --disable-lzma
 
 samtools: htslib
-	# - Need to reset "opt" variables so that it works properly when call main() multiple times
-	# - Use autoheader/autoconf to generate config.h.in and configure
+	# Patch: Reset "opt" variables so that it works properly when call main() multiple times
+	# Also, use autoheader/autoconf to generate config.h.in and configure
 	cd $(DIR_TOOLS)/$@/; \
 	  sed -i "s/int ret = 0;/int ret = 0; optind = 1; opterr = 1; optopt = 0;/g" bamtk.c; \
 	  autoheader; \
