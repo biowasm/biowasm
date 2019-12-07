@@ -28,6 +28,8 @@
 #   warning: undefined symbol: sam_read1
 #   warning: undefined symbol: sam_write1
 
+test -d ../htslib/build/ || echo "Run 'make htslib' first."
+
 cd src/
 
 # Patch: Reset "opt" variables so that it works properly when call main() multiple times

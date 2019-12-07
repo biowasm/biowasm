@@ -4,7 +4,7 @@ DIR_TOOLS = tools
 clean:
 	rm -rf tools/*/build/
 
-all: wgsim seqtk samtools bedtools2 bhtsne
+all: bedtools2 bhtsne htslib samtools seqtk wgsim
 
 init:
 	@ \
@@ -14,7 +14,7 @@ init:
 	git submodule update --init --recursive; \
 	git submodule status; \
 
-wgsim seqtk bhtsne bedtools2 htslib samtools: init
+bedtools2 bhtsne htslib samtools seqtk wgsim: init
 	@ \
 	. ./shared.sh; \
 	cd $(DIR_TOOLS)/$@/; \
@@ -30,6 +30,6 @@ wgsim seqtk bhtsne bedtools2 htslib samtools: init
 	echo "——————————————————————————————————————————————————"; \
 	./compile.sh; \
 	\
-	cd src; \
+	cd src/; \
 	rm a.out{,.js,.wasm}; \
 	git stash;
