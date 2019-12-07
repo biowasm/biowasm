@@ -6,7 +6,6 @@
 	path = tools/bhtsne/src
 	url = https://github.com/lh3/bhtsne.git
 
-# 1.10
 [submodule "tools/htslib"]
 	path = tools/htslib/src
 	url = https://github.com/samtools/htslib.git
@@ -22,3 +21,4 @@
 [submodule "wgsim"]
 	path = tools/wgsim/src
 	url = https://github.com/lh3/wgsim.git
+

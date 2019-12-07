@@ -1,7 +1,7 @@
 #!/bin/bash
 
-cd src/;
-emmake make;
+cd src/
+emmake make
 
 # Generate .wasm/.js files
 emcc obj/*.o \

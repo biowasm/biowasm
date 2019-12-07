@@ -7,7 +7,7 @@ index 2b87534e..d125c4f9 100644
  SRC_DIR	= src
  
 -CXX     = g++
-+CXX = emcc -s USE_ZLIB=1
++CXX = em++ -s USE_ZLIB=1
  
  ifeq ($(DEBUG),1)
  BT_CPPFLAGS = -DDEBUG -D_DEBUG -D_FILE_OFFSET_BITS=64 -DWITH_HTS_CB_API $(INCLUDES)
