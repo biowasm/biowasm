@@ -1,0 +1,18 @@
+diff --git a/wgsim.c b/wgsim.c
+index 5c82192..c86d829 100644
+--- a/wgsim.c
++++ b/wgsim.c
+@@ -264,13 +264,11 @@ void wgsim_core(FILE *fpout1, FILE *fpout2, const char *fn, int is_hap, uint64_t
+ 	while ((l = kseq_read(ks)) >= 0) {
+ 		uint64_t n_pairs = (uint64_t)((long double)l / tot_len * N + 0.5);
+ 		if (l < dist + 3 * std_dev) {
+-			fprintf(stderr, "[%s] skip sequence '%s' as it is shorter than %d!\n", __func__, ks->name.s, dist + 3 * std_dev);
+ 			continue;
+ 		}
+ 
+ 		// generate mutations and print them out
+ 		wgsim_mut_diref(ks, is_hap, rseq, rseq+1);
+-		wgsim_print_mutref(ks->name.s, ks, rseq, rseq+1);
+ 
+ 		for (ii = 0; ii != n_pairs; ++ii) { // the core loop
+ 			double ran;
