@@ -6,6 +6,7 @@ EM_FLAGS=$(cat <<EOF
     -s ALLOW_MEMORY_GROWTH=1
     -s FORCE_FILESYSTEM=1
     -s EXTRA_EXPORTED_RUNTIME_METHODS=["callMain"]
+    -lworkerfs.js
 EOF
 )
 
