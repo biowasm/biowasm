@@ -2,7 +2,7 @@ DIR_TOOLS = tools
 
 # Clean
 clean:
-	rm -rf tools/*/build/
+	rm -rf $(DIR_TOOLS)/*/build/
 
 all: bedtools2 bhtsne htslib samtools seqtk wgsim
 
