@@ -2,21 +2,67 @@
 WebAssembly modules for common genomics utilities
 
 
-## Installation
+## Setup
 
-### Setup
+```bash
+# Emscripten version to use (most tools were tested with 1.39.1)
+TAG=1.39.1
 
-  TODO
+# Fetch Emscripten docker image
+docker pull robertaboukhalil/emsdk:$TAG
 
-Using Emscripten 1.38.26
-
-
-### Contribute new tool
-
-  TODO
-
+# Create the container and mount ~/wasm to /src in the container
+docker run \
+    -dt \
+    -p 12345:80 \
+    --name wasm \
+    --volume ~/wasm:/src \
+    robertaboukhalil/emsdk:$TAG
 ```
-REPO="https://github.com/samtools/samtools.git"
-cd tools/
-git submodule add $REPO
+
+
+## Compile a tool
+
+```bash
+# Go into your container
+docker exec -it wasm bash
+
+# Compile seqtk
+cd biowasm/
+make seqtk
+
+# This will create tools/<tool name>/build with .js/.wasm files
+ls tools/seqtk/build
 ```
+
+
+## Contribute new tool
+
+First, add the tool as a git module:
+
+```bash
+# Fetch codebase
+mkdir -p tools/seqtk
+git submodule add https://github.com/lh3/seqtk.git tools/seqtk/src
+
+# Get specific version of the tool
+cd tools/seqtk/src
+git checkout v1.3
+cd -
+
+# Stage changes for git
+git add tools/seqtk/src .gitmodules
+```
+
+You should also create the following files:
+
+```bash
+tools/<tool>/
+    README.md   Details about the tool and dependencies
+    compile.sh  Script that will run to compile the tool to WebAssembly (can use `$EM_FLAGS` for common flags)
+    patch       Patches that need to be applied to the code to compile it to WebAssembly (optional)
+```
+
+## Todo
+
+- Add tests
