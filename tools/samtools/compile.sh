@@ -46,4 +46,5 @@ cp samtools samtools.o
 emcc samtools.o \
     -o ../build/samtools.html \
     $EM_FLAGS \
-    -s ERROR_ON_UNDEFINED_SYMBOLS=0
+    -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
+    --preload-file examples/@/tmp/examples/
