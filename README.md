@@ -5,6 +5,8 @@ WebAssembly modules for common genomics utilities, including:
 * bedtools v2.29
 * seqtk v1.3
 * wgsim
+* bhtsne
+* seq-align
 
 
 ## Setup
