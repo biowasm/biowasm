@@ -22,3 +22,6 @@
 	path = tools/wgsim/src
 	url = https://github.com/lh3/wgsim.git
 
+[submodule "tools/seq-align/src"]
+	path = tools/seq-align/src
+	url = https://github.com/noporpoise/seq-align.git
