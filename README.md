@@ -1,6 +1,7 @@
 # biowasm
 WebAssembly modules for common genomics utilities, including:
 
+* bowtie v2.3.5.1
 * samtools v1.10 (and htslib)
 * bedtools v2.29
 * seqtk v1.3
