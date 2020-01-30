@@ -25,3 +25,7 @@
 [submodule "tools/seq-align/src"]
 	path = tools/seq-align/src
 	url = https://github.com/noporpoise/seq-align.git
+
+[submodule "tools/bowtie2/src"]
+	path = tools/bowtie2/src
+	url = https://github.com/BenLangmead/bowtie2
