@@ -73,3 +73,5 @@ tools/<tool>/
 ## Todo
 
 - Add tests
+- Add support for compiling bioinformatics tools written in Rust such as [sourmash](https://github.com/dib-lab/sourmash/tree/v3.2.2/src/core) and [rust-bio](https://github.com/rust-bio/rust-bio)
+
