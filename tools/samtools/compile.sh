@@ -2,7 +2,7 @@
 
 # TODO: look into LZMA support
 
-test -d ../htslib/build/ || echo "Run 'make htslib' first."
+test -d ../htslib/build/ || (echo "ERROR: Run 'make htslib' first." && exit)
 
 cd src/
 
