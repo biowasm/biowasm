@@ -25,3 +25,7 @@
 [submodule "tools/seq-align/src"]
 	path = tools/seq-align/src
 	url = https://github.com/noporpoise/seq-align.git
+
+[submodule "tools/fastp/src"]
+	path = tools/fastp/src
+	url = https://github.com/OpenGene/fastp.git
