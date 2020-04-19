@@ -1,5 +1,5 @@
 diff --git a/src/peprocessor.cpp b/src/peprocessor.cpp
-index 44443ea..1276430 100644
+index 44443ea..5c077f6 100644
 --- a/src/peprocessor.cpp
 +++ b/src/peprocessor.cpp
 @@ -111,59 +111,68 @@ bool PairEndProcessor::process(){
@@ -119,7 +119,7 @@ index 44443ea..1276430 100644
          delete configs[t];
          configs[t] = NULL;
      }
-@@ -270,7 +279,7 @@ bool PairEndProcessor::process(){
+@@ -270,21 +279,21 @@ bool PairEndProcessor::process(){
          delete[] dupMeanGC;
      }
  
@@ -127,7 +127,33 @@ index 44443ea..1276430 100644
 +    // delete[] threads;
      delete[] configs;
  
-     if(leftWriterThread)
+-    if(leftWriterThread)
+-        delete leftWriterThread;
+-    if(rightWriterThread)
+-        delete rightWriterThread;
+-    if(unpairedLeftWriterThread)
+-        delete unpairedLeftWriterThread;
+-    if(unpairedRightWriterThread)
+-        delete unpairedRightWriterThread;
+-    if(mergedWriterThread)
+-        delete mergedWriterThread;
+-    if(failedWriterThread)
+-        delete failedWriterThread;
++    // if(leftWriterThread)
++    //     delete leftWriterThread;
++    // if(rightWriterThread)
++    //     delete rightWriterThread;
++    // if(unpairedLeftWriterThread)
++    //     delete unpairedLeftWriterThread;
++    // if(unpairedRightWriterThread)
++    //     delete unpairedRightWriterThread;
++    // if(mergedWriterThread)
++    //     delete mergedWriterThread;
++    // if(failedWriterThread)
++    //     delete failedWriterThread;
+ 
+     if(!mOptions->split.enabled)
+         closeOutput();
 @@ -818,14 +827,14 @@ void PairEndProcessor::consumerTask(ThreadConfig* config)
  
  void PairEndProcessor::writeTask(WriterThread* config)
@@ -151,7 +177,7 @@ index 44443ea..1276430 100644
      if(mOptions->verbose) {
          string msg = config->getFilename() + " writer finished";
 diff --git a/src/seprocessor.cpp b/src/seprocessor.cpp
-index a9c968f..5f342cf 100644
+index a9c968f..a7b0388 100644
 --- a/src/seprocessor.cpp
 +++ b/src/seprocessor.cpp
 @@ -69,39 +69,44 @@ bool SingleEndProcessor::process(){
@@ -229,7 +255,7 @@ index a9c968f..5f342cf 100644
          delete configs[t];
          configs[t] = NULL;
      }
-@@ -176,7 +181,7 @@ bool SingleEndProcessor::process(){
+@@ -176,13 +181,13 @@ bool SingleEndProcessor::process(){
          delete[] dupMeanGC;
      }
  
@@ -237,7 +263,17 @@ index a9c968f..5f342cf 100644
 +    // delete[] threads;
      delete[] configs;
  
-     if(leftWriterThread)
+-    if(leftWriterThread)
+-        delete leftWriterThread;
+-    if(failedWriterThread)
+-        delete failedWriterThread;
++    // if(leftWriterThread)
++    //     delete leftWriterThread;
++    // if(failedWriterThread)
++    //     delete failedWriterThread;
+ 
+     if(!mOptions->split.enabled)
+         closeOutput();
 @@ -514,14 +519,14 @@ void SingleEndProcessor::consumerTask(ThreadConfig* config)
  
  void SingleEndProcessor::writeTask(WriterThread* config)
