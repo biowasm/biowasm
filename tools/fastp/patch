@@ -1,3 +1,16 @@
+diff --git a/src/htmlreporter.cpp b/src/htmlreporter.cpp
+index c3ac291..e81d0d7 100644
+--- a/src/htmlreporter.cpp
++++ b/src/htmlreporter.cpp
+@@ -406,7 +406,7 @@ void HtmlReporter::printCSS(ofstream& ofs){
+ }
+ 
+ void HtmlReporter::printJS(ofstream& ofs){
+-    ofs << "<script src='http://opengene.org/plotly-1.2.0.min.js'></script>" << endl;
++    ofs << "<script src='https://cdn.plot.ly/plotly-1.2.0.min.js'></script>" << endl;
+     ofs << "\n<script type=\"text/javascript\">" << endl;
+     ofs << "    function showOrHide(divname) {" << endl;
+     ofs << "        div = document.getElementById(divname);" << endl;
 diff --git a/src/peprocessor.cpp b/src/peprocessor.cpp
 index 44443ea..5c077f6 100644
 --- a/src/peprocessor.cpp
