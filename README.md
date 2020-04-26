@@ -3,6 +3,7 @@ WebAssembly modules for common genomics utilities, including:
 
 * samtools v1.10 (and htslib)
 * bedtools v2.29
+* fastp v0.20.1
 * seqtk v1.3
 * wgsim
 * bhtsne

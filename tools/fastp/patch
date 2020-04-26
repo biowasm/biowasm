@@ -1,0 +1,311 @@
+diff --git a/src/htmlreporter.cpp b/src/htmlreporter.cpp
+index c3ac291..e81d0d7 100644
+--- a/src/htmlreporter.cpp
++++ b/src/htmlreporter.cpp
+@@ -406,7 +406,7 @@ void HtmlReporter::printCSS(ofstream& ofs){
+ }
+ 
+ void HtmlReporter::printJS(ofstream& ofs){
+-    ofs << "<script src='http://opengene.org/plotly-1.2.0.min.js'></script>" << endl;
++    ofs << "<script src='https://cdn.plot.ly/plotly-1.2.0.min.js'></script>" << endl;
+     ofs << "\n<script type=\"text/javascript\">" << endl;
+     ofs << "    function showOrHide(divname) {" << endl;
+     ofs << "        div = document.getElementById(divname);" << endl;
+diff --git a/src/peprocessor.cpp b/src/peprocessor.cpp
+index 44443ea..5c077f6 100644
+--- a/src/peprocessor.cpp
++++ b/src/peprocessor.cpp
+@@ -111,59 +111,68 @@ bool PairEndProcessor::process(){
+         initOutput();
+ 
+     initPackRepository();
+-    std::thread producer(std::bind(&PairEndProcessor::producerTask, this));
++    // std::thread producer(std::bind(&PairEndProcessor::producerTask, this));
++    PairEndProcessor::producerTask();
+ 
+     //TODO: get the correct cycles
+     int cycle = 151;
++    mOptions->thread = 1;
+     ThreadConfig** configs = new ThreadConfig*[mOptions->thread];
+     for(int t=0; t<mOptions->thread; t++){
+         configs[t] = new ThreadConfig(mOptions, t, true);
+         initConfig(configs[t]);
+     }
+ 
+-    std::thread** threads = new thread*[mOptions->thread];
+-    for(int t=0; t<mOptions->thread; t++){
+-        threads[t] = new std::thread(std::bind(&PairEndProcessor::consumerTask, this, configs[t]));
+-    }
++    // std::thread** threads = new thread*[mOptions->thread];
++    // for(int t=0; t<mOptions->thread; t++){
++    //     threads[t] = new std::thread(std::bind(&PairEndProcessor::consumerTask, this, configs[t]));
++    // }
++    PairEndProcessor::consumerTask(configs[0]);
+ 
+-    std::thread* leftWriterThread = NULL;
+-    std::thread* rightWriterThread = NULL;
+-    std::thread* unpairedLeftWriterThread = NULL;
+-    std::thread* unpairedRightWriterThread = NULL;
+-    std::thread* mergedWriterThread = NULL;
+-    std::thread* failedWriterThread = NULL;
++    // std::thread* leftWriterThread = NULL;
++    // std::thread* rightWriterThread = NULL;
++    // std::thread* unpairedLeftWriterThread = NULL;
++    // std::thread* unpairedRightWriterThread = NULL;
++    // std::thread* mergedWriterThread = NULL;
++    // std::thread* failedWriterThread = NULL;
+     if(mLeftWriter)
+-        leftWriterThread = new std::thread(std::bind(&PairEndProcessor::writeTask, this, mLeftWriter));
++        // leftWriterThread = new std::thread(std::bind(&PairEndProcessor::writeTask, this, mLeftWriter));
++        PairEndProcessor::writeTask(mLeftWriter);
+     if(mRightWriter)
+-        rightWriterThread = new std::thread(std::bind(&PairEndProcessor::writeTask, this, mRightWriter));
++        // rightWriterThread = new std::thread(std::bind(&PairEndProcessor::writeTask, this, mRightWriter));
++        PairEndProcessor::writeTask(mRightWriter);
+     if(mUnpairedLeftWriter)
+-        unpairedLeftWriterThread = new std::thread(std::bind(&PairEndProcessor::writeTask, this, mUnpairedLeftWriter));
++        // unpairedLeftWriterThread = new std::thread(std::bind(&PairEndProcessor::writeTask, this, mUnpairedLeftWriter));
++        PairEndProcessor::writeTask(mUnpairedLeftWriter);
+     if(mUnpairedRightWriter)
+-        unpairedRightWriterThread = new std::thread(std::bind(&PairEndProcessor::writeTask, this, mUnpairedRightWriter));
++        // unpairedRightWriterThread = new std::thread(std::bind(&PairEndProcessor::writeTask, this, mUnpairedRightWriter));
++        PairEndProcessor::writeTask(mUnpairedRightWriter);
+     if(mMergedWriter)
+-        mergedWriterThread = new std::thread(std::bind(&PairEndProcessor::writeTask, this, mMergedWriter));
++        // mergedWriterThread = new std::thread(std::bind(&PairEndProcessor::writeTask, this, mMergedWriter));
++        PairEndProcessor::writeTask(mMergedWriter);
+     if(mFailedWriter)
+-        failedWriterThread = new std::thread(std::bind(&PairEndProcessor::writeTask, this, mFailedWriter));
+-
+-    producer.join();
+-    for(int t=0; t<mOptions->thread; t++){
+-        threads[t]->join();
+-    }
+-
+-    if(!mOptions->split.enabled) {
+-        if(leftWriterThread)
+-            leftWriterThread->join();
+-        if(rightWriterThread)
+-            rightWriterThread->join();
+-        if(unpairedLeftWriterThread)
+-            unpairedLeftWriterThread->join();
+-        if(unpairedRightWriterThread)
+-            unpairedRightWriterThread->join();
+-        if(mergedWriterThread)
+-            mergedWriterThread->join();
+-        if(failedWriterThread)
+-            failedWriterThread->join();
+-    }
++        // failedWriterThread = new std::thread(std::bind(&PairEndProcessor::writeTask, this, mFailedWriter));
++        PairEndProcessor::writeTask(mFailedWriter);
++
++    // producer.join();
++    // for(int t=0; t<mOptions->thread; t++){
++    //     threads[t]->join();
++    // }
++
++    // if(!mOptions->split.enabled) {
++    //     if(leftWriterThread)
++    //         leftWriterThread->join();
++    //     if(rightWriterThread)
++    //         rightWriterThread->join();
++    //     if(unpairedLeftWriterThread)
++    //         unpairedLeftWriterThread->join();
++    //     if(unpairedRightWriterThread)
++    //         unpairedRightWriterThread->join();
++    //     if(mergedWriterThread)
++    //         mergedWriterThread->join();
++    //     if(failedWriterThread)
++    //         failedWriterThread->join();
++    // }
+ 
+     if(mOptions->verbose)
+         loginfo("start to generate reports\n");
+@@ -253,8 +262,8 @@ bool PairEndProcessor::process(){
+ 
+     // clean up
+     for(int t=0; t<mOptions->thread; t++){
+-        delete threads[t];
+-        threads[t] = NULL;
++        // delete threads[t];
++        // threads[t] = NULL;
+         delete configs[t];
+         configs[t] = NULL;
+     }
+@@ -270,21 +279,21 @@ bool PairEndProcessor::process(){
+         delete[] dupMeanGC;
+     }
+ 
+-    delete[] threads;
++    // delete[] threads;
+     delete[] configs;
+ 
+-    if(leftWriterThread)
+-        delete leftWriterThread;
+-    if(rightWriterThread)
+-        delete rightWriterThread;
+-    if(unpairedLeftWriterThread)
+-        delete unpairedLeftWriterThread;
+-    if(unpairedRightWriterThread)
+-        delete unpairedRightWriterThread;
+-    if(mergedWriterThread)
+-        delete mergedWriterThread;
+-    if(failedWriterThread)
+-        delete failedWriterThread;
++    // if(leftWriterThread)
++    //     delete leftWriterThread;
++    // if(rightWriterThread)
++    //     delete rightWriterThread;
++    // if(unpairedLeftWriterThread)
++    //     delete unpairedLeftWriterThread;
++    // if(unpairedRightWriterThread)
++    //     delete unpairedRightWriterThread;
++    // if(mergedWriterThread)
++    //     delete mergedWriterThread;
++    // if(failedWriterThread)
++    //     delete failedWriterThread;
+ 
+     if(!mOptions->split.enabled)
+         closeOutput();
+@@ -818,14 +827,14 @@ void PairEndProcessor::consumerTask(ThreadConfig* config)
+ 
+ void PairEndProcessor::writeTask(WriterThread* config)
+ {
+-    while(true) {
+-        if(config->isCompleted()){
+-            // last check for possible threading related issue
+-            config->output();
+-            break;
+-        }
++    // while(true) {
++    //     if(config->isCompleted()){
++    //         // last check for possible threading related issue
++    //         config->output();
++    //         break;
++    //     }
+         config->output();
+-    }
++    // }
+ 
+     if(mOptions->verbose) {
+         string msg = config->getFilename() + " writer finished";
+diff --git a/src/seprocessor.cpp b/src/seprocessor.cpp
+index a9c968f..a7b0388 100644
+--- a/src/seprocessor.cpp
++++ b/src/seprocessor.cpp
+@@ -69,39 +69,44 @@ bool SingleEndProcessor::process(){
+         initOutput();
+ 
+     initPackRepository();
+-    std::thread producer(std::bind(&SingleEndProcessor::producerTask, this));
++    // std::thread producer(std::bind(&SingleEndProcessor::producerTask, this));
++    SingleEndProcessor::producerTask();
+ 
+     //TODO: get the correct cycles
+     int cycle = 151;
++    mOptions->thread = 1;
+     ThreadConfig** configs = new ThreadConfig*[mOptions->thread];
+     for(int t=0; t<mOptions->thread; t++){
+         configs[t] = new ThreadConfig(mOptions, t, false);
+         initConfig(configs[t]);
+     }
+ 
+-    std::thread** threads = new thread*[mOptions->thread];
+-    for(int t=0; t<mOptions->thread; t++){
+-        threads[t] = new std::thread(std::bind(&SingleEndProcessor::consumerTask, this, configs[t]));
+-    }
++    // std::thread** threads = new thread*[mOptions->thread];
++    // for(int t=0; t<mOptions->thread; t++){
++    //     threads[t] = new std::thread(std::bind(&SingleEndProcessor::consumerTask, this, configs[t]));
++    // }
++    SingleEndProcessor::consumerTask(configs[0]);
+ 
+-    std::thread* leftWriterThread = NULL;
+-    std::thread* failedWriterThread = NULL;
++    // std::thread* leftWriterThread = NULL;
++    // std::thread* failedWriterThread = NULL;
+     if(mLeftWriter)
+-        leftWriterThread = new std::thread(std::bind(&SingleEndProcessor::writeTask, this, mLeftWriter));
++        // leftWriterThread = new std::thread(std::bind(&SingleEndProcessor::writeTask, this, mLeftWriter));
++        SingleEndProcessor::writeTask(mLeftWriter);
+     if(mFailedWriter)
+-        failedWriterThread = new std::thread(std::bind(&SingleEndProcessor::writeTask, this, mFailedWriter));
++        // failedWriterThread = new std::thread(std::bind(&SingleEndProcessor::writeTask, this, mFailedWriter));
++        SingleEndProcessor::writeTask(mFailedWriter);
+ 
+-    producer.join();
+-    for(int t=0; t<mOptions->thread; t++){
+-        threads[t]->join();
+-    }
++    // producer.join();
++    // for(int t=0; t<mOptions->thread; t++){
++    //     threads[t]->join();
++    // }
+ 
+-    if(!mOptions->split.enabled) {
+-        if(leftWriterThread)
+-            leftWriterThread->join();
+-        if(failedWriterThread)
+-            failedWriterThread->join();
+-    }
++    // if(!mOptions->split.enabled) {
++    //     if(leftWriterThread)
++    //         leftWriterThread->join();
++    //     if(failedWriterThread)
++    //         failedWriterThread->join();
++    // }
+ 
+     if(mOptions->verbose)
+         loginfo("start to generate reports\n");
+@@ -161,8 +166,8 @@ bool SingleEndProcessor::process(){
+ 
+     // clean up
+     for(int t=0; t<mOptions->thread; t++){
+-        delete threads[t];
+-        threads[t] = NULL;
++        // delete threads[t];
++        // threads[t] = NULL;
+         delete configs[t];
+         configs[t] = NULL;
+     }
+@@ -176,13 +181,13 @@ bool SingleEndProcessor::process(){
+         delete[] dupMeanGC;
+     }
+ 
+-    delete[] threads;
++    // delete[] threads;
+     delete[] configs;
+ 
+-    if(leftWriterThread)
+-        delete leftWriterThread;
+-    if(failedWriterThread)
+-        delete failedWriterThread;
++    // if(leftWriterThread)
++    //     delete leftWriterThread;
++    // if(failedWriterThread)
++    //     delete failedWriterThread;
+ 
+     if(!mOptions->split.enabled)
+         closeOutput();
+@@ -514,14 +519,14 @@ void SingleEndProcessor::consumerTask(ThreadConfig* config)
+ 
+ void SingleEndProcessor::writeTask(WriterThread* config)
+ {
+-    while(true) {
+-        if(config->isCompleted()){
+-            // last check for possible threading related issue
+-            config->output();
+-            break;
+-        }
++    // while(true) {
++    //     if(config->isCompleted()){
++    //         // last check for possible threading related issue
++    //         config->output();
++    //         break;
++    //     }
+         config->output();
+-    }
++    // }
+ 
+     if(mOptions->verbose) {
+         string msg = config->getFilename() + " writer finished";
