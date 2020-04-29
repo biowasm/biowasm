@@ -7,17 +7,17 @@ index d6f002b..44aebc8 100644
  
  bin/needleman_wunsch: src/tools/nw_cmdline.c src/libalign.a | bin
 -	$(CC) -o bin/needleman_wunsch $(SRCS) $(TGTFLAGS) $(INCS) $(LIBS) src/tools/nw_cmdline.c $(LINKFLAGS)
-+	$(CC) -O3 -o bin/needleman_wunsch.html $(SRCS) $(TGTFLAGS) $(INCS) $(LIBS) src/tools/nw_cmdline.c $(LINKFLAGS) \
++	$(CC) -O3 -o bin/needleman_wunsch.o $(SRCS) $(TGTFLAGS) $(INCS) $(LIBS) src/tools/nw_cmdline.c $(LINKFLAGS) \
 +		-s EXTRA_EXPORTED_RUNTIME_METHODS='["callMain"]'
  
  bin/smith_waterman: src/tools/sw_cmdline.c src/libalign.a | bin
 -	$(CC) -o bin/smith_waterman $(SRCS) $(TGTFLAGS) $(INCS) $(LIBS) src/tools/sw_cmdline.c $(LINKFLAGS)
-+	$(CC) -O3 -o bin/smith_waterman.html $(SRCS) $(TGTFLAGS) $(INCS) $(LIBS) src/tools/sw_cmdline.c $(LINKFLAGS) \
++	$(CC) -O3 -o bin/smith_waterman.o $(SRCS) $(TGTFLAGS) $(INCS) $(LIBS) src/tools/sw_cmdline.c $(LINKFLAGS) \
 +		-s EXTRA_EXPORTED_RUNTIME_METHODS='["callMain"]'
  
  bin/lcs: src/tools/lcs_cmdline.c src/libalign.a | bin
 -	$(CC) -o bin/lcs $(SRCS) $(TGTFLAGS) $(INCS) $(LIBS) src/tools/lcs_cmdline.c $(LINKFLAGS)
-+	$(CC) -O3 -o bin/lcs.html $(SRCS) $(TGTFLAGS) $(INCS) $(LIBS) src/tools/lcs_cmdline.c $(LINKFLAGS) \
++	$(CC) -O3 -o bin/lcs.o $(SRCS) $(TGTFLAGS) $(INCS) $(LIBS) src/tools/lcs_cmdline.c $(LINKFLAGS) \
 +		-s EXTRA_EXPORTED_RUNTIME_METHODS='["callMain"]'
  
  bin/seq_align_tests: src/tools/tests.c src/libalign.a
