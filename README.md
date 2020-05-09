@@ -9,6 +9,11 @@ WebAssembly modules for common genomics utilities, including:
 * bhtsne
 * seq-align
 
+## Usage
+
+For convenience, biowasm modules are compiled to WebAssembly and hosted on [cdn.sandbox.bio](https://cdn.sandbox.bio/).
+
+For a simple starter example, see [Aioli](https://github.com/biowasm/aioli#getting-started).
 
 ## Setup
 
