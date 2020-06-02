@@ -1,0 +1,82 @@
+diff --git a/main.c b/main.c
+index 04024be..fb8ba63 100644
+--- a/main.c
++++ b/main.c
+@@ -2,6 +2,25 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include "t-sne.h"
++#include "emscripten.h"
++
++
++// Send row names back to main thread
++EM_JS(void, send_names, (int N, char *row, char **row_names), {
++	// Collect row names
++	let names = [];
++	for(let i = 0; i < N; i++)
++		names.push(Module.UTF8ToString(
++			Module.getValue(row_names + i*4, "*")
++		));
++
++    // Send a message back to main thread from WebWorker (note: use callback because we're in the middle of a calculation)
++    // TODO: this isn't efficient; can we use transferables instead of copying the data?
++    self.send(self.MSG_UUID, {
++		row_names: names
++    }, "callback");
++});
++
+ 
+ int main(int argc, char *argv[])
+ {
+@@ -27,6 +46,10 @@ int main(int argc, char *argv[])
+ 	}
+ 
+ 	x = sann_data_read_1d(argv[optind], &N, &n_in, &row_names, 0);
++
++	// Send row names to main thread
++	send_names(N, row_names[0], row_names);
++
+ 	y = ts_fit(N, n_in, x, out_dim, theta, perplexity, seed);
+ 	for (i = 0; i < N; ++i) {
+ 		int k = i * out_dim;
+diff --git a/tsne.cpp b/tsne.cpp
+index a602754..72c9685 100644
+--- a/tsne.cpp
++++ b/tsne.cpp
+@@ -41,10 +41,27 @@
+ #include "vptree.h"
+ #include "sptree.h"
+ #include "tsne.h"
++#include "emscripten.h"
+ 
+ 
+ using namespace std;
+ 
++
++// Send clustering results to main thread
++EM_JS(void, send_results, (int N, float error, double* Y), {
++    // Extract numbers directly from WebAssembly memory (shift right by 3 == /8 because a double is 8 bytes)
++    let result = Module.HEAPF64.subarray(Y >> 3, (Y >> 3) + N);
++
++    // Send a message back to main thread from WebWorker (note: use callback because we're in the middle of a calculation)
++    // TODO: this isn't efficient; can we use transferables instead of copying the data?
++    self.send(self.MSG_UUID, {
++        N: N,
++        error: error,
++        data: result
++    }, "callback");
++});
++
++
+ // Perform t-SNE
+ void TSNE::run(double* X, int N, int D, double* Y, int no_dims, double perplexity, double theta, int rand_seed,
+                bool skip_random_init, int max_iter, int stop_lying_iter, int mom_switch_iter) {
+@@ -179,6 +196,8 @@ void TSNE::run(double* X, int N, int D, double* Y, int no_dims, double perplexit
+             else {
+                 total_time += (float) (end - start) / CLOCKS_PER_SEC;
+                 fprintf(stderr, "Iteration %d: error is %f (50 iterations in %4.2f seconds)\n", iter, C, (float) (end - start) / CLOCKS_PER_SEC);
++                // Send current status back to main thread
++                send_results(N, C, Y);
+             }
+ 			start = clock();
+         }
