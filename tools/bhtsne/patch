@@ -1,8 +1,8 @@
 diff --git a/main.c b/main.c
-index 04024be..ebd170b 100644
+index 04024be..b90b24e 100644
 --- a/main.c
 +++ b/main.c
-@@ -2,18 +2,37 @@
+@@ -2,18 +2,38 @@
  #include <stdlib.h>
  #include <stdio.h>
  #include "t-sne.h"
@@ -33,6 +33,7 @@ index 04024be..ebd170b 100644
  	char **row_names;
  
 -	while ((c = getopt(argc, argv, "s:p:e:d:")) >= 0) {
++	optind = 0;
 +	while ((c = getopt(argc, argv, "s:p:e:d:n:")) >= 0) {
  		if (c == 's') seed = atoi(optarg);
  		else if (c == 'p') perplexity = atof(optarg);
@@ -42,7 +43,7 @@ index 04024be..ebd170b 100644
  	}
  
  	if (argc == optind) {
-@@ -23,11 +42,16 @@ int main(int argc, char *argv[])
+@@ -23,11 +43,16 @@ int main(int argc, char *argv[])
  		fprintf(stderr, "  -e FLOAT    step size (theta) [%g]\n", theta);
  		fprintf(stderr, "  -p FLOAT    perplexity [%g]\n", perplexity);
  		fprintf(stderr, "  -s INT      random seed [%d]\n", seed);
