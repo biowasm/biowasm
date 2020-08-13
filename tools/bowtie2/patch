@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index d56c077..f8da920 100644
+index d56c0774..c49b949f 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -31,10 +31,10 @@ CC ?= $(GCC_PREFIX)/gcc$(GCC_SUFFIX)
@@ -79,7 +79,7 @@ index d56c077..f8da920 100644
  		$(DEFS) -DBOWTIE2 $(NOASSERT_FLAGS) -Wall \
  		$(CPPFLAGS) \
 -		-o $@ $< \
-+		-o $@.html $< \
++		-o ../build/$@.html $< \
  		$(SHARED_CPPS) $(SEARCH_CPPS_MAIN) \
 -		$(LDFLAGS) $(LDLIBS)
 +		$(LDFLAGS) $(LDLIBS) \
@@ -94,7 +94,7 @@ index d56c077..f8da920 100644
  bowtie2-align-l-sanitized bowtie2-align-l: bt2_search.cpp $(SEARCH_CPPS) $(SHARED_CPPS) $(HEADERS) $(SEARCH_FRAGMENTS)
  	$(CXX) $(RELEASE_FLAGS) $(RELEASE_DEFS) $(CXXFLAGS) \
 diff --git a/bt2_search.cpp b/bt2_search.cpp
-index bae258c..763f69e 100644
+index bae258ca..763f69e7 100644
 --- a/bt2_search.cpp
 +++ b/bt2_search.cpp
 @@ -3012,7 +3012,7 @@ static void multiseedSearchWorker(void *vp) {
