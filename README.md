@@ -4,11 +4,17 @@ WebAssembly modules for common genomics utilities, including:
 * bowtie v2.3.5.1
 * samtools v1.10 (and htslib)
 * bedtools v2.29
+* fastp v0.20.1
 * seqtk v1.3
 * wgsim
 * bhtsne
 * seq-align
 
+## Usage
+
+For convenience, biowasm modules are compiled to WebAssembly and hosted on [cdn.sandbox.bio](https://cdn.sandbox.bio/).
+
+For a simple starter example, see [Aioli](https://github.com/biowasm/aioli#getting-started).
 
 ## Setup
 
@@ -74,3 +80,5 @@ tools/<tool>/
 ## Todo
 
 - Add tests
+- Add support for compiling bioinformatics tools written in Rust such as [sourmash](https://github.com/dib-lab/sourmash/tree/v3.2.2/src/core) and [rust-bio](https://github.com/rust-bio/rust-bio)
+

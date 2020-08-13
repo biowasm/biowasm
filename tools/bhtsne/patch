@@ -1,13 +1,169 @@
-diff --git a/Makefile b/Makefile
-index e9fc554..04da4a8 100644
---- a/Makefile
-+++ b/Makefile
-@@ -19,7 +19,7 @@ LIBS=		-lm -lz
+diff --git a/main.c b/main.c
+index 04024be..cd34134 100644
+--- a/main.c
++++ b/main.c
+@@ -2,18 +2,39 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include "t-sne.h"
++#include "emscripten.h"
++
++
++// Send row names back to main thread
++EM_JS(void, send_names, (int N, char **row_names), {
++	// Collect row names
++	let names = [];
++	for(let i = 0; i < N; i++)
++		names.push(Module.UTF8ToString(
++			Module.getValue(row_names + i*4, "*")
++		));
++
++	// Send a message back to main thread from WebWorker
++	self.send(self.MSG_UUID, {
++		row_names: names
++	}, "callback");
++});
++
  
- all:$(PROG)
+ int main(int argc, char *argv[])
+ {
+-	int c, seed = 11, out_dim = 2, N, n_in, i, j;
++	int c, seed = 11, out_dim = 2, N, n_in, i, j, max_iter = 500, status_iter = 50;
+ 	double perplexity = 50., theta = .5, *x, *y;
+ 	char **row_names;
  
--t-sne:sptree.o data.o tsne.o t-sne.o main.o
-+t-sne.html:sptree.o data.o tsne.o t-sne.o main.o
- 		$(CXX) $^ -o $@ $(LIBS)
+-	while ((c = getopt(argc, argv, "s:p:e:d:")) >= 0) {
++	optind = 0;
++	while ((c = getopt(argc, argv, "s:p:e:d:n:r:")) >= 0) {
+ 		if (c == 's') seed = atoi(optarg);
+ 		else if (c == 'p') perplexity = atof(optarg);
+ 		else if (c == 'e') theta = atof(optarg);
+ 		else if (c == 'd') out_dim = atoi(optarg);
++		else if (c == 'n') max_iter = atoi(optarg);
++		else if (c == 'r') status_iter = atoi(optarg);
+ 	}
  
- data.o:data.c
+ 	if (argc == optind) {
+@@ -23,11 +44,17 @@ int main(int argc, char *argv[])
+ 		fprintf(stderr, "  -e FLOAT    step size (theta) [%g]\n", theta);
+ 		fprintf(stderr, "  -p FLOAT    perplexity [%g]\n", perplexity);
+ 		fprintf(stderr, "  -s INT      random seed [%d]\n", seed);
++		fprintf(stderr, "  -n INT      max iterations [%d]\n", max_iter);
++		fprintf(stderr, "  -r INT      send status every N interations [%d]\n", status_iter);
+ 		return 1;
+ 	}
+ 
+ 	x = sann_data_read_1d(argv[optind], &N, &n_in, &row_names, 0);
+-	y = ts_fit(N, n_in, x, out_dim, theta, perplexity, seed);
++
++	// Send row names to main thread
++	send_names(N, row_names);
++
++	y = ts_fit(N, n_in, x, out_dim, theta, perplexity, seed, max_iter, status_iter);
+ 	for (i = 0; i < N; ++i) {
+ 		int k = i * out_dim;
+ 		printf("%s", row_names[i]);
+diff --git a/t-sne.cpp b/t-sne.cpp
+index f9a3028..6423a68 100644
+--- a/t-sne.cpp
++++ b/t-sne.cpp
+@@ -2,12 +2,12 @@
+ #include "tsne.h"
+ #include "t-sne.h"
+ 
+-double *ts_fit(int N, int n_in, double *x, int n_out, double theta, double perplexity, int seed)
++double *ts_fit(int N, int n_in, double *x, int n_out, double theta, double perplexity, int seed, int max_iter, int status_iter)
+ {
+ 	double *y;
+ 	TSNE *ts = new TSNE();
+ 	y = (double*)malloc(N * n_out * sizeof(double));
+-	ts->run(x, N, n_in, y, n_out, perplexity, theta, seed, false);
++	ts->run(x, N, n_in, y, n_out, perplexity, theta, seed, false, max_iter, status_iter);
+ 	delete(ts);
+ 	return y;
+ }
+diff --git a/t-sne.h b/t-sne.h
+index 9c1b8ea..128b3d1 100644
+--- a/t-sne.h
++++ b/t-sne.h
+@@ -11,7 +11,7 @@ typedef struct {
+ extern "C" {
+ #endif
+ 
+-double *ts_fit(int N, int n_in, double *x, int n_out, double theta, double perplexity, int seed);
++double *ts_fit(int N, int n_in, double *x, int n_out, double theta, double perplexity, int seed, int max_iter, int status_iter);
+ 
+ double *sann_data_read_1d(const char *fn, int *n, int *n_col, char ***row_names, char ***col_names);
+ float **sann_data_read(const char *fn, int *n_, int *n_col_, char ***row_names, char ***col_names);
+diff --git a/tsne.cpp b/tsne.cpp
+index a602754..86bbd00 100644
+--- a/tsne.cpp
++++ b/tsne.cpp
+@@ -41,13 +41,33 @@
+ #include "vptree.h"
+ #include "sptree.h"
+ #include "tsne.h"
++#include "emscripten.h"
+ 
+ 
+ using namespace std;
+ 
++
++// Send clustering results to main thread
++EM_JS(void, send_results, (int iter, int N, float error, double* Y), {
++    // Extract numbers directly from WebAssembly memory (shift right by 3 == /8 because a double is 8 bytes)
++    const result = Module.HEAPF64.slice(Y >> 3, (Y >> 3) + N*2);  // N*2 because each row has 2 numbers: x and y
++
++    // Send a message back to main thread from WebWorker
++    // Notes:
++    //  - Use action = callback because we're in the middle of a calculation and aren't done yet
++    //  - Set transferables = [result.buffer] for performance, so that we don't clone the data to the main thread but move it
++    self.send(self.MSG_UUID, {
++        iter: iter,
++        N: N,
++        error: error,
++        data: result
++    }, "callback", [result.buffer]);
++});
++
++
+ // Perform t-SNE
+ void TSNE::run(double* X, int N, int D, double* Y, int no_dims, double perplexity, double theta, int rand_seed,
+-               bool skip_random_init, int max_iter, int stop_lying_iter, int mom_switch_iter) {
++               bool skip_random_init, int max_iter, int status_iter, int stop_lying_iter, int mom_switch_iter) {
+ 
+     // Set random seed
+     if (skip_random_init != true) {
+@@ -169,7 +189,7 @@ void TSNE::run(double* X, int N, int D, double* Y, int no_dims, double perplexit
+         if(iter == mom_switch_iter) momentum = final_momentum;
+ 
+         // Print out progress
+-        if (iter > 0 && (iter % 50 == 0 || iter == max_iter - 1)) {
++        if (iter > 0 && (iter % status_iter == 0 || iter == max_iter - 1)) {
+             end = clock();
+             double C = .0;
+             if(exact) C = evaluateError(P, Y, N, no_dims);
+@@ -178,7 +198,9 @@ void TSNE::run(double* X, int N, int D, double* Y, int no_dims, double perplexit
+                 fprintf(stderr, "Iteration %d: error is %f\n", iter + 1, C);
+             else {
+                 total_time += (float) (end - start) / CLOCKS_PER_SEC;
+-                fprintf(stderr, "Iteration %d: error is %f (50 iterations in %4.2f seconds)\n", iter, C, (float) (end - start) / CLOCKS_PER_SEC);
++                fprintf(stderr, "Iteration %d: error is %f (%d iterations in %4.2f seconds)\n", iter, C, status_iter, (float) (end - start) / CLOCKS_PER_SEC);
++                // Send current status back to main thread
++                send_results(iter, N, C, Y);
+             }
+ 			start = clock();
+         }
+diff --git a/tsne.h b/tsne.h
+index 2600855..3b3723b 100644
+--- a/tsne.h
++++ b/tsne.h
+@@ -42,7 +42,7 @@ class TSNE
+ {
+ public:
+     void run(double* X, int N, int D, double* Y, int no_dims, double perplexity, double theta, int rand_seed,
+-             bool skip_random_init, int max_iter=1000, int stop_lying_iter=250, int mom_switch_iter=250);
++             bool skip_random_init, int max_iter=1000, int status_iter=50, int stop_lying_iter=250, int mom_switch_iter=250);
+     bool load_data(double** data, int* n, int* d, int* no_dims, double* theta, double* perplexity, int* rand_seed, int* max_iter);
+     void save_data(double* data, int* landmarks, double* costs, int n, int d);
+     void symmetrizeMatrix(unsigned int** row_P, unsigned int** col_P, double** val_P, int N); // should be static!

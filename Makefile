@@ -1,10 +1,11 @@
 DIR_TOOLS = tools
+TOOLS = $(notdir $(wildcard tools/*))
 
 # Clean
 clean:
 	rm -rf $(DIR_TOOLS)/*/build/
 
-all: bedtools2 bhtsne htslib samtools seqtk wgsim
+all: ${TOOLS}
 
 init:
 	@ \
@@ -14,7 +15,7 @@ init:
 	git submodule update --init --recursive; \
 	git submodule status; \
 
-bedtools2 bhtsne htslib samtools seqtk wgsim: init
+${TOOLS}: init
 	@ \
 	. ./shared.sh; \
 	cd $(DIR_TOOLS)/$@/; \
