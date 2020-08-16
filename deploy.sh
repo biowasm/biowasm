@@ -1,6 +1,7 @@
 #!/bin/bash
 
 TOOLS=$(cat <<EOF
+	seqtk    1.2    v1.2
 	seqtk    1.3    v1.3
 EOF
 )
