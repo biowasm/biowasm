@@ -2,9 +2,9 @@ name: Deploy CDN
 
 on:
   push:
-    branches: [ origin/13-github-actions-deploy ]
+    branches: [ 13-github-actions-deploy ]
 
-# origin/13-github-actions-deploy
+# 13-github-actions-deploy
 
 jobs:
   deploy:
