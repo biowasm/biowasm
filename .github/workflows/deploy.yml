@@ -9,15 +9,24 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy to Cloudflare Workers
     steps:
-      # Checkout biowasm repo
-      - uses: actions/checkout@v2
+      - name: Checkout biowasm repo
+        uses: actions/checkout@v2
 
-      # Deploy to Cloudflare using wrangler.toml and env variables
-      - name: Publish
-        uses: cloudflare/wrangler-action@1.2.0
-        env:
-          USER: root
-          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+      - name: Download Emscripten
+        uses: mymindstorm/setup-emsdk@v6
         with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
+          version: 1.39.1
+
+      # Test Emscripten
+      - name: Test Emscripten
+        run: emcc -v
+
+#       # Deploy to Cloudflare using wrangler.toml and env variables
+#       - name: Deploy to Cloudflare
+#         uses: cloudflare/wrangler-action@1.2.0
+#         env:
+#           USER: root
+#           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+#           CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+#         with:
+#           apiToken: ${{ secrets.CF_API_TOKEN }}
