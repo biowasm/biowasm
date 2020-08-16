@@ -20,8 +20,8 @@ jobs:
       - name: Test Emscripten
         run: |
           emcc -v
-          make samtools
-          ls -lah tools/samtools/build/
+          make seqtk
+          ls -lah tools/seqtk/build/
 
 #       # Deploy to Cloudflare using wrangler.toml and env variables
 #       - name: Deploy to Cloudflare
