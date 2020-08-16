@@ -4,14 +4,15 @@ on:
   push:
     branches: [ 13-github-actions-deploy ]
 
-# 13-github-actions-deploy
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy to Cloudflare Workers
     steps:
-#       - uses: actions/checkout@v2
+      # Checkout biowasm repo
+      - uses: actions/checkout@v2
+
+      # Deploy to Cloudflare using wrangler.toml and env variables
       - name: Publish
         uses: cloudflare/wrangler-action@1.2.0
         env:
