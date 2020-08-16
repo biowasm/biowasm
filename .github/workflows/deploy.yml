@@ -1,10 +1,5 @@
 name: Deploy CDN
 
-env:
-  TOOLS: (
-      "seqtk 1.3 v1.3"
-    )
-
 on:
   push:
     branches: [ 13-github-actions-deploy ]
@@ -33,22 +28,21 @@ jobs:
       # ------------------------------------------------------------------------
       - name: Compile to WebAssembly
         run: |
-          for tool in ${TOOLS[@]};
+          while read toolName toolVersion toolTag;
           do
-            while read toolName toolVersion toolTag;
-            do
-              # Go to branch/tag of interest
-              cd tools/${toolName}/src
-              git checkout "$toolTag"
+            # Go to branch/tag of interest (cleanup from previous iteration)
+            cd tools/${toolName}/src
+            git reset --hard
+            git clean -f -d
+            git checkout "$toolTag"
 
-              # Build it
-              make "$toolName"
-              ls -lah tools/${toolName}/build/
-              mkdir -p public/${toolName}/1.3/ public/${toolName}/latest/
-              cp tools/${toolName}/build/* public/${toolName}/${toolVersion}/
-              cp tools/${toolName}/build/* public/${toolName}/latest/
-            done <<< $tool
-          done
+            # Build it
+            make "$toolName"
+            ls -lah tools/${toolName}/build/
+            mkdir -p public/${toolName}/${toolVersion}/ public/${toolName}/latest/
+            cp tools/${toolName}/build/* public/${toolName}/${toolVersion}/
+            cp tools/${toolName}/build/* public/${toolName}/latest/
+          done <<< <(tail -n +2 cdn.tsv)
 
       # ------------------------------------------------------------------------
       # Deploy to Cloudflare Workers
