@@ -1,0 +1,7 @@
+name = "biowasm-cdn"
+type = "webpack"
+route = "cdn.biowasm.com/*"
+workers_dev = false
+
+[site]
+bucket = "./public"
