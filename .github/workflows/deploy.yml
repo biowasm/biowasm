@@ -17,9 +17,11 @@ jobs:
         with:
           version: 1.39.1
 
-      # Test Emscripten
       - name: Test Emscripten
-        run: emcc -v
+        run: |
+          emcc -v
+          make samtools
+          ls -lah tools/samtools/build/
 
 #       # Deploy to Cloudflare using wrangler.toml and env variables
 #       - name: Deploy to Cloudflare
