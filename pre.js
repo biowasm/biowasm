@@ -1,5 +1,6 @@
 // Fetch the corresponding .wasm and .data files relative to where the .js file is stored,
 // whether it's locally or on a CDN. Works in the main thread and in WebWorkers.
+var Module = typeof Module !== 'undefined' ? Module : {};
 Module['locateFile'] = function(path, dir)
 {
 	var dirJS = "", dirRoot = "";
@@ -11,6 +12,6 @@ Module['locateFile'] = function(path, dir)
 		dirJS = document.currentScript.src;
 
 	// Get folder where main .js file is located
-	dirRoot = dirJS.match(/.*\//)[0];
+	dirRoot = dirJS.substring(0, dirJS.lastIndexOf("/") + 1);
 	return dirRoot + path;
 }
