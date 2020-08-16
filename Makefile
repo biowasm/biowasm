@@ -31,6 +31,6 @@ ${TOOLS}: init
 	echo "——————————————————————————————————————————————————"; \
 	./compile.sh; \
 	for glueCode in build/*.js; do \
-		cat ../../pre.js $$glueCode > $$glueCode.tmp; \
+		cat ../../shared.js $$glueCode > $$glueCode.tmp; \
 		mv $$glueCode.tmp $$glueCode; \
 	done
