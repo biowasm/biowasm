@@ -31,3 +31,11 @@ do
 	cp tools/${toolName}/build/* public/${toolName}/${toolVersion}/
 	cp tools/${toolName}/build/* public/${toolName}/latest/
 done <<< "$TOOLS"
+
+# Generate index
+cd public/
+(
+	tree | \
+		grep -v -E "index|index.html|.ico" | \
+		tail +2; \
+) > index
