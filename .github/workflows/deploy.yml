@@ -31,11 +31,7 @@ jobs:
           while read toolName toolVersion toolBranch;
           do
             # Go to branch/tag of interest (cleanup from previous iteration)
-            cd tools/${toolName}/src
-            git reset --hard
-            git clean -f -d
-            git fetch --all
-            git checkout "$toolBranch"
+            cd tools/${toolName}/src && git reset --hard && git clean -f -d && git fetch --all && git checkout "$toolBranch"
 
             # Build it
             make "$toolName"
