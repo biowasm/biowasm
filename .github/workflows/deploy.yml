@@ -17,18 +17,19 @@ jobs:
         with:
           version: 1.39.1
 
-      - name: Test Emscripten
+      - name: Compile to WebAssembly
         run: |
           emcc -v
           make seqtk
           ls -lah tools/seqtk/build/
+          mkdir -p public/seqtk/1.3/
+          cp tools/seqtk/build/* public/seqtk/1.3/
 
-#       # Deploy to Cloudflare using wrangler.toml and env variables
-#       - name: Deploy to Cloudflare
-#         uses: cloudflare/wrangler-action@1.2.0
-#         env:
-#           USER: root
-#           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-#           CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-#         with:
-#           apiToken: ${{ secrets.CF_API_TOKEN }}
+      - name: Deploy to Cloudflare
+        uses: cloudflare/wrangler-action@1.2.0
+        env:
+          USER: root
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
