@@ -1,0 +1,22 @@
+name: Deploy CDN
+
+on:
+  push:
+    branches: [ master ]
+
+# origin/13-github-actions-deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Cloudflare Workers
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish
+        uses: cloudflare/wrangler-action@1.2.0
+        env:
+          USER: root
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
