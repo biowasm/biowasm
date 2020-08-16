@@ -2,7 +2,7 @@ name: Deploy CDN
 
 on:
   push:
-    branches: [ master ]
+    branches: [ origin/13-github-actions-deploy ]
 
 # origin/13-github-actions-deploy
 
