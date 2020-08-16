@@ -5,6 +5,10 @@ TOOLS=$(cat <<EOF
 EOF
 )
 
+# Clone all repos
+make init
+
+# Compile each tool
 while read toolName toolVersion toolBranch;
 do
 	echo "================================================================"
