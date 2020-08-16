@@ -27,19 +27,7 @@ jobs:
       # Compile
       # ------------------------------------------------------------------------
       - name: Compile to WebAssembly
-        run: |
-          while read toolName toolVersion toolBranch;
-          do
-            # Go to branch/tag of interest (cleanup from previous iteration)
-            cd tools/${toolName}/src && git reset --hard && git clean -f -d && git fetch --all && git checkout "$toolBranch"
-
-            # Build it
-            make "$toolName"
-            ls -lah tools/${toolName}/build/
-            mkdir -p public/${toolName}/${toolVersion}/ public/${toolName}/latest/
-            cp tools/${toolName}/build/* public/${toolName}/${toolVersion}/
-            cp tools/${toolName}/build/* public/${toolName}/latest/
-          done < <(tail -n +2 cdn.tsv)
+        run: ./deploy.sh
 
       # ------------------------------------------------------------------------
       # Deploy to Cloudflare Workers
