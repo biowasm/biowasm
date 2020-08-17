@@ -18,7 +18,6 @@ EOF
 
 # Setup repos and dependencies
 make init
-sudo -i
 apt-get install -y tree
 
 # Compile each tool
