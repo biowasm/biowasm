@@ -15,7 +15,7 @@ init:
 	git submodule update --init --recursive; \
 	git submodule status; \
 
-${TOOLS}: init
+${TOOLS}:
 	@ \
 	. ./shared.sh; \
 	cd $(DIR_TOOLS)/$@/; \

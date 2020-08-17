@@ -42,6 +42,7 @@ docker exec -it wasm bash
 
 # Compile seqtk
 cd biowasm/
+make init  # only need to do this once
 make seqtk
 
 # This will create tools/<tool name>/build with .js/.wasm files
