@@ -18,7 +18,7 @@ EOF
 
 # Setup repos and dependencies
 make init
-apt-get install -y tree
+sudo apt-get install -y tree
 
 # Compile each tool
 while read toolName toolVersion toolBranch;

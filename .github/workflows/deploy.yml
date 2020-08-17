@@ -21,22 +21,25 @@ jobs:
           version: 1.39.1
 
       - name: Test Emscripten
-        run: emcc -v
+        run: |
+          emcc -v
+          which emcc
+          sudo emcc -v
 
-      # ------------------------------------------------------------------------
-      # Compile
-      # ------------------------------------------------------------------------
-      - name: Compile to WebAssembly
-        run: sudo ./deploy.sh
+      # # ------------------------------------------------------------------------
+      # # Compile
+      # # ------------------------------------------------------------------------
+      # - name: Compile to WebAssembly
+      #   run: ./deploy.sh
 
-      # ------------------------------------------------------------------------
-      # Deploy to Cloudflare Workers
-      # ------------------------------------------------------------------------
-      - name: Deploy to Cloudflare
-        uses: cloudflare/wrangler-action@1.2.0
-        env:
-          USER: root
-          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
+      # # ------------------------------------------------------------------------
+      # # Deploy to Cloudflare Workers
+      # # ------------------------------------------------------------------------
+      # - name: Deploy to Cloudflare
+      #   uses: cloudflare/wrangler-action@1.2.0
+      #   env:
+      #     USER: root
+      #     CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+      #     CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+      #   with:
+      #     apiToken: ${{ secrets.CF_API_TOKEN }}
