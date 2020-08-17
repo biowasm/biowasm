@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Format: toolName toolVersion toolBranch
 TOOLS=$(cat <<EOF
 	seqtk        1.2           v1.2
 	seqtk        1.3           v1.3
@@ -47,8 +48,4 @@ done <<< "$TOOLS"
 
 # Generate index
 cd public/
-(
-	tree | \
-		grep -v -E "index|index.html|.ico" | \
-		tail +2; \
-) > index
+( tree | grep -v -E "index|index.html|.ico" | tail +2 ) > index
