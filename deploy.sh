@@ -6,8 +6,9 @@ TOOLS=$(cat <<EOF
 EOF
 )
 
-# Clone all repos
+# Setup repos and dependencies
 make init
+apt-get install -y tree liblzma-dev
 
 # Compile each tool
 while read toolName toolVersion toolBranch;
