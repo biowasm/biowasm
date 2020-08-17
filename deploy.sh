@@ -8,7 +8,7 @@ EOF
 
 # Setup repos and dependencies
 make init
-apt-get install -y tree liblzma-dev
+sudo apt-get install -y tree liblzma-dev
 
 # Compile each tool
 while read toolName toolVersion toolBranch;
