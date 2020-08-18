@@ -11,7 +11,7 @@ emmake make
 
 # Generate .wasm/.js files
 emcc obj/*.o \
-    -o ../build/bedtools2.js \
+    -o ../build/bedtools2.html \
     -O2 \
     --preload-file test@/bedtools2/test \
     $EM_FLAGS \
