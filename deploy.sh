@@ -2,8 +2,6 @@
 
 # Format: toolName toolVersion toolBranch
 TOOLS=$(cat <<EOF
-	bhtsne       2016.08.22    1a62a5d
-
 	seqtk        1.2           v1.2
 	seqtk        1.3           v1.3
 EOF

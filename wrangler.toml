@@ -1,4 +1,4 @@
-name = "biowasm-cdn"
+name = "biowasm-cdn-dev"
 type = "webpack"
 route = "cdn-dev.biowasm.com/*"
 workers_dev = false
