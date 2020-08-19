@@ -1,6 +1,6 @@
 name = "biowasm-cdn"
 type = "webpack"
-route = "cdn.biowasm.com/*"
+route = "cdn-dev.biowasm.com/*"
 workers_dev = false
 
 [site]
