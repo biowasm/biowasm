@@ -1,13 +1,15 @@
-name: Deploy biowasm
+name: Deploy biowasm-prd
 
-on:
-  push:
-    branches: [ 13-github-actions-deploy ]
+on: 
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Test scenario tags'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy CDN
+    name: Deploy CDN (PRD)
     steps:
       # ------------------------------------------------------------------------
       # Setup
@@ -40,4 +42,4 @@ jobs:
           CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
-          environment: 'stg'
+          environment: 'prd'
