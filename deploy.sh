@@ -2,8 +2,8 @@
 
 # Format: toolName toolVersion toolBranch
 TOOLS=$(cat <<EOF
-	seqtk        1.2           v1.2
 	seqtk        1.3           v1.3
+	samtools     1.10          1.10
 EOF
 )
 
