@@ -1,7 +1,16 @@
-name = "biowasm-cdn-dev"
 type = "webpack"
-route = "cdn-dev.biowasm.com/*"
 workers_dev = false
+vars = { ENVIRONMENT = "stg" }
 
 [site]
 bucket = "./public"
+
+[env.stg]
+name = "biowasm-cdn-stg"
+vars = { ENVIRONMENT = "stg" }
+route = "cdn-stg.biowasm.com/*"
+
+[env.prd]
+name = "biowasm-cdn"
+vars = { ENVIRONMENT = "prd" }
+route = "cdn.biowasm.com/*"
