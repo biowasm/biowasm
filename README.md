@@ -1,5 +1,8 @@
 # biowasm
-WebAssembly modules for common genomics utilities, including:
+
+![Deploy](https://github.com/biowasm/biowasm/workflows/Deploy%20biowasm/badge.svg)
+
+A repository of genomics utilities, compiled from C/C++ to WebAssembly so they can run in a browser:
 
 * samtools v1.10 (and htslib)
 * bedtools v2.29
