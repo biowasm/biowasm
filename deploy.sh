@@ -2,26 +2,22 @@
 
 # Format: toolName toolVersion toolBranch
 TOOLS=$(cat <<EOF
+	bedtools2    2.29.2        v2.29.2
+
+	bhtsne       2016.08.22    1a62a5d
+
+	fastp        0.20.1        0.20.1
+
+	samtools     1.10          1.10
+
+	seq-align    2017.10.18    dc41988
+
 	seqtk        1.2           v1.2
 	seqtk        1.3           v1.3
+
+	wgsim        2011.10.17    a12da33
 EOF
 )
-
-	# bedtools2    2.29.2        v2.29.2
-
-	# bhtsne       2016.08.22    1a62a5d
-
-	# fastp        0.20.1        0.20.1
-
-	# samtools     1.10          1.10
-
-	# seq-align    2017.10.18    dc41988
-
-	# seqtk        1.2           v1.2
-	# seqtk        1.3           v1.3
-
-	# wgsim        2011.10.17    a12da33
-
 
 # Setup repos and dependencies
 make init
