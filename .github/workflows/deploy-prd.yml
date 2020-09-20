@@ -1,6 +1,8 @@
 name: Deploy biowasm-prd
 
-on: 
+on:
+  push:
+    branches: [ 13-github-actions-deploy ]
   workflow_dispatch:
     inputs:
       tags:
