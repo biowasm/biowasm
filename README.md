@@ -2,42 +2,104 @@
 
 ![Deploy](https://github.com/biowasm/biowasm/workflows/Deploy%20biowasm/badge.svg)
 
-A repository of genomics utilities, compiled from C/C++ to WebAssembly so they can run in a browser:
+A repository of genomics tools, compiled from C/C++ to WebAssembly so they can run in a web browser:
 
-* samtools v1.10 (and htslib)
-* bedtools v2.29
-* fastp v0.20.1
-* seqtk v1.3
-* wgsim
-* bhtsne
-* seq-align
+* [samtools/htslib v1.10](tools/samtools/README.md)
+* [bedtools v2.29](tools/bedtools/README.md)
+* [fastp v0.20.1](tools/fastp/README.md)
+* [seqtk v1.3](tools/seqtk/README.md)
+* [wgsim](tools/wgsim/README.md)
+* [bhtsne](tools/bhtsne/README.md)
+* [seq-align](tools/seq-align/README.md)
 
-## Usage
 
-For convenience, biowasm modules are compiled to WebAssembly and hosted on [cdn.sandbox.bio](https://cdn.sandbox.bio/).
+## Get Started
 
-For a simple starter example, see [Aioli](https://github.com/biowasm/aioli#getting-started).
+biowasm modules are hosted on [cdn.biowasm.com](https://cdn.biowasm.com/index).
 
-## Setup
+### Simple usage
 
-```bash
-# Emscripten version to use (most tools were tested with 1.39.1)
-TAG=1.39.1
 
-# Fetch Emscripten docker image
-docker pull robertaboukhalil/emsdk:$TAG
+```html
+<script src="https://cdn.biowasm.com/aioli/latest/aioli.js"></script>
+<script>
 
-# Create the container and mount ~/wasm to /src in the container
-docker run \
-    -dt \
-    -p 12345:80 \
-    --name wasm \
-    --volume ~/wasm:/src \
-    robertaboukhalil/emsdk:$TAG
+</script>
 ```
 
 
-## Compile a tool
+### Using Aioli
+
+
+```html
+<input id="myfile" type="file" multiple>
+<script src="https://cdn.sandbox.bio/aioli/latest/aioli.js"></script>
+
+<script>
+let samtools = new Aioli("samtools/1.10");
+
+// Initialize samtools and output the version
+samtools
+    .init()
+    .then(() => samtools.exec("--version"))
+    .then(d => console.log(d.stdout));
+
+// When a user selects a .sam file from their computer,
+// run `samtools view -q20` on the file
+function loadFile(event)
+{
+    Aioli
+        // First mount the file
+        .mount(event.target.files[0])
+        // Once it's mounted, run samtools view
+        .then(file => samtools.exec(`view -q20 ${file.path}`))
+        // Capture output
+        .then(d => console.log(d.stdout));
+}
+document.getElementById("myfile").addEventListener("change", loadFile, false);
+</script>
+```
+
+
+For a simple starter example, see [Aioli](https://github.com/biowasm/aioli#getting-started).
+
+
+
+## Development
+
+### Setup
+
+Tools listed in biowasm were compiled to WebAssembly using `Emscripten 2.0.0`.
+
+```bash
+# Fetch Emscripten docker image
+docker pull emscripten/emsdk:2.0.0
+
+# Create the container and mount ~/wasm to /src in the container
+docker run \
+    -it -d \
+    -p 80:80 \
+    --name wasm \
+    --volume ~/wasm:/src \
+    emscripten/emsdk:2.0.0
+
+docker exec -u root -it bash
+apt-get install -y autoconf liblzma-dev less vim
+cat << EOF > server.py
+import http.server
+import socketserver
+
+handler = http.server.SimpleHTTPRequestHandler
+handler.extensions_map['.wasm'] = 'application/wasm'
+httpd = socketserver.TCPServer(('', 80), handler)
+httpd.serve_forever()
+EOF
+chmod +x server.py
+python3.7 /src/server.py &
+```
+
+
+### Compile a tool
 
 ```bash
 # Go into your container
@@ -53,7 +115,7 @@ ls tools/seqtk/build
 ```
 
 
-## Contribute new tool
+### Add a new tool
 
 First, add the tool as a git module:
 
@@ -82,6 +144,7 @@ tools/<tool>/
 
 ## Todo
 
-- Add tests
-- Add support for compiling bioinformatics tools written in Rust such as [sourmash](https://github.com/dib-lab/sourmash/tree/v3.2.2/src/core) and [rust-bio](https://github.com/rust-bio/rust-bio)
+## To do
 
+- Run each tool's tests?
+- Support for Rust bioinformatics tools such as [sourmash](https://github.com/dib-lab/sourmash/tree/v3.2.2/src/core) and [rust-bio](https://github.com/rust-bio/rust-bio)
