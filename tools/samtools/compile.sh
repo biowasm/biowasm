@@ -22,4 +22,4 @@ emcc -O2 samtools.o \
     $EM_FLAGS \
     -s USE_BZIP2=1 \
     -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
-    --preload-file examples/@/tmp/examples/
+    --preload-file examples/@/samtools/examples/
