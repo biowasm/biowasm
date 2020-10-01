@@ -85,4 +85,4 @@ cd ../
 # Generate index
 # ------------------------------------------------------------------------------
 cd public/
-( tree --charset=ascii --du -h | grep -v -E "index.html|404.html|.ico" | tail +2 ) > index
+( tree --charset=ascii --du -h | grep -v -E "index.html|index|404.html|.ico" | tail +2 ) > index
