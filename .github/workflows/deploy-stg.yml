@@ -27,7 +27,7 @@ jobs:
       # Compile
       # ------------------------------------------------------------------------
       - name: Compile to WebAssembly
-        run: ./deploy.sh
+        run: ./compile.sh
 
       # ------------------------------------------------------------------------
       # Deploy to Cloudflare Workers
