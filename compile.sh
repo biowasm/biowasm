@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script compiles the bioinformatics tools to WebAssembly and is invoked by
+# the GitHub Actions pipelines in `.github/workflows/`.
+
 # ------------------------------------------------------------------------------
 # Config
 # ------------------------------------------------------------------------------
@@ -79,7 +82,6 @@ dir_out="../public/aioli/latest"
 mkdir -p "$dir_out/"
 cp aioli{,.worker}.js "$dir_out/"
 cd ../
-
 
 # ------------------------------------------------------------------------------
 # Generate index
