@@ -7,7 +7,9 @@
 # Config
 # ------------------------------------------------------------------------------
 
-AIOLI=("1.0.0" "1.1.0" "1.1.3" "1.2.1" "1.3.0")
+# FIXME:
+# AIOLI=("1.0.0" "1.1.0" "1.1.3" "1.2.1" "1.3.0")
+AIOLI=("1.4.0")
 
 # Format: toolName toolVersion toolBranch
 TOOLS=$(cat <<EOF
@@ -73,7 +75,7 @@ git clone "https://github.com/biowasm/aioli.git"
 cd aioli/
 for version in ${AIOLI[@]};
 do
-	git checkout "v$version"
+	git checkout "issue-9-support-custom-paths"  # FIXME: git checkout "v$version"
 	dir_out="../public/aioli/$version"
 	mkdir -p "$dir_out/"
 	cp aioli{,.worker}.js "$dir_out/"
