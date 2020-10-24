@@ -1,5 +1,6 @@
-// Fetch the corresponding .wasm and .data files relative to where the .js file is stored.
-// Works in the main thread and in WebWorkers.
+// Shared JavaScript logic injected into the Emscripten glue code. This fetches
+// the corresponding .wasm and .data files relative to where the .js file is
+// stored. Works in the main thread and in WebWorkers.
 var Module = typeof Module !== "undefined" ? Module : {};
 
 if(typeof Module["locateFile"] == "undefined")
