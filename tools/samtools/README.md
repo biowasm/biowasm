@@ -14,7 +14,7 @@ samtools
     // Run "samtools view" command with "-q 20" filter
     .then(() => samtools.exec("view -q 20 /samtools/examples/toy.sam"))
     // Output result
-    .then(d => document.write(`<pre>${d.stdout}</pre>`));
+    .then(d => document.write(`<pre>${d.stdout}\n${d.stderr}</pre>`));
 </script>
 ```
 
