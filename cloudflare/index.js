@@ -1,3 +1,14 @@
+// The biowasm CDN is hosted using Cloudflare Worker Sites where CDN files
+// are stored in a key-value store (Cloudflare Worker KV). For example:
+//     key=samtools/1.10/samtools.wasm --> value=<samtools.wasm contents>
+// 
+// A Cloudflare Worker (a serverless function) is the entry point for
+// retrieving those files from the key-value store. This index.js file
+// defines the code for that entry point. The code is mostly using the
+// Cloudflare Workers Site template, but modified to enable CORS (so that
+// biowasm modules can be loaded from non-biowasm.com domains!) and to
+// log basic stats about the number of downloads per module.
+
 import { getAssetFromKV, mapRequestToAsset } from "@cloudflare/kv-asset-handler"
 
 /**
