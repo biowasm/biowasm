@@ -13,59 +13,62 @@ A repository of genomics tools, compiled from C/C++ to WebAssembly so they can r
 * [seq-align](tools/seq-align/README.md)
 
 
-## Get Started
+## How it works
 
-biowasm modules are hosted on [cdn.biowasm.com](https://cdn.biowasm.com/index).
+* **biowasm**: a collection of recipes for compiling C/C++ genomics tools to WebAssembly &mdash; this repo
+* **biowasm CDN**: a server where we host the pre-compiled tools for use in your apps &mdash; [cdn.biowasm.com](https://cdn.biowasm.com)
+* **Aioli**: a tool for running these modules in a browser, inside WebWorkers (i.e. in background threads) &mdash; [Aioli repo](https://github.com/biowasm/aioli)
+
+## Get Started
 
 ### Simple usage
 
+To get started, here is some HTML code that runs the command `samtools view -q 20` on a sample SAM file and outputs the contents to screen:
 
 ```html
 <script src="https://cdn.biowasm.com/aioli/latest/aioli.js"></script>
 <script>
-
-</script>
-```
-
-
-### Using Aioli
-
-
-```html
-<input id="myfile" type="file" multiple>
-<script src="https://cdn.sandbox.bio/aioli/latest/aioli.js"></script>
-
-<script>
 let samtools = new Aioli("samtools/1.10");
 
-// Initialize samtools and output the version
+document.write("Loading...");
 samtools
+    // Initialize samtools
     .init()
-    .then(() => samtools.exec("--version"))
-    .then(d => console.log(d.stdout));
-
-// When a user selects a .sam file from their computer,
-// run `samtools view -q20` on the file
-function loadFile(event)
-{
-    Aioli
-        // First mount the file
-        .mount(event.target.files[0])
-        // Once it's mounted, run samtools view
-        .then(file => samtools.exec(`view -q20 ${file.path}`))
-        // Capture output
-        .then(d => console.log(d.stdout));
-}
-document.getElementById("myfile").addEventListener("change", loadFile, false);
+    // Run "samtools view" command with "-q 20" filter
+    .then(() => samtools.exec("view -q 20 /samtools/examples/toy.sam"))
+    // Output result
+    .then(d => document.write(`<pre>${d.stdout}</pre>`));
 </script>
 ```
 
+The list of all modules available on the CDN are listed at [cdn.biowasm.com/index](https://cdn.biowasm.com/index). See the [Aioli repo](https://github.com/biowasm/aioli#getting-started) for more information on getting started.
 
-For a simple starter example, see [Aioli](https://github.com/biowasm/aioli#getting-started).
+### Usage without Aioli
 
+It is not recommended, but is possible, to use biowasm modules without Aioli, but it requires using Emscripten's `Module` variable. For example, you can navigate to [/samtools/1.10/samtools.html](https://cdn.biowasm.com/samtools/1.10/samtools.html), open the Developer Console and type `Module.callMain(["view"])` to see the help menu for the `samtools view` command.
 
+Here is the equivalent example from above, but without Aioli:
 
-## Development
+```html
+<script>
+var Module = {
+    onRuntimeInitialized: () => {
+        Module.callMain(["view", "-q", "20", "/samtools/examples/toy.sam"]);
+    }
+};
+</script>
+<script src="https://cdn.biowasm.com/samtools/1.10/samtools.js"></script>
+```
+
+Note that here we define the `Module` variable before loading the `samtools.js` file from the CDN, and that we use `callMain()` where the parameter is an array of values.
+
+See the [Emscripten documentation](https://emscripten.org/docs/api_reference/module.html) for details.
+
+---
+
+## Contributing
+
+Ignore the rest of this README if you are not contributing changes to the biowasm repo.
 
 ### Setup
 
@@ -83,8 +86,11 @@ docker run \
     --volume ~/wasm:/src \
     emscripten/emsdk:2.0.0
 
+# Go into the container
 docker exec -u root -it bash
+# While inside the container, install dependencies
 apt-get install -y autoconf liblzma-dev less vim
+# Create small web server for testing
 cat << EOF > server.py
 import http.server
 import socketserver
@@ -95,6 +101,7 @@ httpd = socketserver.TCPServer(('', 80), handler)
 httpd.serve_forever()
 EOF
 chmod +x server.py
+# Launch the web server
 python3.7 /src/server.py &
 ```
 
@@ -142,7 +149,10 @@ tools/<tool>/
     patch       Patches that need to be applied to the code to compile it to WebAssembly (optional)
 ```
 
-## Todo
+## Deploy changes
+
+* Changes merged are auto-deployed via GitHub Actions to `cdn-stg.biowasm.com`.
+
 
 ## To do
 
