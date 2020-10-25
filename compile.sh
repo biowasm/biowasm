@@ -84,4 +84,4 @@ cd ../
 # Generate index
 # ------------------------------------------------------------------------------
 cd public/
-( tree --charset=ascii --du -h | grep -v -E "index.html|index|404.html|.ico" | tail +2 ) > index
+( echo "cdn.biowasm.com"; date; tree --charset=ascii --du -h | grep -v -E "index.html|index|404.html|.ico" | tail +2 ) > index
