@@ -3,7 +3,7 @@
 # TODO: look into LZMA support
 
 # Dependencies
-apt-get install -y zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev libssl-dev
+sudo apt-get install -y zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev libssl-dev
 
 # Run ./configure
 cd src/

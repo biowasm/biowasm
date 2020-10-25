@@ -1,3 +1,25 @@
+diff --git a/Makefile b/Makefile
+index e9fc554..7794556 100644
+--- a/Makefile
++++ b/Makefile
+@@ -5,7 +5,7 @@ CXXFLAGS=	$(CFLAGS)
+ CPPFLAGS=
+ ZLIB_FLAGS=	-DHAVE_ZLIB   # comment out this line to drop the zlib dependency
+ INCLUDES=	-I.
+-PROG=		t-sne
++PROG=		t-sne-prgm.o
+ LIBS=		-lm -lz
+ 
+ .SUFFIXES:.c .cpp .o
+@@ -19,7 +19,7 @@ LIBS=		-lm -lz
+ 
+ all:$(PROG)
+ 
+-t-sne:sptree.o data.o tsne.o t-sne.o main.o
++$(PROG):sptree.o data.o tsne.o t-sne.o main.o
+ 		$(CXX) $^ -o $@ $(LIBS)
+ 
+ data.o:data.c
 diff --git a/main.c b/main.c
 index 04024be..cd34134 100644
 --- a/main.c

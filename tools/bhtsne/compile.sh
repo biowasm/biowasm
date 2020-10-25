@@ -6,15 +6,13 @@ test -f data/pollen2014.snd || gunzip data/pollen2014.snd.gz
 
 # Compile
 cd src/
-rm t-sne.o
 emmake make \
     CC=emcc CXX=em++ \
     CFLAGS+="-s USE_ZLIB=1" \
     LIBS="-s USE_ZLIB=1 -lm"
 
 # Generate .wasm/.js files
-mv t-sne t-sne.o
-emcc -O2 -o ../build/t-sne.html t-sne.o \
+emcc -O2 -o ../build/t-sne.html t-sne-prgm.o \
     $EM_FLAGS \
     -s ASYNCIFY=1 \
     -s 'ASYNCIFY_IMPORTS=["send_names","send_results"]' \

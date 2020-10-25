@@ -19,13 +19,13 @@ emmake make
 
 # Generate JS/Wasm for each tool
 em++ -O3 bin/needleman_wunsch.o \
-    -o ../build/needleman_wunsch.js \
+    -o ../build/needleman_wunsch.html \
     $EM_FLAGS
 
 em++ -O3 bin/smith_waterman.o \
-    -o ../build/smith_waterman.js \
+    -o ../build/smith_waterman.html \
     $EM_FLAGS
 
 em++ -O3 bin/lcs.o \
-    -o ../build/lcs.js \
+    -o ../build/lcs.html \
     $EM_FLAGS
