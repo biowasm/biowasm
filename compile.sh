@@ -7,7 +7,7 @@
 # Config
 # ------------------------------------------------------------------------------
 
-AIOLI=("1.4.0")
+AIOLI=("1.4.1")
 
 # Format: toolName toolVersion toolBranch
 TOOLS=$(cat <<EOF
