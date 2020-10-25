@@ -3,8 +3,6 @@ name: Deploy biowasm-prd
 on:
   workflow_dispatch:
     inputs:
-      tags:
-        description: 'Test scenario tags - test'
 
 jobs:
   deploy:
