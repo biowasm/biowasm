@@ -2,7 +2,7 @@ name: Deploy biowasm-stg
 
 on:
   push:
-    branches: [ 13-github-actions-deploy ]
+    branches: [ master ]
 
 jobs:
   deploy:
