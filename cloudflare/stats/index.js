@@ -1,3 +1,9 @@
+// This file defines a Cloudflare Worker that:
+//   (1) When called as a cron job, tallies up how often each tool was downloaded
+//       from the CDN over time, and stores those counts as "SUMMARY_AGGREGATED".
+//   (2) When called as a GET endpoint, uses the summary stats calculated by the
+//       cron above to plot a chart of download counts over time.
+
 // KV key names; summaries are calculated and split by versions,
 // or aggregateda cross all versions.
 const KEY_SUMMARY_SPLIT = "SUMMARY_SPLIT";
