@@ -4,7 +4,7 @@ vars = { ENVIRONMENT = "stg" }
 
 [site]
 bucket = "./public"
-entry-point = "./cloudflare"
+entry-point = "./entrypoint"
 
 [env.stg]
 name = "biowasm-cdn-stg"
