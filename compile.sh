@@ -7,26 +7,33 @@
 # Config
 # ------------------------------------------------------------------------------
 
+DIR_CDN="cloudflare/cdn/public"
+
 AIOLI=("1.4.1")
 
 # Format: toolName toolVersion toolBranch
 TOOLS=$(cat <<EOF
-	bedtools2    2.29.2        v2.29.2
-
-	bhtsne       2016.08.22    1a62a5d
-
-	fastp        0.20.1        0.20.1
-
-	samtools     1.10          1.10
-
-	seq-align    2017.10.18    dc41988
-
-	seqtk        1.2           v1.2
-	seqtk        1.3           v1.3
-
-	wgsim        2011.10.17    a12da33
+ 	seqtk        1.2           v1.2
+ 	seqtk        1.3           v1.3
 EOF
 )
+# TOOLS=$(cat <<EOF
+# 	bedtools2    2.29.2        v2.29.2
+
+# 	bhtsne       2016.08.22    1a62a5d
+
+# 	fastp        0.20.1        0.20.1
+
+# 	samtools     1.10          1.10
+
+# 	seq-align    2017.10.18    dc41988
+
+# 	seqtk        1.2           v1.2
+# 	seqtk        1.3           v1.3
+
+# 	wgsim        2011.10.17    a12da33
+# EOF
+# )
 
 # ------------------------------------------------------------------------------
 # Setup repos and dependencies
@@ -58,9 +65,9 @@ do
 	cd ../../..
 	make "$toolName"
 	ls -lah tools/${toolName}/build/
-	mkdir -p public/${toolName}/${toolVersion}/ public/${toolName}/latest/
-	cp tools/${toolName}/build/* public/${toolName}/${toolVersion}/
-	cp tools/${toolName}/build/* public/${toolName}/latest/
+	mkdir -p ${DIR_CDN}/${toolName}/${toolVersion}/ ${DIR_CDN}/${toolName}/latest/
+	cp tools/${toolName}/build/* ${DIR_CDN}/${toolName}/${toolVersion}/
+	cp tools/${toolName}/build/* ${DIR_CDN}/${toolName}/latest/
 done <<< "$TOOLS"
 
 # ------------------------------------------------------------------------------
@@ -71,11 +78,11 @@ cd aioli/
 for version in ${AIOLI[@]};
 do
 	git checkout "v$version"
-	dir_out="../public/aioli/$version"
+	dir_out="../$DIR_CDN/aioli/$version"
 	mkdir -p "$dir_out/"
 	cp aioli{,.worker}.js "$dir_out/"
 done
-dir_out="../public/aioli/latest"
+dir_out="../$DIR_CDN/aioli/latest"
 mkdir -p "$dir_out/"
 cp aioli{,.worker}.js "$dir_out/"
 cd ../
@@ -83,5 +90,5 @@ cd ../
 # ------------------------------------------------------------------------------
 # Generate index
 # ------------------------------------------------------------------------------
-cd public/
+cd "$DIR_CDN"
 ( echo "cdn.biowasm.com"; date; tree --charset=ascii --du -h | grep -v -E "index.html|index|404.html|.ico" | tail +2 ) > index
