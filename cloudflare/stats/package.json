@@ -1,5 +1,5 @@
 {
-  "name": "stats.biowasm.bio",
+  "name": "stats.biowasm.com",
   "version": "1.0.0",
   "description": "Cloudflare Worker for stats.biowasm.com",
   "main": "index.js",
