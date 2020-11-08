@@ -156,7 +156,6 @@ tools/<tool>/
 
 ## To do
 
-- Create Cloudflare Worker cron with CDN stats
 - Deploy one tool without re-compiling all others: download data from the CDN onto the GitHub Actions VM first?
 - Support version-specific `patch` files so can host multiple versions of a tool that need different patch files to work
 - Run each tool's tests: use Selenium? Can't use node.js when have `.data` files
