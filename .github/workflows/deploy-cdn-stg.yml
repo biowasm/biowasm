@@ -41,3 +41,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           environment: 'stg'
+          preCommands: cd cloudflare/cdn
+          postCommands: cd ../stats && wrangler publish

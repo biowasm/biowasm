@@ -1,0 +1,10 @@
+{
+  "name": "cdn.biowasm.bio",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker for cdn.biowasm.com",
+  "main": "index.js",
+  "author": "Robert Aboukhalil",
+  "dependencies": {
+    "@cloudflare/kv-asset-handler": "^0.0.9"
+  }
+}
