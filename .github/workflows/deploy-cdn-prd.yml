@@ -42,3 +42,4 @@ jobs:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           environment: 'prd'
           preCommands: cd cloudflare/cdn
+          postCommands: cd ../stats && wrangler publish
