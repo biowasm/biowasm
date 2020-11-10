@@ -1,0 +1,10 @@
+{
+  "name": "biowasm.com",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker for biowasm.com landing page",
+  "main": "index.js",
+  "author": "Robert Aboukhalil",
+  "dependencies": {
+    "@cloudflare/kv-asset-handler": "~0.0.11"
+  }
+}
