@@ -1,15 +1,89 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="A repository of C/C++ genomics tools, pre-compiled to WebAssembly for use in a browser">
-    <title>biowasm.com</title>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="A repository of C/C++ genomics tools, pre-compiled to WebAssembly for use in a browser">
+		<title>biowasm.com</title>
+		<link rel="icon" href="favicon.ico">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+	</head>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-  </head>
+	<body>
+		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+			<div class="container">
+			<a class="navbar-brand" href="/">biowasm</a>
+			<button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 
-  <body>
-    Test
-  </body>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="navbar-nav mr-auto"></ul>
+				<ul class="navbar-nav">
+					<li class="nav-item mr-2">
+						<a class="nav-link text-light-50" href="https://cdn.biowasm.com" target="_blank">Packages</a>
+					</li>
+					<li class="nav-item mr-3">
+						<a class="nav-link text-light-50" href="https://github.com/biowasm" target="_blank">GitHub</a>
+					</li>
+					<!-- <li class="nav-item">
+						<a class="btn btn-primary" href="https://play.biowasm.com" target="_blank">Launch playground</a>
+					</li> -->
+				</ul>
+			</div>
+			</div>
+		</nav>
+		
+		<main role="main">
+			<div class="jumbotron mt-5 mt-md-2 pb-1">
+				<div class="container mt-4 mb-4">
+					<h2>WebAssembly modules for genomics</h2>
+					<p class="lead">
+						biowasm is a collection of C/C++ genomics tools, pre-compiled to WebAssembly.
+					</p>
+				</div>
+			</div>
+
+			<div class="container">
+				<div class="row mt-4">
+					<div class="col-md-12">
+
+						<div class="container mt-4">
+								<h4 name="samtools">Parse .bam files with <code>samtools</code></h4>
+
+								<p class="codepen" data-height="220" data-theme-id="39341" data-default-tab="html,result" data-user="robertaboukhalil" data-slug-hash="d7b3908196cee85cbf35a95b4bb975c1" data-editable="true" style="height: 220px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="d7b3908196cee85cbf35a95b4bb975c1">
+										<span>Loading...</span>
+								</p>
+								<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+						</div>
+
+						<div class="container mt-4">
+								<h4 name="samtools">Perform genome arithmetic with <code>bedtools</code></h4>
+
+								<p class="codepen" data-height="300" data-theme-id="39341" data-default-tab="html,result" data-user="robertaboukhalil" data-slug-hash="903f195f86aba5597ca686c5f0102ee4" data-editable="true" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="biowasm - bedtools">
+										<span>Loading...</span>
+								</p>
+						</div>
+
+						<div class="container mt-4">
+								<h4 name="samtools">Evaluate .fastq quality with <code>fastp</code></h4>
+
+								<p class="codepen" data-height="300" data-theme-id="39341" data-default-tab="html,result" data-user="robertaboukhalil" data-slug-hash="962b20ca577aac86b6653175c7564250" data-editable="true" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="biowasm - bedtools">
+										<span>Loading...</span>
+								</p>
+						</div>
+							
+						<div class="container mt-4">
+								<h4 name="samtools">Align sequences with <code>seq-align</code></h4>
+
+								<p class="codepen" data-height="300" data-theme-id="39341" data-default-tab="html,result" data-user="robertaboukhalil" data-slug-hash="0b51530654b1baa538dd2fb58887b07b" data-editable="true" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="biowasm - bedtools">
+										<span>Loading...</span>
+								</p>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</main>
+	</body>
 </html>
