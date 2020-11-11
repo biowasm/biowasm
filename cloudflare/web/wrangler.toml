@@ -9,7 +9,7 @@ entry-point = "./entrypoint"
 [env.stg]
 name = "biowasm-web-stg"
 vars = { ENVIRONMENT = "stg" }
-route = "biowasm.com/*"
+route = "stg.biowasm.com/*"
 
 [env.prd]
 name = "biowasm-web"
