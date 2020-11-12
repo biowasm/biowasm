@@ -1,55 +1,113 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="The official CDN for the biowasm project, which is a repository of C/C++ genomics tools pre-compiled to WebAssembly">
-    <meta name="author" content="Robert Aboukhalil">
-    <title>biowasm CDN</title>
-    <link rel="icon" href="favicon.ico">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-  </head>
-  <body>
-    <main role="main">
-      <div class="jumbotron pt-4 pb-3">
-        <div class="container">
-          <h1 class="display-4"><strong>biowasm</strong></h1>
-          <p class="lead">A repository of C/C++ genomics tools, pre-compiled to WebAssembly for use in a browser</p>
-        </div>
-      </div>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="A repository of C/C++ genomics tools, pre-compiled to WebAssembly for use in a browser">
+		<title>biowasm.com</title>
+		<link rel="icon" href="favicon.ico">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+	</head>
 
-      <div class="container">
-        <div class="row mt-4">
-          <div class="col-md-8">
-            <h5>Usage</h5>
+	<body>
+		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+			<div class="container">
+			<a class="navbar-brand" href="/">biowasm</a>
+			<button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 
-            <!-- From https://tohtml.com/jScript/ -->
-            <pre style="padding:20px; color:#000020;background:#f6f8ff;"><span style="color:#308080; ">&lt;</span>script src<span style="color:#308080; ">=</span><span style="color:#800000; ">"</span><span style="color:#1060b6; ">https://cdn.biowasm.com/aioli/latest/aioli.js</span><span style="color:#800000; ">"</span><span style="color:#308080; ">&gt;</span><span style="color:#308080; ">&lt;</span><span style="color:#308080; ">/</span>script<span style="color:#308080; ">&gt;</span>
-<span style="color:#308080; ">&lt;</span>script<span style="color:#308080; ">&gt;</span>
-<span style="color:#200080; font-weight:bold; ">let</span> samtools <span style="color:#308080; ">=</span> <span style="color:#200080; font-weight:bold; ">new</span> Aioli<span style="color:#308080; ">(</span><span style="color:#800000; ">"</span><span style="color:#1060b6; ">samtools/1.10</span><span style="color:#800000; ">"</span><span style="color:#308080; ">)</span><span style="color:#406080; ">;</span>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="navbar-nav mr-auto"></ul>
+				<ul class="navbar-nav">
+					<li class="nav-item mr-2">
+						<a class="nav-link text-light" href="https://cdn.biowasm.com" target="_blank" onclick="javascript:window.location=window.location.href.includes('stg') ? 'https://cdn-stg.biowasm.com' : 'https://cdn.biowasm.com'; return false">Packages</a>
+					</li>
+					<li class="nav-item mr-2">
+						<a class="nav-link text-light-50" href="https://stats.biowasm.com" target="_blank" onclick="javascript:window.location=window.location.href.includes('stg') ? 'https://stats-stg.biowasm.com' : 'https://stats.biowasm.com'; return false">Stats</a>
+					</li>
+					<li class="nav-item mr-3">
+						<a class="nav-link text-light-50" href="https://github.com/biowasm" target="_blank">GitHub</a>
+					</li>
+					<!-- <li class="nav-item">
+						<a class="btn btn-primary" href="https://play.biowasm.com" target="_blank">Launch playground</a>
+					</li> -->
+				</ul>
+			</div>
+			</div>
+		</nav>
+		
+		<main role="main">
+			<div class="jumbotron mt-5 mt-md-2 pb-1">
+				<div class="container mt-4 mb-4">
+					<h2>Packages</h2>
+					<p class="lead">
+						C/C++ genomics tools available as WebAssembly modules
+					</p>
+				</div>
+			</div>
 
-document<span style="color:#308080; ">.</span>write<span style="color:#308080; ">(</span><span style="color:#800000; ">"</span><span style="color:#1060b6; ">Loading...</span><span style="color:#800000; ">"</span><span style="color:#308080; ">)</span><span style="color:#406080; ">;</span>
-samtools
-    <span style="color:#595979; ">// Initialize samtools</span>
-    <span style="color:#308080; ">.</span>init<span style="color:#308080; ">(</span><span style="color:#308080; ">)</span>
-    <span style="color:#595979; ">// Run "samtools view" command with "-q 20" filter</span>
-    <span style="color:#308080; ">.</span>then<span style="color:#308080; ">(</span><span style="color:#308080; ">(</span><span style="color:#308080; ">)</span> <span style="color:#308080; ">=</span><span style="color:#308080; ">&gt;</span> samtools<span style="color:#308080; ">.</span><span style="color:#200080; font-weight:bold; ">exec</span><span style="color:#308080; ">(</span><span style="color:#800000; ">"</span><span style="color:#1060b6; ">view -q 20 /samtools/examples/toy.sam</span><span style="color:#800000; ">"</span><span style="color:#308080; ">)</span><span style="color:#308080; ">)</span>
-    <span style="color:#595979; ">// Output result</span>
-    <span style="color:#308080; ">.</span>then<span style="color:#308080; ">(</span>d <span style="color:#308080; ">=</span><span style="color:#308080; ">&gt;</span> document<span style="color:#308080; ">.</span>write<span style="color:#308080; ">(</span><span style="color:#800000; ">`</span><span style="color:#1060b6; ">&lt;pre&gt;</span><span style="color:#800000; ">${</span><span style="color:#007d45; ">d</span><span style="color:#308080; ">.</span><span style="color:#007d45; ">stdout</span><span style="color:#800000; ">}</span><span style="color:#1060b6; ">&lt;/pre&gt;</span><span style="color:#800000; ">`</span><span style="color:#308080; ">)</span><span style="color:#308080; ">)</span><span style="color:#406080; ">;</span>
-<span style="color:#308080; ">&lt;</span><span style="color:#308080; ">/</span>script<span style="color:#308080; ">&gt;</span></pre>
-          </div>
+			<div class="container">
+				<div class="row mt-4">
+					<div class="col-md-12">
 
-          <div class="col-md-4">
-            <h5>Tools available</h5>
-            <p>Supported tools include <code>samtools</code>, <code>bedtools</code>, <code>seqtk</code>, <code>fastp</code>, <code>wgsim</code> and more.</p>
-            <p>
-                <a class="btn btn-primary" href="./index" role="button">CDN index</a>
-                <a class="btn btn-secondary" href="https://github.com/biowasm" role="button">GitHub repo</a>
-                <a class="btn btn-secondary" role="button" onclick="javascript:window.location=window.location.href.replace('cdn', 'stats')">Stats</a>
-            </p>
-          </div>
-        </div>
-      </div>
-    </main>
-  </body>
+						<div class="list-group">
+							<a href="https://github.com/biowasm/biowasm/blob/master/tools/samtools/README.md" class="list-group-item list-group-item-action flex-column align-items-start">
+								<div class="d-flex w-100 justify-content-between">
+									<h5 class="mb-1">samtools</h5>
+									<!-- <small>small</small> -->
+								</div>
+								<p class="mb-1">Parse and manipulate <code>.sam</code> / <code>.bam</code> read alignment files</p>
+								<small>v1.10</small>
+							</a>
+							<a href="https://github.com/biowasm/biowasm/blob/master/tools/bedtools2/README.md" class="list-group-item list-group-item-action flex-column align-items-start">
+								<div class="d-flex w-100 justify-content-between">
+									<h5 class="mb-1">bedtools2</h5>
+								</div>
+								<p class="mb-1">Parse <code>.bed</code> files and perform complex "genome arithmetic"</p>
+								<small>v2.29.2</small>
+							</a>
+							<a href="https://github.com/biowasm/biowasm/blob/master/tools/fastp/README.md" class="list-group-item list-group-item-action flex-column align-items-start">
+								<div class="d-flex w-100 justify-content-between">
+									<h5 class="mb-1">fastp</h5>
+								</div>
+								<p class="mb-1">Manipulate and evaluate QC of <code>.fastq</code> files</p>
+								<small>v0.20.1</small>
+							</a>
+							<a href="https://github.com/biowasm/biowasm/blob/master/tools/seqtk/README.md" class="list-group-item list-group-item-action flex-column align-items-start">
+								<div class="d-flex w-100 justify-content-between">
+									<h5 class="mb-1">seqtk</h5>
+								</div>
+								<p class="mb-1">Manipulate and evaluate QC of <code>.fasta</code> / <code>.fastq</code> files</p>
+								<small>v1.2, v1.3</small>
+							</a>
+							<a href="https://github.com/biowasm/biowasm/blob/master/tools/wgsim/README.md" class="list-group-item list-group-item-action flex-column align-items-start">
+								<div class="d-flex w-100 justify-content-between">
+									<h5 class="mb-1">wgsim</h5>
+								</div>
+								<p class="mb-1">Simulate short reads from a reference genome</p>
+								<small>v2011.10.17</small>
+							</a>
+							<a href="https://github.com/biowasm/biowasm/blob/master/tools/seq-align/README.md" class="list-group-item list-group-item-action flex-column align-items-start">
+								<div class="d-flex w-100 justify-content-between">
+									<h5 class="mb-1">seq-align</h5>
+								</div>
+								<p class="mb-1">Align sequences to each other using the Smith-Waterman and Needleman-Wunsch algorithms</p>
+								<small>v2017.10.18</small>
+							</a>
+							<a href="https://github.com/biowasm/biowasm/blob/master/tools/bhtsne/README.md" class="list-group-item list-group-item-action flex-column align-items-start">
+								<div class="d-flex w-100 justify-content-between">
+									<h5 class="mb-1">bhtsne</h5>
+								</div>
+								<p class="mb-1">Run the t-SNE dimensionality-reduction algorithm</p>
+								<small>v2016.08.22</small>
+							</a>
+						</div>
+
+						<br />
+					</div>
+				</div>
+			</div>
+		</main>
+	</body>
 </html>
