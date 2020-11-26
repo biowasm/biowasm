@@ -6,7 +6,6 @@ const BAM_HOST_URL = window.location.origin;
 
 // Tools
 export const TOOLS = {
-    // 9:22,000,000-22,100,000, 9:21,967,752-21,995,324
     "samtools": {
 		aioli: { module: "samtools", version: "1.10" },
 		queries: [
@@ -74,7 +73,6 @@ export const TOOLS = {
                 ]
             }
         ],
-
 		files: [
             {
                 name: BAM_FILE,
