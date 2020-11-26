@@ -7,7 +7,8 @@ export let disabled = false;    // Whether to disable the input or not
 import { tick, afterUpdate, createEventDispatcher } from "svelte";
 import jQuery from "jquery";
 import { Aioli } from "@biowasm/aioli";
-import { TOOLS } from "./config.js";
+
+import { TOOLS, BIOWASM_URL } from "./config.js";
 
 // -----------------------------------------------------------------------------
 // Globals
@@ -57,6 +58,9 @@ export async function run()
 	msgError = "";
 
 	// Wait for changes to variables `program` / `args` used below to propagate
+	// e.g. if do "command = ...; run();", run() would execute before the effects
+	// of changing `command` would be propagated to `program` / `args` using the
+	// reactive statement.
 	await tick();
 
 	// Is this a valid program?

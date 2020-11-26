@@ -1,6 +1,6 @@
 // CDN
-const TESTING = false;
-const BIOWASM_URL = `https://cdn${TESTING ? "-stg" : ""}.biowasm.com`;
+const TESTING = true;
+export const BIOWASM_URL = `https://cdn${TESTING ? "-stg" : ""}.biowasm.com`;
 
 // Constants
 const BAM_FILE = "A549.bam";
@@ -9,18 +9,11 @@ const BAM_REGION = "9:22,000,000-22,100,000";
 const BAM_HOST_URL = window.location.origin;
 
 // Tools
-const VERSIONS = {
-    samtools: "1.10",
-    bedtools2: "2.29.2"
-};
-
 export const TOOLS = {
     "samtools": {
 		aioli: {
             module: "samtools",
-            version: VERSIONS.samtools,
-            urlModule: `${BIOWASM_URL}/samtools/${VERSIONS.samtools}`,
-            urlAioli: `${BIOWASM_URL}/aioli/latest/aioli.worker.js`
+            version: "1.10"
         },
 		queries: [
             {
@@ -101,9 +94,13 @@ export const TOOLS = {
 	"bedtools2": {
 		aioli: {
             module: "bedtools2",
-            version: VERSIONS.bedtools2,
-            urlModule: `${BIOWASM_URL}/bedtools2/${VERSIONS.bedtools2}`,
-            urlAioli: `${BIOWASM_URL}/aioli/latest/aioli.worker.js`
+            version: "2.29.2",
+        },
+    },
+	"bowtie2": {
+		aioli: {
+            module: "bowtie2",
+            version: "2.4.2",
         },
 	}
 };
