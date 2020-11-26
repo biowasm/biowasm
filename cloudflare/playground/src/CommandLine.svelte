@@ -1,8 +1,4 @@
 <script>
-// TODO:
-// - Have Aioli running commands in here and just pushing result to parent component?
-
-
 // Exports
 export let command = "";        // Command to execute (e.g. samtools --version)
 export let disabled = false;    // Whether to disable the input or not
@@ -23,16 +19,20 @@ const TOOLS = {
 };
 
 // 
-let dispatch = createEventDispatcher();  // used to communicate with parent component
+let dispatch = createEventDispatcher();
+
+// State
+let aiolis = {};         // e.g. { samtools: Aioli("samtools/1.10"), ... }
 
 // User input
-let program = null;                      // e.g. bedtools
-let args = null;                         // e.g. intersect -a a.bed -b b.bed
+let program = null;      // e.g. "bedtools"
+let args = null;         // e.g. "intersect -a a.bed -b b.bed"
 
 // UI
-let msgInfo = "Supported: " + Object.values(TOOLS).map(d => `<code>${d.module}</code>`).join(", ");
+let msgInfo = "";
+let msgInfoDefault = "Supported: " + Object.values(TOOLS).map(d => `<code>${d.module}</code>`).join(", ");
 let msgError = "";
-let elTextbox = null;                    // DOM element for the CLI input
+let elTextbox = null;    // DOM element for the CLI input
 
 
 // -----------------------------------------------------------------------------
@@ -49,16 +49,32 @@ $: args = command.replace(`${program} `, "").trim();
 // -----------------------------------------------------------------------------
 
 // Execute a command
-function run()
+async function run()
 {
-	// Send a message to parent component about what to execute
-	disabled = true;
+    // Is this a valid program?
+    if(!(program in TOOLS)) {
+        msgError = `${program} is not supported`;
+        throw msgError;
+    }
 
-	// dispatch("execute", {
-	// 	program: program,
-	// 	args: args,
-	// 	done: () => disabled = false
-	// });
+    // Initialize Aioli object if not already initialized
+	disabled = true;
+    let aioli = null;
+    if(program in aiolis) {
+        aioli = aiolis[program];
+    } else {
+        msgInfo = `Initializing ${program}...`;
+        aioli = new Aioli(TOOLS[program]);
+        aiolis[program] = aioli;
+        await aioli.init();
+        msgInfo = "";
+    }
+
+    // Run command and send output to parent component
+    let output = await aioli.exec(args);
+	dispatch("output", output);
+
+    disabled = false;
 }
 
 // Focus on command line once the DOM settles
@@ -80,7 +96,7 @@ input {
 <div class="row">
 	<div class="col-12">
 		<span class="text-muted">
-			<span class="text-info">{@html msgInfo}&nbsp;</span>
+			<span class="text-info">{@html msgInfo || msgInfoDefault}&nbsp;</span>
 		</span>
 	</div>
 </div>

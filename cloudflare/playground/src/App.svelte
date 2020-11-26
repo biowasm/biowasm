@@ -7,8 +7,11 @@
 import CommandLine from "./CommandLine.svelte";
 
 
+let output = "";
 </script>
 
-test
+<CommandLine
+    command="samtools --version"
+    on:output={msg => output = msg.detail.stdout.trim() + msg.detail.stderr.trim()} />
 
-<CommandLine></CommandLine>
+<pre>{output}</pre>
