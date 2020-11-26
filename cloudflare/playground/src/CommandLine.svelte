@@ -5,30 +5,15 @@ export let execute = false;     // Set this to true when changing the command to
 export let disabled = false;    // Whether to disable the input or not
 
 // Imports
-import { onMount, afterUpdate, createEventDispatcher } from "svelte";
 import jQuery from "jquery";
+import { onMount, afterUpdate, createEventDispatcher } from "svelte";
 import { Aioli } from "@biowasm/aioli";
+import { TOOLS } from "./config.js";
 
 
 // -----------------------------------------------------------------------------
 // Globals
 // -----------------------------------------------------------------------------
-
-// Constants
-const TOOLS = {
-	"samtools": {
-		aioli: { module: "samtools", version: "1.10" },
-		queries: [
-			
-		],
-		files: [
-
-		]
-	},
-	"bedtools2": {
-		aioli: { module: "bedtools2", version: "2.29.2" }
-	}
-};
 
 // State
 let aiolis = {};         // e.g. { samtools: Aioli("samtools/1.10"), ... }
@@ -104,7 +89,9 @@ onMount(() => {
 });
 
 // Focus on command line once the DOM settles
-afterUpdate(() => elTextbox.focus());
+afterUpdate(() => {
+	elTextbox.focus();
+});
 
 
 // -----------------------------------------------------------------------------
@@ -142,6 +129,34 @@ input {
 				bind:value={command}
 				on:keydown={event => event.key == "Enter" ? run() : null}
 			/>
+			<div class="input-group-append">
+				<button
+					class="btn btn-md btn-outline-secondary dropdown-toggle"
+					data-toggle="dropdown"
+					aria-expanded="false"
+				>
+					Examples
+				</button>
+
+				<div class="dropdown-menu">
+					{#each TOOLS[program].queries as queries}
+						<h6 class="dropdown-header">{queries.header}</h6>
+
+						{#each queries.items as item}
+							<a
+								class="dropdown-item"
+								data-toggle="tooltip"
+								data-placement="left"
+								href="#"
+								title="{item.tooltip}"
+							>
+								&nbsp;&nbsp;<code>{item.label}</code>
+							</a>
+						{/each}
+					{/each}
+				</div>
+			</div>
+
 			<div class="input-group-append">
 				<button
 					class="btn btn-md {disabled ? 'btn-secondary' : 'btn-primary'}"
