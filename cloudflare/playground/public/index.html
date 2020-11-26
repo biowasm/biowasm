@@ -6,9 +6,9 @@
 		<meta name="description" content="A repository of C/C++ genomics tools, pre-compiled to WebAssembly for use in a browser">
 		<title>biowasm.com</title>
 		<link rel="icon" href="favicon.ico">
-		<link href="build/bundle.css" rel="stylesheet">
-		<link href="build/extra.css" rel="stylesheet">
+		<!-- <link href="build/bundle.css" rel="stylesheet"> -->
 		<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous"> -->
+		<link href="build/extra.css" rel="stylesheet">
 	</head>
 
 	<body>
@@ -37,16 +37,7 @@
 		</nav>
 
 		<main role="main">
-			<div class="jumbotron mt-5 mt-md-2 pb-1">
-				<div class="container mt-4 mb-4">
-					<h2>Playground</h2>
-					<p class="lead">
-						Supported tools: <button class="btn btn-outline-secondary">samtools</button>
-					</p>
-				</div>
-			</div>
-
-			<div id="app" class="container"></div>
+			<div id="app"></div>
 		</main>
 
 		<script defer src="build/bundle.js"></script>
