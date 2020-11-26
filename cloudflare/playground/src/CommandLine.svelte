@@ -156,9 +156,9 @@ export async function run()
 								data-placement="left"
 								href="#"
 								title="{item.tooltip}"
-								on:click={() => {
+								on:click={async () => {
 									command = item.command;
-									run();
+									await run();
 									msgInfo = item.description;
 								}}
 							>
