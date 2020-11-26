@@ -95,14 +95,14 @@ export async function run()
 			for(let file of TOOLS[program].files)
 				await Aioli.mount(file.url, name=file.name);
 		console.log(await aioli.ls("/urls"));
-
-		msgInfo = "Ready.";
 	}
 
 	// Run command and send output to parent component
+	msgInfo = `Running...`;
 	let output = await aioli.exec(args);
 	dispatch("output", output);
 
+	msgInfo = "Ready.";
 	disabled = false;
 }
 
