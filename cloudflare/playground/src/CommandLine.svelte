@@ -80,7 +80,13 @@ export async function run()
 		aioli = aiolis[program];
 	} else {
 		msgInfo = `Initializing ${program}...`;
-		aioli = new Aioli(TOOLS[program].aioli);
+
+		// Create Aioli object for program
+		let config = TOOLS[program].aioli;
+		config.urlModule = `${BIOWASM_URL}/${config.module}/${config.version}`;
+		config.urlAioli = `${BIOWASM_URL}/aioli/latest/aioli.worker.js`;
+
+		aioli = new Aioli(config);
 		aiolis[program] = aioli;
 		await aioli.init();
 

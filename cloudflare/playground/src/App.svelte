@@ -4,7 +4,9 @@ import { onMount } from "svelte";
 import popper from "popper.js";
 import Bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+
 import CommandLine from "./CommandLine.svelte";
+import { TOOLS } from "./config.js";
 
 // -----------------------------------------------------------------------------
 // Globals
@@ -39,13 +41,15 @@ async function loadTool(newTool) {
 </script>
 
 <div class="jumbotron mt-5 mt-md-2 pb-1">
-	<div class="container mt-4 mb-4">
-		<h2>Playground</h2>
-		<p class="lead">
-			Launch: 
-			<button class="btn btn-sm btn-outline-secondary" on:click={() => loadTool("samtools")}>samtools</button>
-			<button class="btn btn-sm btn-outline-secondary" on:click={() => loadTool("bedtools2")}>bedtools2</button>
-		</p>
+	<div class="mt-4 mb-4 row">
+		<div class="col-6">
+			<h2>Playground</h2>
+		</div>
+		<div class="col-6 text-right">
+			{#each Object.keys(TOOLS) as t}
+				<button class="mr-2 btn {t == tool ? "btn-secondary" : "btn-outline-secondary"}" on:click={() => loadTool(t)}>{t}</button>
+			{/each}
+		</div>
 	</div>
 </div>
 
