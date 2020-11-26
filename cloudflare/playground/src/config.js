@@ -1,3 +1,7 @@
+// CDN
+const TESTING = false;
+const BIOWASM_URL = `https://cdn${TESTING ? "-stg" : ""}.biowasm.com`;
+
 // Constants
 const BAM_FILE = "A549.bam";
 const BAI_FILE = "A549.bam.bai";
@@ -5,9 +9,18 @@ const BAM_REGION = "9:22,000,000-22,100,000";
 const BAM_HOST_URL = window.location.origin;
 
 // Tools
+const VERSIONS = {
+    samtools: "1.10"
+};
+
 export const TOOLS = {
     "samtools": {
-		aioli: { module: "samtools", version: "1.10" },
+		aioli: {
+            module: "samtools",
+            version: VERSIONS.samtools,
+            urlModule: `${BIOWASM_URL}/samtools/${VERSIONS.samtools}`,
+            urlAioli: `${BIOWASM_URL}/aioli/latest/aioli.worker.js`
+        },
 		queries: [
             {
                 header: "Filtering",
