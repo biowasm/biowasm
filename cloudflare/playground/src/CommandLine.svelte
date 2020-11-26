@@ -58,7 +58,7 @@ async function run()
     }
 
     // Initialize Aioli object if not already initialized
-	disabled = true;
+    disabled = true;
     let aioli = null;
     if(program in aiolis) {
         aioli = aiolis[program];
@@ -72,7 +72,7 @@ async function run()
 
     // Run command and send output to parent component
     let output = await aioli.exec(args);
-	dispatch("output", output);
+    dispatch("output", output);
 
     disabled = false;
 }
