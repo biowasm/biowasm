@@ -10,7 +10,8 @@ const BAM_HOST_URL = window.location.origin;
 
 // Tools
 const VERSIONS = {
-    samtools: "1.10"
+    samtools: "1.10",
+    bedtools2: "2.29.2"
 };
 
 export const TOOLS = {
@@ -98,6 +99,11 @@ export const TOOLS = {
 		]
 	},
 	"bedtools2": {
-		aioli: { module: "bedtools2", version: "2.29.2" }
+		aioli: {
+            module: "bedtools2",
+            version: VERSIONS.bedtools2,
+            urlModule: `${BIOWASM_URL}/bedtools2/${VERSIONS.bedtools2}`,
+            urlAioli: `${BIOWASM_URL}/aioli/latest/aioli.worker.js`
+        },
 	}
 };
