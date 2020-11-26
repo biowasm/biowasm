@@ -29,8 +29,12 @@ onMount(() => run());
 // -----------------------------------------------------------------------------
 
 async function loadTool(newTool) {
+	// Launch new tool
 	tool = newTool;
 	run();
+
+	// Update URL
+	window.history.pushState(tool, `biowasm playground - ${tool}`, `?tool=${tool}`);
 }
 </script>
 
