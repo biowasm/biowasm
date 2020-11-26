@@ -10,7 +10,6 @@ import { onMount, afterUpdate, createEventDispatcher } from "svelte";
 import { Aioli } from "@biowasm/aioli";
 import { TOOLS } from "./config.js";
 
-
 // -----------------------------------------------------------------------------
 // Globals
 // -----------------------------------------------------------------------------
@@ -28,7 +27,6 @@ let msgInfo = "";
 let msgError = "";
 let elTextbox = null;    // DOM element for the CLI input
 
-
 // -----------------------------------------------------------------------------
 // Reactive Statements
 // -----------------------------------------------------------------------------
@@ -37,13 +35,32 @@ let elTextbox = null;    // DOM element for the CLI input
 $: program = command.split(" ").shift();
 $: args = command.replace(`${program} `, "").trim();
 
+// -----------------------------------------------------------------------------
+// On load
+// -----------------------------------------------------------------------------
+
+// On component mount
+onMount(() => {
+	// Run the command provided now?
+	if(execute)
+		run();
+});
+
+// Once the DOM settles
+afterUpdate(() => {
+	// Focus on command line
+	elTextbox.focus();
+
+	// Enable jQuery tooltips. Needs to be here because tooltips are dynamically generated based on `program`
+	jQuery("[data-toggle='tooltip']").tooltip();
+});
 
 // -----------------------------------------------------------------------------
 // Utility functions
 // -----------------------------------------------------------------------------
 
 // Execute a command
-async function run()
+export async function run()
 {
 	msgError = "";
 
@@ -69,8 +86,9 @@ async function run()
 		await aioli.init();
 
 		// Mount sample files
-		for(let file of TOOLS[program].files)
-			await Aioli.mount(file.url, name=file.name);
+		if(TOOLS[program].files != null)
+			for(let file of TOOLS[program].files)
+				await Aioli.mount(file.url, name=file.name);
 		console.log(await aioli.ls("/urls"));
 
 		msgInfo = "";
@@ -82,24 +100,6 @@ async function run()
 
 	disabled = false;
 }
-
-
-// On component mount
-onMount(() => {
-	// Run the command provided now?
-	if(execute)
-		run();
-});
-
-// Once the DOM settles
-afterUpdate(() => {
-	// Focus on command line
-	elTextbox.focus();
-
-	// Enable jQuery tooltips. Needs to be here because tooltips are dynamically generated based on `program`
-	jQuery("[data-toggle='tooltip']").tooltip();
-});
-
 
 // -----------------------------------------------------------------------------
 // HTML
