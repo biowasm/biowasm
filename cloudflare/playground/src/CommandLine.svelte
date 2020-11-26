@@ -89,14 +89,15 @@ onMount(() => {
 	// Run the command provided now?
 	if(execute)
 		run();
-
-	// Enable jQuery tooltips
-	jQuery("[data-toggle='tooltip']").tooltip();
 });
 
-// Focus on command line once the DOM settles
+// Once the DOM settles
 afterUpdate(() => {
+	// Focus on command line
 	elTextbox.focus();
+
+	// Enable jQuery tooltips. Needs to be here because tooltips are dynamically generated based on `program`
+	jQuery("[data-toggle='tooltip']").tooltip();
 });
 
 
@@ -140,7 +141,7 @@ afterUpdate(() => {
 				</button>
 
 				<div class="dropdown-menu">
-					{#each TOOLS[program].queries as queries}
+					{#each TOOLS[program]?.queries || [] as queries}
 						<h6 class="dropdown-header">{queries.header}</h6>
 
 						{#each queries.items as item}
