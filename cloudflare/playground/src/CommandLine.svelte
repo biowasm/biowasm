@@ -67,6 +67,12 @@ async function run()
 		aioli = new Aioli(TOOLS[program].aioli);
 		aiolis[program] = aioli;
 		await aioli.init();
+
+		// Mount sample files
+		for(let file of TOOLS[program].files)
+			await Aioli.mount(file.url, name=file.name);
+		console.log(await aioli.ls("/urls"));
+
 		msgInfo = "";
 	}
 
@@ -144,6 +150,11 @@ afterUpdate(() => {
 								data-placement="left"
 								href="#"
 								title="{item.tooltip}"
+								on:click={() => {
+									command = item.command;
+									setTimeout(run, 200);
+									msgInfo = item.description;
+								}}
 							>
 								&nbsp;&nbsp;<code>{item.label}</code>
 							</a>
