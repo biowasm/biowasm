@@ -1,12 +1,11 @@
 <script>
 // Exports
 export let command = "";        // Command to execute (e.g. samtools --version)
-export let execute = false;     // Set this to true when changing the command to execute it on load
 export let disabled = false;    // Whether to disable the input or not
 
 // Imports
+import { tick, afterUpdate, createEventDispatcher } from "svelte";
 import jQuery from "jquery";
-import { onMount, afterUpdate, createEventDispatcher } from "svelte";
 import { Aioli } from "@biowasm/aioli";
 import { TOOLS } from "./config.js";
 
@@ -39,13 +38,6 @@ $: args = command.replace(`${program} `, "").trim();
 // On load
 // -----------------------------------------------------------------------------
 
-// On component mount
-onMount(() => {
-	// Run the command provided now?
-	if(execute)
-		run();
-});
-
 // Once the DOM settles
 afterUpdate(() => {
 	// Focus on command line
@@ -63,6 +55,9 @@ afterUpdate(() => {
 export async function run()
 {
 	msgError = "";
+
+	// Wait for changes to variables `program` / `args` used below to propagate
+	await tick();
 
 	// Is this a valid program?
 	if(program == "") {
@@ -153,7 +148,7 @@ export async function run()
 								title="{item.tooltip}"
 								on:click={() => {
 									command = item.command;
-									setTimeout(run, 200);
+									run();
 									msgInfo = item.description;
 								}}
 							>

@@ -6,25 +6,31 @@ import Bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CommandLine from "./CommandLine.svelte";
 
+// -----------------------------------------------------------------------------
+// Globals
+// -----------------------------------------------------------------------------
+
 // State
 let output = "";
 let tool = new URL(window.location).searchParams.get("tool") || "samtools";
-let run = null;
+
+// Function from <CommandLine /> for running current command
+let run = () => {};
 
 // -----------------------------------------------------------------------------
 // On load
 // -----------------------------------------------------------------------------
 
+// Run default command on page load
 onMount(() => run());
 
 // -----------------------------------------------------------------------------
 // Utilities
 // -----------------------------------------------------------------------------
 
-function loadTool(newTool) {
+async function loadTool(newTool) {
 	tool = newTool;
-	console.log(run);
-	run(tool);
+	run();
 }
 </script>
 
