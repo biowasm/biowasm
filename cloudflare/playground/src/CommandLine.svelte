@@ -99,12 +99,6 @@ afterUpdate(() => {
 // -----------------------------------------------------------------------------
 </script>
 
-<style>
-input {
-	font-family: monospace;
-}
-</style>
-
 <!-- Info message -->
 <div class="row">
 	<div class="col-12">
@@ -128,6 +122,7 @@ input {
 				bind:this={elTextbox}
 				bind:value={command}
 				on:keydown={event => event.key == "Enter" ? run() : null}
+				style="font-size:100%; font-family:'Courier New',Courier,monospace"
 			/>
 			<div class="input-group-append">
 				<button
