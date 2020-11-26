@@ -1,10 +1,11 @@
 <script>
 // Exports
 export let command = "";        // Command to execute (e.g. samtools --version)
+export let execute = false;     // Set this to true when changing the command to execute it on load
 export let disabled = false;    // Whether to disable the input or not
 
 // Imports
-import { afterUpdate, createEventDispatcher } from "svelte";
+import { onMount, afterUpdate, createEventDispatcher } from "svelte";
 import { Aioli } from "@biowasm/aioli";
 
 
@@ -28,7 +29,6 @@ let args = null;         // e.g. "intersect -a a.bed -b b.bed"
 
 // UI
 let msgInfo = "";
-let msgInfoDefault = "Supported: " + Object.values(TOOLS).map(d => `<code>${d.module}</code>`).join(", ");
 let msgError = "";
 let elTextbox = null;    // DOM element for the CLI input
 
@@ -49,6 +49,8 @@ $: args = command.replace(`${program} `, "").trim();
 // Execute a command
 async function run()
 {
+    msgError = "";
+
     // Is this a valid program?
     if(program == "") {
         msgError = `Please enter a command`;
@@ -79,6 +81,10 @@ async function run()
     disabled = false;
 }
 
+
+// Should we run the provided command or wait for user to do it?
+onMount(() => execute ? run() : null);
+
 // Focus on command line once the DOM settles
 afterUpdate(() => elTextbox.focus());
 
@@ -98,7 +104,7 @@ input {
 <div class="row">
 	<div class="col-12">
 		<span class="text-muted">
-			<span class="text-info">{@html msgInfo || msgInfoDefault}&nbsp;</span>
+			<span class="text-info">{@html msgInfo}&nbsp;</span>
 		</span>
 	</div>
 </div>
