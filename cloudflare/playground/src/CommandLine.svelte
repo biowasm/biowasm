@@ -6,6 +6,7 @@ export let disabled = false;    // Whether to disable the input or not
 
 // Imports
 import { onMount, afterUpdate, createEventDispatcher } from "svelte";
+import jQuery from "jquery";
 import { Aioli } from "@biowasm/aioli";
 
 
@@ -15,8 +16,18 @@ import { Aioli } from "@biowasm/aioli";
 
 // Constants
 const TOOLS = {
-    "samtools": { module: "samtools", version: "1.10" },
-    "bedtools2": { module: "bedtools2", version: "2.29.2" }
+	"samtools": {
+		aioli: { module: "samtools", version: "1.10" },
+		queries: [
+			
+		],
+		files: [
+
+		]
+	},
+	"bedtools2": {
+		aioli: { module: "bedtools2", version: "2.29.2" }
+	}
 };
 
 // State
@@ -49,41 +60,48 @@ $: args = command.replace(`${program} `, "").trim();
 // Execute a command
 async function run()
 {
-    msgError = "";
+	msgError = "";
 
-    // Is this a valid program?
-    if(program == "") {
-        msgError = `Please enter a command`;
-        throw msgError;
-    }
-    if(!(program in TOOLS)) {
-        msgError = `Program <code>${program}</code> is not supported`;
-        throw msgError;
-    }
+	// Is this a valid program?
+	if(program == "") {
+		msgError = `Please enter a command`;
+		throw msgError;
+	}
+	if(!(program in TOOLS)) {
+		msgError = `Program <code>${program}</code> is not supported`;
+		throw msgError;
+	}
 
-    // Initialize Aioli object if not already initialized
-    disabled = true;
-    let aioli = null;
-    if(program in aiolis) {
-        aioli = aiolis[program];
-    } else {
-        msgInfo = `Initializing ${program}...`;
-        aioli = new Aioli(TOOLS[program]);
-        aiolis[program] = aioli;
-        await aioli.init();
-        msgInfo = "";
-    }
+	// Initialize Aioli object if not already initialized
+	disabled = true;
+	let aioli = null;
+	if(program in aiolis) {
+		aioli = aiolis[program];
+	} else {
+		msgInfo = `Initializing ${program}...`;
+		aioli = new Aioli(TOOLS[program].aioli);
+		aiolis[program] = aioli;
+		await aioli.init();
+		msgInfo = "";
+	}
 
-    // Run command and send output to parent component
-    let output = await aioli.exec(args);
-    dispatch("output", output);
+	// Run command and send output to parent component
+	let output = await aioli.exec(args);
+	dispatch("output", output);
 
-    disabled = false;
+	disabled = false;
 }
 
 
-// Should we run the provided command or wait for user to do it?
-onMount(() => execute ? run() : null);
+// On component mount
+onMount(() => {
+	// Run the command provided now?
+	if(execute)
+		run();
+
+	// Enable jQuery tooltips
+	jQuery("[data-toggle='tooltip']").tooltip();
+});
 
 // Focus on command line once the DOM settles
 afterUpdate(() => elTextbox.focus());
@@ -126,7 +144,7 @@ input {
 			/>
 			<div class="input-group-append">
 				<button
-					class="btn btn-lg {disabled ? 'btn-secondary' : 'btn-info'}"
+					class="btn btn-md {disabled ? 'btn-secondary' : 'btn-primary'}"
 					disabled={disabled}
 					on:click={run}
 				>
