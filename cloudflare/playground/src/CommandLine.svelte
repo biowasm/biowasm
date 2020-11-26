@@ -96,7 +96,7 @@ export async function run()
 				await Aioli.mount(file.url, name=file.name);
 		console.log(await aioli.ls("/urls"));
 
-		msgInfo = "";
+		msgInfo = "Ready.";
 	}
 
 	// Run command and send output to parent component
