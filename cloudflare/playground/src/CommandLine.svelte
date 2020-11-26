@@ -18,11 +18,9 @@ const TOOLS = {
     "bedtools2": { module: "bedtools2", version: "2.29.2" }
 };
 
-// 
-let dispatch = createEventDispatcher();
-
 // State
 let aiolis = {};         // e.g. { samtools: Aioli("samtools/1.10"), ... }
+let dispatch = createEventDispatcher();
 
 // User input
 let program = null;      // e.g. "bedtools"
@@ -52,8 +50,12 @@ $: args = command.replace(`${program} `, "").trim();
 async function run()
 {
     // Is this a valid program?
+    if(program == "") {
+        msgError = `Please enter a command`;
+        throw msgError;
+    }
     if(!(program in TOOLS)) {
-        msgError = `${program} is not supported`;
+        msgError = `Program <code>${program}</code> is not supported`;
         throw msgError;
     }
 

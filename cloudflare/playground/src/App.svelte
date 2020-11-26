@@ -14,4 +14,4 @@ let output = "";
     command="samtools --version"
     on:output={msg => output = msg.detail.stdout.trim() + msg.detail.stderr.trim()} />
 
-<pre>{output}</pre>
+<pre class="border rounded border-primary p-3" style="height:55vh">{output}</pre>
