@@ -105,20 +105,35 @@ export const TOOLS = {
 	}
 };
 
-// Simple JavaScript utility functions that simulate Aioli objects
+// Simple JavaScript utility functions that can be called from CommandLine.svelte
 export const UTILITIES = {
-    // List files from a folder on the virtual file system
-    "ls": {
-        "exec": (aioli, args) => fs(aioli, "readdir", args)
+    // Virtual file system utilities
+    "pwd"  : async (aioli, args) => fs(aioli, "cwd"),
+    "cd"   : async (aioli, args) => fs(aioli, "chdir", args),
+    "ls"   : async (aioli, args) => fs(aioli, "readdir", args || await fs(aioli, "cwd")),
+    "mv"   : async (aioli, args) => fs(aioli, "rename", ...args.split(" ")),
+    "stat" : async (aioli, args) => fs(aioli, "stat", args),
+    "touch": async (aioli, args) => fs(aioli, "writeFile", args, ""),
+    "cat"  : async (aioli, args) => fs(aioli, "readFile", args, { encoding: "utf8" }),
+
+
+    // Mount a URL
+    "mount": async (aioli, args) => {
+        await aioli.constructor.mount(args, name=args.split("/").pop());
+        return "ok"
     },
-    //
+    
 
-}
+    // Other utilities
+    "echo" : async (aioli, args) => args,
+};
 
-async function fs(aioli, cmd, args)
+async function fs(aioli, cmd, ...args)
 {
-    return {
-        "stdout": (await aioli.fs(cmd, args)).join("\n"),
-        "stderr": ""
-    };
+    let output = await aioli.fs(cmd, ...args);
+    if(Array.isArray(output))
+        output = output.join("\n");
+    else if(typeof output === "object")
+        output = JSON.stringify(output, null, 2);
+    return output;
 }

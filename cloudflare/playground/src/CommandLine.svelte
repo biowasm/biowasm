@@ -80,8 +80,11 @@ export async function run()
 		let aioli = Object.values(aiolis).shift();
 		let output = { stdout: "", stderr: "" };
 		try {
-			output = await UTILITIES[program].exec(aioli, args);
+			if(command == program)
+				args = null;
+			output.stdout = await UTILITIES[program](aioli, args);
 		} catch (error) {
+			console.error(error);
 			output.stderr = "Error: invalid command";
 		}
 		dispatch("output", output);
@@ -109,6 +112,9 @@ export async function run()
 		if(TOOLS[program].files != null)
 			for(let file of TOOLS[program].files)
 				await Aioli.mount(file.url, name=file.name);
+		
+		// Set working directory
+		aioli.fs("chdir", "/urls");
 	}
 
 	// Run command and send output to parent component
