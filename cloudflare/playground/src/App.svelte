@@ -41,17 +41,19 @@ async function loadTool(newTool) {
 </script>
 
 <div class="jumbotron mt-5 mt-md-2 pb-1">
-	<div class="mt-2 mb-2 row">
-		<div class="col-6">
-			<h2>Playground</h2>
-		</div>
-		<div class="col-6 text-right">
-			{#each Object.keys(TOOLS).sort() as t}
-				<button class="mr-2 btn {t == tool ? "btn-secondary" : "btn-outline-secondary"}" on:click={() => loadTool(t)}>{t}</button>
-			{/each}
-		</div>
-		<div class="col-12">
-			<p class="text-secondary">Uses WebAssembly to run bioinformatics tools directly in your browser.</p>
+	<div class="container mt-2 mb-2">
+		<div class="row">
+			<div class="col-6">
+				<h2>Playground</h2>
+			</div>
+			<div class="col-6 text-right">
+				{#each Object.keys(TOOLS).sort() as t}
+					<button class="mr-2 btn {t == tool ? "btn-secondary" : "btn-outline-secondary"}" on:click={() => loadTool(t)}>{t}</button>
+				{/each}
+			</div>
+			<div class="col-12">
+				<p class="text-secondary">Uses WebAssembly to run bioinformatics tools directly in your browser.</p>
+			</div>
 		</div>
 	</div>
 </div>
