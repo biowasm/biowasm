@@ -112,6 +112,7 @@ export const UTILITIES = {
     "cd"   : async (aioli, args) => fs(aioli, "chdir", args),
     "ls"   : async (aioli, args) => fs(aioli, "readdir", args || await fs(aioli, "cwd")),
     "mv"   : async (aioli, args) => fs(aioli, "rename", ...args.split(" ")),
+    "rm"   : async (aioli, args) => fs(aioli, "unlink", args),
     "stat" : async (aioli, args) => fs(aioli, "stat", args),
     "touch": async (aioli, args) => fs(aioli, "writeFile", args, ""),
     "cat"  : async (aioli, args) => fs(aioli, "readFile", args, { encoding: "utf8" }),
