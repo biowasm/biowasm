@@ -1,6 +1,6 @@
 <script>
 // Exports
-export let command = "";        // Command to execute (e.g. samtools --version)
+export let command = "";
 
 // Imports
 import { afterUpdate, createEventDispatcher } from "svelte";
