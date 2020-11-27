@@ -115,15 +115,12 @@ export const UTILITIES = {
     "stat" : async (aioli, args) => fs(aioli, "stat", args),
     "touch": async (aioli, args) => fs(aioli, "writeFile", args, ""),
     "cat"  : async (aioli, args) => fs(aioli, "readFile", args, { encoding: "utf8" }),
-
-
+    "head" : async (aioli, args) => fs(aioli, "readFile", args, { encoding: "utf8" }).then(d => d.split("\n").slice(0, 10).join("\n")),
+    "tail" : async (aioli, args) => fs(aioli, "readFile", args, { encoding: "utf8" }).then(d => d.split("\n").slice(-10).join("\n")),
+    // Download a file
+    "download": async (aioli, args) => aioli.download(args).then(url => `<strong>${args}:</strong><br />&bullet; <a href="${url}" download=${args}>Download</a><br />&bullet; <a href="${url}" target="_blank">Open in new tab</a> `),
     // Mount a URL
-    "mount": async (aioli, args) => {
-        await aioli.constructor.mount(args, name=args.split("/").pop());
-        return "ok"
-    },
-    
-
+    "mount": async (aioli, args) => aioli.constructor.mount(args, name=args.split("/").pop()).then(() => "ok"),
     // Other utilities
     "echo" : async (aioli, args) => args,
 };

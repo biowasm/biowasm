@@ -64,5 +64,5 @@ async function loadTool(newTool) {
 		command={`${tool} --version`}
 		on:output={msg => output = msg.detail.stdout.trim() + msg.detail.stderr.trim()} />
 
-	<pre class="border rounded border-primary p-3" style="height:55vh">{output}</pre>
+	<pre class="border rounded border-primary p-3" style="height:55vh">{@html output}</pre>
 </div>
