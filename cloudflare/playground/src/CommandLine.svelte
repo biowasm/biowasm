@@ -63,15 +63,15 @@ export async function run()
 	// reactive statement.
 	await tick();
 
-	// Is this a valid program?
-	if(program == "") {
+	// Validate user input
+	if(program == "")
 		msgError = `Please enter a command`;
-		throw msgError;
-	}
-	if(!(program in TOOLS)) {
+	if(!(program in TOOLS))
 		msgError = `Program <code>${program}</code> is not supported`;
+	if(args.includes("|"))
+		msgError = "Piping is not currently supported";
+	if(msgError != "")
 		throw msgError;
-	}
 
 	// Initialize Aioli object if not already initialized
 	disabled = true;
