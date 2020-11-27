@@ -24,16 +24,17 @@ let launch;
 // -----------------------------------------------------------------------------
 
 // Run default command on page load
-onMount(() => launch());
+onMount(() => loadTool());
 
 // -----------------------------------------------------------------------------
 // Utilities
 // -----------------------------------------------------------------------------
 
-async function loadTool(newTool) {
+async function loadTool(newTool=null) {
 	// Launch new tool
+	newTool = newTool || tool;
 	tool = newTool;
-	launch();
+	launch(`${tool} --version`);
 
 	// Update URL
 	window.history.pushState(tool, `biowasm playground - ${tool}`, `?tool=${tool}`);
@@ -61,7 +62,6 @@ async function loadTool(newTool) {
 <div class="container">
 	<CommandLine
 		bind:launch={launch}
-		command={`${tool} --version`}
 		on:output={msg => output = msg.detail.stdout.trim() + msg.detail.stderr.trim()} />
 
 	<pre class="border rounded border-primary p-3" style="height:55vh">{@html output}</pre>
