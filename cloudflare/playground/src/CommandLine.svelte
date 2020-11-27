@@ -1,7 +1,6 @@
 <script>
 // Exports
 export let command = "";        // Command to execute (e.g. samtools --version)
-export let disabled = false;    // Whether to disable the input or not
 
 // Imports
 import { afterUpdate, createEventDispatcher } from "svelte";
@@ -14,22 +13,21 @@ import { TOOLS, UTILITIES, BIOWASM_URL } from "./config.js";
 // Globals
 // -----------------------------------------------------------------------------
 
-// State
-let aiolis = {};         // e.g. { samtools: Aioli("samtools/1.10"), ... }
-let program = null;      // e.g. "bedtools"
 let dispatch = createEventDispatcher();
 
+// State
+let State = {
+	aiolis: {},       // e.g. { samtools: Aioli("samtools/1.10"), ... }
+	program: null,    // e.g. "samtools"
+}
+
 // UI
-let msgInfo = "";
-let msgError = "";
-let elTextbox = null;    // DOM element for the CLI input
-
-// -----------------------------------------------------------------------------
-// Reactive Statements
-// -----------------------------------------------------------------------------
-
-// Split program name from args
-$: program = command.split(" ").shift();
+let UI = {
+	msgInfo: "",      // Info text above the input box
+	msgError: "",     // Error text below the input box
+	textbox: null,    // DOM element for the input box
+	disabled: false,  // Disable CommandLine
+}
 
 // -----------------------------------------------------------------------------
 // On load
@@ -38,7 +36,7 @@ $: program = command.split(" ").shift();
 // Once the DOM settles
 afterUpdate(() => {
 	// Focus on command line
-	elTextbox.focus();
+	UI.textbox.focus();
 
 	// Enable jQuery tooltips. Needs to be here because tooltips are dynamically generated based on `program`
 	jQuery("[data-toggle='tooltip']").tooltip();
@@ -55,8 +53,8 @@ export async function launch(cmd=null)
 	cmd = cmd || command;
 
 	// Prep UI
-	msgInfo = `Running...`;
-	disabled = true;
+	UI.msgInfo = `Running...`;
+	UI.disabled = true;
 
 	// Make UI match command being run
 	if(cmd != command)
@@ -73,8 +71,8 @@ export async function launch(cmd=null)
 	dispatch("output", output);
 
 	// Revert UI
-	msgInfo = "Ready.";
-	disabled = false;
+	UI.msgInfo = "Ready.";
+	UI.disabled = false;
 }
 
 // Execute a command and return value
@@ -84,21 +82,21 @@ export async function run(cmd)
 	let args = cmd.replace(`${program} `, "").trim();
 
 	// Validate user input
-	msgError = "";
+	let error = "";
 	if(program == "")
-		msgError = `Please enter a command`;
+		error = `Please enter a command`;
 	if(!(program in TOOLS) && !(program in UTILITIES))
-		msgError = `Program <code>${program}</code> is not supported`;
+		error = `Program <code>${program}</code> is not supported`;
 	if(args.includes("|"))
-		msgError = "Piping is not currently supported";
-	if(msgError != "")
-		throw msgError;
+		error = "Piping is not currently supported";
+	if(error != "")
+		throw error;
 
 	// Process non-WebAssembly utilities
 	if(program in UTILITIES)
 	{
 		// Retrieve first Aioli object we see; file system utilities need existing object to work
-		let aioli = Object.values(aiolis).shift();
+		let aioli = Object.values(State.aiolis).shift();
 		// Run utility and send output to parent component
 		let output = { stdout: "", stderr: "" };
 		try {
@@ -114,8 +112,8 @@ export async function run(cmd)
 
 	// Process WebAssembly utilities. Initialize Aioli object if needed.
 	let aioli = null;
-	if(program in aiolis) {
-		aioli = aiolis[program];
+	if(program in State.aiolis) {
+		aioli = State.aiolis[program];
 	} else {
 		// Create Aioli object for program
 		let config = TOOLS[program].aioli;
@@ -123,7 +121,7 @@ export async function run(cmd)
 		config.urlAioli = `${BIOWASM_URL}/aioli/latest/aioli.worker.js`;
 
 		aioli = new Aioli(config);
-		aiolis[program] = aioli;
+		State.aiolis[program] = aioli;
 		await aioli.init();
 
 		// Mount sample files
@@ -134,7 +132,7 @@ export async function run(cmd)
 		// Set working directory
 		aioli.fs("chdir", "/urls");
 	}
-
+	State.program = program;
 	return await aioli.exec(args);
 }
 
@@ -147,7 +145,7 @@ export async function run(cmd)
 <div class="row">
 	<div class="col-12">
 		<span class="text-muted">
-			<span class="text-info">{@html msgInfo}&nbsp;</span>
+			<span class="text-info">{@html UI.msgInfo}&nbsp;</span>
 		</span>
 	</div>
 </div>
@@ -162,8 +160,8 @@ export async function run(cmd)
 			<input
 				type="text"
 				class="form-control form-control-lg"
-				disabled={disabled}
-				bind:this={elTextbox}
+				disabled={UI.disabled}
+				bind:this={UI.textbox}
 				bind:value={command}
 				on:keydown={event => event.key == "Enter" ? launch(command) : null}
 				style="font-size:100%; font-family:'Courier New',Courier,monospace"
@@ -178,7 +176,7 @@ export async function run(cmd)
 				</button>
 
 				<div class="dropdown-menu">
-					{#each TOOLS[program]?.queries || [] as queries}
+					{#each TOOLS[State.program]?.queries || [] as queries}
 						<h6 class="dropdown-header">{queries.header}</h6>
 
 						{#each queries.items as item}
@@ -190,7 +188,7 @@ export async function run(cmd)
 								title="{item.tooltip}"
 								on:click={async () => {
 									await launch(item.command);
-									msgInfo = item.description;
+									UI.msgInfo = item.description;
 								}}
 							>
 								&nbsp;&nbsp;<code>{item.label}</code>
@@ -202,8 +200,8 @@ export async function run(cmd)
 
 			<div class="input-group-append">
 				<button
-					class="btn btn-md {disabled ? 'btn-secondary' : 'btn-primary'}"
-					disabled={disabled}
+					class="btn btn-md {UI.disabled ? 'btn-secondary' : 'btn-primary'}"
+					disabled={UI.disabled}
 					on:click={run}
 				>
 					Run
@@ -217,7 +215,7 @@ export async function run(cmd)
 <div class="row">
 	<div class="col-12">
 		<small class="text-muted">
-			<span class="text-danger">{@html msgError}&nbsp;</span>
+			<span class="text-danger">{@html UI.msgError}&nbsp;</span>
 		</small>
 	</div>
 </div>
