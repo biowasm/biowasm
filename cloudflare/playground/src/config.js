@@ -104,3 +104,21 @@ export const TOOLS = {
         },
 	}
 };
+
+// Simple JavaScript utility functions that simulate Aioli objects
+export const UTILITIES = {
+    // List files from a folder on the virtual file system
+    "ls": {
+        "exec": (aioli, args) => fs(aioli, "readdir", args)
+    },
+    //
+
+}
+
+async function fs(aioli, cmd, args)
+{
+    return {
+        "stdout": (await aioli.fs(cmd, args)).join("\n"),
+        "stderr": ""
+    };
+}

@@ -8,7 +8,7 @@ import { tick, afterUpdate, createEventDispatcher } from "svelte";
 import jQuery from "jquery";
 import { Aioli } from "@biowasm/aioli";
 
-import { TOOLS, BIOWASM_URL } from "./config.js";
+import { TOOLS, UTILITIES, BIOWASM_URL } from "./config.js";
 
 // -----------------------------------------------------------------------------
 // Globals
@@ -66,12 +66,27 @@ export async function run()
 	// Validate user input
 	if(program == "")
 		msgError = `Please enter a command`;
-	if(!(program in TOOLS))
+	if(!(program in TOOLS) && !(program in UTILITIES))
 		msgError = `Program <code>${program}</code> is not supported`;
 	if(args.includes("|"))
 		msgError = "Piping is not currently supported";
 	if(msgError != "")
 		throw msgError;
+
+	// Process non-WebAssembly utilities
+	if(program in UTILITIES)
+	{
+		// Retrieve first Aioli object we see; file system utilities need existing object to work
+		let aioli = Object.values(aiolis).shift();
+		let output = { stdout: "", stderr: "" };
+		try {
+			output = await UTILITIES[program].exec(aioli, args);
+		} catch (error) {
+			output.stderr = "Error: invalid command";
+		}
+		dispatch("output", output);
+		return;
+	}
 
 	// Initialize Aioli object if not already initialized
 	disabled = true;
@@ -94,14 +109,12 @@ export async function run()
 		if(TOOLS[program].files != null)
 			for(let file of TOOLS[program].files)
 				await Aioli.mount(file.url, name=file.name);
-		console.log(await aioli.ls("/urls"));
 	}
 
 	// Run command and send output to parent component
 	msgInfo = `Running...`;
 	let output = await aioli.exec(args);
 	dispatch("output", output);
-
 	msgInfo = "Ready.";
 	disabled = false;
 }
