@@ -16,15 +16,15 @@ import { TOOLS } from "./config.js";
 let output = "";
 let tool = new URL(window.location).searchParams.get("tool") || "samtools";
 
-// Function from <CommandLine /> for running current command
-let run = () => {};
+// Function from <CommandLine /> for running a command
+let launch;
 
 // -----------------------------------------------------------------------------
 // On load
 // -----------------------------------------------------------------------------
 
 // Run default command on page load
-onMount(() => run());
+onMount(() => launch());
 
 // -----------------------------------------------------------------------------
 // Utilities
@@ -33,7 +33,7 @@ onMount(() => run());
 async function loadTool(newTool) {
 	// Launch new tool
 	tool = newTool;
-	run();
+	launch();
 
 	// Update URL
 	window.history.pushState(tool, `biowasm playground - ${tool}`, `?tool=${tool}`);
@@ -60,7 +60,7 @@ async function loadTool(newTool) {
 
 <div class="container">
 	<CommandLine
-		bind:run={run}
+		bind:launch={launch}
 		command={`${tool} --version`}
 		on:output={msg => output = msg.detail.stdout.trim() + msg.detail.stderr.trim()} />
 

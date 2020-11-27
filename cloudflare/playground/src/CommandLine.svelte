@@ -4,7 +4,7 @@ export let command = "";        // Command to execute (e.g. samtools --version)
 export let disabled = false;    // Whether to disable the input or not
 
 // Imports
-import { tick, afterUpdate, createEventDispatcher } from "svelte";
+import { afterUpdate, createEventDispatcher } from "svelte";
 import jQuery from "jquery";
 import { Aioli } from "@biowasm/aioli";
 
@@ -48,16 +48,40 @@ afterUpdate(() => {
 // Utility functions
 // -----------------------------------------------------------------------------
 
-// Execute a command
-export async function run(cmd=null)
+// Execute a command and update UI
+export async function launch(cmd=null)
 {
+	// By default, execute what's in the input box
 	cmd = cmd || command;
-	let program = cmd.split(" ").shift();
-	let args = cmd.replace(`${program} `, "").trim();
+
+	// Prep UI
+	msgInfo = `Running...`;
+	disabled = true;
 
 	// Make UI match command being run
 	if(cmd != command)
 		command = cmd;
+
+	// Run command and send output to parent component
+	let output = {};
+	try {
+		output = await run(cmd);		
+	} catch (error) {
+		console.warn(error);
+		output = { stdout: "", stderr: String(error) };
+	}
+	dispatch("output", output);
+
+	// Revert UI
+	msgInfo = "Ready.";
+	disabled = false;
+}
+
+// Execute a command and return value
+export async function run(cmd)
+{
+	let program = cmd.split(" ").shift();
+	let args = cmd.replace(`${program} `, "").trim();
 
 	// Validate user input
 	msgError = "";
@@ -75,6 +99,7 @@ export async function run(cmd=null)
 	{
 		// Retrieve first Aioli object we see; file system utilities need existing object to work
 		let aioli = Object.values(aiolis).shift();
+		// Run utility and send output to parent component
 		let output = { stdout: "", stderr: "" };
 		try {
 			if(cmd == program)
@@ -84,18 +109,14 @@ export async function run(cmd=null)
 			console.error(error);
 			output.stderr = "Error: invalid command";
 		}
-		dispatch("output", output);
-		return;
+		return output;
 	}
 
-	// Initialize Aioli object if not already initialized
-	disabled = true;
+	// Process WebAssembly utilities. Initialize Aioli object if needed.
 	let aioli = null;
 	if(program in aiolis) {
 		aioli = aiolis[program];
 	} else {
-		msgInfo = `Initializing ${program}...`;
-
 		// Create Aioli object for program
 		let config = TOOLS[program].aioli;
 		config.urlModule = `${BIOWASM_URL}/${config.module}/${config.version}`;
@@ -114,12 +135,7 @@ export async function run(cmd=null)
 		aioli.fs("chdir", "/urls");
 	}
 
-	// Run command and send output to parent component
-	msgInfo = `Running...`;
-	let output = await aioli.exec(args);
-	dispatch("output", output);
-	msgInfo = "Ready.";
-	disabled = false;
+	return await aioli.exec(args);
 }
 
 // -----------------------------------------------------------------------------
@@ -149,7 +165,7 @@ export async function run(cmd=null)
 				disabled={disabled}
 				bind:this={elTextbox}
 				bind:value={command}
-				on:keydown={event => event.key == "Enter" ? run(command) : null}
+				on:keydown={event => event.key == "Enter" ? launch(command) : null}
 				style="font-size:100%; font-family:'Courier New',Courier,monospace"
 			/>
 			<div class="input-group-append">
@@ -173,7 +189,7 @@ export async function run(cmd=null)
 								href="#"
 								title="{item.tooltip}"
 								on:click={async () => {
-									await run(item.command);
+									await launch(item.command);
 									msgInfo = item.description;
 								}}
 							>
