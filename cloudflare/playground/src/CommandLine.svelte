@@ -16,11 +16,8 @@ import { TOOLS, UTILITIES, BIOWASM_URL } from "./config.js";
 
 // State
 let aiolis = {};         // e.g. { samtools: Aioli("samtools/1.10"), ... }
-let dispatch = createEventDispatcher();
-
-// User input
 let program = null;      // e.g. "bedtools"
-let args = null;         // e.g. "intersect -a a.bed -b b.bed"
+let dispatch = createEventDispatcher();
 
 // UI
 let msgInfo = "";
@@ -33,7 +30,6 @@ let elTextbox = null;    // DOM element for the CLI input
 
 // Split program name from args
 $: program = command.split(" ").shift();
-$: args = command.replace(`${program} `, "").trim();
 
 // -----------------------------------------------------------------------------
 // On load
@@ -55,15 +51,11 @@ afterUpdate(() => {
 // Execute a command
 export async function run()
 {
-	msgError = "";
-
-	// Wait for changes to variables `program` / `args` used below to propagate
-	// e.g. if do "command = ...; run();", run() would execute before the effects
-	// of changing `command` would be propagated to `program` / `args` using the
-	// reactive statement.
-	await tick();
+	let program = command.split(" ").shift();
+	let args = command.replace(`${program} `, "").trim();
 
 	// Validate user input
+	msgError = "";
 	if(program == "")
 		msgError = `Please enter a command`;
 	if(!(program in TOOLS) && !(program in UTILITIES))
