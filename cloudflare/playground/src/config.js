@@ -135,3 +135,10 @@ async function fs(aioli, cmd, ...args)
         output = JSON.stringify(output, null, 2);
     return output;
 }
+
+// Support for simple piping commands
+export const PIPING = {
+    "tail": d => d.split("\n").slice(0, 10).join("\n"),
+    "head": d => d.split("\n").slice(-10).join("\n"),
+    "wc -l": d => String(d.trim().split("\n").length)
+};

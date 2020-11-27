@@ -7,7 +7,7 @@ import { afterUpdate, createEventDispatcher } from "svelte";
 import jQuery from "jquery";
 import { Aioli } from "@biowasm/aioli";
 
-import { TOOLS, UTILITIES, BIOWASM_URL } from "./config.js";
+import { TOOLS, UTILITIES, PIPING, BIOWASM_URL } from "./config.js";
 
 // -----------------------------------------------------------------------------
 // Globals
@@ -54,16 +54,32 @@ export async function launch(cmd=null)
 
 	// Prep UI
 	UI.msgInfo = `Running...`;
+	UI.msgError = "";
 	UI.disabled = true;
 
 	// Make UI match command being run
 	if(cmd != command)
 		command = cmd;
 
+	// Artificially support a few convenient piping functions.
+	// Assumes "|" is only used for piping (and not say part of a filename).
+	let piping = null;
+	let pipes = cmd.split("|").map(d => d.trim());
+	if(pipes.length > 2 || (pipes.length == 2 && !Object.keys(PIPING).includes(pipes[1]))) {
+		UI.msgError = "Piping not supported.";
+		UI.disabled = false;
+		return;
+	} else if(pipes.length == 2) {
+		cmd = pipes[0];
+		piping = pipes[1];
+	}
+
 	// Run command and send output to parent component
 	let output = {};
 	try {
 		output = await run(cmd);		
+		if(piping != null)
+			output.stdout = PIPING[piping](output.stdout);
 	} catch (error) {
 		console.warn(error);
 		output = { stdout: "", stderr: String(error) };
@@ -87,8 +103,6 @@ export async function run(cmd)
 		error = `Please enter a command`;
 	if(!(program in TOOLS) && !(program in UTILITIES))
 		error = `Program <code>${program}</code> is not supported`;
-	if(args.includes("|"))
-		error = "Piping is not currently supported";
 	if(error != "")
 		throw error;
 
