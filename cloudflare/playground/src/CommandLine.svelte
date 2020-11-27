@@ -49,10 +49,15 @@ afterUpdate(() => {
 // -----------------------------------------------------------------------------
 
 // Execute a command
-export async function run()
+export async function run(cmd=null)
 {
-	let program = command.split(" ").shift();
-	let args = command.replace(`${program} `, "").trim();
+	cmd = cmd || command;
+	let program = cmd.split(" ").shift();
+	let args = cmd.replace(`${program} `, "").trim();
+
+	// Make UI match command being run
+	if(cmd != command)
+		command = cmd;
 
 	// Validate user input
 	msgError = "";
@@ -72,7 +77,7 @@ export async function run()
 		let aioli = Object.values(aiolis).shift();
 		let output = { stdout: "", stderr: "" };
 		try {
-			if(command == program)
+			if(cmd == program)
 				args = null;
 			output.stdout = await UTILITIES[program](aioli, args);
 		} catch (error) {
@@ -144,7 +149,7 @@ export async function run()
 				disabled={disabled}
 				bind:this={elTextbox}
 				bind:value={command}
-				on:keydown={event => event.key == "Enter" ? run() : null}
+				on:keydown={event => event.key == "Enter" ? run(command) : null}
 				style="font-size:100%; font-family:'Courier New',Courier,monospace"
 			/>
 			<div class="input-group-append">
@@ -168,8 +173,7 @@ export async function run()
 								href="#"
 								title="{item.tooltip}"
 								on:click={async () => {
-									command = item.command;
-									await run();
+									await run(item.command);
 									msgInfo = item.description;
 								}}
 							>
