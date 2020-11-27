@@ -83,11 +83,11 @@ export const TOOLS = {
 		files: [
             {
                 name: BAM_FILE,
-                url: `${BAM_HOST_URL}/data/A549_CDKN2A.bam`
+                url: `${BAM_HOST_URL}/data/A549.bam`
             },
             {
                 name: BAI_FILE,
-                url: `${BAM_HOST_URL}/data/A549_CDKN2A.bam.bai`
+                url: `${BAM_HOST_URL}/data/A549.bam.bai`
             }
 		]
 	},
