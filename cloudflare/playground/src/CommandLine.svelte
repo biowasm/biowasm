@@ -40,6 +40,11 @@ afterUpdate(() => {
 
 	// Enable jQuery tooltips. Needs to be here because tooltips are dynamically generated based on `program`
 	jQuery("[data-toggle='tooltip']").tooltip();
+
+	// Enable .terminal buttons to launch a command
+	jQuery(".terminal").off("click").click(function() {
+		launch(this.value);
+	});
 });
 
 // -----------------------------------------------------------------------------
@@ -195,10 +200,12 @@ export async function run(cmd)
 
 						{#each queries.items as item}
 							<a
+								href="#"
 								class="dropdown-item"
 								data-toggle="tooltip"
 								data-placement="left"
-								href="#"
+								data-html="true"
+								data-original-title="{item.tooltip}"
 								title="{item.tooltip}"
 								on:click={async () => {
 									await launch(item.command);
