@@ -105,6 +105,90 @@ export const TOOLS = {
             module: "bedtools2",
             version: "2.29.2",
         },
+        queries: [
+            {
+                header: "Intersect",
+                items: [
+                    {
+                        label: "bedtools intersect",
+                        command: "bedtools intersect -a cpg.bed -b exons.bed",
+                        tooltip: "Get overlapping regions",
+                        description: "Find overlapping regions between files <code>cpg.bed</code> and <code>exons.bed</code>"
+                    },
+                    {
+                        label: "bedtools intersect -v",
+                        command: "bedtools intersect -a cpg.bed -b exons.bed -v",
+                        tooltip: "Get non overlapping regions",
+                        description: "The <code>-v</code> flag shows regions in <code>cpg.bed</code> that don't overlap with <code>exons.bed</code>"
+                    },
+                    {
+                        label: "bedtools intersect -wo",
+                        command: "bedtools intersect -a cpg.bed -b exons.bed -wo",
+                        tooltip: "Calculate amount of overlap",
+                        description: "Using the <code>-wo</code> flag, bedtools outputs the amount of overlap (in basepairs) in the last column"
+                    },
+                    {
+                        label: "bedtools intersect -wo -f",
+                        command: "bedtools intersect -a cpg.bed -b exons.bed -wo -f 0.7",
+                        tooltip: "Require minimum % overlap",
+                        description: "The <code>-f</code> flag enforces a minimum overlap for a region to be listed"
+                    },
+                ]
+            },
+            {
+                header: "Merge",
+                items: [
+                    {
+                        label: "bedtools merge",
+                        command: "bedtools merge -i exons.bed",
+                        tooltip: "Merge overlapping regions",
+                        description: "Output overlapping regions in a .bed file"
+                    },
+                    {
+                        label: "bedtools merge -d",
+                        command: "bedtools merge -i exons.bed -d 10e3",
+                        tooltip: "Merge nearby regions",
+                        description: "Merges regions if they are within 10kb of each other (i.e. not necessarily overlapping)"
+                    },
+                ]
+            },
+            {
+                header: "Complement",
+                items: [
+                    {
+                        label: "bedtools complement",
+                        command: "bedtools complement -i exons.bed -g genome.txt",
+                        tooltip: "Get regions that don't overlap the genome",
+                        description: "Get regions of <code>genome.txt</code> that don't overlap with <code>exons.bed</code>. Use <button class='btn btn-sm btn-info terminal' value='cat genome.txt'>cat genome.txt</button> to see the contents of <code>genome.txt</code>."
+                    },
+                ]
+            },
+            {
+                header: "Documentation",
+                items: [
+                    {
+                        label: "bedtools --help",
+                        command: "bedtools --help",
+                        tooltip: "Available commands",
+                        description: "All available <code>bedtools</code> commands"
+                    },
+                ]
+            },
+        ],
+		files: [
+            {
+                name: BED_CPG_FILE,
+                url: `${URL_HOST}/data/${BED_CPG_FILE}`
+            },
+            {
+                name: BED_EXONS_FILE,
+                url: `${URL_HOST}/data/${BED_EXONS_FILE}`
+            },
+            {
+                name: BED_GENOME_FILE,
+                url: `${URL_HOST}/data/${BED_GENOME_FILE}`
+            }
+		]
     },
 	"bowtie": {
 		aioli: {
