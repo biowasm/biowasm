@@ -153,13 +153,19 @@ export const TOOLS = {
                 ]
             },
             {
-                header: "Complement",
+                header: "Miscellaneous",
                 items: [
                     {
                         label: "bedtools complement",
                         command: "bedtools complement -i exons.bed -g genome.txt",
                         tooltip: "Get regions that don't overlap the genome",
                         description: "Get regions of <code>genome.txt</code> that don't overlap with <code>exons.bed</code>. Use <button class='btn btn-sm btn-info terminal' value='cat genome.txt'>cat genome.txt</button> to see the contents of <code>genome.txt</code>."
+                    },
+                    {
+                        label: "bedtools links",
+                        command: "bedtools links -i cpg.bed -db hg38",
+                        tooltip: "Create links to UCSC",
+                        description: "Creates links to the UCSC genome browser for each region"
                     },
                 ]
             },
