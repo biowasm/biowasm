@@ -34,7 +34,7 @@ async function loadTool(newTool=null) {
 	// Launch new tool
 	newTool = newTool || tool;
 	tool = newTool;
-	launch(`${tool} --version`);
+	launch(`${tool} --help`);
 
 	// Update URL
 	window.history.pushState(tool, `biowasm playground - ${tool}`, `?tool=${tool}`);
