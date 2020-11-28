@@ -66,7 +66,7 @@ export async function launch(cmd=null)
 	if(cmd != command)
 		command = cmd;
 
-	// Artificially support a few convenient piping functions.
+	// Support a few convenient piping functions.
 	// Assumes "|" is only used for piping (and not say part of a filename).
 	let piping = null;
 	let pipes = cmd.split("|").map(d => d.trim());
@@ -79,7 +79,20 @@ export async function launch(cmd=null)
 		piping = pipes[1];
 	}
 
-	// Run command and send output to parent component
+	// Support very basic output redirection.
+	// Assumes ">" is only used for redirection (and not say part of a string argument)
+	let redirection = null;
+	let redirections = cmd.split(">").map(d => d.trim());
+	if(redirections.length > 2) {
+		UI.msgError = "Unsupported command.";
+		UI.disabled = false;
+		return;
+	} else if(redirections.length == 2) {
+		cmd = redirections[0];
+		redirection = redirections[1];
+	}
+
+	// Run command
 	let output = {};
 	try {
 		output = await run(cmd);		
@@ -88,6 +101,13 @@ export async function launch(cmd=null)
 	} catch (error) {
 		console.warn(error);
 		output = { stdout: "", stderr: String(error) };
+	}
+
+	// Send result to parent component unless using redirection
+	if(redirection != null) {
+		let blob = new Blob([output.stdout], { type: "text/plain" });
+		await Aioli.mount(blob, redirection);
+		output.stdout = "ok";
 	}
 	dispatch("output", output);
 
