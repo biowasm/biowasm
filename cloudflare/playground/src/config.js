@@ -3,10 +3,13 @@ const TESTING = true;
 export const BIOWASM_URL = `https://cdn${TESTING ? "-stg" : ""}.biowasm.com`;
 
 // Constants
+const URL_HOST = window.location.origin;
 const BAM_FILE = "A549.bam";
 const BAI_FILE = "A549.bam.bai";
 const BAM_REGION = "9:22,000,000-22,100,000";
-const BAM_HOST_URL = window.location.origin;
+const BED_CPG_FILE = "cpg.bed";
+const BED_EXONS_FILE = "exons.bed";
+const BED_GENOME_FILE = "genome.txt";
 
 // Tools
 export const TOOLS = {
@@ -72,6 +75,12 @@ export const TOOLS = {
                 header: "Documentation",
                 items: [
                     {
+                        label: "samtools --help",
+                        command: "samtools --help",
+                        tooltip: 'Available commands',
+                        description: "All available <code>samtools</code> commands"
+                    },
+                    {
                         label: "samtools view -?",
                         command: "samtools view -?",
                         tooltip: '"view" documentation',
@@ -83,25 +92,27 @@ export const TOOLS = {
 		files: [
             {
                 name: BAM_FILE,
-                url: `${BAM_HOST_URL}/data/A549.bam`
+                url: `${URL_HOST}/data/${BAM_FILE}`
             },
             {
                 name: BAI_FILE,
-                url: `${BAM_HOST_URL}/data/A549.bam.bai`
+                url: `${URL_HOST}/data/${BAI_FILE}`
             }
 		]
 	},
-	"bedtools2": {
+	"bedtools": {
 		aioli: {
             module: "bedtools2",
             version: "2.29.2",
         },
     },
-	"bowtie2": {
+	"bowtie": {
 		aioli: {
             module: "bowtie2",
             version: "2.4.2",
         },
+        queries: [],
+        files: []
 	}
 };
 
