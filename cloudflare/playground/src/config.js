@@ -196,14 +196,14 @@ export const TOOLS = {
             }
 		]
     },
-	"bowtie": {
-		aioli: {
-            module: "bowtie2",
-            version: "2.4.2",
-        },
-        queries: [],
-        files: []
-	}
+	// "bowtie": {
+	// 	aioli: {
+    //         module: "bowtie2",
+    //         version: "2.4.2",
+    //     },
+    //     queries: [],
+    //     files: []
+	// }
 };
 
 // Simple JavaScript utility functions that can be called from CommandLine.svelte
