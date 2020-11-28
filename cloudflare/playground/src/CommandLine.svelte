@@ -166,7 +166,7 @@ export async function run(cmd)
 		// Mount sample files
 		if(TOOLS[program].files != null)
 			for(let file of TOOLS[program].files)
-				await Aioli.mount(file.url, name=file.name);
+				await Aioli.mount(file.url, file.name);
 		
 		// Set working directory
 		aioli.fs("chdir", "/urls");
