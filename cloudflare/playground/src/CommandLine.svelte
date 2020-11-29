@@ -243,7 +243,7 @@ export async function run(cmd)
 				<button
 					class="btn btn-md {UI.disabled ? 'btn-secondary' : 'btn-primary'}"
 					disabled={UI.disabled}
-					on:click={run}
+					on:click={launch(command)}
 				>
 					Run
 				</button>
