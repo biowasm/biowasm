@@ -62,7 +62,7 @@ async function loadTool(newTool=null) {
 <div class="container">
 	<CommandLine
 		bind:launch={launch}
-		on:output={msg => output = msg.detail.stdout.trim() + msg.detail.stderr.trim()} />
+		on:output={msg => output = msg.detail.stdout + msg.detail.stderr} />
 
-	<pre class="border rounded border-primary p-3" style="height:55vh">{@html output}</pre>
+	<pre class="border rounded border-primary p-3" style="height:55vh">{output}</pre>
 </div>
