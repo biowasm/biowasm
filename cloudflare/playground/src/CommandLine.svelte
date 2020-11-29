@@ -26,6 +26,7 @@ let UI = {
 	msgInfo: "",      // Info text above the input box
 	msgError: "",     // Error text below the input box
 	textbox: null,    // DOM element for the input box
+	fileInput: null,  // DOM element for the hidden file input box
 	disabled: false,  // Disable CommandLine
 }
 
@@ -175,16 +176,39 @@ export async function run(cmd)
 	return await aioli.exec(args);
 }
 
+// Mount selected files
+async function mountFiles()
+{
+	let files = Array.from(UI.fileInput.files);
+	for(let file of files) {
+		let fileMounted = await Aioli.mount(file);
+		console.log(`Mounted ${file.name} to ${fileMounted.path}`);
+	}
+	launch("ls /data");
+}
+
+
 // -----------------------------------------------------------------------------
 // HTML
 // -----------------------------------------------------------------------------
 </script>
 
-<!-- Info message -->
 <div class="row">
-	<div class="col-12">
+	<!-- Info message -->
+	<div class="col-10">
 		<span class="text-muted">
-			<span class="text-info">{@html UI.msgInfo}&nbsp;</span>
+			<span class="text-info">{@html UI.msgInfo}</span>
+		</span>
+	</div>
+	<!-- Choose a file locally -->
+	<div class="col-2 text-right">
+		<span class="text-muted">
+			<button
+				on:click={() => UI.fileInput.click()}
+				type="button" class="btn btn-link p-0 text-info"
+				style="vertical-align: baseline;">
+				Load a local file
+			</button>
 		</span>
 	</div>
 </div>
@@ -203,15 +227,12 @@ export async function run(cmd)
 				bind:this={UI.textbox}
 				bind:value={command}
 				on:keydown={event => event.key == "Enter" ? launch(command) : null}
-				style="font-size:100%; font-family:'Courier New',Courier,monospace"
-			/>
+				style="font-size:100%; font-family:'Courier New',Courier,monospace" />
 			<div class="input-group-append">
 				<button
 					class="btn btn-md btn-outline-secondary dropdown-toggle"
 					data-toggle="dropdown"
-					aria-expanded="false"
-				>
-					Examples
+					aria-expanded="false">Examples
 				</button>
 
 				<div class="dropdown-menu">
@@ -230,8 +251,7 @@ export async function run(cmd)
 								on:click={async () => {
 									await launch(item.command);
 									UI.msgInfo = item.description;
-								}}
-							>
+								}}>
 								&nbsp;&nbsp;<code>{item.label}</code>
 							</a>
 						{/each}
@@ -243,8 +263,7 @@ export async function run(cmd)
 				<button
 					class="btn btn-md {UI.disabled ? 'btn-secondary' : 'btn-primary'}"
 					disabled={UI.disabled}
-					on:click={launch(command)}
-				>
+					on:click={launch(command)}>
 					Run
 				</button>
 			</div>
@@ -260,3 +279,10 @@ export async function run(cmd)
 		</small>
 	</div>
 </div>
+
+<!-- Hidden file input -->
+<input
+	bind:this={UI.fileInput}
+	on:change={mountFiles}
+	type="file"
+	hidden multiple>
