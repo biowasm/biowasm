@@ -84,6 +84,27 @@ describe("play.biowasm.com", () => {
                         assert(false, `Missing tests for ${tool}`);
                 }
 
+                // Test piping by re-running command with "| head"
+                await elCommand.clear();
+                await elCommand.sendKeys(`${command} | head`, webdriver.Key.ENTER);
+                await driver.sleep(DELAY);
+                // Make sure we get the number of lines we expected
+                let outputHead = await elOutput.getAttribute("innerHTML");
+                let outputHeadArr = outputHead.split("\n");
+                assert(outputHead == outputArr.slice(0, 10).join("\n"));
+                assert.equal(outputHeadArr.length, Math.min(outputArr.length, 10));
+
+                // Test file redirection by re-running command with "| head > test"
+                await elCommand.clear();
+                await elCommand.sendKeys(`${command} | head > test`, webdriver.Key.ENTER);
+                await driver.sleep(DELAY);
+                await elCommand.clear();
+                await elCommand.sendKeys(`cat /data/test`, webdriver.Key.ENTER);
+                await driver.sleep(DELAY);
+                // Expect the same output
+                let outputHeadFile = await elOutput.getAttribute("innerHTML");
+                assert.equal(outputHeadFile, outputHead);
+
                 await showExamples(driver);
             }
 
