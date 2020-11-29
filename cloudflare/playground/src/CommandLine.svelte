@@ -66,19 +66,6 @@ export async function launch(cmd=null)
 	if(cmd != command)
 		command = cmd;
 
-	// Support a few convenient piping functions.
-	// Assumes "|" is only used for piping (and not say part of a filename).
-	let piping = null;
-	let pipes = cmd.split("|").map(d => d.trim());
-	if(pipes.length > 2 || (pipes.length == 2 && !Object.keys(PIPING).includes(pipes[1]))) {
-		UI.msgError = "Piping not supported.";
-		UI.disabled = false;
-		return;
-	} else if(pipes.length == 2) {
-		cmd = pipes[0];
-		piping = pipes[1];
-	}
-
 	// Support very basic output redirection.
 	// Assumes ">" is only used for redirection (and not say part of a string argument)
 	let redirection = null;
@@ -92,10 +79,23 @@ export async function launch(cmd=null)
 		redirection = redirections[1];
 	}
 
+	// Support a few convenient piping functions.
+	// Assumes "|" is only used for piping (and not say part of a filename).
+	let piping = null;
+	let pipes = cmd.split("|").map(d => d.trim());
+	if(pipes.length > 2 || (pipes.length == 2 && !Object.keys(PIPING).includes(pipes[1]))) {
+		UI.msgError = "Piping not supported.";
+		UI.disabled = false;
+		return;
+	} else if(pipes.length == 2) {
+		cmd = pipes[0];
+		piping = pipes[1];
+	}
+
 	// Run command
 	let output = {};
 	try {
-		output = await run(cmd);		
+		output = await run(cmd);
 		if(piping != null)
 			output.stdout = PIPING[piping](output.stdout);
 	} catch (error) {
