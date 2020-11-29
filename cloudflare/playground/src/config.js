@@ -147,19 +147,13 @@ export const TOOLS = {
                 ]
             },
             {
-                header: "Miscellaneous",
+                header: "Complement",
                 items: [
                     {
                         label: "bedtools complement",
                         command: "bedtools complement -i exons.bed -g genome.txt",
                         tooltip: "Get regions that don't overlap the genome",
                         description: "Get regions of <code>genome.txt</code> that don't overlap with <code>exons.bed</code>. Use <button class='btn btn-sm btn-info terminal' value='cat genome.txt'>cat genome.txt</button> to see the contents of <code>genome.txt</code>."
-                    },
-                    {
-                        label: "bedtools links",
-                        command: "bedtools links -i cpg.bed -db hg38",
-                        tooltip: "Create links to UCSC",
-                        description: "Creates links to the UCSC genome browser for each region"
                     },
                 ]
             },
@@ -212,7 +206,7 @@ export const UTILITIES = {
     "touch": async (aioli, args) => fs(aioli, "writeFile", args, ""),
     "cat"  : async (aioli, args) => fs(aioli, "readFile", args, { encoding: "utf8" }),
     "head" : async (aioli, args) => fs(aioli, "readFile", args, { encoding: "utf8" }).then(d => d.split("\n").slice(0, 10).join("\n")),
-    "tail" : async (aioli, args) => fs(aioli, "readFile", args, { encoding: "utf8" }).then(d => d.split("\n").slice(-10).join("\n")),
+    "tail" : async (aioli, args) => fs(aioli, "readFile", args, { encoding: "utf8" }).then(d => d.split("\n").slice(-11).join("\n")),
     // Download a file
     "download": async (aioli, args) => aioli.download(args).then(url => `<strong>${args}:</strong><br />&bullet; <a href="${url}" download=${args}>Download</a><br />&bullet; <a href="${url}" target="_blank">Open in new tab</a> `),
     // Mount a URL
@@ -233,7 +227,7 @@ async function fs(aioli, cmd, ...args)
 
 // Support for simple piping commands
 export const PIPING = {
-    "tail": d => d.split("\n").slice(0, 10).join("\n"),
-    "head": d => d.split("\n").slice(-10).join("\n"),
+    "head": d => d.split("\n").slice(0, 10).join("\n"),
+    "tail": d => d.split("\n").slice(-11).join("\n"),
     "wc -l": d => String(d.trim().split("\n").length)
 };
