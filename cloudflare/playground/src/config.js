@@ -79,12 +79,6 @@ export const TOOLS = {
                         command: "samtools --help",
                         tooltip: 'Available commands',
                         description: "All available <code>samtools</code> commands"
-                    },
-                    {
-                        label: "samtools view -?",
-                        command: "samtools view -?",
-                        tooltip: '"view" documentation',
-                        description: "Extensive documentation for <code>samtools view</code> parameters"
                     }
                 ]
             }
