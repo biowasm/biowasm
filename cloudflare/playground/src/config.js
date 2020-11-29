@@ -38,13 +38,13 @@ export const TOOLS = {
                         label: "samtools view -F 4",
                         command: `samtools view -F 4 /urls/${BAM_FILE} ${BAM_REGION}`,
                         tooltip: "Filter out unmapped reads",
-                        description: "Use the <code>-F 4</code> flag to exclude reads where the SAM flag <code>4</code> is set (flag = 2nd column of SAM file) &mdash; <a href='https://broadinstitute.github.io/picard/explain-flags.html' target='_blank'>SAM flags utility</a>"
+                        description: "Use the <code>-F 4</code> flag to exclude reads where the flag <code>4</code> is set (flag = 2nd column) &mdash; <a href='https://broadinstitute.github.io/picard/explain-flags.html' target='_blank'>SAM flags utility</a>"
                     },
                     {
                         label: "samtools view -f 4",
                         command: `samtools view -f 4 /urls/${BAM_FILE} ${BAM_REGION}`,
                         tooltip: "List unmapped reads",
-                        description: "Use the <code>-f 4</code> flag to only include reads where the SAM flag <code>4</code> is set (flag = 2nd column of SAM file) &mdash; <a href='https://broadinstitute.github.io/picard/explain-flags.html' target='_blank'>SAM flags utility</a>"
+                        description: "Use the <code>-f 4</code> flag to only include reads where the flag <code>4</code> is set (flag = 2nd column) &mdash; <a href='https://broadinstitute.github.io/picard/explain-flags.html' target='_blank'>SAM flags utility</a>"
                     }
                 ]
             },
