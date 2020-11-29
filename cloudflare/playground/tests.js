@@ -3,8 +3,11 @@ const webdriver = require("selenium-webdriver");
 const by = webdriver.By;
 const until = webdriver.until;
 
-// Tools to test
-const TOOLS = ["samtools", "bedtools"];
+// Config
+const TOOLS = ["bedtools", "samtools"];
+const URL_HOST = "http://localhost:5000";
+const DELAY = 300;
+
 
 // Click "Examples" button and wait till dropdown menu appears
 async function showExamples(driver)
@@ -25,7 +28,7 @@ describe("play.biowasm.com", () => {
     before(async() => {
         // Launch browser
         driver = new webdriver.Builder().forBrowser("chrome").build();
-        await driver.get("http://localhost:5000");
+        await driver.get(URL_HOST);
 
         // Track elements of interest
         elTools = await driver.findElements(by.css(".jumbotron button"));
@@ -38,6 +41,8 @@ describe("play.biowasm.com", () => {
             tools[toolName] = tool;
             assert(TOOLS.includes(toolName));
         }
+        
+        await driver.sleep(DELAY * 2);
     });
 
     // Tear down
@@ -50,9 +55,8 @@ describe("play.biowasm.com", () => {
     {
         it(`Test ${tool} queries`, async () => {
             // Choose tool and click on Examples dropdown
-            await driver.sleep(200);
             await tools[tool].click();
-            await driver.sleep(200);
+            await driver.sleep(DELAY);
             await showExamples(driver);
 
             // Try all the examples for the current tool
@@ -60,13 +64,13 @@ describe("play.biowasm.com", () => {
             for(example of examples)
             {
                 // Run example
-                await driver.sleep(200);
-                await example.click()
-                await driver.sleep(200);
+                await example.click();
+                await driver.sleep(DELAY);
 
                 // Get output
                 let command = await elCommand.getAttribute("value");
-                let output = await elOutput.getText();
+                let output = await elOutput.getAttribute("innerHTML");
+                let outputArr = output.split("\n");
 
                 // Basic validation
                 if(command.includes("--help"))
