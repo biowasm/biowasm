@@ -169,10 +169,10 @@ export async function run(cmd)
 		State.aiolis[program] = aioli;
 		await aioli.init();
 
-		// Mount sample files
+		// Mount files
 		if(TOOLS[program].files != null)
-			for(let file of TOOLS[program].files)
-				await Aioli.mount(file.url, file.name);
+			for(let file of Aioli.files)
+				await Aioli.mount(file.source == "file" ? file.file : file.url, file.name);
 
 		// Set working directory
 		aioli.fs("chdir", "/urls");
