@@ -244,6 +244,9 @@ async function mountFiles()
 			<button
 				on:click={() => UI.fileInput.click()}
 				type="button" class="btn btn-link p-0 text-info"
+				data-step="4"
+				data-position="left"
+				data-intro="Load files from your computer and run bioinformatics commands on them. Your files are mounted (virtually) to <code>/data</code> (this app can only read, not modify your files)"
 				style="vertical-align: baseline;">
 				Load a local file
 			</button>
@@ -261,6 +264,8 @@ async function mountFiles()
 			<input
 				type="text"
 				class="form-control form-control-lg"
+				data-step="2"
+				data-intro="This is where you enter commands. Pressing 'Enter' executes the command and displays the result below."
 				disabled={UI.disabled}
 				bind:this={UI.textbox}
 				bind:value={command}
@@ -270,7 +275,11 @@ async function mountFiles()
 				<button
 					class="btn btn-md btn-outline-secondary dropdown-toggle"
 					data-toggle="dropdown"
-					aria-expanded="false">Examples
+					aria-expanded="false"
+					data-step="3"
+					data-position="left"
+					data-intro="Sample queries to get you started">
+					Examples
 				</button>
 
 				<div class="dropdown-menu">
