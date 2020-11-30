@@ -19,6 +19,7 @@ let dispatch = createEventDispatcher();
 let State = {
 	aiolis: {},       // e.g. { samtools: Aioli("samtools/1.10"), ... }
 	program: null,    // e.g. "samtools"
+	timeout: null,    // Timeout object for making the "Stop" button visible
 }
 
 // UI
@@ -28,6 +29,8 @@ let UI = {
 	textbox: null,    // DOM element for the input box
 	fileInput: null,  // DOM element for the hidden file input box
 	disabled: false,  // Disable CommandLine
+	stopBtnShow: false,      // If true, show "Stop" instead of "Run" btn
+	stopBtnDisabled: false,  // If true, "Stop" button is disabled
 }
 
 // -----------------------------------------------------------------------------
@@ -62,6 +65,7 @@ export async function launch(cmd=null)
 	UI.msgInfo = `Running...`;
 	UI.msgError = "";
 	UI.disabled = true;
+	State.timeout = setTimeout(() => UI.stopBtnShow = true, 2000);
 
 	// Make UI match command being run
 	if(cmd != command)
@@ -115,6 +119,7 @@ export async function launch(cmd=null)
 	// Revert UI
 	UI.msgInfo = "Ready.";
 	UI.disabled = false;
+	clearTimeout(State.timeout);
 }
 
 // Execute a command and return value
@@ -151,8 +156,8 @@ export async function run(cmd)
 	}
 
 	// Process WebAssembly utilities. Initialize Aioli object if needed.
-	let aioli = null;
-	if(program in State.aiolis) {
+	let aioli = State.aiolis[program];
+	if(aioli != null) {
 		aioli = State.aiolis[program];
 	} else {
 		// Create Aioli object for program
@@ -168,12 +173,45 @@ export async function run(cmd)
 		if(TOOLS[program].files != null)
 			for(let file of TOOLS[program].files)
 				await Aioli.mount(file.url, file.name);
-		
+
 		// Set working directory
 		aioli.fs("chdir", "/urls");
 	}
 	State.program = program;
 	return await aioli.exec(args);
+}
+
+// Stop what's currently running
+export async function stop()
+{
+	console.group("Stop");
+
+	let aioli = State.aiolis[State.program];
+	if(aioli != null)
+	{
+		// Delete worker from Aioli.workers
+		for(let i in Aioli.workers)
+			if(Aioli.workers[i].worker == aioli.worker) {
+				Aioli.workers.splice(i, 1);
+				console.log("Deleted from Aioli.workers");
+				break;
+			}
+
+		// Terminate the WebWorker
+		await aioli.worker.terminate();
+		State.aiolis[State.program] = null;
+		console.log("Aioli Worker terminated");
+
+		// Reload the worker
+		await run(`${State.program} --help`);
+		console.log("Aioli Worker reloaded");
+	}
+	console.groupEnd("Stop");
+
+	UI.stopBtnShow = UI.stopBtnDisabled = false;
+	UI.msgInfo = "";
+	UI.msgError = "Stopped.";
+	UI.disabled = false;
 }
 
 // Mount selected files
@@ -259,6 +297,7 @@ async function mountFiles()
 				</div>
 			</div>
 
+			{#if !UI.stopBtnShow}
 			<div class="input-group-append">
 				<button
 					class="btn btn-md {UI.disabled ? 'btn-secondary' : 'btn-primary'}"
@@ -267,6 +306,20 @@ async function mountFiles()
 					Run
 				</button>
 			</div>
+
+			{:else}
+			<div class="input-group-append">
+				<button
+					class="btn btn-md {UI.stopBtnDisabled ? 'btn-secondary' : 'btn-danger'}"
+					disabled={UI.stopBtnDisabled}
+					on:click={() => {
+						UI.stopBtnDisabled = true;
+						stop();
+					}}>
+					{ UI.stopBtnDisabled ? "Stopping..." : "Stop" }
+				</button>
+			</div>
+			{/if}
 		</div>
 	</div>
 </div>
