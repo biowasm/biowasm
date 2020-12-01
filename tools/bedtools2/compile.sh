@@ -7,12 +7,7 @@ rm -rf ./test/intersect/sortAndNaming/bigTests
 
 # Generate obj/*.o files
 make clean
-emmake make
+emmake make \
+    BIN_DIR="../build/" \
+    BT_LDFLAGS="--preload-file test@/bedtools2/test $(echo $EM_FLAGS)"
 
-# Generate .wasm/.js files
-emcc obj/*.o \
-    -o ../build/bedtools2.html \
-    -O2 \
-    --preload-file test@/bedtools2/test \
-    $EM_FLAGS \
-    -s ERROR_ON_UNDEFINED_SYMBOLS=0
