@@ -191,25 +191,26 @@ export async function stop()
 {
 	console.group("Stop");
 
-	let aioli = State.aiolis[State.program];
-	if(aioli != null)
-	{
-		// Delete worker from Aioli.workers
-		for(let i in Aioli.workers)
-			if(Aioli.workers[i].worker == aioli.worker) {
-				Aioli.workers.splice(i, 1);
-				console.log("Deleted from Aioli.workers");
-				break;
-			}
+	// Terminate existing workers
+	for(let tool in State.aiolis) {
+		State.aiolis[tool].worker.terminate();
+		console.log(`Stopped "${tool}" WebWorker`);
+	}
 
-		// Terminate the WebWorker
-		await aioli.worker.terminate();
-		State.aiolis[State.program] = null;
-		console.log("Aioli Worker terminated");
+	// Keep user files and reset Aioli
+	let files = Aioli.files.filter(d => d.source == "file").map(d => d.file);
+	State.aiolis = {};
+	Aioli.workers = [];
+	Aioli.files = [];
 
-		// Reload the worker
-		await run(`${State.program} --help`);
-		console.log("Aioli Worker reloaded");
+	// Relaunch tool
+	await run(`${State.program} --help`);
+	console.log(`Launched ${State.program}`);
+
+	// Mount all user files
+	for(let file of files) {
+		await Aioli.mount(file);
+		console.log(`Mounted "${file.name}"`);
 	}
 	console.groupEnd("Stop");
 
