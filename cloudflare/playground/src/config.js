@@ -11,6 +11,16 @@ const BED_CPG_FILE = "cpg.bed";
 const BED_EXONS_FILE = "exons.bed";
 const BED_GENOME_FILE = "genome.txt";
 
+// Sample files from URLs
+const FILES = [
+    { name: BAM_FILE, url: `${URL_HOST}/data/${BAM_FILE}` },
+    { name: BAI_FILE, url: `${URL_HOST}/data/${BAI_FILE}` },
+    { name: BED_CPG_FILE, url: `${URL_HOST}/data/${BED_CPG_FILE}` },
+    { name: BED_EXONS_FILE, url: `${URL_HOST}/data/${BED_EXONS_FILE}` },
+    { name: BED_GENOME_FILE, url: `${URL_HOST}/data/${BED_GENOME_FILE}` }
+];
+
+
 // Tools
 export const TOOLS = {
     "samtools": {
@@ -83,16 +93,7 @@ export const TOOLS = {
                 ]
             }
         ],
-		files: [
-            {
-                name: BAM_FILE,
-                url: `${URL_HOST}/data/${BAM_FILE}`
-            },
-            {
-                name: BAI_FILE,
-                url: `${URL_HOST}/data/${BAI_FILE}`
-            }
-		]
+		files: FILES
 	},
 	"bedtools": {
 		aioli: {
@@ -147,13 +148,19 @@ export const TOOLS = {
                 ]
             },
             {
-                header: "Complement",
+                header: "Miscellaneous",
                 items: [
                     {
                         label: "bedtools complement",
                         command: "bedtools complement -i exons.bed -g genome.txt",
                         tooltip: "Get regions that don't overlap the genome",
                         description: "Get regions of <code>genome.txt</code> that don't overlap with <code>exons.bed</code>. Use <button class='btn btn-sm btn-info terminal' value='cat genome.txt'>cat genome.txt</button> to see the contents of <code>genome.txt</code>."
+                    },
+                    {
+                        label: "bedtools bamtobed",
+                        command: "bedtools bamtobed -i /urls/A549.bam",
+                        tooltip: "Convert BAM to BED format",
+                        description: "Converts <code>A549.bam</code> to BED format</code>."
                     },
                 ]
             },
@@ -169,20 +176,7 @@ export const TOOLS = {
                 ]
             },
         ],
-		files: [
-            {
-                name: BED_CPG_FILE,
-                url: `${URL_HOST}/data/${BED_CPG_FILE}`
-            },
-            {
-                name: BED_EXONS_FILE,
-                url: `${URL_HOST}/data/${BED_EXONS_FILE}`
-            },
-            {
-                name: BED_GENOME_FILE,
-                url: `${URL_HOST}/data/${BED_GENOME_FILE}`
-            }
-		]
+		files: FILES
     },
 	// "bowtie": {
 	// 	aioli: {
