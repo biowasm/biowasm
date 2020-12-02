@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 6bc3cb98..00ba59e9 100644
+index 6bc3cb98..9d751ada 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -21,7 +21,7 @@ OBJ_DIR	= obj
@@ -7,7 +7,7 @@ index 6bc3cb98..00ba59e9 100644
  SRC_DIR	= src
  
 -CXX     = g++
-+CXX     = em++ -s USE_ZLIB=1
++CXX     = em++ -s USE_ZLIB=1 -s USE_BZIP2=1
  
  ifeq ($(DEBUG),1)
  BT_CPPFLAGS = -DDEBUG -D_DEBUG -D_FILE_OFFSET_BITS=64 -DWITH_HTS_CB_API $(INCLUDES)
@@ -16,7 +16,7 @@ index 6bc3cb98..00ba59e9 100644
  
  BT_LDFLAGS =
 -BT_LIBS    = -lz -lm -lbz2 -llzma -lpthread
-+BT_LIBS    = -s USE_ZLIB=1 -lm -lbz2 -lpthread
++BT_LIBS    = -s USE_ZLIB=1 -s USE_BZIP2=1 -lm -lpthread
 +
  
  prefix ?= /usr/local
@@ -38,7 +38,7 @@ index 511137de..00000000
 @@ -1 +0,0 @@
 -1.5 (08 Jan 2003)
 diff --git a/src/utils/htslib/Makefile b/src/utils/htslib/Makefile
-index 2931898e..5e1ec83a 100644
+index 2931898e..e6ceb0ae 100644
 --- a/src/utils/htslib/Makefile
 +++ b/src/utils/htslib/Makefile
 @@ -22,12 +22,12 @@
@@ -54,7 +54,7 @@ index 2931898e..5e1ec83a 100644
  
  # Default libraries to link if configure is not used
 -htslib_default_libs = -lz -lm -lbz2 -llzma
-+htslib_default_libs = -s USE_ZLIB=1 -lm -lbz2 -llzma
++htslib_default_libs = -s USE_ZLIB=1 -lm -s USE_BZIP2=1 -llzma
  
  CPPFLAGS =
  # TODO: probably update cram code to make it compile cleanly with -Wc++-compat
