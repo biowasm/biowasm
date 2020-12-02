@@ -8,18 +8,9 @@ const BAM_FILE = "A549.bam";
 const BAI_FILE = "A549.bam.bai";
 const BAM_REGION = "9:22,000,000-22,100,000";
 const BED_CPG_FILE = "cpg.bed";
+const BED_CPG_FILE_BAM = "cpg.bam";
 const BED_EXONS_FILE = "exons.bed";
 const BED_GENOME_FILE = "genome.txt";
-
-// Sample files from URLs
-const FILES = [
-    { name: BAM_FILE, url: `${URL_HOST}/data/${BAM_FILE}` },
-    { name: BAI_FILE, url: `${URL_HOST}/data/${BAI_FILE}` },
-    { name: BED_CPG_FILE, url: `${URL_HOST}/data/${BED_CPG_FILE}` },
-    { name: BED_EXONS_FILE, url: `${URL_HOST}/data/${BED_EXONS_FILE}` },
-    { name: BED_GENOME_FILE, url: `${URL_HOST}/data/${BED_GENOME_FILE}` }
-];
-
 
 // Tools
 export const TOOLS = {
@@ -93,7 +84,10 @@ export const TOOLS = {
                 ]
             }
         ],
-		files: FILES
+		files: [
+            { name: BAM_FILE, url: `${URL_HOST}/data/${BAM_FILE}` },
+            { name: BAI_FILE, url: `${URL_HOST}/data/${BAI_FILE}` },
+        ]
 	},
 	"bedtools": {
 		aioli: {
@@ -158,7 +152,7 @@ export const TOOLS = {
                     },
                     {
                         label: "bedtools bamtobed",
-                        command: "bedtools bamtobed -i /urls/A549.bam",
+                        command: "bedtools bamtobed -i /urls/cpg.bam",
                         tooltip: "Convert BAM to BED format",
                         description: "Converts <code>A549.bam</code> to BED format</code>."
                     },
@@ -176,7 +170,12 @@ export const TOOLS = {
                 ]
             },
         ],
-		files: FILES
+		files: [
+            { name: BED_CPG_FILE, url: `${URL_HOST}/data/${BED_CPG_FILE}` },
+            { name: BED_CPG_FILE_BAM, url: `${URL_HOST}/data/${BED_CPG_FILE_BAM}` },
+            { name: BED_EXONS_FILE, url: `${URL_HOST}/data/${BED_EXONS_FILE}` },
+            { name: BED_GENOME_FILE, url: `${URL_HOST}/data/${BED_GENOME_FILE}` },
+        ]
     },
 	// "bowtie": {
 	// 	aioli: {

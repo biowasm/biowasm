@@ -5,7 +5,7 @@ const until = webdriver.until;
 
 // Config
 const TOOLS = ["bedtools", "samtools"];
-const URL_HOST = "http://localhost:5000";
+const URL_HOST = "http://localhost:5000?tool=bedtools";
 const DELAY = 300;
 
 
@@ -31,7 +31,7 @@ describe("play.biowasm.com", () => {
         await driver.get(URL_HOST);
 
         // Track elements of interest
-        elTools = await driver.findElements(by.css(".jumbotron button"));
+        elTools = await driver.findElements(by.css(".btn-tool"));
         elCommand = await driver.findElement(by.css("input"));
         elOutput = await driver.findElement(by.css("pre"));
 
@@ -42,7 +42,7 @@ describe("play.biowasm.com", () => {
             assert(TOOLS.includes(toolName));
         }
         
-        await driver.sleep(DELAY * 2);
+        await driver.sleep(DELAY);
     });
 
     // Tear down
@@ -77,7 +77,7 @@ describe("play.biowasm.com", () => {
                     assert(output.includes(tool));
                 else {
                     if(tool == "bedtools")
-                        assert(output.includes("chr1"));
+                        assert(output.includes("chr1") || output.includes("DRR016846"));
                     else if(tool == "samtools")
                         assert(output.includes("DRR016846") || output.includes("GL000199") || output.includes("777"));
                     else
