@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 6bc3cb98..9d751ada 100644
+index 6bc3cb98..be605da5 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -21,7 +21,7 @@ OBJ_DIR	= obj
@@ -26,7 +26,7 @@ index 6bc3cb98..9d751ada 100644
  $(BIN_DIR)/bedtools: autoversion $(BUILT_OBJECTS) $(HTSDIR)/libhts.a | $(BIN_DIR)
  	@echo "- Building main bedtools binary."
 -	$(CCPREFIX) $(CC_WRAPPER) $(CXX) $(ALL_LDFLAGS) -o $(BIN_DIR)/bedtools $(BUILT_OBJECTS) $(HTSDIR)/libhts.a $(ALL_LIBS)
-+	$(CCPREFIX) $(CC_WRAPPER) $(CXX) $(ALL_LDFLAGS) -o $(BIN_DIR)/bedtools.html $(BUILT_OBJECTS) $(HTSDIR)/libhts.a $(ALL_LIBS)
++	$(CCPREFIX) $(CC_WRAPPER) $(CXX) $(ALL_LDFLAGS) -o $(BIN_DIR)/bedtools2.html $(BUILT_OBJECTS) $(HTSDIR)/libhts.a $(ALL_LIBS)
  	@echo "done."
  
  $(BIN_DIR)/bedtools.static: autoversion $(BUILT_OBJECTS) $(HTSDIR)/libhts.a | $(BIN_DIR)
