@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index d56c077..2692b61 100644
+index d56c077..be15837 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -31,10 +31,10 @@ CC ?= $(GCC_PREFIX)/gcc$(GCC_SUFFIX)
@@ -74,7 +74,7 @@ index d56c077..2692b61 100644
  DEBUG_DEFS     = -DCOMPILER_OPTIONS="\"$(DEBUG_FLAGS) $(CXXFLAGS)\""
  RELEASE_DEFS   = -DCOMPILER_OPTIONS="\"$(RELEASE_FLAGS) $(CXXFLAGS)\""
  
-@@ -381,9 +386,19 @@ bowtie2-align-s-sanitized bowtie2-align-s: bt2_search.cpp $(SEARCH_CPPS) $(SHARE
+@@ -381,9 +386,14 @@ bowtie2-align-s-sanitized bowtie2-align-s: bt2_search.cpp $(SEARCH_CPPS) $(SHARE
  	$(CXX) $(RELEASE_FLAGS) $(RELEASE_DEFS) $(CXXFLAGS) \
  		$(DEFS) -DBOWTIE2 $(NOASSERT_FLAGS) -Wall \
  		$(CPPFLAGS) \
@@ -83,13 +83,8 @@ index d56c077..2692b61 100644
  		$(SHARED_CPPS) $(SEARCH_CPPS_MAIN) \
 -		$(LDFLAGS) $(LDLIBS)
 +		$(LDFLAGS) $(LDLIBS) \
-+		-s EXTRA_EXPORTED_RUNTIME_METHODS="['callMain']" \
++		$(EM_FLAGS) \
 +		--preload-file example/@/example/ \
-+		-s INVOKE_RUN=0 \
-+		-s USE_ZLIB=1 \
-+		-s ALLOW_MEMORY_GROWTH=1 \
-+		-s FORCE_FILESYSTEM=1 \
-+		-lworkerfs.js \
 +		-s ASSERTIONS=1 \
 +		-s DISABLE_EXCEPTION_CATCHING=0
 +
