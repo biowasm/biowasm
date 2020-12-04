@@ -15,7 +15,7 @@ init:
 	git submodule update --init --recursive; \
 	git submodule status; \
 
-${TOOLS}: init
+${TOOLS}:
 	@ \
 	. ./shared.sh; \
 	cd $(DIR_TOOLS)/$@/; \
@@ -29,4 +29,8 @@ ${TOOLS}: init
 	echo "\n——————————————————————————————————————————————————"; \
 	echo "🧬 Compiling to WebAssembly..."; \
 	echo "——————————————————————————————————————————————————"; \
-	./compile.sh
+	./compile.sh; \
+	for glueCode in build/*.js; do \
+		cat ../../shared.js $$glueCode > $$glueCode.tmp; \
+		mv $$glueCode.tmp $$glueCode; \
+	done

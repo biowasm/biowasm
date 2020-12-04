@@ -1,4 +1,5 @@
 build/
 .DS_Store
+node_modules/
 tools-*/
 trash/

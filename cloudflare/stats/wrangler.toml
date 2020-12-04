@@ -1,0 +1,22 @@
+type = "webpack"
+workers_dev = false
+vars = { ENVIRONMENT = "stg" }
+
+[triggers]
+crons = ["*/30 * * * *"]
+
+[env.stg]
+name = "biowasm-stats-stg"
+vars = { ENVIRONMENT = "stg" }
+route = "stats-stg.biowasm.com/*"
+kv_namespaces = [
+    { binding = "LOGS", id = "e76f7352461c4b82997961622b33e878" }
+]
+
+[env.prd]
+name = "biowasm-stats"
+vars = { ENVIRONMENT = "prd" }
+route = "stats.biowasm.com/*"
+kv_namespaces = [
+    { binding = "LOGS", id = "d8adbc35772042248a89727658808f96" }
+]
