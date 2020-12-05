@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index d56c077..be15837 100644
+index d56c077..7f02729 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -31,10 +31,10 @@ CC ?= $(GCC_PREFIX)/gcc$(GCC_SUFFIX)
@@ -74,7 +74,7 @@ index d56c077..be15837 100644
  DEBUG_DEFS     = -DCOMPILER_OPTIONS="\"$(DEBUG_FLAGS) $(CXXFLAGS)\""
  RELEASE_DEFS   = -DCOMPILER_OPTIONS="\"$(RELEASE_FLAGS) $(CXXFLAGS)\""
  
-@@ -381,9 +386,14 @@ bowtie2-align-s-sanitized bowtie2-align-s: bt2_search.cpp $(SEARCH_CPPS) $(SHARE
+@@ -381,9 +386,10 @@ bowtie2-align-s-sanitized bowtie2-align-s: bt2_search.cpp $(SEARCH_CPPS) $(SHARE
  	$(CXX) $(RELEASE_FLAGS) $(RELEASE_DEFS) $(CXXFLAGS) \
  		$(DEFS) -DBOWTIE2 $(NOASSERT_FLAGS) -Wall \
  		$(CPPFLAGS) \
@@ -82,11 +82,7 @@ index d56c077..be15837 100644
 +		-o ../build/$@.html $< \
  		$(SHARED_CPPS) $(SEARCH_CPPS_MAIN) \
 -		$(LDFLAGS) $(LDLIBS)
-+		$(LDFLAGS) $(LDLIBS) \
-+		$(EM_FLAGS) \
-+		--preload-file example/@/example/ \
-+		-s ASSERTIONS=1 \
-+		-s DISABLE_EXCEPTION_CATCHING=0
++		$(LDFLAGS) $(LDLIBS) $(WASM_FLAGS)
 +
  
  bowtie2-align-l-sanitized bowtie2-align-l: bt2_search.cpp $(SEARCH_CPPS) $(SHARED_CPPS) $(HEADERS) $(SEARCH_FRAGMENTS)
