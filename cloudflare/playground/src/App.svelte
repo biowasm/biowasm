@@ -15,7 +15,7 @@ import { TOOLS } from "./config.js";
 // -----------------------------------------------------------------------------
 
 // State
-let output = "";
+let output = { stdout: "", stderr: "Loading..." };
 let tool = new URL(window.location).searchParams.get("tool") || "samtools";
 
 // Function from <CommandLine /> for running a command
@@ -67,7 +67,7 @@ async function loadTool(newTool=null) {
 <div class="container">
 	<CommandLine
 		bind:launch={launch}
-		on:output={msg => output = msg.detail.stdout + msg.detail.stderr} />
+		on:output={msg => output = msg.detail} />
 
-	<pre class="border rounded border-primary p-3" style="height:55vh">{output}</pre>
+	<pre class="border rounded border-primary p-3" style="height:55vh">{output.stdout}<span style="color:#bbb">{output.stderr}</span></pre>
 </div>
