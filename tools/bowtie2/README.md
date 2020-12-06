@@ -5,7 +5,7 @@
 ```html
 <script src="https://cdn.biowasm.com/aioli/latest/aioli.js"></script>
 <script>
-let bowtie2 = new Aioli("bowtie2/2.4.2");
+let bowtie2 = new Aioli("bowtie2/bowtie2-align-s/2.4.2");
 
 document.write("Loading...");
 bowtie2
