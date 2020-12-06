@@ -10,10 +10,13 @@ const DELAY = 300;
 
 
 // Click "Examples" button and wait till dropdown menu appears
-async function showExamples(driver)
-{
+async function showExamples(driver) {
     await driver.findElement(by.xpath("//button[text() = 'Examples']")).click();
     await driver.wait(until.elementLocated(by.className("dropdown-item")));
+}
+
+function trimHTML(str) {
+    return str.replace(/<([^>]+?)([^>]*?)>(.*?)<\/\1>/ig, "");
 }
 
 // Tests
@@ -41,7 +44,7 @@ describe("play.biowasm.com", () => {
             tools[toolName] = tool;
             assert(TOOLS.includes(toolName));
         }
-        
+
         await driver.sleep(DELAY);
     });
 
@@ -69,17 +72,17 @@ describe("play.biowasm.com", () => {
 
                 // Get output
                 let command = await elCommand.getAttribute("value");
-                let output = await elOutput.getAttribute("innerHTML");
+                let output = trimHTML(await elOutput.getAttribute("innerHTML"));
                 let outputArr = output.split("\n");
 
                 // Basic validation
                 if(command.includes("--help"))
-                    assert(output.includes(tool));
+                    assert(output.includes(tool), "Test --help failed");
                 else {
                     if(tool == "bedtools")
-                        assert(output.includes("chr1") || output.includes("DRR016846"));
+                        assert(output.includes("chr1") || output.includes("DRR016846"), "Test for bedtools failed");
                     else if(tool == "samtools")
-                        assert(output.includes("DRR016846") || output.includes("GL000199") || output.includes("777"));
+                        assert(output.includes("DRR016846") || output.includes("GL000199") || output.includes("777"), "Test for samtools failed");
                     else
                         assert(false, `Missing tests for ${tool}`);
                 }
@@ -89,10 +92,10 @@ describe("play.biowasm.com", () => {
                 await elCommand.sendKeys(`${command} | head`, webdriver.Key.ENTER);
                 await driver.sleep(DELAY);
                 // Make sure we get the number of lines we expected
-                let outputHead = await elOutput.getAttribute("innerHTML");
+                let outputHead = trimHTML(await elOutput.getAttribute("innerHTML"));
                 let outputHeadArr = outputHead.split("\n");
-                assert(outputHead == outputArr.slice(0, 10).join("\n"));
-                assert.equal(outputHeadArr.length, Math.min(outputArr.length, 10));
+                assert(outputHead == outputArr.slice(0, 10).join("\n"), "Piping to head gave wrong output");
+                assert.equal(outputHeadArr.length, Math.min(outputArr.length, 10), "Piping to head gave wrong number of lines");
 
                 // Test file redirection by re-running command with "| head > test"
                 await elCommand.clear();
@@ -102,8 +105,8 @@ describe("play.biowasm.com", () => {
                 await elCommand.sendKeys(`cat /data/test`, webdriver.Key.ENTER);
                 await driver.sleep(DELAY);
                 // Expect the same output
-                let outputHeadFile = await elOutput.getAttribute("innerHTML");
-                assert.equal(outputHeadFile, outputHead);
+                let outputHeadFile = trimHTML(await elOutput.getAttribute("innerHTML"));
+                assert.equal(outputHeadFile, outputHead, "Redirection gave wrong output");
 
                 await showExamples(driver);
             }
