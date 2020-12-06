@@ -63,7 +63,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           environment: 'stg'
-          preCommands: cd cloudflare/playground
+          preCommands: cd cloudflare/playground && npm run build
 
       - name: Deploy stg.biowasm.com home page
         uses: cloudflare/wrangler-action@1.3.0
