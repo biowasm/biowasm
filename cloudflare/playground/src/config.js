@@ -215,6 +215,17 @@ export const TOOLS = {
                     },
                 ]
             },
+            {
+                header: "Documentation",
+                items: [
+                    {
+                        label: "bowtie2 --help",
+                        command: "bowtie2 --help",
+                        tooltip: "Available parameters",
+                        description: "All available <code>bowtie2</code> parameters"
+                    },
+                ]
+            },
         ],
         files: [
             { name: FASTQ_R1, url: `${URL_HOST}/data/${FASTQ_R1}` },
