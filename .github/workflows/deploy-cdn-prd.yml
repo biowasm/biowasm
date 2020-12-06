@@ -54,6 +54,17 @@ jobs:
           environment: 'prd'
           preCommands: cd cloudflare/stats
 
+      - name: Deploy play.biowasm.com
+        uses: cloudflare/wrangler-action@1.3.0
+        env:
+          USER: root
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          environment: 'prd'
+          preCommands: cd cloudflare/playground
+
       - name: Deploy biowasm.com home page
         uses: cloudflare/wrangler-action@1.3.0
         env:
