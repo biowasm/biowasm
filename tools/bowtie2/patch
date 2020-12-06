@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index d56c077..7f02729 100644
+index d56c077..5038d61 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -31,10 +31,10 @@ CC ?= $(GCC_PREFIX)/gcc$(GCC_SUFFIX)
@@ -66,7 +66,8 @@ index d56c077..7f02729 100644
 +# endif
  
  DEBUG_FLAGS    := -O0 -g3 $(M64_FLAG) $(SSE_FLAG)
- RELEASE_FLAGS  := -O3 $(M64_FLAG) $(SSE_FLAG) -funroll-loops -g3
+-RELEASE_FLAGS  := -O3 $(M64_FLAG) $(SSE_FLAG) -funroll-loops -g3
++RELEASE_FLAGS  := -O3 $(M64_FLAG) $(SSE_FLAG) -funroll-loops
  NOASSERT_FLAGS := -DNDEBUG
 -FILE_FLAGS     := -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE
 +FILE_FLAGS     := -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE \
