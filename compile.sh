@@ -17,6 +17,8 @@ TOOLS=$(cat <<EOF
 
 	bhtsne       2016.08.22    1a62a5d
 
+	bowtie2      2.4.2         v2.4.2
+
 	fastp        0.20.1        0.20.1
 
 	samtools     1.10          1.10
