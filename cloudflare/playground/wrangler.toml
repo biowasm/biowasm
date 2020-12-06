@@ -1,0 +1,17 @@
+type = "webpack"
+workers_dev = false
+vars = { ENVIRONMENT = "stg" }
+
+[site]
+bucket = "./public"
+entry-point = "./entrypoint"
+
+[env.stg]
+name = "biowasm-playground-stg"
+vars = { ENVIRONMENT = "stg" }
+route = "play-stg.biowasm.com/*"
+
+[env.prd]
+name = "biowasm-playground"
+vars = { ENVIRONMENT = "prd" }
+route = "play.biowasm.com/*"
