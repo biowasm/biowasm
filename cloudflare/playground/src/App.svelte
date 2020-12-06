@@ -49,7 +49,7 @@ async function loadTool(newTool=null) {
 			<div class="col-8">
 				<h2>Playground</h2>
 			</div>
-			<div class="col-4 text-right" data-step="1" data-intro="These are the tools supported in this playground">
+			<div class="col-4 text-right" data-step="1" data-intro="These are the tools supported in this playground. Click on one to load it.">
 				{#each Object.keys(TOOLS).sort() as t}
 					<button class="btn-tool mr-2 btn {t == tool ? "btn-secondary" : "btn-outline-secondary"}" on:click={() => loadTool(t)}>{t}</button>
 				{/each}
