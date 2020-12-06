@@ -5,7 +5,6 @@ cd src/
 # Remove unneeded files to keep .data files small so they load quickly
 rm example/reads/combined_reads.bam
 rm example/reads/longreads.fq
-rm -rf example/index
 
 cat example/reads/reads_1.fq | head -n100 > example/reads/reads_1.fq.tmp
 cat example/reads/reads_2.fq | head -n100 > example/reads/reads_2.fq.tmp
