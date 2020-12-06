@@ -11,6 +11,8 @@ const BED_CPG_FILE = "cpg.bed";
 const BED_CPG_FILE_BAM = "cpg.bam";
 const BED_EXONS_FILE = "exons.bed";
 const BED_GENOME_FILE = "genome.txt";
+const FASTQ_R1 = "reads_1.fq";
+const FASTQ_R2 = "reads_2.fq";
 
 // Tools
 export const TOOLS = {
@@ -177,14 +179,48 @@ export const TOOLS = {
             { name: BED_GENOME_FILE, url: `${URL_HOST}/data/${BED_GENOME_FILE}` },
         ]
     },
-	// "bowtie": {
-	// 	aioli: {
-    //         module: "bowtie2",
-    //         version: "2.4.2",
-    //     },
-    //     queries: [],
-    //     files: []
-	// }
+	"bowtie2": {
+		aioli: {
+            module: "bowtie2",
+            program: "bowtie2-align-s",
+            version: "2.4.2",
+        },
+        queries: [
+            {
+                header: "Align reads",
+                items: [
+                    {
+                        label: "bowtie2 -x -1 -2",
+                        command: "bowtie2 -x /bowtie2/example/index/lambda_virus -1 reads_1.fq -2 reads_2.fq",
+                        tooltip: "Aligned paired-end reads",
+                        description: "Align paired-end reads from <code>reads_*.fq</code> to the <code>lambda_virus</code> genome"
+                    },
+                    {
+                        label: "bowtie2 -x -U",
+                        command: "bowtie2 -x /bowtie2/example/index/lambda_virus -U reads_1.fq",
+                        tooltip: "Align unpaired reads",
+                        description: "Align unpaired reads from <code>reads_1.fq</code> to the <code>lambda_virus</code> genome"
+                    },
+                    {
+                        label: "bowtie2 -x -U --local",
+                        command: "bowtie2 -x /bowtie2/example/index/lambda_virus -U reads_1.fq --local",
+                        tooltip: "Local alignment",
+                        description: "Perform local alignment of <code>reads_1.fq</code> to the <code>lambda_virus</code> genome. See <a href='http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#end-to-end-alignment-versus-local-alignment' target='_blank'>documentation</a>."
+                    },
+                    {
+                        label: "bowtie2 -x -U -S",
+                        command: "bowtie2 -x /bowtie2/example/index/lambda_virus -U reads_1.fq -S output.sam",
+                        tooltip: "Output results to disk",
+                        description: "Align reads and save results to disk. Use <button class='btn btn-sm btn-info terminal' value='cat output.sam'>cat output.sam</button> to see the contents of <code>output.sam</code>."
+                    },
+                ]
+            },
+        ],
+        files: [
+            { name: FASTQ_R1, url: `${URL_HOST}/data/${FASTQ_R1}` },
+            { name: FASTQ_R2, url: `${URL_HOST}/data/${FASTQ_R2}` },
+        ]
+	}
 };
 
 // Simple JavaScript utility functions that can be called from CommandLine.svelte
