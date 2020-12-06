@@ -83,7 +83,7 @@ describe("play.biowasm.com", () => {
                     else if(tool == "samtools")
                         assert(output.includes("DRR016846") || output.includes("GL000199") || output.includes("777"), "Test for samtools failed");
                     else if(tool == "bowtie2")
-                        assert(output.includes("r7") || output.includes(""), "Test for bowtie2 failed");
+                        assert(output.includes("r1") || output.includes(""), "Test for bowtie2 failed");
                     else
                         assert(false, `Missing tests for ${tool}`);
                 }
