@@ -6,7 +6,7 @@ A repository of genomics tools, compiled from C/C++ to WebAssembly so they can r
 
 * [samtools/htslib v1.10](tools/samtools/README.md)
 * [bedtools v2.29](tools/bedtools2/README.md)
-* [bowtie v2.3.5.1](tools/bowtie2/README.md)
+* [bowtie v2.4.2](tools/bowtie2/README.md)
 * [fastp v0.20.1](tools/fastp/README.md)
 * [seqtk v1.3](tools/seqtk/README.md)
 * [wgsim](tools/wgsim/README.md)
