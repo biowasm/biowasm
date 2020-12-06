@@ -5,7 +5,7 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public",
-    "test": "[[ ! -e chromedriver ]] && echo 'Please install chromedriver first from http://chromedriver.storage.googleapis.com' || npx mocha  ./tests.js --timeout -1"
+    "test": "[[ ! -e chromedriver ]] && echo 'Please install chromedriver first from http://chromedriver.storage.googleapis.com' || npx mocha  ./tests.js --timeout 60000"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "11.0.2",
