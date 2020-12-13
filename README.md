@@ -18,7 +18,7 @@ A repository of genomics tools, compiled from C/C++ to WebAssembly so they can r
 
 * **biowasm**: a collection of recipes for compiling C/C++ genomics tools to WebAssembly &mdash; this repo
 * **biowasm CDN**: a server where we host the pre-compiled tools for use in your apps &mdash; [cdn.biowasm.com](https://cdn.biowasm.com)
-* **Aioli**: a tool for running these modules in a browser, inside WebWorkers (i.e. in background threads) &mdash; [Aioli repo](https://github.com/biowasm/aioli)
+* **Aioli**: a tool for running these modules in a browser, inside WebWorkers (i.e. background threads) &mdash; [repo](https://github.com/biowasm/aioli)
 
 ## Get Started
 
