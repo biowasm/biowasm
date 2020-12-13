@@ -33,6 +33,18 @@ let UI = {
 	stopBtnDisabled: false,  // If true, "Stop" button is disabled
 }
 
+// Errors to ignore from Emscripten
+const IGNORE_STDOUT = [
+	// This error shows up when parsing mounted URLs; doesn't appear on localhost
+	// See <https://github.com/emscripten-core/emscripten/blob/2.0.0/src/library_fs.js#L1801>
+	"LazyFiles on gzip forces download of the whole file when length is accessed\n",
+];
+const IGNORE_STDERR = [
+	// This error shows up in stderr because the bowtie2.wasm technically still has pthreads
+	"pthread_sigmask() is not supported: this is a no-op.\n"
+];
+
+
 // -----------------------------------------------------------------------------
 // On load
 // -----------------------------------------------------------------------------
@@ -108,12 +120,20 @@ export async function launch(cmd=null)
 		output = { stdout: "", stderr: String(error) };
 	}
 
-	// Send result to parent component unless using redirection
+	// Handle redirection to file
 	if(redirection != null) {
 		let blob = new Blob([output.stdout], { type: "text/plain" });
 		await Aioli.mount(blob, redirection);
 		output.stdout = "ok";
 	}
+
+	// Remove Emscripten errors from output
+	for(let txt of IGNORE_STDOUT)
+		output.stdout = output.stdout.replace(txt, "");
+	for(let txt of IGNORE_STDERR)
+		output.stderr = output.stderr.replace(txt, "");
+
+	// Send result to parent component
 	dispatch("output", output);
 
 	// Revert UI
