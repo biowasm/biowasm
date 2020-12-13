@@ -129,9 +129,9 @@ export async function launch(cmd=null)
 
 	// Remove Emscripten errors from output
 	for(let txt of IGNORE_STDOUT)
-		output.stdout = output.stdout.replace(txt, "");
+		output.stdout = output.stdout.replaceAll(txt, "");
 	for(let txt of IGNORE_STDERR)
-		output.stderr = output.stderr.replace(txt, "");
+		output.stderr = output.stderr.replaceAll(txt, "");
 
 	// Send result to parent component
 	dispatch("output", output);

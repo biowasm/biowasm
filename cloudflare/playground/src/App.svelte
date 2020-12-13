@@ -69,5 +69,5 @@ async function loadTool(newTool=null) {
 		bind:launch={launch}
 		on:output={msg => output = msg.detail} />
 
-	<pre class="border rounded border-primary p-3" style="height:55vh"><span id="stdout">{output.stdout}</span><span id="stderr" style="color:#bbb">{output.stderr}</span></pre>
+	<pre class="border rounded border-primary p-3" style="height:55vh"><span id="stdout">{output.stdout}</span><br /><br /><span id="stderr" style="color:#bbb">{output.stderr}</span></pre>
 </div>
