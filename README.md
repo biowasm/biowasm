@@ -88,8 +88,9 @@ docker run \
     emscripten/emsdk:2.0.0
 
 # Go into the container
-docker exec -u root -it bash
+docker exec -u root -it wasm bash
 # While inside the container, install dependencies
+apt-get update
 apt-get install -y autoconf liblzma-dev less vim
 # Create small web server for testing
 cat << EOF > server.py
