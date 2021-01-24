@@ -1,5 +1,5 @@
 // CDN
-const TESTING = true;
+const TESTING = false;
 export const BIOWASM_URL = `https://cdn${TESTING ? "-stg" : ""}.biowasm.com`;
 
 // Constants
