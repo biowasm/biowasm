@@ -1,5 +1,6 @@
 DIR_TOOLS = tools
 TOOLS = $(notdir $(wildcard tools/*))
+TARGET := $(if $(TARGET),$(TARGET),default)
 
 # Clean
 clean:
@@ -17,7 +18,7 @@ init:
 
 ${TOOLS}:
 	@ \
-	. ./shared.sh; \
+	. ./config/shared.$(TARGET).sh; \
 	cd $(DIR_TOOLS)/$@/; \
 	mkdir -p build; \
 	\
@@ -31,6 +32,6 @@ ${TOOLS}:
 	echo "——————————————————————————————————————————————————"; \
 	./compile.sh; \
 	for glueCode in build/*.js; do \
-		cat ../../shared.js $$glueCode > $$glueCode.tmp; \
+		cat ../../config/shared.js $$glueCode > $$glueCode.tmp; \
 		mv $$glueCode.tmp $$glueCode; \
 	done
