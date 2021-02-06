@@ -20,6 +20,27 @@ index 160314a..8c64e7a 100644
  	$(CC) $(ALL_LDFLAGS) -o $@ $(AOBJS) $(LZ4OBJS) libbam.a libst.a $(HTSLIB_LIB) $(CURSES_LIB) -lm $(ALL_LIBS) -lpthread
  
  # For building samtools and its test suite only: NOT to be installed.
+diff --git a/bam_sort.c b/bam_sort.c
+index 0bf346c..22aff33 100644
+--- a/bam_sort.c
++++ b/bam_sort.c
+@@ -2027,15 +2027,7 @@ static int sort_blocks(int n_files, size_t k, bam1_tag *buf, const char *prefix,
+             w[i].no_save = 0;
+         }
+         pos += w[i].buf_len; rest -= w[i].buf_len;
+-        pthread_create(&tid[i], &attr, worker, &w[i]);
+-    }
+-    for (i = 0; i < n_threads; ++i) {
+-        pthread_join(tid[i], 0);
+-        if (w[i].error != 0) {
+-            errno = w[i].error;
+-            print_error_errno("sort", "failed to create temporary file \"%s.%.4d.bam\"", prefix, w[i].index);
+-            n_failed++;
+-        }
++        worker(&w[0]);
+     }
+     free(tid); free(w);
+     if (n_failed) return -1;
 diff --git a/bamtk.c b/bamtk.c
 index a6959f9..5a44af6 100644
 --- a/bamtk.c
