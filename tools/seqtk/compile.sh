@@ -1,5 +1,7 @@
 #!/bin/bash
 
-emcc src/seqtk.c \
-    -o build/seqtk.html \
+cd src/
+emcc seqtk.c \
+    -o ../build/seqtk.html \
+    -O2 \
     $EM_FLAGS

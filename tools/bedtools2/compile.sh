@@ -12,4 +12,4 @@ make clean
 # Compile to WebAssembly
 emmake make \
     BIN_DIR="../build/" \
-    BT_LDFLAGS="--preload-file test@/bedtools2/test $(echo $EM_FLAGS)"
+    BT_LDFLAGS="--preload-file test@/bedtools2/test $EM_FLAGS"

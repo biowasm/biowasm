@@ -17,4 +17,4 @@ mv example/reads/reads_2.fq.tmp example/reads/reads_2.fq
 emmake make bowtie2-align-s \
     NO_TBB=1 \
     POPCNT_CAPABILITY=0 \
-    WASM_FLAGS="$(echo $EM_FLAGS) --preload-file example/@/bowtie2/example/ -s ASSERTIONS=1 -s DISABLE_EXCEPTION_CATCHING=0"
+    WASM_FLAGS="$EM_FLAGS --preload-file example/@/bowtie2/example/ -s ASSERTIONS=1 -s DISABLE_EXCEPTION_CATCHING=0"

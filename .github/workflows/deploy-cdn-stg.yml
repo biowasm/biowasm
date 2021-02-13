@@ -2,7 +2,7 @@ name: Deploy biowasm-stg
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   deploy:
@@ -27,7 +27,7 @@ jobs:
       # Compile
       # ------------------------------------------------------------------------
       - name: Compile to WebAssembly
-        run: ./compile.sh
+        run: ./deploy.sh
 
       # ------------------------------------------------------------------------
       # Deploy to Cloudflare Workers

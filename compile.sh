@@ -1,91 +1,41 @@
 #!/bin/bash
 
-# This script compiles the bioinformatics tools to WebAssembly and is invoked by
-# the GitHub Actions pipelines in `.github/workflows/`.
+# This script compiles a tool to WebAssembly and is invoked by the Makefile.
 
-# ------------------------------------------------------------------------------
-# Config
-# ------------------------------------------------------------------------------
+TOOL=${1?Usage: ./compile.sh toolName targetName}
+TARGET=${2?Usage: ./compile.sh toolName targetName}
+DIR_TOOLS=tools/
 
-DIR_CDN="cloudflare/cdn/public"
+# Load target Emscripten flags
+. ./config/shared.$TARGET.sh
 
-AIOLI=("1.4.1")
+# Apply patches, if any
+cd "${DIR_TOOLS}/${TOOL}/"
+mkdir -p build
+echo "——————————————————————————————————————————————————"
+echo "🧬 Applying patches..."
+echo "——————————————————————————————————————————————————"
+test -f patch && (cd src && git stash && git apply -v ../patch && cd ..) || echo "No patches"
 
-# Format: toolName toolVersion toolBranch
-TOOLS=$(cat <<EOF
-	bedtools2    2.29.2        v2.29.2
+# Launch tool's compile.sh script
+echo "——————————————————————————————————————————————————"
+echo "🧬 Compiling to WebAssembly..."
+echo "——————————————————————————————————————————————————"
+echo $EM_FLAGS
+./compile.sh
 
-	bhtsne       2016.08.22    1a62a5d
-
-	bowtie2      2.4.2         v2.4.2
-
-	fastp        0.20.1        0.20.1
-
-	samtools     1.10          1.10
-
-	seq-align    2017.10.18    dc41988
-
-	seqtk        1.2           v1.2
-	seqtk        1.3           v1.3
-
-	wgsim        2011.10.17    a12da33
+# Generate glue code for all .js files. The default thisProgram is "./this.program"
+# so we update it to match the tool name for convenience
+SHARED_JS_EXTRA=$(cat <<EOF
+    if(typeof Module["thisProgram"] == "undefined")
+        Module["thisProgram"] = "./${TOOL}";
 EOF
 )
 
-# ------------------------------------------------------------------------------
-# Setup repos and dependencies
-# ------------------------------------------------------------------------------
-make init
-sudo apt-get install -y tree
-
-# ------------------------------------------------------------------------------
-# Compile each tool
-# ------------------------------------------------------------------------------
-while read toolName toolVersion toolBranch;
+for glueCode in build/*.js;
 do
-	if [[ "$toolName" == "" ]]; then
-		continue;
-	fi
-
-	echo "================================================================"
-	echo "Processing $toolName/$toolVersion @ $toolBranch"
-	echo "================================================================"
-
-	# Go to branch/tag of interest (cleanup from previous iteration)
-	cd tools/${toolName}/src
-	git reset --hard
-	git clean -f -d
-	git fetch --all
-	git checkout "$toolBranch"
-
-	# Build it
-	cd ../../..
-	make "$toolName"
-	ls -lah tools/${toolName}/build/
-	mkdir -p ${DIR_CDN}/${toolName}/${toolVersion}/ ${DIR_CDN}/${toolName}/latest/
-	cp tools/${toolName}/build/* ${DIR_CDN}/${toolName}/${toolVersion}/
-	cp tools/${toolName}/build/* ${DIR_CDN}/${toolName}/latest/
-done <<< "$TOOLS"
-
-# ------------------------------------------------------------------------------
-# Generate CDN files for Aioli
-# ------------------------------------------------------------------------------
-git clone "https://github.com/biowasm/aioli.git"
-cd aioli/
-for version in ${AIOLI[@]};
-do
-	git checkout "v$version"
-	dir_out="../$DIR_CDN/aioli/$version"
-	mkdir -p "$dir_out/"
-	cp aioli{,.worker}.js "$dir_out/"
+    echo "$SHARED_JS_EXTRA" > $glueCode.tmp
+    cat ../../config/shared.js $glueCode.tmp $glueCode > $glueCode.final
+    mv $glueCode.final $glueCode
+    rm $glueCode.tmp
 done
-dir_out="../$DIR_CDN/aioli/latest"
-mkdir -p "$dir_out/"
-cp aioli{,.worker}.js "$dir_out/"
-cd ../
-
-# ------------------------------------------------------------------------------
-# Generate index
-# ------------------------------------------------------------------------------
-cd "$DIR_CDN"
-( echo "cdn.biowasm.com"; date; tree --charset=ascii --du -h | grep -v -E "index.html|index|404.html|.ico" | tail +2 ) > index
