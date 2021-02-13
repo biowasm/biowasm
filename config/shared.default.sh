@@ -25,5 +25,9 @@ EM_FLAGS_THREADS=$(cat <<EOF
 EOF
 )
 
+# Remove extraneous whitespace
+EM_FLAGS=$(echo $EM_FLAGS)
+EM_FLAGS_THREADS=$(echo $EM_FLAGS_THREADS)
+
 export EM_FLAGS;
 export EM_FLAGS_THREADS;
