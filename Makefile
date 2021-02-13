@@ -31,7 +31,7 @@ ${TOOLS}:
 	echo "🧬 Compiling to WebAssembly..."; \
 	echo "——————————————————————————————————————————————————"; \
 	./compile.sh; \
-	for glueCode in build/*.js; do \
+	for glueCode in $(ls build/*.js); do \
 		cat ../../config/shared.js $$glueCode > $$glueCode.tmp; \
 		mv $$glueCode.tmp $$glueCode; \
 	done
