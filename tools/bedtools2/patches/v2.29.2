@@ -1,7 +1,16 @@
 diff --git a/Makefile b/Makefile
-index 6bc3cb98..23c36145 100644
+index 6bc3cb98..33d31f58 100644
 --- a/Makefile
 +++ b/Makefile
+@@ -28,7 +28,7 @@ BT_CPPFLAGS = -DDEBUG -D_DEBUG -D_FILE_OFFSET_BITS=64 -DWITH_HTS_CB_API $(INCLUD
+ BT_CXXFLAGS = -Wconversion -Wall -Wextra -g -O0
+ else
+ BT_CPPFLAGS = -D_FILE_OFFSET_BITS=64 -DWITH_HTS_CB_API $(INCLUDES)
+-BT_CXXFLAGS = -g -Wall -O2
++BT_CXXFLAGS = -w -O2
+ endif
+ 
+ # If the user has specified to do so, tell the compile to use rand() (instead of mt19937).
 @@ -173,7 +173,7 @@ $(BUILT_OBJECTS): | $(OBJ_DIR)
  
  $(BIN_DIR)/bedtools: autoversion $(BUILT_OBJECTS) $(HTSDIR)/libhts.a | $(BIN_DIR)

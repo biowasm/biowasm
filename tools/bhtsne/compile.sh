@@ -8,7 +8,7 @@ test -f data/pollen2014.snd || gunzip data/pollen2014.snd.gz
 cd src/
 emmake make \
     CC=emcc CXX=em++ \
-    CFLAGS+="-s USE_ZLIB=1" \
+    CFLAGS="-O2 -s USE_ZLIB=1 -w" \
     LIBS="-s USE_ZLIB=1 -lm"
 
 # Generate .wasm/.js files
