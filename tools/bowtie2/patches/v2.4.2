@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 890cc3f..8ebe8b6 100644
+index 890cc3f0..08e8ad16 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -240,6 +240,23 @@ FILE_FLAGS     := -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE
@@ -26,9 +26,12 @@ index 890cc3f..8ebe8b6 100644
  BOWTIE2_BIN_LIST := bowtie2-build-s \
    bowtie2-build-l \
    bowtie2-align-s \
-@@ -382,9 +399,9 @@ bowtie2-align-s-sanitized bowtie2-align-s: bt2_search.cpp $(SEARCH_CPPS) $(SHARE
+@@ -380,11 +397,11 @@ bowtie2-build-l-debug: bt2_build.cpp $(SHARED_CPPS) $(HEADERS)
+ 
+ bowtie2-align-s-sanitized bowtie2-align-s: bt2_search.cpp $(SEARCH_CPPS) $(SHARED_CPPS) $(HEADERS) $(SEARCH_FRAGMENTS)
  	$(CXX) $(RELEASE_FLAGS) $(RELEASE_DEFS) $(CXXFLAGS) \
- 		$(DEFS) -DBOWTIE2 $(NOASSERT_FLAGS) -Wall \
+-		$(DEFS) -DBOWTIE2 $(NOASSERT_FLAGS) -Wall \
++		$(DEFS) -DBOWTIE2 $(NOASSERT_FLAGS) -w \
  		$(CPPFLAGS) \
 -		-o $@ $< \
 +		-o ../build/$@.html $< \
@@ -39,7 +42,7 @@ index 890cc3f..8ebe8b6 100644
  bowtie2-align-l-sanitized bowtie2-align-l: bt2_search.cpp $(SEARCH_CPPS) $(SHARED_CPPS) $(HEADERS) $(SEARCH_FRAGMENTS)
  	$(CXX) $(RELEASE_FLAGS) $(RELEASE_DEFS) $(CXXFLAGS) \
 diff --git a/bt2_search.cpp b/bt2_search.cpp
-index 48680f8..3ad9dab 100644
+index 48680f8a..3ad9dabe 100644
 --- a/bt2_search.cpp
 +++ b/bt2_search.cpp
 @@ -4786,6 +4786,7 @@ static void multiseedSearch(
