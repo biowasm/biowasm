@@ -1,5 +1,7 @@
 DIR_TOOLS = tools
 TOOLS = $(notdir $(wildcard tools/*))
+VERSION := $(VERSION)
+BRANCH := $(if $(BRANCH),$(BRANCH),v$(VERSION))
 TARGET := $(if $(TARGET),$(TARGET),default)
 
 # Clean
@@ -9,12 +11,9 @@ clean:
 all: ${TOOLS}
 
 init:
-	@ \
-	echo "——————————————————————————————————————————————————"; \
-	echo "🧬 Updating git submodules..."; \
-	echo "——————————————————————————————————————————————————"; \
-	git submodule update --init --recursive; \
-	git submodule status; \
+	@git submodule update --init --recursive
+	@git submodule status
 
 ${TOOLS}:
-	./compile.sh $@ $(TARGET)
+	@test -n "$(VERSION)"
+	@./compile.sh $@ $(VERSION) $(BRANCH) $(TARGET)

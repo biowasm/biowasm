@@ -51,16 +51,8 @@ do
 	echo "Processing $toolName/$toolVersion @ $toolBranch"
 	echo "================================================================"
 
-	# Go to branch/tag of interest (cleanup from previous iteration)
-	cd tools/${toolName}/src
-	git reset --hard
-	git clean -f -d
-	git fetch --all
-	git checkout "$toolBranch"
-
 	# Build it
-	cd ../../..
-	make "$toolName"
+	VERSION="$toolVersion" BRANCH="$toolBranch" make "$toolName"
 	ls -lah tools/${toolName}/build/
 	mkdir -p ${DIR_CDN}/${toolName}/${toolVersion}/ ${DIR_CDN}/${toolName}/latest/
 	cp tools/${toolName}/build/* ${DIR_CDN}/${toolName}/${toolVersion}/

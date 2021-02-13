@@ -1,27 +1,8 @@
 diff --git a/Makefile b/Makefile
-index 6bc3cb98..be605da5 100644
+index 6bc3cb98..23c36145 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -21,7 +21,7 @@ OBJ_DIR	= obj
- BIN_DIR	= bin
- SRC_DIR	= src
- 
--CXX     = g++
-+CXX     = em++ -s USE_ZLIB=1 -s USE_BZIP2=1
- 
- ifeq ($(DEBUG),1)
- BT_CPPFLAGS = -DDEBUG -D_DEBUG -D_FILE_OFFSET_BITS=64 -DWITH_HTS_CB_API $(INCLUDES)
-@@ -39,7 +39,8 @@ BT_CXXFLAGS += -std=c++11
- endif
- 
- BT_LDFLAGS =
--BT_LIBS    = -lz -lm -lbz2 -llzma -lpthread
-+BT_LIBS    = -s USE_ZLIB=1 -s USE_BZIP2=1 -lm -lpthread
-+
- 
- prefix ?= /usr/local
- 
-@@ -173,7 +174,7 @@ $(BUILT_OBJECTS): | $(OBJ_DIR)
+@@ -173,7 +173,7 @@ $(BUILT_OBJECTS): | $(OBJ_DIR)
  
  $(BIN_DIR)/bedtools: autoversion $(BUILT_OBJECTS) $(HTSDIR)/libhts.a | $(BIN_DIR)
  	@echo "- Building main bedtools binary."

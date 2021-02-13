@@ -2,40 +2,73 @@
 
 # This script compiles a tool to WebAssembly and is invoked by the Makefile.
 
-TOOL=${1?Usage: ./compile.sh toolName targetName}
-TARGET=${2?Usage: ./compile.sh toolName targetName}
+usage="Usage: ./compile.sh toolName toolVersion toolBranch targetName"
+TOOL=${1?$usage}
+VERSION=${2?$usage}
+BRANCH=${3?$usage}
+TARGET=${4?$usage}
 DIR_TOOLS=tools/
+
+# ------------------------------------------------------------------------------
+# Initialize
+# ------------------------------------------------------------------------------
 
 # Load target Emscripten flags
 . ./config/shared.$TARGET.sh
 
-# Apply patches, if any
+# Prep build/ folder
 cd "${DIR_TOOLS}/${TOOL}/"
 mkdir -p build
-echo "——————————————————————————————————————————————————"
-echo "🧬 Applying patches..."
-echo "——————————————————————————————————————————————————"
-test -f patch && (cd src && git stash && git apply -v ../patch && cd ..) || echo "No patches"
 
-# Launch tool's compile.sh script
+# ------------------------------------------------------------------------------
+# Setup codebase
+# ------------------------------------------------------------------------------
+
 echo "——————————————————————————————————————————————————"
-echo "🧬 Compiling to WebAssembly..."
+echo "🧬 Processing $TOOL v$VERSION @ branch '$BRANCH'..."
 echo "——————————————————————————————————————————————————"
-echo $EM_FLAGS
+
+cd src/
+
+# Go to branch/tag of interest (clean up previous iterations)
+git reset --hard
+git clean -f -d
+git fetch --all
+git checkout "$BRANCH"
+
+# Apply patches, if any
+patch_file=../patches/$BRANCH
+if [[ -f "$patch_file" ]]; then
+    echo "Applying patch file <$patch_file>"
+    git apply -v $patch_file
+else
+    echo "No patch file found at <$patch_file>"
+fi
+
+cd ../
+
+# ------------------------------------------------------------------------------
+# Compile tool
+# ------------------------------------------------------------------------------
+
+echo "——————————————————————————————————————————————————"
+echo "🧬 Compiling $TOOL v$VERSION to WebAssembly..."
+echo "——————————————————————————————————————————————————"
 ./compile.sh
 
-# Generate glue code for all .js files. The default thisProgram is "./this.program"
-# so we update it to match the tool name for convenience
-SHARED_JS_EXTRA=$(cat <<EOF
+# ------------------------------------------------------------------------------
+# Generate glue code for all .js files
+# ------------------------------------------------------------------------------
+
+# Default thisProgram == "./this.program"; update it to match tool name for convenience
+cat <<EOF > glueCode.extra
     if(typeof Module["thisProgram"] == "undefined")
         Module["thisProgram"] = "./${TOOL}";
 EOF
-)
 
-for glueCode in build/*.js;
-do
-    echo "$SHARED_JS_EXTRA" > $glueCode.tmp
-    cat ../../config/shared.js $glueCode.tmp $glueCode > $glueCode.final
+# Combine all glue code into 1 .js file
+for glueCode in build/*.js; do
+    cat ../../config/shared.js glueCode.extra $glueCode > $glueCode.final
     mv $glueCode.final $glueCode
-    rm $glueCode.tmp
 done
+rm glueCode.extra
