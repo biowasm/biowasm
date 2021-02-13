@@ -37,12 +37,12 @@ git fetch --all
 git checkout "$BRANCH"
 
 # Apply patches, if any
-patch_file=../patches/$VERSION
+patch_file=../patches/$BRANCH
 if [[ -f "$patch_file" ]]; then
     echo "Applying patch file <$patch_file>"
     git apply -v $patch_file
 else
-    echo "No patch file found"
+    echo "No patch file found at <$patch_file>"
 fi
 
 cd ../
