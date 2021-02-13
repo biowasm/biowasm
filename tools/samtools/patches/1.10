@@ -54,3 +54,16 @@ index a6959f9..5a44af6 100644
      if (strcmp(argv[1], "view") == 0)           ret = main_samview(argc-1, argv+1);
      else if (strcmp(argv[1], "import") == 0)    ret = main_import(argc-1, argv+1);
      else if (strcmp(argv[1], "mpileup") == 0)   ret = bam_mpileup(argc-1, argv+1);
+diff --git a/version.sh b/version.sh
+index 5ccd9bb..bb7032a 100755
+--- a/version.sh
++++ b/version.sh
+@@ -30,7 +30,7 @@ VERSION=1.10
+ if [ -e .git ]
+ then
+     # If we ever get to 10.x this will need to be more liberal
+-    VERSION=`git describe --match '[0-9].[0-9]*' --dirty --always`
++    VERSION=`git describe --match '[0-9].[0-9]*' --always`
+ fi
+ 
+ echo $VERSION
