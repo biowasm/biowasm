@@ -4,14 +4,15 @@
 
 A repository of genomics tools, compiled from C/C++ to WebAssembly so they can run in a web browser:
 
-* [samtools/htslib v1.10](tools/samtools/README.md)
-* [bedtools v2.29](tools/bedtools2/README.md)
-* [bowtie v2.4.2](tools/bowtie2/README.md)
-* [fastp v0.20.1](tools/fastp/README.md)
-* [seqtk v1.3](tools/seqtk/README.md)
-* [wgsim](tools/wgsim/README.md)
-* [bhtsne](tools/bhtsne/README.md)
-* [seq-align](tools/seq-align/README.md)
+* [samtools/htslib v1.10](tools/samtools)
+* [bedtools v2.29](tools/bedtools2)
+* [bowtie v2.4.2](tools/bowtie2)
+* [fastp v0.20.1](tools/fastp)
+* [seqtk v1.3](tools/seqtk)
+* [ssw v1.2.4](tools/ssw)
+* [wgsim](tools/wgsim)
+* [bhtsne](tools/bhtsne)
+* [seq-align](tools/seq-align)
 
 
 ## How it works
