@@ -34,3 +34,6 @@
 	path = tools/fastp/src
 	url = https://github.com/OpenGene/fastp.git
 
+[submodule "tools/ssw/src"]
+	path = tools/ssw/src
+	url = https://github.com/mengyao/Complete-Striped-Smith-Waterman-Library.git

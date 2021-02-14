@@ -28,6 +28,8 @@ TOOLS=$(cat <<EOF
 	seqtk        1.2           v1.2
 	seqtk        1.3           v1.3
 
+	ssw          1.2.4         ad452ea
+
 	wgsim        2011.10.17    a12da33
 EOF
 )

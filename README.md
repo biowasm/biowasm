@@ -4,14 +4,15 @@
 
 A repository of genomics tools, compiled from C/C++ to WebAssembly so they can run in a web browser:
 
-* [samtools/htslib v1.10](tools/samtools/README.md)
-* [bedtools v2.29](tools/bedtools2/README.md)
-* [bowtie v2.4.2](tools/bowtie2/README.md)
-* [fastp v0.20.1](tools/fastp/README.md)
-* [seqtk v1.3](tools/seqtk/README.md)
-* [wgsim](tools/wgsim/README.md)
-* [bhtsne](tools/bhtsne/README.md)
-* [seq-align](tools/seq-align/README.md)
+* [samtools/htslib v1.10](tools/samtools)
+* [bedtools v2.29](tools/bedtools2)
+* [bowtie v2.4.2](tools/bowtie2)
+* [fastp v0.20.1](tools/fastp)
+* [seqtk v1.3](tools/seqtk)
+* [ssw v1.2.4](tools/ssw)
+* [wgsim](tools/wgsim)
+* [bhtsne](tools/bhtsne)
+* [seq-align](tools/seq-align)
 
 
 ## How it works
@@ -19,6 +20,18 @@ A repository of genomics tools, compiled from C/C++ to WebAssembly so they can r
 * **biowasm**: a collection of recipes for compiling C/C++ genomics tools to WebAssembly &mdash; this repo
 * **biowasm CDN**: a server where we host the pre-compiled tools for use in your apps &mdash; [cdn.biowasm.com](https://cdn.biowasm.com)
 * **Aioli**: a tool for running these modules in a browser, inside WebWorkers (i.e. background threads) &mdash; [repo](https://github.com/biowasm/aioli)
+
+
+## Tools using biowasm
+
+| Tool | URL | Repo |
+|-|-|-|
+| Ribbon | [genomeribbon.com](https://genomeribbon.com) | [MariaNattestad/Ribbon](https://github.com/MariaNattestad/Ribbon) |
+| Alignment Sandbox | [alignment.sandbox.bio](https://alignment.sandbox.bio/) | [RobertAboukhalil/alignment-sandbox](https://github.com/robertaboukhalil/alignment-sandbox) |
+| tSNE Sandbox | [tsne.sandbox.bio](https://tsne.sandbox.bio/) | [RobertAboukhalil/tsne-sandbox](https://github.com/robertaboukhalil/tsne-sandbox) |
+| fastq.bio | [fastq.bio](http://www.fastq.bio/) | [RobertAboukhalil/fastq.bio](https://github.com/robertaboukhalil/fastq.bio) |
+| bam.bio | [bam.bio](http://www.bam.bio/) | [RobertAboukhalil/bam.bio](https://github.com/robertaboukhalil/bam.bio) |
+
 
 ## Get Started
 
@@ -148,7 +161,8 @@ You should also create the following files:
 tools/<tool>/
     README.md   Details about the tool and dependencies
     compile.sh  Script that will run to compile the tool to WebAssembly (can use `$EM_FLAGS` for common flags)
-    patch       Patches that need to be applied to the code to compile it to WebAssembly (optional)
+    patches/    
+        <tag>   Patch applied to the code to compile it to WebAssembly; branch- or tag-specific (optional)
 ```
 
 ## Deploy changes
