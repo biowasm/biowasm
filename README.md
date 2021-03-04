@@ -175,5 +175,4 @@ tools/<tool>/
 - Deploy one tool without re-compiling all others: download data from the CDN onto the GitHub Actions VM first?
 - Run each tool's tests: use Selenium? Can't use node.js when have `.data` files
 - Generate HTML file for each tool: CLI for testing, predefined queries, etc
-- Remove `fastp`'s dependence on "https://data.sandbox.bio/fastq/NA12878.30k.fastq.gz"
 - Support for Rust bioinformatics tools such as [sourmash](https://github.com/dib-lab/sourmash/tree/v3.2.2/src/core) and [rust-bio](https://github.com/rust-bio/rust-bio)
