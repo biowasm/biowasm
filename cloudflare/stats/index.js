@@ -110,7 +110,6 @@ async function handleSchedule(scheduledDate)
 {
   console.log(scheduledDate);
 
-  let keys = [];             // ["2020-10-01|/aioli/1.3.0/aioli.js", ...]
   let statsSplit = {};       // {"/aioli/1.3.0/aioli.js": { "2020-01-01": 4 }}
   let statsAggregated = {};  // {"aioli": { "2020-01-01": 4 }}
 
@@ -121,33 +120,33 @@ async function handleSchedule(scheduledDate)
   do {
     // Get next page of keys
     response = await LOGS.list({
-      cursor: response.cursor,
-      limit: 100
+      cursor: response.cursor
     });
 
-    // Extract key names
-    keys = keys.concat(response.keys.map(d => d.name));
+    // Parse the metadata (i.e. download counts) for every key
+    // Format:
+    // { keys: [{ name: "name", metadata: 123}], 
+    //   list_complete: false, cursor: "<CURSOR ID>"}] }
+    response.keys.map(d => {
+      const key = d.name;
+      const count = d.metadata;
+
+      // Parse key
+      [date, path] = key.split("|");
+      if(path == null)
+        return;
+      [_, prgm] = path.split("/");
+
+      // Split by version
+      if(!(path in statsSplit))
+        statsSplit[path] = {};
+      statsSplit[path][date] = count;
+      // Aggregate all versions
+      if(!(prgm in statsAggregated))
+        statsAggregated[prgm] = {};
+      statsAggregated[prgm][date] = count;
+    });
   } while(response.cursor != null)
-
-  // Tally up the counts
-  for(let key of keys)
-  {
-    console.log(key);
-    let count = + await LOGS.get(key);
-    [date, path] = key.split("|");
-    if(path == null)
-      continue;
-    [_, prgm] = path.split("/");
-
-    // Split by version
-    if(!(path in statsSplit))
-      statsSplit[path] = {};
-    statsSplit[path][date] = count;
-    // Aggregate all versions
-    if(!(prgm in statsAggregated))
-      statsAggregated[prgm] = {};
-    statsAggregated[prgm][date] = count;
-  }
 
   await LOGS.put(KEY_SUMMARY_SPLIT, JSON.stringify(statsSplit));
   await LOGS.put(KEY_SUMMARY_AGGREGATED, JSON.stringify(statsAggregated));
