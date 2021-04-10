@@ -16,8 +16,7 @@ async function handleRequest(request)
 {
     let response = { cursor: null };
     do {
-        let response = { cursor: null };
-            response = await LOGS_STG.list({
+        response = await LOGS_STG.list({
             cursor: response.cursor
         });
 
