@@ -42,7 +42,8 @@ addEventListener("fetch", event => {
       let key = `${new Date().toISOString().split("T").shift()}|${path}`;
       // Increment count
       let counter = parseInt(await LOGS.get(key) || 0) + 1;
-      await LOGS.put(key, counter);
+      // Save count in the metadata so we can retrieve it in bulk when doing .list() for CDN stats
+      await LOGS.put(key, null, { metadata: counter });
     }
     event.waitUntil(logEvent(url.pathname));
   }
