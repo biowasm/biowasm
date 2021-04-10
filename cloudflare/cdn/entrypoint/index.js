@@ -41,7 +41,7 @@ addEventListener("fetch", event => {
       // ISO Date Format: <YYYY-MM-DDTHH:mm:ss.sssZ>
       let key = `${new Date().toISOString().split("T").shift()}|${path}`;
       // Increment count
-      let counter = parseInt(await LOGS.get(key) || 0) + 1;
+      let counter = parseInt((await LOGS.getWithMetadata(key)).metadata || 0) + 1;
       // Save count in the metadata so we can retrieve it in bulk when doing .list() for CDN stats
       await LOGS.put(key, "", { metadata: counter });
     }
