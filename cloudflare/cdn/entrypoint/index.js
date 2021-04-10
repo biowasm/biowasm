@@ -43,7 +43,7 @@ addEventListener("fetch", event => {
       // Increment count
       let counter = parseInt(await LOGS.get(key) || 0) + 1;
       // Save count in the metadata so we can retrieve it in bulk when doing .list() for CDN stats
-      await LOGS.put(key, null, { metadata: counter });
+      await LOGS.put(key, "", { metadata: counter });
     }
     event.waitUntil(logEvent(url.pathname));
   }
