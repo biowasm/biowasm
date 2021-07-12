@@ -61,6 +61,13 @@ async function handleEvent(event) {
    * by configuring the function `mapRequestToAsset`
    */
   options.mapRequestToAsset = handlePrefix(/^\//);
+  options.cacheControl = {
+    browserTTL: 604800  // 1 week
+    // Defaults:
+    //   browserTTL: null, // do not set cache control ttl on responses
+    //   edgeTTL: 2 * 60 * 60 * 24, // 2 days
+    //   bypassCache: false, // do not bypass Cloudflare's cache
+  };
 
   try {
     if (DEBUG) {
