@@ -9,7 +9,7 @@
 
 DIR_CDN="cloudflare/cdn/public"
 
-AIOLI=("1.4.1")
+AIOLI=("1.4.1" "1.5.0")
 
 # Format: toolName toolVersion toolBranch
 TOOLS=$(cat <<EOF
@@ -56,9 +56,10 @@ do
 	# Build it
 	VERSION="$toolVersion" BRANCH="$toolBranch" make "$toolName"
 
-	# Copy over config.json file if it exists
+	# Copy over config.json file (or create it if it doesn't exist)
 	toolConfig="tools/${toolName}/configs/${toolVersion}.json"
-	[[ -f "$toolConfig" ]] && cp "$toolConfig" tools/${toolName}/build/config.json
+	[[ ! -f "$toolConfig" ]] && echo '{"wasm-features":[]}' > $toolConfig
+	cp "$toolConfig" tools/${toolName}/build/config.json
 
 	# Copy files over to the expected CDN folder
 	ls -lah tools/${toolName}/build/
