@@ -55,6 +55,12 @@ do
 
 	# Build it
 	VERSION="$toolVersion" BRANCH="$toolBranch" make "$toolName"
+
+	# Copy over config.json file if it exists
+	toolConfig="tools/${toolName}/configs/${toolVersion}.json"
+	[[ -f "$toolConfig" ]] && cp "$toolConfig" tools/${toolName}/build/config.json
+
+	# Copy files over to the expected CDN folder
 	ls -lah tools/${toolName}/build/
 	mkdir -p ${DIR_CDN}/${toolName}/${toolVersion}/ ${DIR_CDN}/${toolName}/latest/
 	cp tools/${toolName}/build/* ${DIR_CDN}/${toolName}/${toolVersion}/
