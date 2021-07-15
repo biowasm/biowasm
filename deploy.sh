@@ -57,8 +57,9 @@ do
 	VERSION="$toolVersion" BRANCH="$toolBranch" make "$toolName"
 
 	# Copy over config.json file (or create it if it doesn't exist)
-	toolConfig="tools/${toolName}/configs/${toolVersion}.json"
-	[[ ! -f "$toolConfig" ]] && echo '{"wasm-features":[]}' > $toolConfig
+	toolConfigDir="tools/${toolName}/configs"
+	toolConfig="${toolConfigDir}/${toolVersion}.json"
+	[[ ! -f "$toolConfig" ]] && mkdir -p "$toolConfigDir" && echo '{"wasm-features":[]}' > $toolConfig
 	cp "$toolConfig" tools/${toolName}/build/config.json
 
 	# Copy files over to the expected CDN folder
