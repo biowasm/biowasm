@@ -159,10 +159,12 @@ You should also create the following files:
 
 ```bash
 tools/<tool>/
-    README.md   Details about the tool and dependencies
-    compile.sh  Script that will run to compile the tool to WebAssembly (can use `$EM_FLAGS` for common flags)
+    README.md        Details about the tool and dependencies
+    compile.sh       Script that will run to compile the tool to WebAssembly (can use `$EM_FLAGS` for common flags)
     patches/    
-        <tag>   Patch applied to the code to compile it to WebAssembly; branch- or tag-specific (optional)
+        <tag>        Patch applied to the code to compile it to WebAssembly; branch- or tag-specific (optional)
+    configs/
+        <tag>.json   Configuration file with info about which WebAssembly features are needed (see ssw for an example); branch- or tag-specific (optional)
 ```
 
 ## Deploy changes
