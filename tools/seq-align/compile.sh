@@ -16,16 +16,3 @@ find . -name 'Makefile' -exec sed -i '/^CFLAGS/ s/$/ -s USE_ZLIB=1/g' {} \;
 
 # Build
 emmake make
-
-# Generate JS/Wasm for each tool
-em++ -O3 bin/needleman_wunsch.o \
-    -o ../build/needleman_wunsch.html \
-    $EM_FLAGS
-
-em++ -O3 bin/smith_waterman.o \
-    -o ../build/smith_waterman.html \
-    $EM_FLAGS
-
-em++ -O3 bin/lcs.o \
-    -o ../build/lcs.html \
-    $EM_FLAGS
