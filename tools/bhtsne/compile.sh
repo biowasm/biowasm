@@ -7,6 +7,7 @@ test -f data/pollen2014.snd || gunzip data/pollen2014.snd.gz
 # Compile
 FLAGS=$(cat <<EOF
     $EM_FLAGS \
+    -O3 \
     -s ASYNCIFY=1 \
     -s 'ASYNCIFY_IMPORTS=["send_names","send_results"]' \
     -s EXPORTED_RUNTIME_METHODS=["callMain","getValue","UTF8ToString"] \
