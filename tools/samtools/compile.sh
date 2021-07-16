@@ -12,14 +12,8 @@ make clean
 autoheader
 autoconf -Wno-syntax
 emconfigure ./configure --without-curses --with-htslib="../../htslib/src/" CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1"
-emmake make CC=emcc AR=emar \
-    CFLAGS="-O2 -s USE_ZLIB=1 -s USE_BZIP2=1" \
-    LDFLAGS="-s ERROR_ON_UNDEFINED_SYMBOLS=0"
 
-# Generate .wasm/.js files
-emcc -O2 samtools.o \
-    -o ../build/samtools.html \
-    $EM_FLAGS \
-    -s USE_BZIP2=1 \
-    -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
-    --preload-file examples/@/samtools/examples/
+# Build
+emmake make CC=emcc AR=emar \
+    CFLAGS="-O2 -s USE_ZLIB=1 -s USE_BZIP2=1 $EM_FLAGS --preload-file examples/@/samtools/examples/" \
+    LDFLAGS="-s ERROR_ON_UNDEFINED_SYMBOLS=0"
