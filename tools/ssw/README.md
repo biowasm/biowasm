@@ -2,10 +2,12 @@
 
 ### Warning
 
-This implementation of Smith-Waterman relies on SIMD instructions, which are not supported by default in browsers. To enable SIMD:
+This implementation of Smith-Waterman relies on SIMD instructions to run in a performant way. If the end user does not have SIMD enabled, Aioli will load the `ssw-nosimd.wasm` version, though it is considerably slower.
 
-* **Firefox**: Go to [about:config](about:config), search for `javascript.options.wasm_simd` and toggle to `true`.
-* **Chrome**: Go to [chrome://flags](chrome://flags), search for `WebAssembly SIMD support` and toggle to `Enabled`
+To enable SIMD in your browser:
+
+* **Firefox**: Go to [about:config](about:config), search for `javascript.options.wasm_simd` and toggle to `true` (enabled by default as of Firefox 89)
+* **Chrome**: Go to [chrome://flags](chrome://flags), search for `WebAssembly SIMD support` and toggle to `Enabled` (enabled by default as of Chrome 91)
 
 ### Usage
 
