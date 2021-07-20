@@ -49,18 +49,8 @@ do
 		continue;
 	fi
 
-	echo "================================================================"
-	echo "Processing $toolName/$toolVersion @ $toolBranch"
-	echo "================================================================"
-
 	# Build it
 	VERSION="$toolVersion" BRANCH="$toolBranch" make "$toolName"
-
-	# Copy over config.json file (or create it if it doesn't exist)
-	toolConfigDir="tools/${toolName}/configs"
-	toolConfig="${toolConfigDir}/${toolVersion}.json"
-	[[ ! -f "$toolConfig" ]] && mkdir -p "$toolConfigDir" && echo '{"wasm-features":[]}' > $toolConfig
-	cp "$toolConfig" tools/${toolName}/build/config.json
 
 	# Copy files over to the expected CDN folder
 	ls -lah tools/${toolName}/build/
