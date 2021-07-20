@@ -4,8 +4,9 @@ EM_FLAGS_BASE=$(cat <<EOF
     -s USE_ZLIB=1
     -s INVOKE_RUN=0
     -s FORCE_FILESYSTEM=1
-    -s EXPORTED_RUNTIME_METHODS=["callMain"]
-    -lworkerfs.js
+    -s EXPORTED_RUNTIME_METHODS=["callMain","FS","PROXYFS","WORKERFS"]
+    -s MODULARIZE=1
+    -lworkerfs.js -lproxyfs.js
 EOF
 )
 
