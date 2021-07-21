@@ -1,8 +1,8 @@
-name: Deploy biowasm-stg
+name: Deploy biowasm-stg (v1)
 
 on:
   push:
-    branches: [ main ]
+    branches: [ v1 ]
 
 jobs:
   deploy:
