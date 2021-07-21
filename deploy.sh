@@ -70,7 +70,10 @@ do
 	git checkout "v$version"
 	dir_out="../$DIR_CDN/aioli/$version"
 	mkdir -p "$dir_out/"
-	cp aioli{,.worker}.js "$dir_out/"
+
+	npm run build
+
+	cp dist/aioli{,.worker}.js "$dir_out/"
 done
 dir_out="../$DIR_CDN/aioli/latest"
 mkdir -p "$dir_out/"
