@@ -9,10 +9,12 @@
 
 DIR_CDN="cloudflare/cdn/public"
 
-AIOLI=("1.4.1" "1.5.0")
+AIOLI=("2.0.0")
 
 # Format: toolName toolVersion toolBranch
 TOOLS=$(cat <<EOF
+	base         2.0.0         v2.0.0
+
 	bedtools2    2.29.2        v2.29.2
 
 	bhtsne       2016.08.22    1a62a5d

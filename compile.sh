@@ -28,24 +28,27 @@ echo "————————————————————————�
 echo "🧬 Processing $TOOL v$VERSION @ branch '$BRANCH'..."
 echo "——————————————————————————————————————————————————"
 
-cd src/
+# Base package isn't a repo
+if [[ "$TOOL" != "base" ]]; then
+    cd src/
 
-# Go to branch/tag of interest (clean up previous iterations)
-git reset --hard
-git clean -f -d
-git fetch --all
-git checkout "$BRANCH"
+    # Go to branch/tag of interest (clean up previous iterations)
+    git reset --hard
+    git clean -f -d
+    git fetch --all
+    git checkout "$BRANCH"
 
-# Apply patches, if any
-patch_file=../patches/$BRANCH
-if [[ -f "$patch_file" ]]; then
-    echo "Applying patch file <$patch_file>"
-    git apply -v $patch_file
-else
-    echo "No patch file found at <$patch_file>"
+    # Apply patches, if any
+    patch_file=../patches/$BRANCH
+    if [[ -f "$patch_file" ]]; then
+        echo "Applying patch file <$patch_file>"
+        git apply -v $patch_file
+    else
+        echo "No patch file found at <$patch_file>"
+    fi
+
+    cd ../
 fi
-
-cd ../
 
 # ------------------------------------------------------------------------------
 # Compile tool
