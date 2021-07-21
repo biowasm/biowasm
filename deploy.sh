@@ -9,7 +9,7 @@
 
 DIR_CDN="cloudflare/cdn/public"
 
-AIOLI=("2")
+AIOLI=("2.0.0")
 
 # Format: toolName toolVersion toolBranch
 TOOLS=$(cat <<EOF
@@ -71,6 +71,7 @@ do
 	dir_out="../$DIR_CDN/aioli/$version"
 	mkdir -p "$dir_out/"
 
+	npm install
 	npm run build
 
 	cp dist/aioli{,.worker}.js "$dir_out/"
