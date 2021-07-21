@@ -2,7 +2,15 @@
 
 ![cdn-stg.biowasm.com](https://github.com/biowasm/biowasm/workflows/Deploy%20biowasm-stg/badge.svg) ![cdn.biowasm.com](https://github.com/biowasm/biowasm/workflows/Deploy%20biowasm-prd/badge.svg)
 
-A repository of genomics tools, compiled from C/C++ to WebAssembly so they can run in a web browser:
+A repository of genomics tools, compiled from C/C++ to WebAssembly so they can run in a web browser.
+
+## Getting started
+
+Check out our [Getting Started](https://github.com/biowasm/aioli#a-simple-example) guide.
+
+## Supported tools
+
+C/C++ tools that have been compiled to WebAssembly:
 
 | Tool | Version | Description |
 |-|-|-|
@@ -13,12 +21,8 @@ A repository of genomics tools, compiled from C/C++ to WebAssembly so they can r
 | [seqtk](tools/seqtk) | 1.3 | Manipulate and evaluate QC of <code>.fasta</code> / <code>.fastq</code> files |
 | [ssw](tools/ssw) | 1.2.4 | A SIMD implementation of the Smith-Waterman algorithm |
 | [wgsim](tools/wgsim) | 2011.10.17 | Simulate short reads from a reference genome |
-| [seq-align](tools/seq-align) | 2017.10.18 | Align sequences to each other using the Smith-Waterman and Needleman-Wunsch algorithms |
+| [seq-align](tools/seq-align) | 2017.10.18 | Align sequences using Smith-Waterman/Needleman-Wunsch algorithms |
 | [bhtsne](tools/bhtsne) | 2016.08.22 | Run the t-SNE dimensionality-reduction algorithm |
-
-## Getting Started
-
-See the [Aioli repo](https://github.com/biowasm/aioli#getting-started).
 
 ## How it works
 
