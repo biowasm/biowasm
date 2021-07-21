@@ -29,8 +29,8 @@ C/C++ tools that have been compiled to WebAssembly:
 | Tool | Description | Link |
 |-|-|-|
 | biowasm | Recipes for compiling C/C++ genomics tools to WebAssembly | This repo |
-| biowasm CDN | Free CDN server hosting pre-compiled tools for use in your apps | See [cdn.biowasm.com](https://cdn.biowasm.com) |
-| Aioli | Tool for running these modules in a browser, inside WebWorkers | See [biowasm/aioli](https://github.com/biowasm/aioli) |
+| biowasm CDN | Free server hosting pre-compiled tools for use in your apps | [cdn.biowasm.com](https://cdn.biowasm.com) |
+| Aioli | Tool for running these modules in a browser, inside WebWorkers | [biowasm/aioli](https://github.com/biowasm/aioli) |
 
 
 ## Tools using biowasm
