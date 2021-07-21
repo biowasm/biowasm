@@ -9,7 +9,7 @@
 
 DIR_CDN="cloudflare/cdn/public"
 
-AIOLI=("2.0.0")
+AIOLI=("2")
 
 # Format: toolName toolVersion toolBranch
 TOOLS=$(cat <<EOF
@@ -84,4 +84,4 @@ cd ../
 # Generate index
 # ------------------------------------------------------------------------------
 cd "$DIR_CDN"
-( echo "cdn.biowasm.com"; date; tree --charset=ascii --du -h | grep -v -E "index.html|index|404.html|.ico" | tail +2 ) > index
+( echo "cdn.biowasm.com/v2/"; date; tree --charset=ascii --du -h | grep -v -E "index.html|index|404.html|.ico" | tail +2 ) > index

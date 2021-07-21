@@ -11,6 +11,8 @@
 
 import { getAssetFromKV } from "@cloudflare/kv-asset-handler";
 
+const URL_PREFIX = "v2/";
+
 // Function called when we go to cdn.biowasm.com/v2/
 addEventListener("fetch", event => {
   let response = {};
@@ -73,6 +75,7 @@ function handlePrefix() {
     let pathname = parsedUrl.pathname;
     if (pathname.endsWith("/")) {
       pathname = pathname.concat("index.html");
+      pathname = pathname.replace(URL_PREFIX, "/");
     }
 
     parsedUrl.pathname = pathname;
