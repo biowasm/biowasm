@@ -7,11 +7,11 @@ bucket = "./public"
 entry-point = "./entrypoint"
 
 [env.stg]
-name = "biowasm-web-stg"
+name = "biowasm-v2-web-stg"
 vars = { ENVIRONMENT = "stg" }
 route = "stg.biowasm.com/*"
 
 [env.prd]
-name = "biowasm-web"
+name = "biowasm-v2-web"
 vars = { ENVIRONMENT = "prd" }
 route = "biowasm.com/*"

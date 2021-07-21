@@ -7,7 +7,7 @@ bucket = "./public"
 entry-point = "./entrypoint"
 
 [env.stg]
-name = "biowasm-cdn-stg"
+name = "biowasm-v2-cdn-stg"
 vars = { ENVIRONMENT = "stg" }
 route = "cdn-stg.biowasm.com/v2/*"
 kv_namespaces = [
@@ -15,7 +15,7 @@ kv_namespaces = [
 ]
 
 [env.prd]
-name = "biowasm-cdn"
+name = "biowasm-v2–cdn"
 vars = { ENVIRONMENT = "prd" }
 route = "cdn.biowasm.com/v2/*"
 kv_namespaces = [

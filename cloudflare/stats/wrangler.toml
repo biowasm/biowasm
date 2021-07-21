@@ -6,7 +6,7 @@ vars = { ENVIRONMENT = "stg" }
 crons = ["*/30 * * * *"]
 
 [env.stg]
-name = "biowasm-stats-stg"
+name = "biowasm-v2-stats-stg"
 vars = { ENVIRONMENT = "stg" }
 route = "stats-stg.biowasm.com/*"
 kv_namespaces = [
@@ -14,7 +14,7 @@ kv_namespaces = [
 ]
 
 [env.prd]
-name = "biowasm-stats"
+name = "biowasm-v2-stats"
 vars = { ENVIRONMENT = "prd" }
 route = "stats.biowasm.com/*"
 kv_namespaces = [
