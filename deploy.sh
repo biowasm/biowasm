@@ -54,9 +54,8 @@ do
 
 	# Copy files over to the expected CDN folder
 	ls -lah tools/${toolName}/build/
-	mkdir -p ${DIR_CDN}/${toolName}/${toolVersion}/ ${DIR_CDN}/${toolName}/latest/
+	mkdir -p ${DIR_CDN}/${toolName}/${toolVersion}/
 	cp tools/${toolName}/build/* ${DIR_CDN}/${toolName}/${toolVersion}/
-	cp tools/${toolName}/build/* ${DIR_CDN}/${toolName}/latest/
 done <<< "$TOOLS"
 
 # ------------------------------------------------------------------------------
