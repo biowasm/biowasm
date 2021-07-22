@@ -134,6 +134,8 @@ tools/<tool>/
         <tag>.json   Configuration file with info about which WebAssembly features are needed (see ssw for an example); branch- or tag-specific (optional)
 ```
 
+Finally, you can edit `config/tools.json` to make sure your new tool gets deployed.
+
 ## Deploy changes
 
 * Changes merged are auto-deployed via GitHub Actions to `cdn-stg.biowasm.com/v2`.
