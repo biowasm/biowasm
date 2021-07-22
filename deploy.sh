@@ -81,10 +81,10 @@ do
 done
 dir_out="../$DIR_CDN/aioli/latest"
 mkdir -p "$dir_out/"
-cp aioli{,.worker}.js "$dir_out/"
+cp dist/aioli{,.worker}.js "$dir_out/"
 cd ../
 
-ls -lah
+ls -lah cloudflare/cdn/public/*
 
 # ------------------------------------------------------------------------------
 # Generate index
