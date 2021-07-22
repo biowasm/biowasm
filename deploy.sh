@@ -44,10 +44,10 @@ do
 		mkdir -p tools/${toolName}/build/
 		[[ "$ENV" == "prd" ]] && url=$URL_CDN || url="${URL_CDN//cdn/cdn-stg}"
 		for program in "${toolPrograms[@]}"; do
-			curl -o tools/${toolName}/build/config.json "${url}/${toolName}/${toolVersion}/config.json"
-			curl -o tools/${toolName}/build/${program}.js "${url}/${toolName}/${toolVersion}/${program}.js"
-			curl -o tools/${toolName}/build/${program}.wasm "${url}/${toolName}/${toolVersion}/${program}.wasm"
-			curl --fail -o tools/${toolName}/build/${program}.data "${url}/${toolName}/${toolVersion}/${program}.data"  # ignore .data failures since not all tools have .data files
+			curl -s -o tools/${toolName}/build/config.json "${url}/${toolName}/${toolVersion}/config.json"
+			curl -s -o tools/${toolName}/build/${program}.js "${url}/${toolName}/${toolVersion}/${program}.js"
+			curl -s -o tools/${toolName}/build/${program}.wasm "${url}/${toolName}/${toolVersion}/${program}.wasm"
+			curl -s --fail -o tools/${toolName}/build/${program}.data "${url}/${toolName}/${toolVersion}/${program}.data"  # ignore .data failures since not all tools have .data files
 		done
 	fi
 
@@ -67,8 +67,8 @@ cd aioli/
 
 for aioli in ${allAiolis[@]};
 do
-	aioliVersion=$(jq -rc '.version' <<< $tool)
-	aioliBranch=$(jq -rc '.branch' <<< $tool)
+	aioliVersion=$(jq -rc '.version' <<< $aioli)
+	aioliBranch=$(jq -rc '.branch' <<< $aioli)
 
 	git checkout "$aioliBranch"
 	dir_out="../$DIR_CDN/aioli/$aioliVersion"
