@@ -15,7 +15,7 @@ kv_namespaces = [
 ]
 
 [env.prd]
-name = "biowasm-v2–cdn"
+name = "biowasm-v2-cdn"
 vars = { ENVIRONMENT = "prd" }
 route = "cdn.biowasm.com/v2/*"
 kv_namespaces = [
