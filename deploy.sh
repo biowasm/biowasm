@@ -43,10 +43,10 @@ do
 	else
 		[[ "$ENV" == "prd" ]] && url=$URL_CDN || url="${URL_CDN//cdn/cdn-stg}"
 		for program in "${toolPrograms[@]}"; do
-			curl -O tools/${toolName}/build/config.json "${url}/${toolName}/${toolVersion}/config.json"
-			curl -O tools/${toolName}/build/${program}.js "${url}/${toolName}/${toolVersion}/${program}.js"
-			curl -O tools/${toolName}/build/${program}.wasm "${url}/${toolName}/${toolVersion}/${program}.wasm"
-			curl --fail -O tools/${toolName}/build/${program}.data "${url}/${toolName}/${toolVersion}/${program}.data"  # ignore .data failures since not all tools have .data files
+			curl -o tools/${toolName}/build/config.json "${url}/${toolName}/${toolVersion}/config.json"
+			curl -o tools/${toolName}/build/${program}.js "${url}/${toolName}/${toolVersion}/${program}.js"
+			curl -o tools/${toolName}/build/${program}.wasm "${url}/${toolName}/${toolVersion}/${program}.wasm"
+			curl --fail -o tools/${toolName}/build/${program}.data "${url}/${toolName}/${toolVersion}/${program}.data"  # ignore .data failures since not all tools have .data files
 		done
 	fi
 
