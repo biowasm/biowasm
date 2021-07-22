@@ -41,6 +41,7 @@ do
 	if [[ "$CACHE_DISABLED" == "true" ]]; then
 		VERSION="$toolVersion" BRANCH="$toolBranch" make "$toolName"
 	else
+		mkdir -p tools/${toolName}/build/
 		[[ "$ENV" == "prd" ]] && url=$URL_CDN || url="${URL_CDN//cdn/cdn-stg}"
 		for program in "${toolPrograms[@]}"; do
 			curl -o tools/${toolName}/build/config.json "${url}/${toolName}/${toolVersion}/config.json"
@@ -59,10 +60,11 @@ done
 # ------------------------------------------------------------------------------
 # Generate CDN files for Aioli
 # ------------------------------------------------------------------------------
+allAiolis=($(jq -rc '.aioli[]' $DIR_TOOLS))
+
 git clone "https://github.com/biowasm/aioli.git"
 cd aioli/
 
-allAiolis=($(jq -rc '.aioli[]' $DIR_TOOLS))
 for aioli in ${allAiolis[@]};
 do
 	aioliVersion=$(jq -rc '.version' <<< $tool)
@@ -81,6 +83,8 @@ dir_out="../$DIR_CDN/aioli/latest"
 mkdir -p "$dir_out/"
 cp aioli{,.worker}.js "$dir_out/"
 cd ../
+
+ls -lah
 
 # ------------------------------------------------------------------------------
 # Generate index
