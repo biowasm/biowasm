@@ -84,7 +84,6 @@ mkdir -p "$dir_out/"
 cp dist/aioli{,.worker}.js "$dir_out/"
 cd ../
 
-ls -lah cloudflare/cdn/public/*
 
 # ------------------------------------------------------------------------------
 # Generate index
