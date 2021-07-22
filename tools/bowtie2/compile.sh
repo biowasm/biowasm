@@ -6,8 +6,8 @@ cd src/
 rm example/reads/combined_reads.bam
 rm example/reads/longreads.fq
 
-cat example/reads/reads_1.fq | head -n100 > example/reads/reads_1.fq.tmp
-cat example/reads/reads_2.fq | head -n100 > example/reads/reads_2.fq.tmp
+head -n100 example/reads/reads_1.fq > example/reads/reads_1.fq.tmp
+head -n100 example/reads/reads_2.fq > example/reads/reads_2.fq.tmp
 mv example/reads/reads_1.fq.tmp example/reads/reads_1.fq
 mv example/reads/reads_2.fq.tmp example/reads/reads_2.fq
 
