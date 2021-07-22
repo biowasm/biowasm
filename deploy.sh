@@ -14,7 +14,7 @@ URL_CDN="https://cdn.biowasm.com/v2"
 # ------------------------------------------------------------------------------
 # Setup repos and dependencies
 # ------------------------------------------------------------------------------
-make init
+[[ "$CACHE_DISABLED" == "true" ]] && make init
 sudo apt-get install -y tree jq
 
 # ------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ echo "Running with ENV=${ENV}..."
 echo "Running with CACHE_DISABLED=${CACHE_DISABLED}..."
 
 # Load info about each tool into an array
-allTools=($(jq -rc '.tools[]' tools.json))
+allTools=($(jq -rc '.tools[]' $DIR_TOOLS))
 
 # Build each tool
 for tool in "${allTools[@]}";
@@ -62,7 +62,7 @@ done
 git clone "https://github.com/biowasm/aioli.git"
 cd aioli/
 
-allAiolis=($(jq -rc '.aioli[]' tools.json))
+allAiolis=($(jq -rc '.aioli[]' $DIR_TOOLS))
 for aioli in ${allAiolis[@]};
 do
 	aioliVersion=$(jq -rc '.version' <<< $tool)
