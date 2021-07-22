@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 160314a..80cfa5a 100644
+index 160314a..6178814 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -140,7 +140,7 @@ libbam.a:$(LOBJS)
@@ -7,7 +7,7 @@ index 160314a..80cfa5a 100644
  
  samtools: $(AOBJS) $(LZ4OBJS) libbam.a libst.a $(HTSLIB)
 -	$(CC) $(ALL_LDFLAGS) -o $@ $(AOBJS) $(LZ4OBJS) libbam.a libst.a $(HTSLIB_LIB) $(CURSES_LIB) -lm $(ALL_LIBS) -lpthread
-+	$(CC) $(ALL_LDFLAGS) -o ../build/$@.html $(AOBJS) $(LZ4OBJS) libbam.a libst.a $(HTSLIB_LIB) $(CURSES_LIB) -lm $(ALL_LIBS) -lpthread
++	$(CC) $(ALL_LDFLAGS) -o ../build/$@.js $(AOBJS) $(LZ4OBJS) libbam.a libst.a $(HTSLIB_LIB) $(CURSES_LIB) -lm $(ALL_LIBS) -lpthread
  
  # For building samtools and its test suite only: NOT to be installed.
  libst.a: $(LIBST_OBJS)

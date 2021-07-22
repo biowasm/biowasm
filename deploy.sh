@@ -7,87 +7,86 @@
 # Config
 # ------------------------------------------------------------------------------
 
+DIR_TOOLS="config/tools.json"
 DIR_CDN="cloudflare/cdn/public"
-
-AIOLI=("1.4.1" "1.5.0")
-
-# Format: toolName toolVersion toolBranch
-TOOLS=$(cat <<EOF
-	bedtools2    2.29.2        v2.29.2
-
-	bhtsne       2016.08.22    1a62a5d
-
-	bowtie2      2.4.2         v2.4.2
-
-	fastp        0.20.1        0.20.1
-
-	samtools     1.10          1.10
-
-	seq-align    2017.10.18    dc41988
-
-	seqtk        1.2           v1.2
-	seqtk        1.3           v1.3
-
-	ssw          1.2.4         ad452ea
-
-	wgsim        2011.10.17    a12da33
-EOF
-)
+URL_CDN="https://cdn.biowasm.com/v2"
 
 # ------------------------------------------------------------------------------
 # Setup repos and dependencies
 # ------------------------------------------------------------------------------
-make init
-sudo apt-get install -y tree
+[[ "$CACHE_DISABLED" == "true" ]] && make init
+sudo apt-get install -y tree jq
 
 # ------------------------------------------------------------------------------
 # Compile each tool
 # ------------------------------------------------------------------------------
-while read toolName toolVersion toolBranch;
+echo "Running with ENV=${ENV}..."
+echo "Running with CACHE_DISABLED=${CACHE_DISABLED}..."
+
+# Load info about each tool into an array
+allTools=($(jq -rc '.tools[]' $DIR_TOOLS))
+
+# Build each tool
+for tool in "${allTools[@]}";
 do
-	if [[ "$toolName" == "" ]]; then
-		continue;
+	# Parse tool info
+	toolName=$(jq -rc '.name' <<< $tool)
+	toolVersion=$(jq -rc '.version' <<< $tool)
+	toolBranch=$(jq -rc '.branch' <<< $tool)
+	toolPrograms=$(jq -rc '.programs' <<< $tool)
+	[[ "$toolPrograms" == "null" ]] && toolPrograms="[\"$toolName\"]"
+	toolPrograms=($(jq -rc '.[]' <<< $toolPrograms))
+
+	# Compile it to WebAssembly or fetch pre-compiled from existing CDN!
+	if [[ "$CACHE_DISABLED" == "true" ]]; then
+		VERSION="$toolVersion" BRANCH="$toolBranch" make "$toolName"
+	else
+		mkdir -p tools/${toolName}/build/
+		[[ "$ENV" == "prd" ]] && url=$URL_CDN || url="${URL_CDN//cdn/cdn-stg}"
+		for program in "${toolPrograms[@]}"; do
+			curl -s -o tools/${toolName}/build/config.json "${url}/${toolName}/${toolVersion}/config.json"
+			curl -s -o tools/${toolName}/build/${program}.js "${url}/${toolName}/${toolVersion}/${program}.js"
+			curl -s -o tools/${toolName}/build/${program}.wasm "${url}/${toolName}/${toolVersion}/${program}.wasm"
+			curl -s --fail -o tools/${toolName}/build/${program}.data "${url}/${toolName}/${toolVersion}/${program}.data"  # ignore .data failures since not all tools have .data files
+		done
 	fi
-
-	echo "================================================================"
-	echo "Processing $toolName/$toolVersion @ $toolBranch"
-	echo "================================================================"
-
-	# Build it
-	VERSION="$toolVersion" BRANCH="$toolBranch" make "$toolName"
-
-	# Copy over config.json file (or create it if it doesn't exist)
-	toolConfigDir="tools/${toolName}/configs"
-	toolConfig="${toolConfigDir}/${toolVersion}.json"
-	[[ ! -f "$toolConfig" ]] && mkdir -p "$toolConfigDir" && echo '{"wasm-features":[]}' > $toolConfig
-	cp "$toolConfig" tools/${toolName}/build/config.json
 
 	# Copy files over to the expected CDN folder
 	ls -lah tools/${toolName}/build/
-	mkdir -p ${DIR_CDN}/${toolName}/${toolVersion}/ ${DIR_CDN}/${toolName}/latest/
+	mkdir -p ${DIR_CDN}/${toolName}/${toolVersion}/
 	cp tools/${toolName}/build/* ${DIR_CDN}/${toolName}/${toolVersion}/
-	cp tools/${toolName}/build/* ${DIR_CDN}/${toolName}/latest/
-done <<< "$TOOLS"
+done
 
 # ------------------------------------------------------------------------------
 # Generate CDN files for Aioli
 # ------------------------------------------------------------------------------
+allAiolis=($(jq -rc '.aioli[]' $DIR_TOOLS))
+
 git clone "https://github.com/biowasm/aioli.git"
 cd aioli/
-for version in ${AIOLI[@]};
+
+for aioli in ${allAiolis[@]};
 do
-	git checkout "v$version"
-	dir_out="../$DIR_CDN/aioli/$version"
+	aioliVersion=$(jq -rc '.version' <<< $aioli)
+	aioliBranch=$(jq -rc '.branch' <<< $aioli)
+
+	git checkout "$aioliBranch"
+	dir_out="../$DIR_CDN/aioli/$aioliVersion"
 	mkdir -p "$dir_out/"
-	cp aioli{,.worker}.js "$dir_out/"
+
+	npm install
+	npm run build
+
+	cp dist/aioli{,.worker}.js "$dir_out/"
 done
 dir_out="../$DIR_CDN/aioli/latest"
 mkdir -p "$dir_out/"
-cp aioli{,.worker}.js "$dir_out/"
+cp dist/aioli{,.worker}.js "$dir_out/"
 cd ../
+
 
 # ------------------------------------------------------------------------------
 # Generate index
 # ------------------------------------------------------------------------------
 cd "$DIR_CDN"
-( echo "cdn.biowasm.com"; date; tree --charset=ascii --du -h | grep -v -E "index.html|index|404.html|.ico" | tail +2 ) > index
+( echo "cdn.biowasm.com/v2/"; date; tree --charset=ascii --du -h | grep -v -E "index.html|index|404.html|.ico" | tail +2 ) > index

@@ -7,17 +7,17 @@ bucket = "./public"
 entry-point = "./entrypoint"
 
 [env.stg]
-name = "biowasm-cdn-stg"
+name = "biowasm-v2-cdn-stg"
 vars = { ENVIRONMENT = "stg" }
-route = "cdn-stg.biowasm.com/*"
+route = "cdn-stg.biowasm.com/v2/*"
 kv_namespaces = [
-    { binding = "LOGS", id = "e76f7352461c4b82997961622b33e878" }
+    { binding = "LOGS", id = "dd7c61572f59436796f1404eff1eec3a" }
 ]
 
 [env.prd]
-name = "biowasm-cdn"
+name = "biowasm-v2–cdn"
 vars = { ENVIRONMENT = "prd" }
-route = "cdn.biowasm.com/*"
+route = "cdn.biowasm.com/v2/*"
 kv_namespaces = [
-    { binding = "LOGS", id = "d8adbc35772042248a89727658808f96" }
+    { binding = "LOGS", id = "51cfc57233574476be9cd5bb2252dc79" }
 ]

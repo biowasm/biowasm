@@ -2,24 +2,35 @@
 
 ![cdn-stg.biowasm.com](https://github.com/biowasm/biowasm/workflows/Deploy%20biowasm-stg/badge.svg) ![cdn.biowasm.com](https://github.com/biowasm/biowasm/workflows/Deploy%20biowasm-prd/badge.svg)
 
-A repository of genomics tools, compiled from C/C++ to WebAssembly so they can run in a web browser:
+A repository of genomics tools, compiled from C/C++ to WebAssembly so they can run in a web browser.
 
-* [samtools/htslib v1.10](tools/samtools)
-* [bedtools v2.29](tools/bedtools2)
-* [bowtie v2.4.2](tools/bowtie2)
-* [fastp v0.20.1](tools/fastp)
-* [seqtk v1.3](tools/seqtk)
-* [ssw v1.2.4](tools/ssw)
-* [wgsim](tools/wgsim)
-* [bhtsne](tools/bhtsne)
-* [seq-align](tools/seq-align)
+## Getting started
 
+Check out our [Getting Started](https://github.com/biowasm/aioli#a-simple-example) guide.
+
+## Supported tools
+
+C/C++ tools that have been compiled to WebAssembly:
+
+| Tool | Version | Description |
+|-|-|-|
+| [samtools/htslib](tools/samtools) | 1.10 | Parse and manipulate <code>.sam</code> / <code>.bam</code> read alignment files |
+| [bedtools2](tools/bedtools2) | 2.29 | Parse <code>.bed</code> files and perform complex "genome arithmetic" |
+| [bowtie2](tools/bowtie2) | 2.4.2 | Align sequencing reads (<code>.fastq</code>) files to a reference genome |
+| [fastp](tools/fastp) | 0.20.1 | Manipulate and evaluate QC of <code>.fastq</code> files |
+| [seqtk](tools/seqtk) | 1.3 | Manipulate and evaluate QC of <code>.fasta</code> / <code>.fastq</code> files |
+| [ssw](tools/ssw) | 1.2.4 | A SIMD implementation of the Smith-Waterman algorithm |
+| [wgsim](tools/wgsim) | 2011.10.17 | Simulate short reads from a reference genome |
+| [seq-align](tools/seq-align) | 2017.10.18 | Align sequences using Smith-Waterman/Needleman-Wunsch algorithms |
+| [bhtsne](tools/bhtsne) | 2016.08.22 | Run the t-SNE dimensionality-reduction algorithm |
 
 ## How it works
 
-* **biowasm**: a collection of recipes for compiling C/C++ genomics tools to WebAssembly &mdash; this repo
-* **biowasm CDN**: a server where we host the pre-compiled tools for use in your apps &mdash; [cdn.biowasm.com](https://cdn.biowasm.com)
-* **Aioli**: a tool for running these modules in a browser, inside WebWorkers (i.e. background threads) &mdash; [repo](https://github.com/biowasm/aioli)
+| Tool | Description | Link |
+|-|-|-|
+| biowasm | Recipes for compiling C/C++ genomics tools to WebAssembly | This repo |
+| biowasm CDN | Free server hosting pre-compiled tools for use in your apps | [cdn.biowasm.com](https://cdn.biowasm.com) |
+| Aioli | Tool for running these modules in a browser, inside WebWorkers | [biowasm/aioli](https://github.com/biowasm/aioli) |
 
 
 ## Tools using biowasm
@@ -32,52 +43,6 @@ A repository of genomics tools, compiled from C/C++ to WebAssembly so they can r
 | fastq.bio | [fastq.bio](http://www.fastq.bio/) | [RobertAboukhalil/fastq.bio](https://github.com/robertaboukhalil/fastq.bio) |
 | bam.bio | [bam.bio](http://www.bam.bio/) | [RobertAboukhalil/bam.bio](https://github.com/robertaboukhalil/bam.bio) |
 
-
-## Get Started
-
-### Simple usage
-
-To get started, here is some HTML code that runs the command `samtools view -q 20` on a sample SAM file and outputs the contents to screen:
-
-```html
-<script src="https://cdn.biowasm.com/aioli/latest/aioli.js"></script>
-<script>
-let samtools = new Aioli("samtools/1.10");
-
-document.write("Loading...");
-samtools
-    // Initialize samtools
-    .init()
-    // Run "samtools view" command with "-q 20" filter
-    .then(() => samtools.exec("view -q 20 /samtools/examples/toy.sam"))
-    // Output result
-    .then(d => document.write(`<pre>${d.stdout}\n${d.stderr}</pre>`));
-</script>
-```
-
-The list of all modules available on the CDN are listed at [cdn.biowasm.com/index](https://cdn.biowasm.com/index). See the [Aioli repo](https://github.com/biowasm/aioli#getting-started) for more information on getting started.
-
-### Usage without Aioli
-
-It is not recommended, but is possible, to use biowasm modules without Aioli, but it requires using Emscripten's `Module` variable. For example, you can navigate to [/samtools/1.10/samtools.html](https://cdn.biowasm.com/samtools/1.10/samtools.html), open the Developer Console and type `Module.callMain(["view"])` to see the help menu for the `samtools view` command.
-
-Here is the equivalent example from above, but without Aioli:
-
-```html
-<script>
-var Module = {
-    onRuntimeInitialized: () => {
-        Module.callMain(["view", "-q", "20", "/samtools/examples/toy.sam"]);
-    }
-};
-</script>
-<script src="https://cdn.biowasm.com/samtools/1.10/samtools.js"></script>
-```
-
-Note that here we define the `Module` variable before loading the `samtools.js` file from the CDN, and that we use `callMain()` where the parameter is an array of values.
-
-See the [Emscripten documentation](https://emscripten.org/docs/api_reference/module.html) for details.
-
 ---
 
 ## Contributing
@@ -86,11 +51,11 @@ Ignore the rest of this README if you are not contributing changes to the biowas
 
 ### Setup
 
-Tools listed in biowasm were compiled to WebAssembly using `Emscripten 2.0.0`.
+Tools listed in biowasm were compiled to WebAssembly using `Emscripten 2.0.25`.
 
 ```bash
 # Fetch Emscripten docker image
-docker pull emscripten/emsdk:2.0.0
+docker pull emscripten/emsdk:2.0.25
 
 # Create the container and mount ~/wasm to /src in the container
 docker run \
@@ -98,7 +63,7 @@ docker run \
     -p 80:80 \
     --name wasm \
     --volume ~/wasm:/src \
-    emscripten/emsdk:2.0.0
+    emscripten/emsdk:2.0.25
 
 # Go into the container
 docker exec -u root -it wasm bash
@@ -127,10 +92,12 @@ python3.7 /src/server.py &
 # Go into your container
 docker exec -it wasm bash
 
-# Compile seqtk
+# Set up biowasm (only need to do this once)
 cd biowasm/
-make init  # only need to do this once
-make seqtk
+make init
+
+# Compile seqtk
+VERSION=1.2 BRANCH=v1.2 make seqtk
 
 # This will create tools/<tool name>/build with .js/.wasm files
 ls tools/seqtk/build
@@ -167,9 +134,11 @@ tools/<tool>/
         <tag>.json   Configuration file with info about which WebAssembly features are needed (see ssw for an example); branch- or tag-specific (optional)
 ```
 
+Finally, you can edit `config/tools.json` to make sure your new tool gets deployed.
+
 ## Deploy changes
 
-* Changes merged are auto-deployed via GitHub Actions to `cdn-stg.biowasm.com`.
+* Changes merged are auto-deployed via GitHub Actions to `cdn-stg.biowasm.com/v2`.
 
 
 ## To do
