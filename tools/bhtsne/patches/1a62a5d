@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index e9fc554..20761f7 100644
+index e9fc554..8cff51e 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -5,7 +5,7 @@ CXXFLAGS=	$(CFLAGS)
@@ -7,7 +7,7 @@ index e9fc554..20761f7 100644
  ZLIB_FLAGS=	-DHAVE_ZLIB   # comment out this line to drop the zlib dependency
  INCLUDES=	-I.
 -PROG=		t-sne
-+PROG=		../build/t-sne.js
++PROG=		../build/bhtsne.js
  LIBS=		-lm -lz
  
  .SUFFIXES:.c .cpp .o
