@@ -30,7 +30,9 @@ async function handleRequest(request)
             if(obj.metadata != null)
                 continue;
             const count = await LOGS_STG.get(obj.name);
-            await LOGS_STG.put(obj.name, "", { metadata: parseInt(count) })
+            
+            // Uncomment this before running
+            // await LOGS_STG.put(obj.name, "", { metadata: parseInt(count) })
         }
     } while(response.cursor != null);
 
