@@ -49,11 +49,9 @@ async function handleEvent(event) {
     let response = await getAssetFromKV(event, {
       mapRequestToAsset: handlePrefix(),
       cacheControl: {
-        browserTTL: 604800  // 1 week
-        // Defaults:
-        //   browserTTL: null, // do not set cache control ttl on responses
-        //   edgeTTL: 2 * 60 * 60 * 24, // 2 days
-        //   bypassCache: false, // do not bypass Cloudflare's cache
+        browserTTL: 604800,  // 1 week (default: null)
+        edgeTTL: 172800,     // 2 days (default: 2 days)
+        bypassCache: false   // Do not bypass Cloudflare's cache (default: false)
       }
     });
 
