@@ -30,6 +30,8 @@ async function handleRequest(request)
 	// Plotly format: [ { name: "tool", type: "scatter", x: [date1, date2, ...], y: [count1, count2, ...] } ]
 	let data = [];
 	for(let prgm in statsT) {
+		if(prgm == "base")
+			continue;
 		let x = Object.keys(statsT[prgm]).sort();
 		let y = x.map(d => statsT[prgm][d]);
 		data.push({
@@ -38,6 +40,47 @@ async function handleRequest(request)
 			type: "scatter"
 		});
 	}
+
+	// Fill gaps in the data with 0 so the plot doesn't look weird
+	data = data.map(d => {
+		const x = d.x;
+		const y = d.y;
+
+		let xFinal = [];
+		let yFinal = [];
+
+		for(let i in x)
+		{
+			// Calculate how many days are missing between the current date and the previous one
+			const datePrev = new Date(x[i - 1]);
+			const dateCurr = new Date(x[i]);
+			const dateDiff = (dateCurr - datePrev) / 86400000;  // 86400000 = 1 day
+			if(i == 0) {
+				xFinal.push(dateCurr.toISOString().slice(0, 10));
+				yFinal.push(y[i]);
+				continue;
+			}
+
+			// Add those dates in
+			for(let j = 0; j < dateDiff; j++)
+			{
+				datePrev.setDate( datePrev.getDate() + 1 );
+				const dateToAdd = datePrev.toISOString().slice(0, 10);
+				xFinal.push(dateToAdd);
+				yFinal.push(j == dateDiff - 1 ? y[i] : 0);
+			}
+		}
+
+		// d.mode= "markers+lines";
+		d.x = xFinal;
+		d.y = yFinal;
+		return d;
+	})
+
+	// Zoom in onto data from 6 months ago
+	let dateToday = new Date();
+	let dateSixMonthsAgo = new Date();
+	dateSixMonthsAgo.setMonth(dateToday.getMonth() - 6);
 
 	return new Response(`
         <!doctype html>
@@ -98,7 +141,12 @@ async function handleRequest(request)
 
                     <script type="application/javascript">
                     var data = ${JSON.stringify(data)};
-                    Plotly.newPlot("plot", data);
+					// Plot
+					Plotly.newPlot("plot", data, {
+						xaxis: {
+							range: ["${dateSixMonthsAgo}", "${dateToday.toISOString().slice(0, 10)}"]
+						}
+					});				
                     </script>
                   </div>
                 </div>
