@@ -108,26 +108,8 @@ async function handleSchedule(scheduledDate)
 	// First, look for raw, unaggregated log events, and aggregate them
 	// Raw events: raw:<date>:<tool>/<version>/<program>.wasm:<uuid> value="" metadata={}
 	// ========================================================================
-	let aggregated = {};  // { "2021-07-22": { "bowtie2": 123, ... }, ... }
-	let rawKeys = await getLogs({
-		prefix: "raw:",
-		fn: key => {
-			const value = key.name.split(":");         // key=raw:2021-07-22:samtools:uuid
-			const date = value[1];                     // 2021-07-22
-			const tool = value[2];                     // samtools
-
-			// Aggregate all versions
-			if(!(date in aggregated))
-				aggregated[date] = {};
-			if(!(tool in aggregated[date]))
-				aggregated[date][tool] = 0;
-			aggregated[date][tool]++;
-
-			return key.name;
-		}
-	});
-	console.log(rawKeys)
-	console.log(aggregated)
+	let logsRaw = await getLogs({ prefix: "raw:" });
+	let aggregated = aggregateLogs(logsRaw);
 
 	// Now that they're aggregated, we can update the key/value store counts
 	for(let date in aggregated) {
@@ -152,24 +134,8 @@ async function handleSchedule(scheduledDate)
 	// easier to plot as different series, but we store the key/value pairs as
 	// "date:tool" for sorting purposes.
 	// ========================================================================
-	aggregated = {};
-	await getLogs({
-		prefix: "aggregate:",
-		fn: key => {
-			const value = key.name.split(":");  // key=aggregate:2021-07-22:samtools metadata=count
-			const date = value[1];              // e.g. 2021-07-22
-			const prgm = value[2];              // e.g. samtools
-			const count = key.metadata;         // e.g. 123
-
-			// Aggregate all versions
-			if(!(prgm in aggregated))
-				aggregated[prgm] = {};
-			if(!(date in aggregated[prgm]))
-				aggregated[prgm][date] = 0;
-			aggregated[prgm][date] += count;
-		}
-	});
-	console.log(aggregated);
+    let logsAggregate = await getLogs({ prefix: "aggregate:" });
+    aggregated = aggregateLogs(logsAggregate);
 
 	// Save it so we can fetch it later quickly from the stats page
 	await LOGS.put(KEY_SUMMARY, JSON.stringify(aggregated));
@@ -191,14 +157,31 @@ async function getLogs(config)
 			cursor: response.cursor
 		});
 
-		processed = processed.concat(response.keys.map(key => {
-			if(!config.fn)
-				return key
-			return config.fn(key);
-		}))
+		processed = processed.concat(response.keys);
 	} while(response.cursor != null);
 
 	return processed;
+}
+
+function aggregateLogs(logs)
+{
+	// End result: aggregated = { <date>: { <tool>: <count> } }
+	let aggregated = {};
+	logs.map(key => {
+		// Parse key name: <raw|aggregate>:<date>:<tool>[:uuid]
+		const value = key.name.split(":");
+		const date = value[1];
+		const tool = value[2];
+		const countToAdd = key.metadata || 1;
+
+		// Aggregate all versions
+		if(!(date in aggregated))
+			aggregated[date] = {};
+		if(!(tool in aggregated[date]))
+			aggregated[date][tool] = 0;
+		aggregated[date][tool] += countToAdd;
+	});
+	return aggregated;
 }
 
 
