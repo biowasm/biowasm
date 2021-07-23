@@ -122,9 +122,9 @@ async function handleSchedule(scheduledDate)
 	}
 
 	// And we can delete the raw log events
-	for(let key of rawKeys) {
-		console.log(`Deleting ${key}...`)
-		await LOGS.delete(key);
+	for(let log of logsRaw) {
+		console.log(`Deleting ${log.name}...`)
+		await LOGS.delete(log.name);
 	}
 
 	// ========================================================================
