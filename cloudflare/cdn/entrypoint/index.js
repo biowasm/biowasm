@@ -29,12 +29,12 @@ addEventListener("fetch", event => {
   let url = new URL(event.request.url);
   if(url.host.startsWith("cdn") && url.host.endsWith(".biowasm.com") && url.pathname.endsWith(".js")) {
     async function logEvent(path) {
-      // ISO Date Format: <YYYY-MM-DDTHH:mm:ss.sssZ>
-      let key = `${new Date().toISOString().split("T").shift()}|${path}`;
-      // Increment count
-      let counter = parseInt((await LOGS.getWithMetadata(key)).metadata || 0) + 1;
-      // Save count in the metadata so we can retrieve it in bulk when doing .list() for CDN stats
-      await LOGS.put(key, "", { metadata: counter });
+      const uuid = await fetch("https://csprng.xyz/v1/api?length=10").then(d => d.json()).then(d => d.Data);
+      // ISO Date Format: <YYYY-MM-DDTHH:mm:ss.sssZ> --> want YYYY-MM-DD
+      // Path format: /v2/<tool>/<version>/<program>.js
+      let key = `raw:${new Date().toISOString().split("T").shift()}:${path.split("/")[2]}:${uuid}`;
+      // Log event
+      await LOGS.put(key, "");
     }
     event.waitUntil(logEvent(url.pathname));
   }
