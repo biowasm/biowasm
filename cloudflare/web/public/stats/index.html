@@ -55,7 +55,7 @@
 
 					<script type="module">
 					let env = window.location.href.includes("stg") ? "-stg" : "";
-					let data = await fetch(`https://stats${env}.biowasm.com/`);
+					let data = await fetch(`https://stats${env}.biowasm.com/`).then(d => d.json());
 
 					// Zoom on data from 6 months ago
 					let dateToday = new Date();
