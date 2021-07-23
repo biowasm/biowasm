@@ -77,7 +77,7 @@ async function handleRequest(request)
 		return d;
 	})
 
-	return new Response(data, { status: 200 });
+	return new Response(JSON.stringify(data), { status: 200 });
 }
 
 // ================================================================
