@@ -77,7 +77,9 @@ async function handleRequest(request)
 		return d;
 	})
 
-	return new Response(JSON.stringify(data), { status: 200 });
+	let response = new Response(JSON.stringify(data), { status: 200 });
+    response.headers.set("Access-Control-Allow-Origin", "*");
+	return response;
 }
 
 // ================================================================
