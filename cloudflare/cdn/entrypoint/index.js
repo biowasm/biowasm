@@ -10,7 +10,7 @@
 // log basic stats about the number of downloads per module.
 
 import { getAssetFromKV } from "@cloudflare/kv-asset-handler";
-
+import * as TOOLS from "../../../config/tools.json";
 const URL_PREFIX = "/v2";
 
 // Function called when we go to cdn.biowasm.com/v2/
@@ -29,12 +29,18 @@ addEventListener("fetch", event => {
   let url = new URL(event.request.url);
   if(url.host.startsWith("cdn") && url.host.endsWith(".biowasm.com") && url.pathname.endsWith(".js")) {
     async function logEvent(path) {
-      // ISO Date Format: <YYYY-MM-DDTHH:mm:ss.sssZ>
-      let key = `${new Date().toISOString().split("T").shift()}|${path}`;
-      // Increment count
-      let counter = parseInt((await LOGS.getWithMetadata(key)).metadata || 0) + 1;
-      // Save count in the metadata so we can retrieve it in bulk when doing .list() for CDN stats
-      await LOGS.put(key, "", { metadata: counter });
+      // Parse path. Format = /v2/<tool>/<version>/<program>.js
+      const tool = path.split("/")[2];  // [0] = "" because of the leading /
+      // Only log valid tools
+      if(tool != "aioli" && !(tool in TOOLS.tools))
+        return;
+
+      // ISO Date Format: <YYYY-MM-DDTHH:mm:ss.sssZ> --> want YYYY-MM-DD
+      const date = new Date().toISOString().split("T").shift();
+      // Append a UUID to the key so we don't overwrite another one
+      const uuid = await fetch("https://csprng.xyz/v1/api?length=10").then(d => d.json()).then(d => d.Data);
+      // Log event
+      await LOGS.put(`raw:${date}:${tool}:${uuid}`, "");
     }
     event.waitUntil(logEvent(url.pathname));
   }
@@ -49,11 +55,9 @@ async function handleEvent(event) {
     let response = await getAssetFromKV(event, {
       mapRequestToAsset: handlePrefix(),
       cacheControl: {
-        browserTTL: 604800  // 1 week
-        // Defaults:
-        //   browserTTL: null, // do not set cache control ttl on responses
-        //   edgeTTL: 2 * 60 * 60 * 24, // 2 days
-        //   bypassCache: false, // do not bypass Cloudflare's cache
+        browserTTL: 604800,  // 1 week (default: null)
+        edgeTTL: 172800,     // 2 days (default: 2 days)
+        bypassCache: false   // Do not bypass Cloudflare's cache (default: false)
       }
     });
 
