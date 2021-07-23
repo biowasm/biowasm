@@ -12,15 +12,26 @@ const KEY_SUMMARY = "summary";
 // ================================================================
 async function handleRequest(request)
 {
-	let data = [];
+	// KV format: { <date>: { <tool>: <count> } }
 	let stats = JSON.parse(await LOGS.get(KEY_SUMMARY));
 
+	// Convert to format { <tool> : { <date>: <count> } }
+	let statsT = {};
+	for(let date in stats) {
+		for(let tool in stats[date]) {
+			const count = stats[date][tool];
+			if(!(tool in statsT))
+				statsT[tool] = {};
+			statsT[tool][date] = count;
+		}
+	}
+
 	// Convert to Plotly format
-	// KV format: { "date": "tool": count }
 	// Plotly format: [ { name: "tool", type: "scatter", x: [date1, date2, ...], y: [count1, count2, ...] } ]
-	for(let prgm in stats) {
-		let x = Object.keys(stats[prgm]).sort();
-		let y = x.map(d => stats[prgm][d]);
+	let data = [];
+	for(let prgm in statsT) {
+		let x = Object.keys(statsT[prgm]).sort();
+		let y = x.map(d => statsT[prgm][d]);
 		data.push({
 			name: prgm,
 			x: x, y: y,
