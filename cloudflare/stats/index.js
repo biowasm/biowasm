@@ -128,7 +128,7 @@ async function handleSchedule(scheduledDate)
     // { keys: [{ name: "name", metadata: 123}], 
     //   list_complete: false, cursor: "<CURSOR ID>"}] }
     response.keys.map(d => {
-      const key = d.name;
+      const key = d.name.replace("/v2", "");
       const count = d.metadata;
 
       // Parse key

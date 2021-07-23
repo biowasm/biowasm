@@ -10,7 +10,7 @@ name = "biowasm-v2-stats-stg"
 vars = { ENVIRONMENT = "stg" }
 route = "stats-stg.biowasm.com/*"
 kv_namespaces = [
-    { binding = "LOGS", id = "dd7c61572f59436796f1404eff1eec3a" }
+    { binding = "LOGS", id = "e76f7352461c4b82997961622b33e878" }
 ]
 
 [env.prd]
@@ -18,5 +18,5 @@ name = "biowasm-v2-stats"
 vars = { ENVIRONMENT = "prd" }
 route = "stats.biowasm.com/*"
 kv_namespaces = [
-    { binding = "LOGS", id = "51cfc57233574476be9cd5bb2252dc79" }
+    { binding = "LOGS", id = "d8adbc35772042248a89727658808f96" }
 ]
