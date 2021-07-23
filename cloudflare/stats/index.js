@@ -140,11 +140,15 @@ async function handleSchedule(scheduledDate)
       // Split by version
       if(!(path in statsSplit))
         statsSplit[path] = {};
-      statsSplit[path][date] = count;
+      if(!(date in statsSplit[path]))
+        statsSplit[path][date] = 0;
+      statsSplit[path][date] += count;
       // Aggregate all versions
       if(!(prgm in statsAggregated))
         statsAggregated[prgm] = {};
-      statsAggregated[prgm][date] = count;
+      if(!(date in statsAggregated[prgm]))
+        statsAggregated[prgm][date] = 0;
+      statsAggregated[prgm][date] += count;
     });
   } while(response.cursor != null)
 
