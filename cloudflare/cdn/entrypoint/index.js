@@ -32,7 +32,7 @@ addEventListener("fetch", event => {
       // Parse path. Format = /v2/<tool>/<version>/<program>.js
       const tool = path.split("/")[2];  // [0] = "" because of the leading /
       // Only log valid tools
-      if(tool != "aioli" && !(tool in TOOLS.tools))
+      if(tool != "aioli" && TOOLS.tools.filter(t => t.name == tool).length == 0)
         return;
 
       // ISO Date Format: <YYYY-MM-DDTHH:mm:ss.sssZ> --> want YYYY-MM-DD
