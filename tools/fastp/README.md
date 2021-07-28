@@ -3,19 +3,14 @@
 ### Usage
 
 ```html
-<script src="https://cdn.biowasm.com/aioli/latest/aioli.js"></script>
-<script>
-let fastp = new Aioli("fastp/0.20.1");
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+let CLI = await new Aioli("fastp/0.20.1");
 
-document.write("Loading...");
-fastp
-    // Initialize fastp
-    .init()
-    // Run "fastp" command on a sample FASTQ file
-    .then(() => fastp.exec("-i /fastp/testdata/R1.fq"))
-    // Output resulting JSON file that contains metrics
-    .then(() => fastp.cat("/fastp.json"))
-    .then(d => document.write(`<pre>${d}</pre>`));
+// Get a QC report on a FASTQ file
+await CLI.exec("fastp -i /fastp/testdata/R1.fq");
+let output = await CLI.cat("fastp.json")
+document.write(`<pre>${output}</pre>`);
 </script>
 ```
 

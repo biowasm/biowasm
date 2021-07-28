@@ -3,18 +3,18 @@
 ### Usage
 
 ```html
-<script src="https://cdn.biowasm.com/aioli/latest/aioli.js"></script>
-<script>
-let bowtie2 = new Aioli("bowtie2/bowtie2-align-s/2.4.2");
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+let CLI = await new Aioli("bowtie2/bowtie2-align-s/2.4.2", {
+  printInterleaved: false
+});
 
-document.write("Loading...");
-bowtie2
-    // Initialize bowtie2
-    .init()
-    // Run "bowtie" command to map reads to the lambda genome
-    .then(() => bowtie2.exec("-x /bowtie2/example/index/lambda_virus -U /bowtie2/example/reads/reads_1.fq"))
-    // Output result
-    .then(d => document.write(`<pre>${d.stdout}\n${d.stderr}</pre>`));
+// Map reads to the lambda genome
+let ref = "/bowtie2/example/index/lambda_virus";
+let reads = "/bowtie2/example/reads/reads_1.fq";
+let output = await CLI.exec(`bowtie2-align-s -x ${ref} -U ${reads}`)
+
+document.write(`<pre>${output.stdout}</pre>`);
 </script>
 ```
 

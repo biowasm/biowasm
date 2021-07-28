@@ -12,20 +12,20 @@ To enable SIMD in your browser:
 ### Usage
 
 ```html
-<script src="https://cdn.biowasm.com/aioli/latest/aioli.js"></script>
-<script>
-let ssw = new Aioli("ssw/1.2.4");
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+let CLI = await new Aioli("ssw/1.2.4", { printInterleaved: false });
 
-document.write("Loading...");
-ssw
-    // Initialize ssw
-    .init()
-    // Create mock reference & query fasta files
-    .then(() => ssw.fs("writeFile", "/ref.fa", ">chr1\nACTACGACTACGACTACGACGCGCGATTCGCGCGCCGATATACGACTACGACTA\n"))
-    .then(() => ssw.fs("writeFile", "/query.fa", ">read1\nTACGACTACG\n"))
-    // Run "ssw" command to align query to reference
-    .then(() => ssw.exec("-h -s -c ref.fa query.fa"))
-    // Output resulting SAM file
-    .then(d => document.write(`<pre>${d.stdout}</pre>`));
+// Create mock reference & query fasta files
+await CLI.fs.writeFile("ref.fa", ">chr1\nACTACGACTACGACTACGACGCGCGATTCGCGCGCCGATATACGACTACGACTA\n");
+await CLI.fs.writeFile("query.fa", ">read1\nTACGACTACG\n");
+
+// Run "ssw" command to align query to reference and output SAM file
+const output = await CLI.exec("ssw -h -s -c ref.fa query.fa");
+document.write(`
+    stdout: <pre>${output.stdout}</pre>
+    <br /><br />
+    stderr: <pre>${output.stderr}</pre>
+`);
 </script>
 ```

@@ -7,36 +7,26 @@ Note that `seq-align` has multiple sub-tools so you need to specify which one yo
 #### Smith-Waterman
 
 ```html
-<script src="https://cdn.biowasm.com/aioli/latest/aioli.js"></script>
-<script>
-let sw = new Aioli("seq-align/smith_waterman/2017.10.18");
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+let CLI = await new Aioli("seq-align/smith_waterman/2017.10.18");
 
-document.write("Loading...");
-sw
-    // Initialize sw
-    .init()
-    // Align ACGT and ACCCCGT using Smith-Waterman algorithm
-    .then(() => sw.exec("ACGT ACCCCGT"))
-    // Output result
-    .then(d => document.write(`<pre>${d.stdout}\n${d.stderr}</pre>`));
+// Align two sequences
+let output = await CLI.exec("smith_waterman ACGT ACCCCGT");
+document.write(`<pre>${output}</pre>`);
 </script>
 ```
 
 #### Needleman-Wunsch
 
 ```html
-<script src="https://cdn.biowasm.com/aioli/latest/aioli.js"></script>
-<script>
-let nw = new Aioli("seq-align/needleman_wunsch/2017.10.18");
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+let CLI = await new Aioli("seq-align/needleman_wunsch/2017.10.18");
 
-document.write("Loading...");
-nw
-    // Initialize nw
-    .init()
-    // Align ACGT and ACCCCGT using Needleman-Wunsch algorithm
-    .then(() => nw.exec("ACGT ACCCCGT"))
-    // Output result
-    .then(d => document.write(`<pre>${d.stdout}\n${d.stderr}</pre>`));
+// Align two sequences
+let output = await CLI.exec("needleman_wunsch ACGT ACCCCGT");
+document.write(`<pre>${output}</pre>`);
 </script>
 ```
 

@@ -1,20 +1,18 @@
-## bedtools2.wasm
+## bedtools.wasm
 
 ### Usage
 
 ```html
-<script src="https://cdn.biowasm.com/aioli/latest/aioli.js"></script>
-<script>
-let bedtools2 = new Aioli("bedtools2/2.29.2");
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+let CLI = await new Aioli("bedtools/2.29.2");
 
-document.write("Loading...");
-bedtools2
-    // Initialize bedtools2
-    .init()
-    // Run "bedtools" command to intersect 2 BED files
-    .then(() => bedtools2.exec("intersect -a /bedtools2/test/intersect/a.bed -b /bedtools2/test/intersect/b.bed"))
-    // Output result
-    .then(d => document.write(`<pre>${d.stdout}\n${d.stderr}</pre>`));
+// Intersect two .bed files
+let bed1 = "/bedtools/test/intersect/a.bed";
+let bed2 = "/bedtools/test/intersect/b.bed";
+
+let output = await CLI.exec(`bedtools intersect -a ${bed1} -b ${bed2}`);
+document.write(`<pre>${output}</pre>`);
 </script>
 ```
 
