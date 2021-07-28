@@ -31,8 +31,6 @@ for tool in "${allTools[@]}";
 do
 	# Parse tool info
 	toolName=$(jq -rc '.name' <<< $tool)
-	toolPath=$(jq -rc '.path' <<< $tool)  # e.g. bedtools source is in bedtools2/
-	[[ "$toolPath" == "null" ]] && toolPath="${toolName}"
 	toolVersion=$(jq -rc '.version' <<< $tool)
 	toolBranch=$(jq -rc '.branch' <<< $tool)
 	toolPrograms=$(jq -rc '.programs' <<< $tool)
@@ -41,33 +39,23 @@ do
 
 	# Compile it to WebAssembly or fetch pre-compiled from existing CDN!
 	if [[ "$CACHE_DISABLED" == "true" ]]; then
-		VERSION="$toolVersion" BRANCH="$toolBranch" make "$toolPath"
+		VERSION="$toolVersion" BRANCH="$toolBranch" make "$toolName"
 	else
-		mkdir -p tools/${toolPath}/build/
+		mkdir -p tools/${toolName}/build/
 		[[ "$ENV" == "prd" ]] && url=$URL_CDN || url="${URL_CDN//cdn/cdn-stg}"
-		curl -s -o tools/${toolPath}/build/config.json "${url}/${toolName}/${toolVersion}/config.json"
+		curl -s -o tools/${toolName}/build/config.json "${url}/${toolName}/${toolVersion}/config.json"
 		for program in "${toolPrograms[@]}"; do
-			curl -s -o tools/${toolPath}/build/${program}.js "${url}/${toolName}/${toolVersion}/${program}.js"
-			curl -s -o tools/${toolPath}/build/${program}.wasm "${url}/${toolName}/${toolVersion}/${program}.wasm"
-			curl -s --fail -o tools/${toolPath}/build/${program}.data "${url}/${toolName}/${toolVersion}/${program}.data"  # ignore .data failures since not all tools have .data files
+			curl -s -o tools/${toolName}/build/${program}.js "${url}/${toolName}/${toolVersion}/${program}.js"
+			curl -s -o tools/${toolName}/build/${program}.wasm "${url}/${toolName}/${toolVersion}/${program}.wasm"
+			curl -s --fail -o tools/${toolName}/build/${program}.data "${url}/${toolName}/${toolVersion}/${program}.data"  # ignore .data failures since not all tools have .data files
 		done
 	fi
-
 	echo "> tools/${toolPath}/build/"
 	ls -lah tools/${toolPath}/build/
 
 	# Copy files over to the expected CDN folder
 	mkdir -p ${DIR_CDN}/${toolName}/${toolVersion}/
-	cp tools/${toolPath}/build/config.json ${DIR_CDN}/${toolName}/${toolVersion}/config.json
-	# Some tools have multiple programs (e.g. ssw has smith_waterman, needleman_wunsch, and lcs)
-	for program in "${toolPrograms[@]}"; do
-		cp tools/${toolPath}/build/${toolPath}.js ${DIR_CDN}/${toolName}/${toolVersion}/${program}.js
-		cp tools/${toolPath}/build/${toolPath}.wasm ${DIR_CDN}/${toolName}/${toolVersion}/${program}.wasm
-		if [[ -f "tools/${toolPath}/build/${toolPath}.data" ]]; then
-			cp tools/${toolPath}/build/${toolPath}.data ${DIR_CDN}/${toolName}/${toolVersion}/${program}.data
-		fi
-	done
-
+	cp tools/${toolName}/build/* ${DIR_CDN}/${toolName}/${toolVersion}/
 	echo "> ${DIR_CDN}/${toolName}/${toolVersion}/"
 	ls -lah ${DIR_CDN}/${toolName}/${toolVersion}/
 done
