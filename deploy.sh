@@ -61,10 +61,10 @@ do
 	cp tools/${toolPath}/build/config.json ${DIR_CDN}/${toolName}/${toolVersion}/config.json
 	# Some tools have multiple programs (e.g. ssw has smith_waterman, needleman_wunsch, and lcs)
 	for program in "${toolPrograms[@]}"; do
-		cp tools/${toolPath}/build/${program}.js ${DIR_CDN}/${toolName}/${toolVersion}/${program}.js
-		cp tools/${toolPath}/build/${program}.wasm ${DIR_CDN}/${toolName}/${toolVersion}/${program}.wasm
-		if [[ -f "tools/${toolPath}/build/${program}.data" ]]; then
-			cp tools/${toolPath}/build/${program}.data ${DIR_CDN}/${toolName}/${toolVersion}/${program}.data
+		cp tools/${toolPath}/build/${toolPath}.js ${DIR_CDN}/${toolName}/${toolVersion}/${program}.js
+		cp tools/${toolPath}/build/${toolPath}.wasm ${DIR_CDN}/${toolName}/${toolVersion}/${program}.wasm
+		if [[ -f "tools/${toolPath}/build/${toolPath}.data" ]]; then
+			cp tools/${toolPath}/build/${toolPath}.data ${DIR_CDN}/${toolName}/${toolVersion}/${program}.data
 		fi
 	done
 
