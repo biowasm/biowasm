@@ -50,8 +50,8 @@ do
 			curl -s --fail -o tools/${toolName}/build/${program}.data "${url}/${toolName}/${toolVersion}/${program}.data"  # ignore .data failures since not all tools have .data files
 		done
 	fi
-	echo "> tools/${toolPath}/build/"
-	ls -lah tools/${toolPath}/build/
+	echo "> tools/${toolName}/build/"
+	ls -lah tools/${toolName}/build/
 
 	# Copy files over to the expected CDN folder
 	mkdir -p ${DIR_CDN}/${toolName}/${toolVersion}/
