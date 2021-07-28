@@ -12,7 +12,7 @@
 			"branch": "v2.0.0"
 		},
 		{
-			"name": "bedtools2",
+			"name": "bedtools",
 			"version": "2.29.2",
 			"branch": "v2.29.2"
 		},
