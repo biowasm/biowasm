@@ -1,5 +1,5 @@
-[submodule "tools/bedtools2"]
-	path = tools/bedtools2/src
+[submodule "tools/bedtools"]
+	path = tools/bedtools/src
 	url = https://github.com/arq5x/bedtools2.git
 
 [submodule "tools/bhtsne"]
