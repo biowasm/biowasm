@@ -45,18 +45,31 @@ do
 	else
 		mkdir -p tools/${toolPath}/build/
 		[[ "$ENV" == "prd" ]] && url=$URL_CDN || url="${URL_CDN//cdn/cdn-stg}"
+		curl -s -o tools/${toolPath}/build/config.json "${url}/${toolName}/${toolVersion}/config.json"
 		for program in "${toolPrograms[@]}"; do
-			curl -s -o tools/${toolPath}/build/config.json "${url}/${toolName}/${toolVersion}/config.json"
 			curl -s -o tools/${toolPath}/build/${program}.js "${url}/${toolName}/${toolVersion}/${program}.js"
 			curl -s -o tools/${toolPath}/build/${program}.wasm "${url}/${toolName}/${toolVersion}/${program}.wasm"
 			curl -s --fail -o tools/${toolPath}/build/${program}.data "${url}/${toolName}/${toolVersion}/${program}.data"  # ignore .data failures since not all tools have .data files
 		done
 	fi
 
-	# Copy files over to the expected CDN folder
+	echo "> tools/${toolPath}/build/"
 	ls -lah tools/${toolPath}/build/
+
+	# Copy files over to the expected CDN folder
 	mkdir -p ${DIR_CDN}/${toolName}/${toolVersion}/
-	cp tools/${toolPath}/build/* ${DIR_CDN}/${toolName}/${toolVersion}/
+	cp tools/${toolPath}/build/config.json ${DIR_CDN}/${toolName}/${toolVersion}/config.json
+	# Some tools have multiple programs (e.g. ssw has smith_waterman, needleman_wunsch, and lcs)
+	for program in "${toolPrograms[@]}"; do
+		cp tools/${toolPath}/build/${program}.js ${DIR_CDN}/${toolName}/${toolVersion}/${program}.js
+		cp tools/${toolPath}/build/${program}.wasm ${DIR_CDN}/${toolName}/${toolVersion}/${program}.wasm
+		if [[ -f "tools/${toolPath}/build/${program}.data" ]]; then
+			cp tools/${toolPath}/build/${program}.data ${DIR_CDN}/${toolName}/${toolVersion}/${program}.data
+		fi
+	done
+
+	echo "> ${DIR_CDN}/${toolName}/${toolVersion}/"
+	ls -lah ${DIR_CDN}/${toolName}/${toolVersion}/
 done
 
 # ------------------------------------------------------------------------------
