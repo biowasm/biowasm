@@ -31,6 +31,8 @@ for tool in "${allTools[@]}";
 do
 	# Parse tool info
 	toolName=$(jq -rc '.name' <<< $tool)
+	toolPath=$(jq -rc '.path' <<< $tool)  # e.g. bedtools source is in bedtools2/
+	[[ "$toolPath" == "null" ]] && toolPath="${toolName}"
 	toolVersion=$(jq -rc '.version' <<< $tool)
 	toolBranch=$(jq -rc '.branch' <<< $tool)
 	toolPrograms=$(jq -rc '.programs' <<< $tool)
@@ -39,22 +41,22 @@ do
 
 	# Compile it to WebAssembly or fetch pre-compiled from existing CDN!
 	if [[ "$CACHE_DISABLED" == "true" ]]; then
-		VERSION="$toolVersion" BRANCH="$toolBranch" make "$toolName"
+		VERSION="$toolVersion" BRANCH="$toolBranch" make "$toolPath"
 	else
-		mkdir -p tools/${toolName}/build/
+		mkdir -p tools/${toolPath}/build/
 		[[ "$ENV" == "prd" ]] && url=$URL_CDN || url="${URL_CDN//cdn/cdn-stg}"
 		for program in "${toolPrograms[@]}"; do
-			curl -s -o tools/${toolName}/build/config.json "${url}/${toolName}/${toolVersion}/config.json"
-			curl -s -o tools/${toolName}/build/${program}.js "${url}/${toolName}/${toolVersion}/${program}.js"
-			curl -s -o tools/${toolName}/build/${program}.wasm "${url}/${toolName}/${toolVersion}/${program}.wasm"
-			curl -s --fail -o tools/${toolName}/build/${program}.data "${url}/${toolName}/${toolVersion}/${program}.data"  # ignore .data failures since not all tools have .data files
+			curl -s -o tools/${toolPath}/build/config.json "${url}/${toolName}/${toolVersion}/config.json"
+			curl -s -o tools/${toolPath}/build/${program}.js "${url}/${toolName}/${toolVersion}/${program}.js"
+			curl -s -o tools/${toolPath}/build/${program}.wasm "${url}/${toolName}/${toolVersion}/${program}.wasm"
+			curl -s --fail -o tools/${toolPath}/build/${program}.data "${url}/${toolName}/${toolVersion}/${program}.data"  # ignore .data failures since not all tools have .data files
 		done
 	fi
 
 	# Copy files over to the expected CDN folder
-	ls -lah tools/${toolName}/build/
+	ls -lah tools/${toolPath}/build/
 	mkdir -p ${DIR_CDN}/${toolName}/${toolVersion}/
-	cp tools/${toolName}/build/* ${DIR_CDN}/${toolName}/${toolVersion}/
+	cp tools/${toolPath}/build/* ${DIR_CDN}/${toolName}/${toolVersion}/
 done
 
 # ------------------------------------------------------------------------------

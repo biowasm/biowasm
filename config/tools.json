@@ -13,6 +13,7 @@
 		},
 		{
 			"name": "bedtools",
+			"path": "bedtool2",
 			"version": "2.29.2",
 			"branch": "v2.29.2"
 		},
