@@ -11,3 +11,16 @@ index b59428a..ae5f780 100644
  
  plugins: $(PLUGINS)
  
+diff --git a/version.sh b/version.sh
+index 8ccc300..dd047b6 100755
+--- a/version.sh
++++ b/version.sh
+@@ -7,7 +7,7 @@ VERSION=1.10
+ if [ -e .git ]
+ then
+     # If we ever get to 10.x this will need to be more liberal
+-    VERSION=`git describe --match '[0-9].[0-9]*' --dirty --always`
++    VERSION=`git describe --match '[0-9].[0-9]*' --always`
+ fi
+ 
+ echo $VERSION
