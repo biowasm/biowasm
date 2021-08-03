@@ -38,6 +38,11 @@
 			"branch": "1.10"
 		},
 		{
+			"name": "bcftools",
+			"version": "1.10",
+			"branch": "1.10"
+		},
+		{
 			"name": "seq-align",
 			"version": "2017.10.18",
 			"branch": "dc41988",
