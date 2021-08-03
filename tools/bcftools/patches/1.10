@@ -1,7 +1,16 @@
 diff --git a/Makefile b/Makefile
-index b59428a..ae5f780 100644
+index b59428a..76ef022 100644
 --- a/Makefile
 +++ b/Makefile
+@@ -111,7 +111,7 @@ PACKAGE_VERSION = 1.10
+ # $(shell), :=, etc are GNU Make-specific.  If you don't have GNU Make,
+ # comment out this conditional.
+ ifneq "$(wildcard .git)" ""
+-PACKAGE_VERSION := $(shell git describe --always --dirty)
++PACKAGE_VERSION := $(shell git describe --always)
+ DOC_VERSION :=  $(shell git describe --always)+
+ DOC_DATE := $(shell date +'%Y-%m-%d %R %Z')
+ 
 @@ -207,7 +207,7 @@ test check: test-no-plugins
  endif  # PLUGINS_ENABLED
  
@@ -11,6 +20,31 @@ index b59428a..ae5f780 100644
  
  plugins: $(PLUGINS)
  
+diff --git a/main.c b/main.c
+index 2e3e56d..f2bb02d 100644
+--- a/main.c
++++ b/main.c
+@@ -248,6 +248,8 @@ int _CRT_glob = 0;
+ 
+ int main(int argc, char *argv[])
+ {
++    int ret = 0; optind = 1; opterr = 1; optopt = 0;
++
+     if (argc < 2) { usage(stderr); return 1; }
+ 
+     if (strcmp(argv[1], "version") == 0 || strcmp(argv[1], "--version") == 0 || strcmp(argv[1], "-v") == 0) {
+diff --git a/vcfview.c b/vcfview.c
+index 4117d10..14df02e 100644
+--- a/vcfview.c
++++ b/vcfview.c
+@@ -753,6 +753,7 @@ int main_vcfview(int argc, char *argv[])
+         error("BCF output requires header, cannot proceed with -H\n");
+ 
+     int ret = 0;
++    // optind = 1; opterr = 1; optopt = 0;
+     if (!args->header_only)
+     {
+         while ( bcf_sr_next_line(args->files) )
 diff --git a/version.sh b/version.sh
 index 8ccc300..dd047b6 100755
 --- a/version.sh
