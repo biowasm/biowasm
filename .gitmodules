@@ -37,3 +37,6 @@
 [submodule "tools/ssw/src"]
 	path = tools/ssw/src
 	url = https://github.com/mengyao/Complete-Striped-Smith-Waterman-Library.git
+[submodule "tools/bcftools/src"]
+	path = tools/bcftools/src
+	url = https://github.com/samtools/bcftools.git
