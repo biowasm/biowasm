@@ -135,7 +135,11 @@ tools/<tool>/
         <tag>.json   Configuration file with info about which WebAssembly features are needed (see ssw for an example); branch- or tag-specific (optional)
 ```
 
-Finally, you can edit `config/tools.json` to make sure your new tool gets deployed.
+Finally, you can edit:
+
+* `config/tools.json` to make sure the new tool gets deployed
+* `cloudflare/cdn/public/index.html` to list the new tool
+* `cloudflare/web/public/index.html` so the tools shows up on the home page (optional)
 
 ## Deploy changes
 
