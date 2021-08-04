@@ -1,3 +1,5 @@
+![biowasm.com](http://tinygraphs.com/labs/isogrids/hexa/biowasm?theme=seascape&numcolors=4&size=220&fmt=svg)
+
 # biowasm
 
 ![cdn-stg.biowasm.com](https://github.com/biowasm/biowasm/workflows/Deploy%20biowasm%20v2/badge.svg)
@@ -43,6 +45,10 @@ C/C++ tools that have been compiled to WebAssembly:
 | tSNE Sandbox | [tsne.sandbox.bio](https://tsne.sandbox.bio/) | [RobertAboukhalil/tsne-sandbox](https://github.com/robertaboukhalil/tsne-sandbox) |
 | fastq.bio | [fastq.bio](http://www.fastq.bio/) | [RobertAboukhalil/fastq.bio](https://github.com/robertaboukhalil/fastq.bio) |
 | bam.bio | [bam.bio](http://www.bam.bio/) | [RobertAboukhalil/bam.bio](https://github.com/robertaboukhalil/bam.bio) |
+
+## Logo
+
+* Logo by [tinygraphs](https://www.tinygraphs.com/#?name=biowasm&shape=labs%2Fisogrids%2Fhexa&theme=seascape&numcolors=4#tryitout)
 
 ---
 
