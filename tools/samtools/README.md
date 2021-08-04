@@ -20,3 +20,4 @@ document.write(`<pre>${output}</pre>`);
 
 ### Patch
 - Need to reset `opt` variables so that it works properly when call `main()` multiple times
+- Need to remove `pthread_create` in `samtools sort` so it works without thread support
