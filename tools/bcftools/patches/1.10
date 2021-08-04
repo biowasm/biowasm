@@ -33,18 +33,6 @@ index 2e3e56d..f2bb02d 100644
      if (argc < 2) { usage(stderr); return 1; }
  
      if (strcmp(argv[1], "version") == 0 || strcmp(argv[1], "--version") == 0 || strcmp(argv[1], "-v") == 0) {
-diff --git a/vcfview.c b/vcfview.c
-index 4117d10..14df02e 100644
---- a/vcfview.c
-+++ b/vcfview.c
-@@ -753,6 +753,7 @@ int main_vcfview(int argc, char *argv[])
-         error("BCF output requires header, cannot proceed with -H\n");
- 
-     int ret = 0;
-+    // optind = 1; opterr = 1; optopt = 0;
-     if (!args->header_only)
-     {
-         while ( bcf_sr_next_line(args->files) )
 diff --git a/version.sh b/version.sh
 index 8ccc300..dd047b6 100755
 --- a/version.sh
