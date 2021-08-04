@@ -1,5 +1,3 @@
-![biowasm.com](http://tinygraphs.com/labs/isogrids/hexa/biowasm?theme=seascape&numcolors=4&size=220&fmt=svg)
-
 # biowasm
 
 ![cdn-stg.biowasm.com](https://github.com/biowasm/biowasm/workflows/Deploy%20biowasm%20v2/badge.svg)
