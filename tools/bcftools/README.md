@@ -8,7 +8,7 @@
 let CLI = await new Aioli("bcftools/1.10");
 
 // Filter VCF by QUAL column value, and only output chromosome, position, reference, and alternate allele
-let output = await CLI.exec(`bcftools query -i '%QUAL>=60' -f '%CHROM:%POS\t%REF\t%ALT\n' /bcftools/annotate.vcf`)
+let output = await CLI.exec(`bcftools query -i %QUAL>=60 -f %CHROM:%POS\t%REF\t%ALT\n /bcftools/annotate.vcf`)
 document.write(`<pre>${output}</pre>`);
 </script>
 ```
