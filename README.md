@@ -14,7 +14,8 @@ C/C++ tools that have been compiled to WebAssembly:
 
 | Tool | Version | Description |
 |-|-|-|
-| [samtools/htslib](tools/samtools) | 1.10 | Parse and manipulate <code>.sam</code> / <code>.bam</code> read alignment files |
+| [samtools](tools/samtools) | 1.10 | Parse and manipulate <code>.sam</code> / <code>.bam</code> read alignment files |
+| [bcftools](tools/bcftools) | 1.10 | Parse and manipulate <code>.vcf</code> / <code>.bcf</code> variant calling files |
 | [bedtools](tools/bedtools2) | 2.29 | Parse <code>.bed</code> files and perform complex "genome arithmetic" |
 | [bowtie2](tools/bowtie2) | 2.4.2 | Align sequencing reads (<code>.fastq</code>) files to a reference genome |
 | [fastp](tools/fastp) | 0.20.1 | Manipulate and evaluate QC of <code>.fastq</code> files |
