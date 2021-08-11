@@ -3,5 +3,4 @@ dist/
 worker/
 .DS_Store
 node_modules/
-tools-*/
 trash/
