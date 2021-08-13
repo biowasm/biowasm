@@ -1,0 +1,13 @@
+diff --git a/Makefile.simde b/Makefile.simde
+index ae7ff4a..a76f88a 100644
+--- a/Makefile.simde
++++ b/Makefile.simde
+@@ -37,7 +37,7 @@ all:$(PROG)
+ extra:all $(PROG_EXTRA)
+ 
+ minimap2:main.o libminimap2.a
+-		$(CC) $(CFLAGS) main.o -o $@ -L. -lminimap2 $(LIBS)
++		$(CC) $(CFLAGS) main.o -o ../build/$@.js -L. -lminimap2 $(LIBS) $(WASM_FLAGS)
+ 
+ minimap2-lite:example.o libminimap2.a
+ 		$(CC) $(CFLAGS) $< -o $@ -L. -lminimap2 $(LIBS)
