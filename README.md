@@ -125,6 +125,7 @@ git submodule add $REPO tools/$TOOL/src
 # Get specific version of the tool
 cd tools/$TOOL/src
 git checkout $BRANCH
+git submodule update --init --recursive
 cd -
 
 # Stage changes for git
@@ -133,6 +134,7 @@ git add tools/$TOOL/src .gitmodules
 # Other files needed
 echo "TODO" > tools/$TOOL/README.md
 echo "# TODO" > tools/$TOOL/compile.sh
+chmod +x tools/$TOOL/compile.sh
 ```
 
 You should also create the following files:
