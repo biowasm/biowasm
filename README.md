@@ -114,17 +114,25 @@ ls tools/seqtk/build
 First, add the tool as a git module:
 
 ```bash
+TOOL=minimap2
+BRANCH=v2.22
+REPO=https://github.com/lh3/minimap2.git
+
 # Fetch codebase
-mkdir -p tools/seqtk
-git submodule add https://github.com/lh3/seqtk.git tools/seqtk/src
+mkdir -p tools/$TOOL
+git submodule add $REPO tools/$TOOL/src
 
 # Get specific version of the tool
-cd tools/seqtk/src
-git checkout v1.3
+cd tools/$TOOL/src
+git checkout $BRANCH
 cd -
 
 # Stage changes for git
-git add tools/seqtk/src .gitmodules
+git add tools/$TOOL/src .gitmodules
+
+# Other files needed
+echo "TODO" > tools/$TOOL/README.md
+echo "# TODO" > tools/$TOOL/compile.sh
 ```
 
 You should also create the following files:
