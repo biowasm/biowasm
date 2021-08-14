@@ -1,12 +1,29 @@
-diff --git a/Makefile.simde b/Makefile.simde
-index ae7ff4a..a76f88a 100644
---- a/Makefile.simde
-+++ b/Makefile.simde
-@@ -37,7 +37,7 @@ all:$(PROG)
+diff --git a/Makefile b/Makefile
+index 4118616..8b32c80 100644
+--- a/Makefile
++++ b/Makefile
+@@ -44,8 +44,8 @@ all:$(PROG)
+ 
  extra:all $(PROG_EXTRA)
  
- minimap2:main.o libminimap2.a
+-minimap2:main.o libminimap2.a
 -		$(CC) $(CFLAGS) main.o -o $@ -L. -lminimap2 $(LIBS)
++$(PROGRAM):main.o libminimap2.a
++		$(CC) $(CFLAGS) main.o -o ../build/$@.js -L. -lminimap2 $(LIBS) $(WASM_FLAGS)
+ 
+ minimap2-lite:example.o libminimap2.a
+ 		$(CC) $(CFLAGS) $< -o $@ -L. -lminimap2 $(LIBS)
+diff --git a/Makefile.simde b/Makefile.simde
+index ae7ff4a..636c733 100644
+--- a/Makefile.simde
++++ b/Makefile.simde
+@@ -36,8 +36,8 @@ all:$(PROG)
+ 
+ extra:all $(PROG_EXTRA)
+ 
+-minimap2:main.o libminimap2.a
+-		$(CC) $(CFLAGS) main.o -o $@ -L. -lminimap2 $(LIBS)
++$(PROGRAM):main.o libminimap2.a
 +		$(CC) $(CFLAGS) main.o -o ../build/$@.js -L. -lminimap2 $(LIBS) $(WASM_FLAGS)
  
  minimap2-lite:example.o libminimap2.a
