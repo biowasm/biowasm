@@ -3,14 +3,14 @@ name: Deploy biowasm v2
 on:
   workflow_dispatch:
     inputs:
-      cache_disabled:
-        description: "Re-compile everything to WebAssembly"
-        required: true
-        default: "true"
       env:
         description: "Environment"
         required: true
         default: "stg"
+      tools_to_compile:
+        description: "Tools to compile to WebAssembly (comma-separated)"
+        required: false
+        default: "all"
 
 jobs:
   deploy:
@@ -26,20 +26,20 @@ jobs:
           ref: ${{ github.ref }}
 
       - name: Download Emscripten
-        if: ${{ github.event.inputs.cache_disabled == 'true' }}
+        if: ${{ github.event.inputs.tools_to_compile != '' }}
         uses: mymindstorm/setup-emsdk@v10
         with:
           version: 2.0.25
 
       - name: Test Emscripten
-        if: ${{ github.event.inputs.cache_disabled == 'true' }}
+        if: ${{ github.event.inputs.tools_to_compile != '' }}
         run: emcc -v
 
       # ------------------------------------------------------------------------
       # Compile
       # ------------------------------------------------------------------------
       - name: Compile to WebAssembly
-        run: CACHE_DISABLED=${{ github.event.inputs.cache_disabled }} ENV=${{ github.event.inputs.env }} ./deploy.sh
+        run: TOOLS_TO_COMPILE=${{ github.event.inputs.tools_to_compile }} ENV=${{ github.event.inputs.env }} ./deploy.sh
 
       # ------------------------------------------------------------------------
       # Deploy to Cloudflare Workers
