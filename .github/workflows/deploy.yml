@@ -26,13 +26,13 @@ jobs:
           ref: ${{ github.ref }}
 
       - name: Download Emscripten
-        if: ${{ github.event.inputs.tools_to_compile != '' }}
+        if: ${{ github.event.inputs.tools_to_compile != 'none' }}
         uses: mymindstorm/setup-emsdk@v10
         with:
           version: 2.0.25
 
       - name: Test Emscripten
-        if: ${{ github.event.inputs.tools_to_compile != '' }}
+        if: ${{ github.event.inputs.tools_to_compile != 'none' }}
         run: emcc -v
 
       # ------------------------------------------------------------------------
