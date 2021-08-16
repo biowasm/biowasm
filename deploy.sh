@@ -14,17 +14,19 @@ URL_CDN="https://cdn.biowasm.com/v2"
 # ------------------------------------------------------------------------------
 # Setup repos and dependencies
 # ------------------------------------------------------------------------------
-[[ "$CACHE_DISABLED" == "true" ]] && make init
+[[ "$TOOLS_TO_COMPILE" != "" ]] && make init
 sudo apt-get install -y tree jq
 
 # ------------------------------------------------------------------------------
 # Compile each tool
 # ------------------------------------------------------------------------------
 echo "Running with ENV=${ENV}..."
-echo "Running with CACHE_DISABLED=${CACHE_DISABLED}..."
+echo "Running with TOOLS_TO_COMPILE=${TOOLS_TO_COMPILE}..."
 
 # Load info about each tool into an array
 allTools=($(jq -rc '.tools[]' $DIR_TOOLS))
+# Load list of tools to compile into an array
+IFS="," read -r -a TOOLS_TO_COMPILE <<< "$TOOLS_TO_COMPILE"
 
 # Build each tool
 for tool in "${allTools[@]}";
@@ -38,7 +40,7 @@ do
 	toolPrograms=($(jq -rc '.[]' <<< $toolPrograms))
 
 	# Compile it to WebAssembly or fetch pre-compiled from existing CDN!
-	if [[ "$CACHE_DISABLED" == "true" ]]; then
+	if ( [[ "${TOOLS_TO_COMPILE[0]}" == "all" ]] || [[ " ${TOOLS_TO_COMPILE[@]} " =~ " ${toolName} " ]] ); then
 		VERSION="$toolVersion" BRANCH="$toolBranch" make "$toolName"
 	else
 		mkdir -p tools/${toolName}/build/
