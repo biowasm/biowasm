@@ -42,7 +42,7 @@ index 890cc3f0..aa6b9028 100644
  bowtie2-align-l-sanitized bowtie2-align-l: bt2_search.cpp $(SEARCH_CPPS) $(SHARED_CPPS) $(HEADERS) $(SEARCH_FRAGMENTS)
  	$(CXX) $(RELEASE_FLAGS) $(RELEASE_DEFS) $(CXXFLAGS) \
 diff --git a/bt2_search.cpp b/bt2_search.cpp
-index 48680f8a..3ad9dabe 100644
+index 48680f8a..94e3fb91 100644
 --- a/bt2_search.cpp
 +++ b/bt2_search.cpp
 @@ -4786,6 +4786,7 @@ static void multiseedSearch(
@@ -53,3 +53,11 @@ index 48680f8a..3ad9dabe 100644
  			}
  #endif
  		}
+@@ -5144,6 +5145,7 @@ int bowtie(int argc, const char **argv) {
+ 		// Reset all global state, including getopt state
+ 		opterr = optind = 1;
+ 		resetOptions();
++		argstr = "";
+ 		for(int i = 0; i < argc; i++) {
+ 			argstr += argv[i];
+ 			if(i < argc-1) argstr += " ";
