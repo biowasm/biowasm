@@ -8,7 +8,7 @@ on:
         required: true
         default: "stg"
       tools_to_compile:
-        description: "Tools to compile to WebAssembly (comma-separated)"
+        description: "Tools to compile to WebAssembly (comma-separated; 'all', 'none')"
         required: false
         default: "all"
 

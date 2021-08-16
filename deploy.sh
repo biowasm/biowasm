@@ -11,11 +11,12 @@ DIR_TOOLS="config/tools.json"
 DIR_CDN="cloudflare/cdn/public"
 URL_CDN="https://cdn.biowasm.com/v2"
 # ENV               # Either "stg" or "prd"
-# TOOLS_TO_COMPILE  # Comma-separated list of tools to recompile; the rest will use CDN as cache ('all'=all tools, ''=none)
+# TOOLS_TO_COMPILE  # Comma-separated list of tools to recompile; the rest will use CDN as cache ('all', 'none')
 
 # ------------------------------------------------------------------------------
 # Setup repos and dependencies
 # ------------------------------------------------------------------------------
+[[ "$TOOLS_TO_COMPILE" == "none" ]] && TOOLS_TO_COMPILE=""
 [[ "$TOOLS_TO_COMPILE" != "" ]] && make init
 sudo apt-get install -y tree jq
 
