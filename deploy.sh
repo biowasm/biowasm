@@ -97,4 +97,5 @@ cd ../
 # Generate index
 # ------------------------------------------------------------------------------
 cd "$DIR_CDN"
-( echo "cdn.biowasm.com/v2/"; date; tree --charset=ascii --du -h | grep -v -E "index.html|index|404.html|.ico" | tail +2 ) > index
+prefix="cdn"; [[ "$ENV" == "stg" ]] && prefix="cdn-stg"
+( echo "$prefix.biowasm.com/v2/"; date; tree --charset=ascii --du -h | grep -v -E "index.html|index|404.html|.ico" | tail +2 ) > index
