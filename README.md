@@ -24,6 +24,8 @@ C/C++ tools that have been compiled to WebAssembly:
 | [wgsim](tools/wgsim) | 2011.10.17 | Simulate short reads from a reference genome |
 | [seq-align](tools/seq-align) | 2017.10.18 | Align sequences using Smith-Waterman/Needleman-Wunsch algorithms |
 | [bhtsne](tools/bhtsne) | 2016.08.22 | Run the t-SNE dimensionality-reduction algorithm |
+| [jq](tools/jq) | 1.6 | Filter and wrangle <code>JSON</code> strings |
+
 
 ## How it works
 
