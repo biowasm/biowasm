@@ -30,6 +30,11 @@
 			"branch": "0.20.1"
 		},
 		{
+			"name": "jq",
+			"version": "1.6",
+			"branch": "jq-1.6"
+		},
+		{
 			"name": "samtools",
 			"version": "1.10",
 			"branch": "1.10"
