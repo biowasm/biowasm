@@ -1,0 +1,25 @@
+diff --git a/scripts/version b/scripts/version
+index 0e8094c..7704151 100755
+--- a/scripts/version
++++ b/scripts/version
+@@ -2,7 +2,7 @@
+ set -e
+ cd `dirname "$0"`
+ if git rev-parse --verify -q jq-1.0 > /dev/null 2>&1; then
+-    git describe --tags --match 'jq-*' --dirty | sed 's/^jq-//'
++    git describe --tags --match 'jq-*' | sed 's/^jq-//'
+ else
+     b=`git rev-parse --abbrev-ref HEAD`
+     c=`git describe --always --dirty`
+diff --git a/src/main.c b/src/main.c
+index b154689..49c276d 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -243,6 +243,7 @@ int main(int argc, char* argv[]) {
+   int parser_flags = 0;
+   int nfiles = 0;
+   int badwrite;
++  options = 0; /* reset options so can call main() multiple times */
+   jv ARGS = jv_array(); /* positional arguments */
+   jv program_arguments = jv_object(); /* named arguments */
+ 
