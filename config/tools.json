@@ -2,7 +2,8 @@
 	"aioli": [
 		{ "version": "2.0.0", "branch": "v2.0.0" },
 		{ "version": "2.1.0", "branch": "v2.1.0" },
-		{ "version": "2.2.0", "branch": "v2.2.0" }
+		{ "version": "2.2.0", "branch": "v2.2.0" },
+		{ "version": "2.3.0", "branch": "v2.3.0" }
 	],
 	"tools": [
 		{ "name": "base", "version": "2.0.0", "branch": "v2.0.0" },
