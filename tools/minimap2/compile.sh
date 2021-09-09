@@ -21,13 +21,3 @@ emmake make \
 	CFLAGS="-O2 -Wno-return-type -Wno-unused-command-line-argument -msimd128" \
 	WASM_FLAGS="-O2 $WASM_FLAGS -s ASSERTIONS=1" \
 	minimap2
-
-# 
-
-
-exit
-
-time minimap2 -a /minimap2/MT-human.fa /minimap2/MT-orang.fa > test.sam
-time minimap2 -x map-ont -d MT-human-ont.mmi /minimap2/MT-human.fa
-time minimap2 -a MT-human-ont.mmi /minimap2/MT-orang.fa > test.sam
-
