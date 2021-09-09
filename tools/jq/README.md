@@ -8,10 +8,12 @@
 let CLI = await new Aioli("jq/1.6");
 
 // Create mock JSON file
-await CLI.fs.writeFile("test.json", `{"some":{"data": "here"}}`);
+await CLI.fs.writeFile("test.json", `[{"some":{"data": "here"}},{"some": {"data": "there"}}]`);
 
 // Retrieve JSON subset
-let output = await CLI.exec("jq -r -c '.some.data' test.json");
+let output = await CLI.exec("jq", [
+	"-r", ".[1].some.data", "test.json"
+]);
 document.write(`<pre>${output}</pre>`);
 </script>
 ```
