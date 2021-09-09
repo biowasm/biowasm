@@ -28,6 +28,35 @@ index ae7ff4a..636c733 100644
  
  minimap2-lite:example.o libminimap2.a
  		$(CC) $(CFLAGS) $< -o $@ -L. -lminimap2 $(LIBS)
+diff --git a/index.c b/index.c
+index 0d8a2ae..c8559b3 100644
+--- a/index.c
++++ b/index.c
+@@ -117,8 +117,8 @@ void mm_idx_stat(const mm_idx_t *mi)
+ 				if (kh_key(h, k)&1) ++n1;
+ 			}
+ 	}
+-	fprintf(stderr, "[M::%s::%.3f*%.2f] distinct minimizers: %d (%.2f%% are singletons); average occurrences: %.3lf; average spacing: %.3lf; total length: %ld\n",
+-			__func__, realtime() - mm_realtime0, cputime() / (realtime() - mm_realtime0), n, 100.0*n1/n, (double)sum / n, (double)len / sum, (long)len);
++	fprintf(stderr, "[M::%s::%.3f] distinct minimizers: %d (%.2f%% are singletons); average occurrences: %.3lf; average spacing: %.3lf; total length: %ld\n",
++			__func__, realtime() - mm_realtime0, n, 100.0*n1/n, (double)sum / n, (double)len / sum, (long)len);
+ }
+ 
+ int mm_idx_index_name(mm_idx_t *mi)
+@@ -385,11 +385,11 @@ mm_idx_t *mm_idx_gen(mm_bseq_file_t *fp, int w, int k, int b, int flag, int mini
+ 
+ 	kt_pipeline(n_threads < 3? n_threads : 3, worker_pipeline, &pl, 3);
+ 	if (mm_verbose >= 3)
+-		fprintf(stderr, "[M::%s::%.3f*%.2f] collected minimizers\n", __func__, realtime() - mm_realtime0, cputime() / (realtime() - mm_realtime0));
++		fprintf(stderr, "[M::%s::%.3f] collected minimizers\n", __func__, realtime() - mm_realtime0);
+ 
+ 	mm_idx_post(pl.mi, n_threads);
+ 	if (mm_verbose >= 3)
+-		fprintf(stderr, "[M::%s::%.3f*%.2f] sorted minimizers\n", __func__, realtime() - mm_realtime0, cputime() / (realtime() - mm_realtime0));
++		fprintf(stderr, "[M::%s::%.3f] sorted minimizers\n", __func__, realtime() - mm_realtime0);
+ 
+ 	return pl.mi;
+ }
 diff --git a/kthread.c b/kthread.c
 index ffdf940..5117d61 100644
 --- a/kthread.c
@@ -122,7 +151,7 @@ index ffdf940..5117d61 100644
  
  	pthread_mutex_destroy(&aux.mutex);
 diff --git a/main.c b/main.c
-index 3c62576..06fb56e 100644
+index 3c62576..884ffbe 100644
 --- a/main.c
 +++ b/main.c
 @@ -121,7 +121,7 @@ int main(int argc, char *argv[])
@@ -147,3 +176,49 @@ index 3c62576..06fb56e 100644
  	if ((opt.flag & MM_F_SPLICE) && (opt.flag & MM_F_FRAG_MODE)) {
  		fprintf(stderr, "[ERROR]\033[1;31m --splice and --frag should not be specified at the same time.\033[0m\n");
  		return 1;
+@@ -404,8 +410,8 @@ int main(int argc, char *argv[])
+ 			}
+ 		}
+ 		if (mm_verbose >= 3)
+-			fprintf(stderr, "[M::%s::%.3f*%.2f] loaded/built the index for %d target sequence(s)\n",
+-					__func__, realtime() - mm_realtime0, cputime() / (realtime() - mm_realtime0), mi->n_seq);
++			fprintf(stderr, "[M::%s::%.3f] loaded/built the index for %d target sequence(s)\n",
++					__func__, realtime() - mm_realtime0, mi->n_seq);
+ 		if (argc != o.ind + 1) mm_mapopt_update(&opt, mi);
+ 		if (mm_verbose >= 3) mm_idx_stat(mi);
+ 		if (junc_bed) mm_idx_bed_read(mi, junc_bed, 1);
+@@ -445,7 +451,7 @@ int main(int argc, char *argv[])
+ 		fprintf(stderr, "[M::%s] CMD:", __func__);
+ 		for (i = 0; i < argc; ++i)
+ 			fprintf(stderr, " %s", argv[i]);
+-		fprintf(stderr, "\n[M::%s] Real time: %.3f sec; CPU: %.3f sec; Peak RSS: %.3f GB\n", __func__, realtime() - mm_realtime0, cputime(), peakrss() / 1024.0 / 1024.0 / 1024.0);
++		fprintf(stderr, "\n[M::%s] Real time: %.3f sec\n", __func__, realtime() - mm_realtime0);
+ 	}
+ 	return 0;
+ }
+diff --git a/map.c b/map.c
+index 9c4ad64..a13706a 100644
+--- a/map.c
++++ b/map.c
+@@ -608,7 +608,7 @@ static void *worker_pipeline(void *shared, int step, void *in)
+ 		free(s->reg); free(s->n_reg); free(s->seq); // seg_off, n_seg, rep_len and frag_gap were allocated with reg; no memory leak here
+ 		km_destroy(km);
+ 		if (mm_verbose >= 3)
+-			fprintf(stderr, "[M::%s::%.3f*%.2f] mapped %d sequences\n", __func__, realtime() - mm_realtime0, cputime() / (realtime() - mm_realtime0), s->n_seq);
++			fprintf(stderr, "[M::%s::%.3f] mapped %d sequences\n", __func__, realtime() - mm_realtime0, s->n_seq);
+ 		free(s);
+ 	}
+     return 0;
+diff --git a/options.c b/options.c
+index 97347be..31fc8b4 100644
+--- a/options.c
++++ b/options.c
+@@ -72,7 +72,7 @@ void mm_mapopt_update(mm_mapopt_t *opt, const mm_idx_t *mi)
+ 			opt->mid_occ = opt->max_mid_occ;
+ 	}
+ 	if (mm_verbose >= 3)
+-		fprintf(stderr, "[M::%s::%.3f*%.2f] mid_occ = %d\n", __func__, realtime() - mm_realtime0, cputime() / (realtime() - mm_realtime0), opt->mid_occ);
++		fprintf(stderr, "[M::%s::%.3f] mid_occ = %d\n", __func__, realtime() - mm_realtime0, opt->mid_occ);
+ }
+ 
+ void mm_mapopt_max_intron_len(mm_mapopt_t *opt, int max_intron_len)
