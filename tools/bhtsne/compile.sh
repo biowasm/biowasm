@@ -10,7 +10,7 @@ FLAGS=$(cat <<EOF
     -O3 \
     -s ASYNCIFY=1 \
     -s 'ASYNCIFY_IMPORTS=["send_names","send_results"]' \
-    -s EXPORTED_RUNTIME_METHODS=["callMain","getValue","UTF8ToString"] \
+    -s EXPORTED_RUNTIME_METHODS=["getValue","UTF8ToString","callMain","FS","PROXYFS","WORKERFS"] \
     --preload-file ../data/brain8.snd@/bhtsne/brain8.snd \
     --preload-file ../data/pollen2014.snd@/bhtsne/pollen2014.snd
 EOF

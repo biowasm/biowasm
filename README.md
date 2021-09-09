@@ -24,13 +24,15 @@ C/C++ tools that have been compiled to WebAssembly:
 | [wgsim](tools/wgsim) | 2011.10.17 | Simulate short reads from a reference genome |
 | [seq-align](tools/seq-align) | 2017.10.18 | Align sequences using Smith-Waterman/Needleman-Wunsch algorithms |
 | [bhtsne](tools/bhtsne) | 2016.08.22 | Run the t-SNE dimensionality-reduction algorithm |
+| [jq](tools/jq) | 1.6 | Filter and wrangle <code>JSON</code> strings |
+
 
 ## How it works
 
 | Tool | Description | Link |
 |-|-|-|
 | biowasm | Recipes for compiling C/C++ genomics tools to WebAssembly | This repo |
-| biowasm CDN | Free server hosting pre-compiled tools for use in your apps | [cdn.biowasm.com](https://cdn.biowasm.com) |
+| biowasm CDN | Free server hosting pre-compiled tools for use in your apps | [cdn.biowasm.com](https://cdn.biowasm.com/v2/) |
 | Aioli | Tool for running these modules in a browser, inside WebWorkers | [biowasm/aioli](https://github.com/biowasm/aioli) |
 
 
@@ -38,11 +40,11 @@ C/C++ tools that have been compiled to WebAssembly:
 
 | Tool | URL | Repo |
 |-|-|-|
+| Sandbox.bio | [sandbox.bio](https://sandbox.bio) | - |
 | Ribbon | [genomeribbon.com](https://genomeribbon.com) | [MariaNattestad/Ribbon](https://github.com/MariaNattestad/Ribbon) |
-| Alignment Sandbox | [alignment.sandbox.bio](https://alignment.sandbox.bio/) | [RobertAboukhalil/alignment-sandbox](https://github.com/robertaboukhalil/alignment-sandbox) |
-| tSNE Sandbox | [tsne.sandbox.bio](https://tsne.sandbox.bio/) | [RobertAboukhalil/tsne-sandbox](https://github.com/robertaboukhalil/tsne-sandbox) |
-| fastq.bio | [fastq.bio](http://www.fastq.bio/) | [RobertAboukhalil/fastq.bio](https://github.com/robertaboukhalil/fastq.bio) |
-| bam.bio | [bam.bio](http://www.bam.bio/) | [RobertAboukhalil/bam.bio](https://github.com/robertaboukhalil/bam.bio) |
+| Alignment Sandbox | [alignment.sandbox.bio](https://alignment.sandbox.bio) | [RobertAboukhalil/alignment-sandbox](https://github.com/robertaboukhalil/alignment-sandbox) |
+| tSNE Sandbox | [tsne.sandbox.bio](https://tsne.sandbox.bio) | [RobertAboukhalil/tsne-sandbox](https://github.com/robertaboukhalil/tsne-sandbox) |
+| fastq.bio | [fastq.bio](http://www.fastq.bio) | [RobertAboukhalil/fastq.bio](https://github.com/robertaboukhalil/fastq.bio) |
 
 ## Logo
 
@@ -144,7 +146,7 @@ tools/<tool>/
     README.md        Details about the tool and dependencies
     compile.sh       Script that will run to compile the tool to WebAssembly (can use `$EM_FLAGS` for common flags)
     patches/    
-        <tag>        Patch applied to the code to compile it to WebAssembly; branch- or tag-specific (optional)
+        <tag>.patch  Patch applied to the code to compile it to WebAssembly; branch- or tag-specific (optional)
     configs/
         <tag>.json   Configuration file with info about which WebAssembly features are needed (see ssw for an example); branch- or tag-specific (optional)
 ```
@@ -155,14 +157,10 @@ Finally, you can edit:
 * `cloudflare/cdn/public/index.html` to list the new tool
 * `cloudflare/web/public/index.html` so the tools shows up on the home page (optional)
 
-## Deploy changes
 
-* Changes merged are auto-deployed via GitHub Actions to `cdn-stg.biowasm.com/v2`.
+### Future candidates
 
-
-## To do
-
-- Deploy one tool without re-compiling all others: download data from the CDN onto the GitHub Actions VM first?
-- Run each tool's tests: use Selenium? Can't use node.js when have `.data` files
-- Generate HTML file for each tool: CLI for testing, predefined queries, etc
-- Support for Rust bioinformatics tools such as [sourmash](https://github.com/dib-lab/sourmash/tree/v3.2.2/src/core) and [rust-bio](https://github.com/rust-bio/rust-bio)
+- [minimap2](https://github.com/lh3/minimap2) - branch [feature/minimap2](https://github.com/biowasm/biowasm/tree/feature/minimap2)
+- [Sniffles](https://github.com/fritzsedlazeck/Sniffles)
+- [FreeBayes](https://github.com/freebayes/freebayes)
+- [HISAT2](https://github.com/DaehwanKimLab/hisat2)

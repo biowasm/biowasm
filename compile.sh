@@ -39,7 +39,7 @@ if [[ "$TOOL" != "base" ]]; then
     git checkout "$BRANCH"
 
     # Apply patches, if any
-    patch_file=../patches/$BRANCH
+    patch_file=../patches/${BRANCH}.patch
     if [[ -f "$patch_file" ]]; then
         echo "Applying patch file <$patch_file>"
         git apply -v $patch_file

@@ -42,6 +42,10 @@
 	path = tools/bcftools/src
 	url = https://github.com/samtools/bcftools.git
 
+[submodule "tools/jq/src"]
+	path = tools/jq/src
+	url = https://github.com/stedolan/jq.git
+
 [submodule "tools/minimap2/src"]
 	path = tools/minimap2/src
 	url = https://github.com/lh3/minimap2.git

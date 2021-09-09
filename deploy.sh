@@ -10,21 +10,26 @@
 DIR_TOOLS="config/tools.json"
 DIR_CDN="cloudflare/cdn/public"
 URL_CDN="https://cdn.biowasm.com/v2"
+# ENV               # Either "stg" or "prd"
+# TOOLS_TO_COMPILE  # Comma-separated list of tools to recompile; the rest will use CDN as cache ('all', 'none')
 
 # ------------------------------------------------------------------------------
 # Setup repos and dependencies
 # ------------------------------------------------------------------------------
-[[ "$CACHE_DISABLED" == "true" ]] && make init
+[[ "$TOOLS_TO_COMPILE" == "none" ]] && TOOLS_TO_COMPILE=""
+[[ "$TOOLS_TO_COMPILE" != "" ]] && make init
 sudo apt-get install -y tree jq
 
 # ------------------------------------------------------------------------------
 # Compile each tool
 # ------------------------------------------------------------------------------
 echo "Running with ENV=${ENV}..."
-echo "Running with CACHE_DISABLED=${CACHE_DISABLED}..."
+echo "Running with TOOLS_TO_COMPILE=${TOOLS_TO_COMPILE}..."
 
 # Load info about each tool into an array
 allTools=($(jq -rc '.tools[]' $DIR_TOOLS))
+# Load list of tools to compile into an array
+IFS="," read -r -a TOOLS_TO_COMPILE <<< "$TOOLS_TO_COMPILE"
 
 # Build each tool
 for tool in "${allTools[@]}";
@@ -38,7 +43,7 @@ do
 	toolPrograms=($(jq -rc '.[]' <<< $toolPrograms))
 
 	# Compile it to WebAssembly or fetch pre-compiled from existing CDN!
-	if [[ "$CACHE_DISABLED" == "true" ]]; then
+	if ( [[ "${TOOLS_TO_COMPILE[0]}" == "all" ]] || [[ " ${TOOLS_TO_COMPILE[@]} " =~ " ${toolName} " ]] ); then
 		VERSION="$toolVersion" BRANCH="$toolBranch" make "$toolName"
 	else
 		mkdir -p tools/${toolName}/build/
@@ -92,4 +97,5 @@ cd ../
 # Generate index
 # ------------------------------------------------------------------------------
 cd "$DIR_CDN"
-( echo "cdn.biowasm.com/v2/"; date; tree --charset=ascii --du -h | grep -v -E "index.html|index|404.html|.ico" | tail +2 ) > index
+prefix="cdn"; [[ "$ENV" == "stg" ]] && prefix="cdn-stg"
+( echo "$prefix.biowasm.com/v2/"; date; tree --charset=ascii --du -h | grep -v -E "index.html|index|404.html|.ico" | tail +2 ) > index

@@ -1,16 +1,15 @@
 {
 	"aioli": [
-		{
-			"version": "2.0.0",
-			"branch": "v2.0.0"
-		}
+		{ "version": "2.0.0", "branch": "v2.0.0" },
+		{ "version": "2.1.0", "branch": "v2.1.0" },
+		{ "version": "2.2.0", "branch": "v2.2.0" },
+		{ "version": "2.3.0", "branch": "v2.3.0" }
 	],
 	"tools": [
-		{
-			"name": "base",
-			"version": "2.0.0",
-			"branch": "v2.0.0"
-		},
+		{ "name": "base", "version": "2.0.0", "branch": "v2.0.0" },
+		{ "name": "base", "version": "2.1.0", "branch": "v2.1.0" },
+		{ "name": "base", "version": "2.2.0", "branch": "v2.2.0" },
+		{ "name": "base", "version": "2.3.0", "branch": "v2.3.0" },
 		{
 			"name": "bedtools",
 			"version": "2.29.2",
@@ -31,6 +30,11 @@
 			"name": "fastp",
 			"version": "0.20.1",
 			"branch": "0.20.1"
+		},
+		{
+			"name": "jq",
+			"version": "1.6",
+			"branch": "jq-1.6"
 		},
 		{
 			"name": "samtools",
