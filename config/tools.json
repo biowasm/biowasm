@@ -37,6 +37,11 @@
 			"branch": "jq-1.6"
 		},
 		{
+			"name": "minimap2",
+			"version": "2.22",
+			"branch": "v2.22"
+		},
+		{
 			"name": "samtools",
 			"version": "1.10",
 			"branch": "1.10"
