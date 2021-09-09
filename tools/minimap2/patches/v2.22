@@ -58,7 +58,7 @@ index 0d8a2ae..c8559b3 100644
  	return pl.mi;
  }
 diff --git a/kthread.c b/kthread.c
-index ffdf940..5117d61 100644
+index ffdf940..51384d0 100644
 --- a/kthread.c
 +++ b/kthread.c
 @@ -2,6 +2,7 @@
@@ -77,7 +77,7 @@ index ffdf940..5117d61 100644
  	if (n_threads > 1) {
  		int i;
  		kt_for_t t;
-@@ -99,32 +101,33 @@ static void *ktp_worker(void *data)
+@@ -99,32 +101,13 @@ static void *ktp_worker(void *data)
  	ktp_worker_t *w = (ktp_worker_t*)data;
  	ktp_t *p = w->pl;
  	while (w->step < p->n_steps) {
@@ -95,58 +95,37 @@ index ffdf940..5117d61 100644
 -			pthread_cond_wait(&p->cv, &p->mutex);
 -		}
 -		pthread_mutex_unlock(&p->mutex);
-+printf("ktp_worker: %d %d\n", w->step, p->n_steps);
-+		// // test whether we can kick off the job with this worker
-+		// pthread_mutex_lock(&p->mutex);
-+		// for (;;) {
-+		// 	int i;
-+		// 	// test whether another worker is doing the same step
-+		// 	for (i = 0; i < p->n_workers; ++i) {
-+		// 		if (w == &p->workers[i]) continue; // ignore itself
-+		// 		if (p->workers[i].step <= w->step && p->workers[i].index < w->index)
-+		// 			break;
-+		// 	}
-+		// 	if (i == p->n_workers) break; // no workers with smaller indices are doing w->step or the previous steps
-+		// 	pthread_cond_wait(&p->cv, &p->mutex);
-+		// }
-+		// pthread_mutex_unlock(&p->mutex);
- 
+-
  		// working on w->step
  		w->data = p->func(p->shared, w->step, w->step? w->data : 0); // for the first step, input is NULL
  
  		// update step and let other workers know
 -		pthread_mutex_lock(&p->mutex);
-+		// pthread_mutex_lock(&p->mutex);
  		w->step = w->step == p->n_steps - 1 || w->data? (w->step + 1) % p->n_steps : p->n_steps;
  		if (w->step == 0) w->index = p->index++;
 -		pthread_cond_broadcast(&p->cv);
 -		pthread_mutex_unlock(&p->mutex);
-+		// pthread_cond_broadcast(&p->cv);
-+		// pthread_mutex_unlock(&p->mutex);
  	}
 -	pthread_exit(0);
-+	// pthread_exit(0);
  }
  
  void kt_pipeline(int n_threads, void *(*func)(void*, int, void*), void *shared_data, int n_steps)
-@@ -134,6 +137,7 @@ void kt_pipeline(int n_threads, void *(*func)(void*, int, void*), void *shared_d
+@@ -133,7 +116,7 @@ void kt_pipeline(int n_threads, void *(*func)(void*, int, void*), void *shared_d
+ 	pthread_t *tid;
  	int i;
  
- 	if (n_threads < 1) n_threads = 1;
-+n_threads = 1;
+-	if (n_threads < 1) n_threads = 1;
++	n_threads = 1; // biowasm: Turn off multi-threading for now
  	aux.n_workers = n_threads;
  	aux.n_steps = n_steps;
  	aux.func = func;
-@@ -150,8 +154,10 @@ void kt_pipeline(int n_threads, void *(*func)(void*, int, void*), void *shared_d
+@@ -150,8 +133,7 @@ void kt_pipeline(int n_threads, void *(*func)(void*, int, void*), void *shared_d
  	}
  
  	tid = (pthread_t*)calloc(n_threads, sizeof(pthread_t));
 -	for (i = 0; i < n_threads; ++i) pthread_create(&tid[i], 0, ktp_worker, &aux.workers[i]);
 -	for (i = 0; i < n_threads; ++i) pthread_join(tid[i], 0);
-+	// for (i = 0; i < n_threads; ++i) pthread_create(&tid[i], 0, ktp_worker, &aux.workers[i]);
-+	// for (i = 0; i < n_threads; ++i) pthread_join(tid[i], 0);
 +	ktp_worker(&aux.workers[0]);
-+
  	free(tid); free(aux.workers);
  
  	pthread_mutex_destroy(&aux.mutex);
