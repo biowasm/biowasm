@@ -19,5 +19,5 @@ emmake make \
 	-f Makefile \
 	PROGRAM="minimap2" \
 	CFLAGS="-O2 -Wno-return-type -Wno-unused-command-line-argument -msimd128" \
-	WASM_FLAGS="-O2 $WASM_FLAGS -s ASSERTIONS=1" \
+	WASM_FLAGS="$WASM_FLAGS" \
 	minimap2
