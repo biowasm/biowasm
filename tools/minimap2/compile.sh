@@ -1,16 +1,14 @@
 cd src/
 
-# . ../../../config/shared.default.sh
-
 WASM_FLAGS="$EM_FLAGS --preload-file test/@/minimap2/"
 
-# # Non-SIMD
-# echo "Compiling without SIMD"
-# make clean
+# Non-SIMD
+echo "Compiling without SIMD"
+make clean
 emmake make \
 	-f Makefile.simde \
 	PROGRAM="minimap2-nosimd" \
-	CFLAGS="-O2 -msimd128 -Wno-pass-failed" \
+	CFLAGS="-O2 -Wno-pass-failed -Wno-return-type" \
 	WASM_FLAGS="$WASM_FLAGS" \
 	minimap2-nosimd
 

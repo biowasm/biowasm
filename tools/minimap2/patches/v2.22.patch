@@ -14,7 +14,7 @@ index 4118616..8b32c80 100644
  minimap2-lite:example.o libminimap2.a
  		$(CC) $(CFLAGS) $< -o $@ -L. -lminimap2 $(LIBS)
 diff --git a/Makefile.simde b/Makefile.simde
-index ae7ff4a..636c733 100644
+index ae7ff4a..0a00aa5 100644
 --- a/Makefile.simde
 +++ b/Makefile.simde
 @@ -36,8 +36,8 @@ all:$(PROG)
@@ -28,6 +28,27 @@ index ae7ff4a..636c733 100644
  
  minimap2-lite:example.o libminimap2.a
  		$(CC) $(CFLAGS) $< -o $@ -L. -lminimap2 $(LIBS)
+@@ -49,16 +49,16 @@ sdust:sdust.c kalloc.o kalloc.h kdq.h kvec.h kseq.h ketopt.h sdust.h
+ 		$(CC) -D_SDUST_MAIN $(CFLAGS) $< kalloc.o -o $@ -lz
+ 
+ ksw2_ll_simde.o:ksw2_ll_sse.c ksw2.h kalloc.h
+-		$(CC) -c $(CFLAGS) -msse2 $(CPPFLAGS) $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -D__SSE2__  $(CPPFLAGS) $(INCLUDES) $< -o $@
+ 
+ ksw2_extz2_simde.o:ksw2_extz2_sse.c ksw2.h kalloc.h
+-		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -D__SSE2__ -D__SSE4_1__ $(CPPFLAGS) $(INCLUDES) $< -o $@
+ 
+ ksw2_extd2_simde.o:ksw2_extd2_sse.c ksw2.h kalloc.h
+-		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -D__SSE2__ -D__SSE4_1__ $(CPPFLAGS) $(INCLUDES) $< -o $@
+ 
+ ksw2_exts2_simde.o:ksw2_exts2_sse.c ksw2.h kalloc.h
+-		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -D__SSE2__ -D__SSE4_1__ $(CPPFLAGS) $(INCLUDES) $< -o $@
+ 
+ # other non-file targets
+ 
 diff --git a/index.c b/index.c
 index 0d8a2ae..c8559b3 100644
 --- a/index.c
