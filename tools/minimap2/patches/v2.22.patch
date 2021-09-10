@@ -1,0 +1,257 @@
+diff --git a/Makefile b/Makefile
+index 4118616..1c9b20c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -44,8 +44,8 @@ all:$(PROG)
+ 
+ extra:all $(PROG_EXTRA)
+ 
+-minimap2:main.o libminimap2.a
+-		$(CC) $(CFLAGS) main.o -o $@ -L. -lminimap2 $(LIBS)
++$(PROGRAM):main.o libminimap2.a
++		$(CC) $(CFLAGS) main.o -o ../build/$@.js -L. -lminimap2 $(LIBS) $(WASM_FLAGS)
+ 
+ minimap2-lite:example.o libminimap2.a
+ 		$(CC) $(CFLAGS) $< -o $@ -L. -lminimap2 $(LIBS)
+@@ -64,25 +64,25 @@ ksw2_ll_sse.o:ksw2_ll_sse.c ksw2.h kalloc.h
+ endif
+ 
+ ksw2_extz2_sse41.o:ksw2_extz2_sse.c ksw2.h kalloc.h
+-		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) -DKSW_CPU_DISPATCH $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) $(INCLUDES) $< -o $@
+ 
+ ksw2_extz2_sse2.o:ksw2_extz2_sse.c ksw2.h kalloc.h
+-		$(CC) -c $(CFLAGS) -msse2 -mno-sse4.1 $(CPPFLAGS) -DKSW_CPU_DISPATCH -DKSW_SSE2_ONLY $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -msse2 -mno-sse4.1 $(CPPFLAGS) -DKSW_SSE2_ONLY $(INCLUDES) $< -o $@
+ 
+ ksw2_extd2_sse41.o:ksw2_extd2_sse.c ksw2.h kalloc.h
+-		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) -DKSW_CPU_DISPATCH $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) $(INCLUDES) $< -o $@
+ 
+ ksw2_extd2_sse2.o:ksw2_extd2_sse.c ksw2.h kalloc.h
+-		$(CC) -c $(CFLAGS) -msse2 -mno-sse4.1 $(CPPFLAGS) -DKSW_CPU_DISPATCH -DKSW_SSE2_ONLY $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -msse2 -mno-sse4.1 $(CPPFLAGS) -DKSW_SSE2_ONLY $(INCLUDES) $< -o $@
+ 
+ ksw2_exts2_sse41.o:ksw2_exts2_sse.c ksw2.h kalloc.h
+-		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) -DKSW_CPU_DISPATCH $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) $(INCLUDES) $< -o $@
+ 
+ ksw2_exts2_sse2.o:ksw2_exts2_sse.c ksw2.h kalloc.h
+-		$(CC) -c $(CFLAGS) -msse2 -mno-sse4.1 $(CPPFLAGS) -DKSW_CPU_DISPATCH -DKSW_SSE2_ONLY $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -msse2 -mno-sse4.1 $(CPPFLAGS) -DKSW_SSE2_ONLY $(INCLUDES) $< -o $@
+ 
+ ksw2_dispatch.o:ksw2_dispatch.c ksw2.h
+-		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) -DKSW_CPU_DISPATCH $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) $(INCLUDES) $< -o $@
+ 
+ # NEON-specific targets on ARM
+ 
+diff --git a/Makefile.simde b/Makefile.simde
+index ae7ff4a..0a00aa5 100644
+--- a/Makefile.simde
++++ b/Makefile.simde
+@@ -36,8 +36,8 @@ all:$(PROG)
+ 
+ extra:all $(PROG_EXTRA)
+ 
+-minimap2:main.o libminimap2.a
+-		$(CC) $(CFLAGS) main.o -o $@ -L. -lminimap2 $(LIBS)
++$(PROGRAM):main.o libminimap2.a
++		$(CC) $(CFLAGS) main.o -o ../build/$@.js -L. -lminimap2 $(LIBS) $(WASM_FLAGS)
+ 
+ minimap2-lite:example.o libminimap2.a
+ 		$(CC) $(CFLAGS) $< -o $@ -L. -lminimap2 $(LIBS)
+@@ -49,16 +49,16 @@ sdust:sdust.c kalloc.o kalloc.h kdq.h kvec.h kseq.h ketopt.h sdust.h
+ 		$(CC) -D_SDUST_MAIN $(CFLAGS) $< kalloc.o -o $@ -lz
+ 
+ ksw2_ll_simde.o:ksw2_ll_sse.c ksw2.h kalloc.h
+-		$(CC) -c $(CFLAGS) -msse2 $(CPPFLAGS) $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -D__SSE2__  $(CPPFLAGS) $(INCLUDES) $< -o $@
+ 
+ ksw2_extz2_simde.o:ksw2_extz2_sse.c ksw2.h kalloc.h
+-		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -D__SSE2__ -D__SSE4_1__ $(CPPFLAGS) $(INCLUDES) $< -o $@
+ 
+ ksw2_extd2_simde.o:ksw2_extd2_sse.c ksw2.h kalloc.h
+-		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -D__SSE2__ -D__SSE4_1__ $(CPPFLAGS) $(INCLUDES) $< -o $@
+ 
+ ksw2_exts2_simde.o:ksw2_exts2_sse.c ksw2.h kalloc.h
+-		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -D__SSE2__ -D__SSE4_1__ $(CPPFLAGS) $(INCLUDES) $< -o $@
+ 
+ # other non-file targets
+ 
+diff --git a/index.c b/index.c
+index 0d8a2ae..c8559b3 100644
+--- a/index.c
++++ b/index.c
+@@ -117,8 +117,8 @@ void mm_idx_stat(const mm_idx_t *mi)
+ 				if (kh_key(h, k)&1) ++n1;
+ 			}
+ 	}
+-	fprintf(stderr, "[M::%s::%.3f*%.2f] distinct minimizers: %d (%.2f%% are singletons); average occurrences: %.3lf; average spacing: %.3lf; total length: %ld\n",
+-			__func__, realtime() - mm_realtime0, cputime() / (realtime() - mm_realtime0), n, 100.0*n1/n, (double)sum / n, (double)len / sum, (long)len);
++	fprintf(stderr, "[M::%s::%.3f] distinct minimizers: %d (%.2f%% are singletons); average occurrences: %.3lf; average spacing: %.3lf; total length: %ld\n",
++			__func__, realtime() - mm_realtime0, n, 100.0*n1/n, (double)sum / n, (double)len / sum, (long)len);
+ }
+ 
+ int mm_idx_index_name(mm_idx_t *mi)
+@@ -385,11 +385,11 @@ mm_idx_t *mm_idx_gen(mm_bseq_file_t *fp, int w, int k, int b, int flag, int mini
+ 
+ 	kt_pipeline(n_threads < 3? n_threads : 3, worker_pipeline, &pl, 3);
+ 	if (mm_verbose >= 3)
+-		fprintf(stderr, "[M::%s::%.3f*%.2f] collected minimizers\n", __func__, realtime() - mm_realtime0, cputime() / (realtime() - mm_realtime0));
++		fprintf(stderr, "[M::%s::%.3f] collected minimizers\n", __func__, realtime() - mm_realtime0);
+ 
+ 	mm_idx_post(pl.mi, n_threads);
+ 	if (mm_verbose >= 3)
+-		fprintf(stderr, "[M::%s::%.3f*%.2f] sorted minimizers\n", __func__, realtime() - mm_realtime0, cputime() / (realtime() - mm_realtime0));
++		fprintf(stderr, "[M::%s::%.3f] sorted minimizers\n", __func__, realtime() - mm_realtime0);
+ 
+ 	return pl.mi;
+ }
+diff --git a/kthread.c b/kthread.c
+index ffdf940..51384d0 100644
+--- a/kthread.c
++++ b/kthread.c
+@@ -2,6 +2,7 @@
+ #include <stdlib.h>
+ #include <limits.h>
+ #include <stdint.h>
++#include <stdio.h>
+ #include "kthread.h"
+ 
+ #if (defined(WIN32) || defined(_WIN32)) && defined(_MSC_VER)
+@@ -53,6 +54,7 @@ static void *ktf_worker(void *data)
+ 
+ void kt_for(int n_threads, void (*func)(void*,long,int), void *data, long n)
+ {
++n_threads = 1;
+ 	if (n_threads > 1) {
+ 		int i;
+ 		kt_for_t t;
+@@ -99,32 +101,13 @@ static void *ktp_worker(void *data)
+ 	ktp_worker_t *w = (ktp_worker_t*)data;
+ 	ktp_t *p = w->pl;
+ 	while (w->step < p->n_steps) {
+-		// test whether we can kick off the job with this worker
+-		pthread_mutex_lock(&p->mutex);
+-		for (;;) {
+-			int i;
+-			// test whether another worker is doing the same step
+-			for (i = 0; i < p->n_workers; ++i) {
+-				if (w == &p->workers[i]) continue; // ignore itself
+-				if (p->workers[i].step <= w->step && p->workers[i].index < w->index)
+-					break;
+-			}
+-			if (i == p->n_workers) break; // no workers with smaller indices are doing w->step or the previous steps
+-			pthread_cond_wait(&p->cv, &p->mutex);
+-		}
+-		pthread_mutex_unlock(&p->mutex);
+-
+ 		// working on w->step
+ 		w->data = p->func(p->shared, w->step, w->step? w->data : 0); // for the first step, input is NULL
+ 
+ 		// update step and let other workers know
+-		pthread_mutex_lock(&p->mutex);
+ 		w->step = w->step == p->n_steps - 1 || w->data? (w->step + 1) % p->n_steps : p->n_steps;
+ 		if (w->step == 0) w->index = p->index++;
+-		pthread_cond_broadcast(&p->cv);
+-		pthread_mutex_unlock(&p->mutex);
+ 	}
+-	pthread_exit(0);
+ }
+ 
+ void kt_pipeline(int n_threads, void *(*func)(void*, int, void*), void *shared_data, int n_steps)
+@@ -133,7 +116,7 @@ void kt_pipeline(int n_threads, void *(*func)(void*, int, void*), void *shared_d
+ 	pthread_t *tid;
+ 	int i;
+ 
+-	if (n_threads < 1) n_threads = 1;
++	n_threads = 1; // biowasm: Turn off multi-threading for now
+ 	aux.n_workers = n_threads;
+ 	aux.n_steps = n_steps;
+ 	aux.func = func;
+@@ -150,8 +133,7 @@ void kt_pipeline(int n_threads, void *(*func)(void*, int, void*), void *shared_d
+ 	}
+ 
+ 	tid = (pthread_t*)calloc(n_threads, sizeof(pthread_t));
+-	for (i = 0; i < n_threads; ++i) pthread_create(&tid[i], 0, ktp_worker, &aux.workers[i]);
+-	for (i = 0; i < n_threads; ++i) pthread_join(tid[i], 0);
++	ktp_worker(&aux.workers[0]);
+ 	free(tid); free(aux.workers);
+ 
+ 	pthread_mutex_destroy(&aux.mutex);
+diff --git a/main.c b/main.c
+index 3c62576..884ffbe 100644
+--- a/main.c
++++ b/main.c
+@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
+ 	ketopt_t o = KETOPT_INIT;
+ 	mm_mapopt_t opt;
+ 	mm_idxopt_t ipt;
+-	int i, c, n_threads = 3, n_parts, old_best_n = -1;
++	int i, c, n_threads = 1, n_parts, old_best_n = -1;
+ 	char *fnw = 0, *rg = 0, *junc_bed = 0, *s, *alt_list = 0;
+ 	FILE *fp_help = stderr;
+ 	mm_idx_reader_t *idx_rdr;
+@@ -294,6 +294,12 @@ int main(int argc, char *argv[])
+ 			if (*s == ',') opt.e2 = strtol(s + 1, &s, 10);
+ 		}
+ 	}
++
++	if(n_threads > 1) {
++		fprintf(stderr, "[ERROR]\033[1;31m Multithreading not supported in this environment.\033[0m\n");
++		return 1;
++	}
++
+ 	if ((opt.flag & MM_F_SPLICE) && (opt.flag & MM_F_FRAG_MODE)) {
+ 		fprintf(stderr, "[ERROR]\033[1;31m --splice and --frag should not be specified at the same time.\033[0m\n");
+ 		return 1;
+@@ -404,8 +410,8 @@ int main(int argc, char *argv[])
+ 			}
+ 		}
+ 		if (mm_verbose >= 3)
+-			fprintf(stderr, "[M::%s::%.3f*%.2f] loaded/built the index for %d target sequence(s)\n",
+-					__func__, realtime() - mm_realtime0, cputime() / (realtime() - mm_realtime0), mi->n_seq);
++			fprintf(stderr, "[M::%s::%.3f] loaded/built the index for %d target sequence(s)\n",
++					__func__, realtime() - mm_realtime0, mi->n_seq);
+ 		if (argc != o.ind + 1) mm_mapopt_update(&opt, mi);
+ 		if (mm_verbose >= 3) mm_idx_stat(mi);
+ 		if (junc_bed) mm_idx_bed_read(mi, junc_bed, 1);
+@@ -445,7 +451,7 @@ int main(int argc, char *argv[])
+ 		fprintf(stderr, "[M::%s] CMD:", __func__);
+ 		for (i = 0; i < argc; ++i)
+ 			fprintf(stderr, " %s", argv[i]);
+-		fprintf(stderr, "\n[M::%s] Real time: %.3f sec; CPU: %.3f sec; Peak RSS: %.3f GB\n", __func__, realtime() - mm_realtime0, cputime(), peakrss() / 1024.0 / 1024.0 / 1024.0);
++		fprintf(stderr, "\n[M::%s] Real time: %.3f sec\n", __func__, realtime() - mm_realtime0);
+ 	}
+ 	return 0;
+ }
+diff --git a/map.c b/map.c
+index 9c4ad64..a13706a 100644
+--- a/map.c
++++ b/map.c
+@@ -608,7 +608,7 @@ static void *worker_pipeline(void *shared, int step, void *in)
+ 		free(s->reg); free(s->n_reg); free(s->seq); // seg_off, n_seg, rep_len and frag_gap were allocated with reg; no memory leak here
+ 		km_destroy(km);
+ 		if (mm_verbose >= 3)
+-			fprintf(stderr, "[M::%s::%.3f*%.2f] mapped %d sequences\n", __func__, realtime() - mm_realtime0, cputime() / (realtime() - mm_realtime0), s->n_seq);
++			fprintf(stderr, "[M::%s::%.3f] mapped %d sequences\n", __func__, realtime() - mm_realtime0, s->n_seq);
+ 		free(s);
+ 	}
+     return 0;
+diff --git a/options.c b/options.c
+index 97347be..31fc8b4 100644
+--- a/options.c
++++ b/options.c
+@@ -72,7 +72,7 @@ void mm_mapopt_update(mm_mapopt_t *opt, const mm_idx_t *mi)
+ 			opt->mid_occ = opt->max_mid_occ;
+ 	}
+ 	if (mm_verbose >= 3)
+-		fprintf(stderr, "[M::%s::%.3f*%.2f] mid_occ = %d\n", __func__, realtime() - mm_realtime0, cputime() / (realtime() - mm_realtime0), opt->mid_occ);
++		fprintf(stderr, "[M::%s::%.3f] mid_occ = %d\n", __func__, realtime() - mm_realtime0, opt->mid_occ);
+ }
+ 
+ void mm_mapopt_max_intron_len(mm_mapopt_t *opt, int max_intron_len)
