@@ -18,6 +18,7 @@ C/C++ tools that have been compiled to WebAssembly:
 | [bcftools](tools/bcftools) | 1.10 | Parse and manipulate <code>.vcf</code> / <code>.bcf</code> variant calling files |
 | [bedtools](tools/bedtools2) | 2.29 | Parse <code>.bed</code> files and perform complex "genome arithmetic" |
 | [bowtie2](tools/bowtie2) | 2.4.2 | Align sequencing reads (<code>.fastq</code>) files to a reference genome |
+| [minimap2](tools/minimap2) | 2.22 | Align sequences to each other |
 | [fastp](tools/fastp) | 0.20.1 | Manipulate and evaluate QC of <code>.fastq</code> files |
 | [seqtk](tools/seqtk) | 1.3 | Manipulate and evaluate QC of <code>.fasta</code> / <code>.fastq</code> files |
 | [ssw](tools/ssw) | 1.2.4 | A SIMD implementation of the Smith-Waterman algorithm |
