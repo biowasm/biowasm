@@ -39,7 +39,8 @@
 		{
 			"name": "minimap2",
 			"version": "2.22",
-			"branch": "v2.22"
+			"branch": "v2.22",
+			"programs": ["minimap2", "minimap2-nosimd"]
 		},
 		{
 			"name": "samtools",
