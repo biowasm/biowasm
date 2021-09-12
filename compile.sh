@@ -82,8 +82,8 @@ do
 done
 
 # Copy over (or create) config.json file
-if [[ -f "config.json" ]]; then
-    cp "config.json" "build/config.json"
+if [[ -f "configs/${BRANCH}.json" ]]; then
+    cp "configs/${BRANCH}.json" "build/config.json"
 else
     echo '{"wasm-features":[]}' > "build/config.json"
 fi
