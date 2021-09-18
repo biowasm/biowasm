@@ -72,11 +72,14 @@ allAiolis=($(jq -rc '.aioli[]' $DIR_TOOLS))
 
 git clone "https://github.com/biowasm/aioli.git"
 cd aioli/
+dir_out_latest="../$DIR_CDN/aioli/latest"
+mkdir -p "$dir_out_latest/"
 
 for aioli in ${allAiolis[@]};
 do
 	aioliVersion=$(jq -rc '.version' <<< $aioli)
 	aioliBranch=$(jq -rc '.branch' <<< $aioli)
+	aioliLatest=$(jq -rc '.latest' <<< $aioli)
 
 	git checkout "$aioliBranch"
 	dir_out="../$DIR_CDN/aioli/$aioliVersion"
@@ -86,10 +89,10 @@ do
 	npm run build
 
 	cp dist/aioli{,.worker}.js "$dir_out/"
+	if [[ "$aioliLatest" != "false" ]]; then
+		cp dist/aioli{,.worker}.js "$dir_out_latest/"
+	fi
 done
-dir_out="../$DIR_CDN/aioli/latest"
-mkdir -p "$dir_out/"
-cp dist/aioli{,.worker}.js "$dir_out/"
 cd ../
 
 
