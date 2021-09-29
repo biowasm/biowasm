@@ -1,0 +1,13 @@
+diff --git a/Makefile b/Makefile
+index 6f3f772..3379426 100644
+--- a/Makefile
++++ b/Makefile
+@@ -48,7 +48,7 @@ modbam2bed: modbam2bed.o common.o counts.o bamiter.o args.o htslib/libhts.a
+ 	$(CC) -pthread -Wall -fstack-protector-strong -D_FORTIFY_SOURCE=2 $(CFLAGS) \
+ 		-Isrc -Ihtslib $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS)\
+ 		$^ $(ARGP) \
+-		-lm -lz -llzma -lbz2 -lpthread -lcurl -lcrypto $(EXTRA_LIBS) \
++		-lm -lz -lbz2 -lpthread $(EXTRA_LIBS) \
+ 		-o $(@)
+ 
+ .PHONY: clean

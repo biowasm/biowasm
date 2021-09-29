@@ -49,3 +49,6 @@
 [submodule "tools/minimap2/src"]
 	path = tools/minimap2/src
 	url = https://github.com/lh3/minimap2.git
+[submodule "tools/modbam2bed/src"]
+	path = tools/modbam2bed/src
+	url = https://github.com/epi2me-labs/modbam2bed.git
