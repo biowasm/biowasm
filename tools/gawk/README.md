@@ -10,3 +10,5 @@ let CLI = await new Aioli("gawk/5.1.0");
 ```
 
 ### Patch
+
+- Avoid printing signal warnings to stderr
