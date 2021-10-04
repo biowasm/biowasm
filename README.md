@@ -22,6 +22,7 @@ C/C++ tools that have been compiled to WebAssembly:
 | [fastp](tools/fastp) | 0.20.1 | Manipulate and evaluate QC of <code>.fastq</code> files |
 | [seqtk](tools/seqtk) | 1.3 | Manipulate and evaluate QC of <code>.fasta</code> / <code>.fastq</code> files |
 | [ssw](tools/ssw) | 1.2.4 | A SIMD implementation of the Smith-Waterman algorithm |
+| [modbam2bed](tools/modbam2bed) | 0.3.1 | Summarize <code>.bam</code> files with modified base information as <code>.bed</code> files with counts |
 | [wgsim](tools/wgsim) | 2011.10.17 | Simulate short reads from a reference genome |
 | [seq-align](tools/seq-align) | 2017.10.18 | Align sequences using Smith-Waterman/Needleman-Wunsch algorithms |
 | [bhtsne](tools/bhtsne) | 2016.08.22 | Run the t-SNE dimensionality-reduction algorithm |
