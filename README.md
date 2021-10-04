@@ -155,13 +155,11 @@ tools/<tool>/
 Finally, you can edit:
 
 * `config/tools.json` to make sure the new tool gets deployed
-* `cloudflare/cdn/public/index.html` to list the new tool
-* `cloudflare/web/public/index.html` so the tools shows up on the home page (optional)
+* `cloudflare/cdn/public/index.html` to list the new tool on the CDN's [packages page](https://cdn.biowasm.com/v2/)
 
 
 ### Future candidates
 
-- [minimap2](https://github.com/lh3/minimap2) - branch [feature/minimap2](https://github.com/biowasm/biowasm/tree/feature/minimap2)
 - [Sniffles](https://github.com/fritzsedlazeck/Sniffles)
 - [FreeBayes](https://github.com/freebayes/freebayes)
 - [HISAT2](https://github.com/DaehwanKimLab/hisat2)
