@@ -80,6 +80,11 @@
 			"name": "wgsim",
 			"version": "2011.10.17",
 			"branch": "a12da33"
+		},
+		{
+			"name": "modbam2bed",
+			"version": "0.3.1",
+			"branch": "wasm"
 		}
 	]
 }
