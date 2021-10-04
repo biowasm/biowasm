@@ -52,4 +52,4 @@
 
 [submodule "tools/gawk/src"]
 	path = tools/gawk/src
-	url = https://git.savannah.gnu.org/git/gawk.git
+	url = git://git.savannah.gnu.org/gawk.git
