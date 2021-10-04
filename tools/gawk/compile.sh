@@ -14,3 +14,5 @@ emmake make \
 	LIBS="-s ERROR_ON_UNDEFINED_SYMBOLS=0 $EM_FLAGS" \
 	CFLAGS="-O2 -DNDEBUG" \
 	AM_CFLAGS="" gawk.js
+
+mv gawk.{js,wasm} ../build/
