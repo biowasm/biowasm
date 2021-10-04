@@ -24,9 +24,3 @@ index 1c64dfd..8c2a533 100644
  		-o $(@)
  
  .PHONY: clean
-diff --git a/htslib b/htslib
---- a/htslib
-+++ b/htslib
-@@ -1 +1 @@
--Subproject commit 7ba9ecd79b179bb5cdf6e2322e4a4a880d6915bb
-+Subproject commit 7ba9ecd79b179bb5cdf6e2322e4a4a880d6915bb-dirty
