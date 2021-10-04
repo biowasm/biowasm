@@ -49,3 +49,7 @@
 [submodule "tools/minimap2/src"]
 	path = tools/minimap2/src
 	url = https://github.com/lh3/minimap2.git
+
+[submodule "tools/gawk/src"]
+	path = tools/gawk/src
+	url = https://git.savannah.gnu.org/git/gawk.git
