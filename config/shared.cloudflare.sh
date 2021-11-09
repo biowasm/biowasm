@@ -1,16 +1,14 @@
-# Commonly used Emscripten compilation settings for WebAssembly modules that run on Cloudflare Workers
-# Flags from https://github.com/cloudflare/worker-emscripten-template
+# Commonly used Emscripten compilation settings for WebAssembly modules that run on
+# Cloudflare Workers. Flags from https://github.com/cloudflare/worker-emscripten-template
+# and https://github.com/robertaboukhalil/cf-workers-emscripten.
 
 . ./config/shared.default.sh
 
+# To customize the export name, use `-s EXPORT_NAME="Module"`
 EM_FLAGS=$(cat <<EOF
     ${EM_FLAGS}
-    -s DYNAMIC_EXECUTION=0
     -s TEXTDECODER=0
-    -s MODULARIZE=1
     -s ENVIRONMENT="web"
-    -s EXPORT_NAME="emscripten"
-    --pre-js ../../../config/shared.cloudflare.js
 EOF
 )
 
