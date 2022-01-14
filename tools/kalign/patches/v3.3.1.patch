@@ -1,0 +1,13 @@
+diff --git a/configure.ac b/configure.ac
+index 38f19d8..7705af7 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -130,7 +130,7 @@ darwin* )
+ DEAD_STRIP="-Wl,-dead_strip"
+ ;;
+ *)
+-DEAD_STRIP="-Wl,--gc-sections -Wl,--as-needed"
++DEAD_STRIP="-Wl,--gc-sections"
+ ;;
+ esac
+ AC_SUBST(DEAD_STRIP)
