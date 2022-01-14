@@ -92,6 +92,11 @@
 			"name": "gawk",
 			"version": "5.1.0",
 			"branch": "gawk-5.1.0"
+		},
+		{
+			"name": "kalign",
+			"version": "3.3.1",
+			"branch": "v3.3.1"
 		}
 	]
 }
