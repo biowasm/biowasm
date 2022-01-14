@@ -57,3 +57,7 @@
 [submodule "tools/gawk/src"]
 	path = tools/gawk/src
 	url = git://git.savannah.gnu.org/gawk.git
+
+[submodule "tools/kalign/src"]
+	path = tools/kalign/src
+	url = https://github.com/TimoLassmann/kalign.git
