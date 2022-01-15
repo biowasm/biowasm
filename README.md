@@ -8,6 +8,18 @@ A repository of genomics tools, compiled from C/C++ to WebAssembly so they can r
 
 Check out our [Getting Started](https://github.com/biowasm/aioli#a-simple-example) guide.
 
+## Who uses biowasm?
+
+| Tool | URL | Repo |
+|-|-|-|
+| sandbox.bio | [sandbox.bio](https://sandbox.bio) | - |
+| 42basepairs | [42basepairs.com](https://42basepairs.com) | - |
+| Ribbon | [genomeribbon.com](https://genomeribbon.com) | [MariaNattestad/Ribbon](https://github.com/MariaNattestad/Ribbon) |
+| BEDQC | [quinlan-lab.github.io/bedqc](https://quinlan-lab.github.io/bedqc/) | [Quinlan-Lab/BEDQC](https://github.com/quinlan-lab/bedqc) |
+| fastq.bio | [fastq.bio](http://www.fastq.bio) | [RobertAboukhalil/fastq.bio](https://github.com/robertaboukhalil/fastq.bio) |
+| tSNE Sandbox | [tsne.sandbox.bio](https://tsne.sandbox.bio) | [RobertAboukhalil/tsne-sandbox](https://github.com/robertaboukhalil/tsne-sandbox) |
+| Alignment Sandbox | [alignment.sandbox.bio](https://alignment.sandbox.bio) | [RobertAboukhalil/alignment-sandbox](https://github.com/robertaboukhalil/alignment-sandbox) |
+
 ## Supported tools
 
 C/C++ tools that have been compiled to WebAssembly:
@@ -46,16 +58,6 @@ C/C++ tools that have been compiled to WebAssembly:
 | biowasm CDN | Free server hosting pre-compiled tools for use in your apps | [cdn.biowasm.com](https://cdn.biowasm.com/v2/) |
 | Aioli | Tool for running these modules in a browser, inside WebWorkers | [biowasm/aioli](https://github.com/biowasm/aioli) |
 
-
-## Tools using biowasm
-
-| Tool | URL | Repo |
-|-|-|-|
-| Sandbox.bio | [sandbox.bio](https://sandbox.bio) | - |
-| Ribbon | [genomeribbon.com](https://genomeribbon.com) | [MariaNattestad/Ribbon](https://github.com/MariaNattestad/Ribbon) |
-| Alignment Sandbox | [alignment.sandbox.bio](https://alignment.sandbox.bio) | [RobertAboukhalil/alignment-sandbox](https://github.com/robertaboukhalil/alignment-sandbox) |
-| tSNE Sandbox | [tsne.sandbox.bio](https://tsne.sandbox.bio) | [RobertAboukhalil/tsne-sandbox](https://github.com/robertaboukhalil/tsne-sandbox) |
-| fastq.bio | [fastq.bio](http://www.fastq.bio) | [RobertAboukhalil/fastq.bio](https://github.com/robertaboukhalil/fastq.bio) |
 
 ## Logo
 
