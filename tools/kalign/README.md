@@ -5,7 +5,7 @@
 ```html
 <script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
 <script type="module">
-let CLI = await new Aioli("kalign/3.3.1", { env: "stg" });
+let CLI = await new Aioli("kalign/3.3.1");
 
 // Create sample data (source: https://github.com/TimoLassmann/kalign/blob/master/dev/data/BB11001.tfa)
 await CLI.fs.writeFile("input.fa", `>1aab_
