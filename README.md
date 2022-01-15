@@ -6,9 +6,10 @@ A repository of genomics tools, compiled from C/C++ to WebAssembly so they can r
 
 ## Getting started
 
-Check out our [Getting Started](https://github.com/biowasm/aioli#a-simple-example) guide.
+1. Visit [biowasm.com](https://biowasm.com/) to see how you can start using biowasm with just a few lines of code.
+2. Check out our [Getting Started](https://github.com/biowasm/aioli#a-simple-example) guide.
 
-## Who uses biowasm?
+## Who uses biowasm?    
 
 | Tool | URL | Repo |
 |-|-|-|
