@@ -27,9 +27,9 @@ sed -i 's|$(MAKE) src/make-prime-list$(EXEEXT)|gcc src/make-prime-list.c -o src/
 # When update this list, need to update tools.json
 emmake make all CC=emcc -k WERROR_CFLAGS=""
 
-emmake make src/{hostname,basename,cat,chmod,comm,cp,cut,date,echo,env,fold,head,join,ls,md5sum,mkdir,mktemp,mv,nproc,paste,pwd,rm,rmdir,seq,shuf,sort,tail,tr,uniq,wc}.js \
+emmake make src/{hostname,basename,cat,chmod,comm,cd,cp,cut,date,echo,env,fold,head,join,ls,md5sum,mkdir,mktemp,mv,nproc,paste,pwd,rm,rmdir,seq,shuf,sort,tail,tr,uniq,wc}.js \
   CC=emcc EXEEXT=.js \
   CFLAGS="-O2 $EM_FLAGS" \
   -k WERROR_CFLAGS=""
 
-mv src/{hostname,basename,cat,chmod,comm,cp,cut,date,echo,env,fold,head,join,ls,md5sum,mkdir,mktemp,mv,nproc,paste,pwd,rm,rmdir,seq,shuf,sort,tail,tr,uniq,wc}.{js,wasm} ../build/
+mv src/{hostname,basename,cat,chmod,comm,cd,cp,cut,date,echo,env,fold,head,join,ls,md5sum,mkdir,mktemp,mv,nproc,paste,pwd,rm,rmdir,seq,shuf,sort,tail,tr,uniq,wc}.{js,wasm} ../build/
