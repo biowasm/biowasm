@@ -23,6 +23,7 @@ emconfigure ./configure \
 sed -i 's|$(MAKE) src/make-prime-list$(EXEEXT)|gcc src/make-prime-list.c -o src/make-prime-list$(EXEEXT) -Ilib/|' Makefile
 
 # Make all commands and skip "man" errors
+# When update this list, need to update tools.json
 emmake make src/{hostname,basename,cat,chmod,comm,cp,cut,date,echo,env,fold,head,join,ls,md5sum,mkdir,mktemp,mv,nproc,paste,pwd,rm,rmdir,seq,shuf,sort,tail,tr,uniq,wc}.js \
   CC=emcc EXEEXT=.js \
   CFLAGS="-O2" \
