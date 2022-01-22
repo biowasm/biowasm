@@ -1,6 +1,7 @@
 cd src/
 
 # Install dependencies
+sudo apt-get install -y autopoint gperf
 ./bootstrap
 
 # Nanosleep not supported in Emscripten
