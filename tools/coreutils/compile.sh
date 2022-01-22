@@ -32,4 +32,4 @@ emmake make src/{hostname,basename,cat,chmod,comm,cp,cut,date,echo,env,fold,head
   CFLAGS="-O2" \
   -k WERROR_CFLAGS=""
 
-mv src/*.{js,wasm} ../build/
+mv src/{hostname,basename,cat,chmod,comm,cp,cut,date,echo,env,fold,head,join,ls,md5sum,mkdir,mktemp,mv,nproc,paste,pwd,rm,rmdir,seq,shuf,sort,tail,tr,uniq,wc}.{js,wasm} ../build/
