@@ -97,6 +97,12 @@
 			"name": "kalign",
 			"version": "3.3.1",
 			"branch": "v3.3.1"
+		},
+		{
+			"name": "coreutils",
+			"version": "8.32",
+			"branch": "v8.32",
+			"programs": ["hostname","basename","cat","chmod","comm","cp","cut","date","echo","env","fold","head","join","ls","md5sum","mkdir","mktemp","mv","nproc","paste","pwd","rm","rmdir","seq","shuf","sort","tail","tr","uniq","wc"]
 		}
 	]
 }
