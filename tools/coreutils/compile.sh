@@ -13,9 +13,10 @@ sed -i 's|if ${gl_cv_func_nanosleep+:} false|if true|g' configure
 PREPROC="#if (defined __i386__ || defined __x86_64__) && defined __GNUC__"
 PREPROC_ADD=" \&\& defined __NO_WAY_THIS_VAR_IS_DEFINED__"
 
-# Configure
+# Configure (--disable-nls to avoid Memory out of bounds error)
 emconfigure ./configure \
   CC=emcc \
+  --disable-nls \
   FORCE_UNSAFE_CONFIGURE=1 \
   TIME_T_32_BIT_OK=yes \
   --host=wasm32
