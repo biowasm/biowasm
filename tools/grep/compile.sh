@@ -1,7 +1,7 @@
 cd src/
 
 # Install dependencies
-sudo apt-get install -y pkg-config autopoint
+sudo apt-get install -y pkg-config autopoint gperf help2man gettext texinfo bison
 ./bootstrap
 
 # Nanosleep not supported in Emscripten
