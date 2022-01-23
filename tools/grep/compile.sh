@@ -1,7 +1,7 @@
 cd src/
 
 # Install dependencies
-apt-get install -y pkg-config
+sudo apt-get install -y pkg-config
 ./bootstrap
 
 # Nanosleep not supported in Emscripten
