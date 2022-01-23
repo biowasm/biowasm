@@ -65,3 +65,6 @@
 [submodule "tools/coreutils/src"]
 	path = tools/coreutils/src
 	url = https://github.com/coreutils/coreutils.git
+[submodule "tools/grep/src"]
+	path = tools/grep/src
+	url = https://git.savannah.gnu.org/grep.git
