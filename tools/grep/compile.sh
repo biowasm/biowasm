@@ -1,7 +1,7 @@
 cd src/
 
 # Install dependencies
-sudo apt-get install -y pkg-config
+sudo apt-get install -y pkg-config autopoint
 ./bootstrap
 
 # Nanosleep not supported in Emscripten
