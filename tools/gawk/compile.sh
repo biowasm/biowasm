@@ -1,3 +1,4 @@
+#!/bin/bash
 cd src/
 
 # Disable NLS to avoid memory out of bounds error (https://github.com/emscripten-core/emscripten/issues/11621#issuecomment-691807912)
