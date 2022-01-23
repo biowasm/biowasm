@@ -9,10 +9,6 @@ sed -i 's|if ${gl_cv_func_sleep_works+:} false|if true|g' configure
 sed -i 's|if ${ac_cv_search_nanosleep+:} false|if true|g' configure
 sed -i 's|if ${gl_cv_func_nanosleep+:} false|if true|g' configure
 
-# Disable assembly code
-PREPROC="#if (defined __i386__ || defined __x86_64__) && defined __GNUC__"
-PREPROC_ADD=" \&\& defined __NO_WAY_THIS_VAR_IS_DEFINED__"
-
 # Configure (--disable-nls to avoid Memory out of bounds error)
 emconfigure ./configure \
   CC=emcc \
