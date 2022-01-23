@@ -99,6 +99,11 @@
 			"branch": "v3.3.1"
 		},
 		{
+			"name": "grep",
+			"version": "3.7",
+			"branch": "v3.7"
+		},
+		{
 			"name": "coreutils",
 			"version": "8.32",
 			"branch": "v8.32",
