@@ -1,6 +1,7 @@
 #!/bin/bash
 cd src/
 
+UTILS=$(echo src/{basename,cat,chmod,comm,cp,cut,date,echo,env,fold,head,hostname,join,ls,md5sum,mkdir,mktemp,mv,nproc,paste,pwd,rm,rmdir,seq,shuf,sort,tail,touch,tr,uniq,wc}.js)
 # Install dependencies
 sudo apt-get install -y autopoint gperf help2man gettext texinfo bison
 ./bootstrap
@@ -24,7 +25,7 @@ sed -i 's|$(MAKE) src/make-prime-list$(EXEEXT)|gcc src/make-prime-list.c -o src/
 # Make all commands and skip "man" errors
 # When update this list, need to update tools.json
 emmake make all CC=emcc -k WERROR_CFLAGS=""
-emmake make src/{hostname,basename,cat,chmod,comm,cp,cut,date,echo,env,fold,head,join,ls,md5sum,mkdir,mktemp,mv,nproc,paste,pwd,rm,rmdir,seq,shuf,sort,tail,tr,uniq,wc,touch}.js \
+emmake make $UTILS \
   CC=emcc EXEEXT=.js \
   CFLAGS="-O2 $EM_FLAGS" \
   -k WERROR_CFLAGS=""
@@ -32,4 +33,6 @@ emmake make src/{hostname,basename,cat,chmod,comm,cp,cut,date,echo,env,fold,head
 # Don't throw error for unsupported features
 sed -i 's/throw\("[a-z]*: TODO"\)/console.warn(\1)/g' src/*.js
 
-mv src/{hostname,basename,cat,chmod,comm,cp,cut,date,echo,env,fold,head,join,ls,md5sum,mkdir,mktemp,mv,nproc,paste,pwd,rm,rmdir,seq,shuf,sort,tail,tr,uniq,wc,touch}.{js,wasm} ../build/
+# Move .js/.wasm files to build folder
+mv $UTILS ../build/
+mv ${UTILS//.js/.wasm} ../build/
