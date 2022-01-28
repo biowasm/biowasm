@@ -1,7 +1,7 @@
 #!/bin/bash
 cd src/
 
-UTILS=$(echo src/{basename,cat,chmod,comm,cp,cut,date,echo,env,fold,head,hostname,join,ls,md5sum,mkdir,mktemp,mv,nproc,paste,pwd,rm,rmdir,seq,shuf,sort,tail,touch,tr,uniq,wc}.js)
+UTILS=$(echo src/{basename,cat,comm,cut,date,df,dirname,du,echo,env,fold,head,join,ls,md5sum,paste,seq,shuf,sort,tail,tr,uniq,wc}.js)
 # Install dependencies
 sudo apt-get install -y autopoint gperf help2man gettext texinfo bison
 ./bootstrap
