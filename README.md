@@ -49,6 +49,7 @@ C/C++ tools that have been compiled to WebAssembly:
 |-|-|-|
 | [jq](tools/jq) | 1.6 | Filter and wrangle <code>JSON</code> strings |
 | [gawk](tools/gawk) | 5.1.0 | Manipulate data files with patterns of interest |
+| [grep](tools/grep) | 3.7 | Search and filter files |
 
 
 ## How it works
