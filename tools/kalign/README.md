@@ -30,3 +30,4 @@ console.warn(output);
 
 ### Patch
 * The `--as-needed` flag causes compilation errors
+- Reset `optind` so that we can call `main()` multiple times in a row
