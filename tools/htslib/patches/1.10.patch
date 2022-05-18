@@ -1,0 +1,34 @@
+diff --git a/Makefile b/Makefile
+index 72195c4..ab38223 100644
+--- a/Makefile
++++ b/Makefile
+@@ -363,13 +363,13 @@ thread_pool.o thread_pool.pico: thread_pool.c config.h $(thread_pool_internal_h)
+ 
+ 
+ bgzip: bgzip.o libhts.a
+-	$(CC) $(LDFLAGS) -o $@ bgzip.o libhts.a $(LIBS) -lpthread
++	$(CC) $(LDFLAGS) -o ../build/$@.js bgzip.o libhts.a $(LIBS) -lpthread
+ 
+ htsfile: htsfile.o libhts.a
+-	$(CC) $(LDFLAGS) -o $@ htsfile.o libhts.a $(LIBS) -lpthread
++	$(CC) $(LDFLAGS) -o ../build/$@.js htsfile.o libhts.a $(LIBS) -lpthread
+ 
+ tabix: tabix.o libhts.a
+-	$(CC) $(LDFLAGS) -o $@ tabix.o libhts.a $(LIBS) -lpthread
++	$(CC) $(LDFLAGS) -o ../build/$@.js tabix.o libhts.a $(LIBS) -lpthread
+ 
+ bgzip.o: bgzip.c config.h $(htslib_bgzf_h) $(htslib_hts_h)
+ htsfile.o: htsfile.c config.h $(htslib_hfile_h) $(htslib_hts_h) $(htslib_sam_h) $(htslib_vcf_h)
+diff --git a/version.sh b/version.sh
+index be7b29c..55f3403 100755
+--- a/version.sh
++++ b/version.sh
+@@ -30,7 +30,7 @@ VERSION=1.10
+ if [ -e .git ]
+ then
+     # If we ever get to 10.x this will need to be more liberal
+-    VERSION=`git describe --match '[0-9].[0-9]*' --dirty`
++    VERSION=`git describe --match '[0-9].[0-9]*'`
+ fi
+ 
+ # Numeric version is for use in .dylib or .so libraries
