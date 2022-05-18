@@ -30,25 +30,28 @@ C/C++ tools that have been compiled to WebAssembly:
 
 | Tool | Version | Description | Contributor |
 |-|-|-|-|
-| [samtools](tools/samtools) | 1.10 | Parse and manipulate <code>.sam</code> / <code>.bam</code> read alignment files ||
-| [bcftools](tools/bcftools) | 1.10 | Parse and manipulate <code>.vcf</code> / <code>.bcf</code> variant calling files ||
-| [bedtools](tools/bedtools2) | 2.29 | Parse <code>.bed</code> files and perform complex "genome arithmetic" ||
-| [bowtie2](tools/bowtie2) | 2.4.2 | Align sequencing reads (<code>.fastq</code>) files to a reference genome ||
+| [samtools](tools/samtools) | 1.10 | Parse and manipulate `.sam` / `.bam` read alignment files ||
+| [bcftools](tools/bcftools) | 1.10 | Parse and manipulate `.vcf` / `.bcf` variant calling files ||
+| [bedtools](tools/bedtools2) | 2.29 | Parse `.bed` files and perform complex "genome arithmetic" ||
+| [bowtie2](tools/bowtie2) | 2.4.2 | Align sequencing reads (`.fastq`) files to a reference genome ||
 | [minimap2](tools/minimap2) | 2.22 | Align sequences to each other ||
 | [kalign](tools/kalign) | 3.3.1 | Multiple sequence alignment ||
-| [fastp](tools/fastp) | 0.20.1 | Manipulate and evaluate QC of <code>.fastq</code> files ||
-| [seqtk](tools/seqtk) | 1.3 | Manipulate and evaluate QC of <code>.fasta</code> / <code>.fastq</code> files ||
+| [fastp](tools/fastp) | 0.20.1 | Manipulate and evaluate QC of `.fastq` files ||
+| [seqtk](tools/seqtk) | 1.3 | Manipulate and evaluate QC of `.fasta` / `.fastq` files ||
 | [ssw](tools/ssw) | 1.2.4 | A SIMD implementation of the Smith-Waterman algorithm ||
-| [modbam2bed](tools/modbam2bed) | 0.3.1 | Summarize <code>.bam</code> files with modified bases as <code>.bed</code> files with counts | [@cjw85](https://github.com/cjw85) |
+| [modbam2bed](tools/modbam2bed) | 0.3.1 | Summarize `.bam` files with modified bases as `.bed` files with counts | [@cjw85](https://github.com/cjw85) |
 | [wgsim](tools/wgsim) | 2011.10.17 | Simulate short reads from a reference genome ||
 | [seq-align](tools/seq-align) | 2017.10.18 | Align sequences using Smith-Waterman/Needleman-Wunsch algorithms ||
 | [bhtsne](tools/bhtsne) | 2016.08.22 | Run the t-SNE dimensionality-reduction algorithm ||
+| [tabix](tools/htslib) | 1.10 | Index and parse tab-delimited genome position files ||
+| [htsfile](tools/htslib) | 1.10 | Identify the type of sequencing data file ||
+| [bgzip](tools/htslib) | 1.10 | Block compression/decompression ||
 
 #### General utilities
 
 | Tool | Version | Description |
 |-|-|-|
-| [jq](tools/jq) | 1.6 | Filter and wrangle <code>JSON</code> strings |
+| [jq](tools/jq) | 1.6 | Filter and wrangle `JSON` strings |
 | [gawk](tools/gawk) | 5.1.0 | Manipulate data files with patterns of interest |
 | [grep](tools/grep) | 3.7 | Search and filter files |
 
