@@ -13,14 +13,12 @@ A repository of genomics tools, compiled from C/C++ to WebAssembly so they can r
 
 ## Who uses biowasm?    
 
-| Tool | URL | Repo |
-|-|-|-|
-| sandbox.bio | [sandbox.bio](https://sandbox.bio) | - |
-| BEDQC | [quinlan-lab.github.io/bedqc](https://quinlan-lab.github.io/bedqc/) | [Quinlan-Lab/BEDQC](https://github.com/quinlan-lab/bedqc) |
-| Ribbon | [genomeribbon.com](https://genomeribbon.com) | [MariaNattestad/Ribbon](https://github.com/MariaNattestad/Ribbon) |
-| fastq.bio | [fastq.bio](http://www.fastq.bio) | [RobertAboukhalil/fastq.bio](https://github.com/robertaboukhalil/fastq.bio) |
-| tSNE Sandbox | [tsne.sandbox.bio](https://tsne.sandbox.bio) | [RobertAboukhalil/tsne-sandbox](https://github.com/robertaboukhalil/tsne-sandbox) |
-| Alignment Sandbox | [alignment.sandbox.bio](https://alignment.sandbox.bio) | [RobertAboukhalil/alignment-sandbox](https://github.com/robertaboukhalil/alignment-sandbox) |
+| Tool | Why biowasm? |
+|-|-|
+| [sandbox.bio](https://sandbox.bio) | Run command-line tools in the browser to power interactive tutorials |
+| [bedqc](https://quinlan-lab.github.io/bedqc) ([repo](https://github.com/quinlan-lab/bedqc)) | Run bedtools in the browser to validate BED files |
+| [Ribbon](https://genomeribbon.com) ([repo](https://github.com/MariaNattestad/Ribbon)) | Run samtools in the browser to parse, estimate coverage and subsample BAM files |
+| [fastq.bio](https://www.fastq.bio) ([repo](https://github.com/robertaboukhalil/fastq.bio)) | Run fastp in the browser to evaluate sequencing data quality |
 
 ## Supported tools
 
