@@ -1,6 +1,9 @@
 ## htslib.wasm
 
-Used by samtools.
+Used by:
+* [samtools](../samtools/)
+* [bcftools](../bcftools/)
+* [iVar](../ivar)
 
 ### Usage
 

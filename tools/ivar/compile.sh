@@ -12,6 +12,4 @@ emmake make \
     CFLAGS="-O2 -s USE_ZLIB=1 -s USE_BZIP2=1" \
     LDFLAGS="$EM_FLAGS -s ERROR_ON_UNDEFINED_SYMBOLS=0 -O2"
 
-#  CXXFLAGS="-O2"
-
 mv src/ivar.{js,wasm} ../build/
