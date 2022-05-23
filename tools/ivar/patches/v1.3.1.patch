@@ -1,0 +1,27 @@
+diff --git a/configure.ac b/configure.ac
+index c4eb867..1bd80e9 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -26,8 +26,8 @@ AC_ARG_WITH([hts],
+ # if optional parameter used, extend path flags for compliler and linker
+ if test $HTSPATHSET = 1 ; then
+     # extend the compiler and linker flags according to the path set
+-    AM_CXXFLAGS="$AM_CXXFLAGS -I$with_hts/include"
+-    AM_LDFLAGS="$AM_LDFLAGS -L$with_hts/lib"
++    AM_CXXFLAGS="$AM_CXXFLAGS -I$with_hts -I$with_hts/htslib"
++    AM_LDFLAGS="$AM_LDFLAGS -L$with_hts -L$with_hts/htslib"
+     AC_SUBST([LIBS])
+     AC_SUBST([AM_CXXFLAGS])
+     AC_SUBST([AM_LDFLAGS])
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 0b55a8d..4a06aa0 100755
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -1,6 +1,6 @@
+ LIBS = -lhts -lz -lpthread
+ 
+-CXXFLAGS = -v -g -std=c++11 -Wall -Wextra -Werror
++CXXFLAGS = -std=c++11 -Wall -Wextra -Werror
+ 
+ # this lists the binaries to produce, the (non-PHONY, binary) targets in
+ # the previous manual Makefile
