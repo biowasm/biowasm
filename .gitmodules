@@ -69,3 +69,7 @@
 [submodule "tools/grep/src"]
 	path = tools/grep/src
 	url = git://git.savannah.gnu.org/grep.git
+
+[submodule "tools/ivar/src"]
+	path = tools/ivar/src
+	url = https://github.com/andersen-lab/ivar.git
