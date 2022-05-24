@@ -26,14 +26,14 @@ index 0b55a8d..4a06aa0 100755
  # this lists the binaries to produce, the (non-PHONY, binary) targets in
  # the previous manual Makefile
 diff --git a/src/ivar.cpp b/src/ivar.cpp
-index 0ef226c..a83219c 100755
+index 0ef226c..e5a602d 100755
 --- a/src/ivar.cpp
 +++ b/src/ivar.cpp
 @@ -192,6 +192,7 @@ std::string get_filename_without_extension(std::string f, std::string ext){
   */
  
  int main(int argc, char* argv[]){
-+  optind = 1;
++  optind = 1; opterr = 1; optopt = 0;
    if(argc == 1){
      print_usage();
      return -1;
