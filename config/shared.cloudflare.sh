@@ -7,7 +7,6 @@
 # To customize the export name, use `-s EXPORT_NAME="Module"`
 EM_FLAGS=$(cat <<EOF
     ${EM_FLAGS}
-    -s TEXTDECODER=0
     -s ENVIRONMENT="web"
 EOF
 )
