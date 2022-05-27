@@ -31,9 +31,13 @@ allTools=($(jq -rc '.tools[]' $DIR_TOOLS))
 IFS="," read -r -a TOOLS_TO_COMPILE <<< "$TOOLS_TO_COMPILE"
 
 # Initialize repo for tools of interest
-for tool in "${TOOLS_TO_COMPILE[@]}"; do
-	TOOL=$tool make init
-done
+if [[ "${TOOLS_TO_COMPILE[0]}" == "all" ]]; then
+	make init
+else
+	for tool in "${TOOLS_TO_COMPILE[@]}"; do
+		TOOL=$tool make init
+	done
+fi
 
 # Build each tool
 for tool in "${allTools[@]}";
