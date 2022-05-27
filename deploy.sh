@@ -32,7 +32,7 @@ IFS="," read -r -a TOOLS_TO_COMPILE <<< "$TOOLS_TO_COMPILE"
 
 # Initialize repo for tools of interest
 for tool in "${TOOLS_TO_COMPILE[@]}"; do
-	make init $tool
+	TOOL=$tool make init
 done
 
 # Build each tool
