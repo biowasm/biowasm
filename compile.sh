@@ -13,8 +13,8 @@ DIR_TOOLS=tools/
 # Initialize
 # ------------------------------------------------------------------------------
 
-# Load target Emscripten flags
-. ./config/shared.$TARGET.sh
+# Load Emscripten flags
+. ./config/emflags.sh
 
 # Prep build/ folder
 cd "${DIR_TOOLS}/${TOOL}/"
