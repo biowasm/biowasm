@@ -40,7 +40,7 @@ C/C++ tools that have been compiled to WebAssembly:
 | [seq-align](tools/seq-align) | 2017.10.18 | Align sequences using Smith-Waterman/Needleman-Wunsch |
 | [ssw](tools/ssw) | 1.2.4 | A SIMD implementation of the Smith-Waterman algorithm |
 | [ivar](tools/ivar) | 1.3.1 | Tools for viral amplicon-based sequencing |
-| [modbam2bed](tools/modbam2bed) | 0.3.1 | Summarize `.bam` modified bases as `.bed` files with counts (thanks to [@cjw85](https://github.com/cjw85)) |
+| [modbam2bed](tools/modbam2bed) | 0.3.1 | Summarize `.bam` modified bases as `.bed` files with counts (thanks [@cjw85](https://github.com/cjw85)) |
 | [wgsim](tools/wgsim) | 2011.10.17 | Simulate short reads from a reference genome |
 | [bhtsne](tools/bhtsne) | 2016.08.22 | Run the t-SNE dimensionality-reduction algorithm |
 
