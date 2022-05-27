@@ -17,7 +17,6 @@ URL_CDN="https://cdn.biowasm.com/v2"
 # Setup repos and dependencies
 # ------------------------------------------------------------------------------
 [[ "$TOOLS_TO_COMPILE" == "none" ]] && TOOLS_TO_COMPILE=""
-[[ "$TOOLS_TO_COMPILE" != "" ]] && make init
 sudo apt-get install -y tree jq
 
 # ------------------------------------------------------------------------------
@@ -30,6 +29,11 @@ echo "Running with TOOLS_TO_COMPILE=${TOOLS_TO_COMPILE}..."
 allTools=($(jq -rc '.tools[]' $DIR_TOOLS))
 # Load list of tools to compile into an array
 IFS="," read -r -a TOOLS_TO_COMPILE <<< "$TOOLS_TO_COMPILE"
+
+# Initialize repo for tools of interest
+for tool in "${TOOLS_TO_COMPILE[@]}"; do
+	make init $tool
+done
 
 # Build each tool
 for tool in "${allTools[@]}";
