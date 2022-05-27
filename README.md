@@ -26,24 +26,23 @@ C/C++ tools that have been compiled to WebAssembly:
 
 #### Bioinformatics tools
 
-| Tool | Version | Description | Contributor |
-|-|-|-|-|
-| [samtools](tools/samtools) | 1.10 | Parse and manipulate `.sam` / `.bam` read alignment files ||
-| [bcftools](tools/bcftools) | 1.10 | Parse and manipulate `.vcf` / `.bcf` variant calling files ||
-| [bedtools](tools/bedtools2) | 2.29 | Parse `.bed` files and perform complex "genome arithmetic" ||
-| [bowtie2](tools/bowtie2) | 2.4.2 | Align sequencing reads (`.fastq`) files to a reference genome ||
-| [minimap2](tools/minimap2) | 2.22 | Align sequences to each other ||
-| [kalign](tools/kalign) | 3.3.1 | Multiple sequence alignment ||
-| [fastp](tools/fastp) | 0.20.1 | Manipulate and evaluate QC of `.fastq` files ||
-| [seqtk](tools/seqtk) | 1.3 | Manipulate and evaluate QC of `.fasta` / `.fastq` files ||
-| [ssw](tools/ssw) | 1.2.4 | A SIMD implementation of the Smith-Waterman algorithm ||
-| [modbam2bed](tools/modbam2bed) | 0.3.1 | Summarize `.bam` modified bases as `.bed` files with counts | [@cjw85](https://github.com/cjw85) |
-| [wgsim](tools/wgsim) | 2011.10.17 | Simulate short reads from a reference genome ||
-| [seq-align](tools/seq-align) | 2017.10.18 | Align sequences using Smith-Waterman/Needleman-Wunsch algorithms ||
-| [bhtsne](tools/bhtsne) | 2016.08.22 | Run the t-SNE dimensionality-reduction algorithm ||
-| [tabix](tools/htslib) | 1.10 | Index and parse tab-delimited genome position files ||
-| [htsfile](tools/htslib) | 1.10 | Identify the type of sequencing data file ||
-| [bgzip](tools/htslib) | 1.10 | Block compression/decompression ||
+| Tool | Version | Description |
+|-|-|-|
+| [bedtools](tools/bedtools2) | 2.29 | Parse `.bed` files and perform complex "genome arithmetic" |
+| [samtools](tools/samtools) | 1.10 | Parse `.sam` / `.bam` read alignment files |
+| [bcftools](tools/bcftools) | 1.10 | Parse `.vcf` / `.bcf` variant calling files |
+| [htslib](tools/htslib) | 1.10 | Bioinformatics file format utilities: `tabix`, `htsfile`, and `bgzip` |
+| [seqtk](tools/seqtk) | 1.3 | Parse and wrangle `.fasta` / `.fastq` files |
+| [fastp](tools/fastp) | 0.20.1 | Evaluate data quality of `.fastq` files |
+| [bowtie2](tools/bowtie2) | 2.4.2 | Align sequencing reads (`.fastq`) files to a reference genome |
+| [minimap2](tools/minimap2) | 2.22 | Pairwise sequence alignment |
+| [kalign](tools/kalign) | 3.3.1 | Multiple sequence alignment |
+| [seq-align](tools/seq-align) | 2017.10.18 | Align sequences using Smith-Waterman/Needleman-Wunsch |
+| [ssw](tools/ssw) | 1.2.4 | A SIMD implementation of the Smith-Waterman algorithm |
+| [ivar](tools/ivar) | 1.3.1 | Tools for viral amplicon-based sequencing |
+| [modbam2bed](tools/modbam2bed) | 0.3.1 | Summarize `.bam` modified bases as `.bed` files with counts (thanks to [@cjw85](https://github.com/cjw85)) |
+| [wgsim](tools/wgsim) | 2011.10.17 | Simulate short reads from a reference genome |
+| [bhtsne](tools/bhtsne) | 2016.08.22 | Run the t-SNE dimensionality-reduction algorithm |
 
 #### General utilities
 
