@@ -6,7 +6,7 @@ EM_FLAGS_BASE=$(cat <<EOF
     -s FORCE_FILESYSTEM=1
     -s EXPORTED_RUNTIME_METHODS=["callMain","FS","PROXYFS","WORKERFS"]
     -s MODULARIZE=1
-    -s ENVIRONMENT="web"
+    -s ENVIRONMENT="web,worker"
     -lworkerfs.js -lproxyfs.js
 EOF
 )
