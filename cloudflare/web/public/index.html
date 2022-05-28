@@ -50,47 +50,99 @@
 			<div class="container">
 				<div class="row mt-4">
 					<div class="col-md-12">
-
 						<div class="container mt-4">
-								<h4>Parse .bam files with <code>samtools</code></h4>
+							<h4>Parse .bam files with <code>samtools</code></h4>
 
-								<p class="codepen" data-height="270" data-theme-id="39912" data-default-tab="html,result" data-user="robertaboukhalil" data-slug-hash="d7b3908196cee85cbf35a95b4bb975c1" data-editable="true" style="height: 270px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="samtools">
-										<span>Loading...</span>
-								</p>
+							<div class="codepen" data-prefill data-height="270" data-theme-id="39912" data-default-tab="html,result" data-editable="true">
+								<pre data-lang="html">
+&lt;script src=&quot;https://cdn.biowasm.com/v2/aioli/latest/aioli.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;module&quot;&gt;
+let CLI = await new Aioli(&quot;samtools/1.10&quot;);
+
+// Show reads from toy.sam with flag &quot;16&quot;.
+// Try replacing &quot;-f 16&quot; with &quot;-f 0&quot;.
+let file = &quot;/samtools/examples/toy.sam&quot;;
+let output = await CLI.exec(`samtools view -f 16 ${file}`)
+document.write(`&lt;pre&gt;${output}&lt;/pre&gt;`);
+&lt;/script&gt;
+								</pre>
+							</div>
 						</div>
 
 						<div class="container mt-4">
-								<h4>Perform genome arithmetic with <code>bedtools</code></h4>
+							<h4>Perform genome arithmetic with <code>bedtools</code></h4>
 
-								<p class="codepen" data-height="270" data-theme-id="39912" data-default-tab="html,result" data-user="robertaboukhalil" data-slug-hash="903f195f86aba5597ca686c5f0102ee4" data-editable="true" style="height: 270px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="bedtools">
-										<span>Loading...</span>
-								</p>
+							<div class="codepen" data-prefill data-height="270" data-theme-id="39912" data-default-tab="html,result" data-editable="true">
+								<pre data-lang="html">
+&lt;script src=&quot;https://cdn.biowasm.com/v2/aioli/latest/aioli.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;module&quot;&gt;
+let CLI = await new Aioli(&quot;bedtools/2.29.2&quot;);
+
+// Intersect two .bed files
+let bed1 = &quot;/bedtools/test/intersect/a.bed&quot;;
+let bed2 = &quot;/bedtools/test/intersect/b.bed&quot;;
+
+let output = await CLI.exec(`bedtools intersect -a ${bed1} -b ${bed2}`);
+document.write(`&lt;pre&gt;${output}&lt;/pre&gt;`);
+&lt;/script&gt;
+								</pre>
+							</div>
 						</div>
 
 						<div class="container mt-4">
 							<h4>Align reads to the genome with <code>bowtie2</code></h4>
-							<p class="codepen" data-height="300" data-theme-id="39912" data-default-tab="html,result" data-user="robertaboukhalil" data-slug-hash="a53432246870ac052a83523f34294b81" data-editable="true" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="bowtie2">
-									<span>Loading...</span>
-							</p>
+							<div class="codepen" data-prefill data-height="270" data-theme-id="39912" data-default-tab="html,result" data-editable="true">
+								<pre data-lang="html">
+&lt;script src=&quot;https://cdn.biowasm.com/v2/aioli/latest/aioli.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;module&quot;&gt;
+let CLI = await new Aioli(&quot;bowtie2/bowtie2-align-s/2.4.2&quot;, {
+  printInterleaved: false
+});
+
+// Map reads to the lambda genome
+let ref = &quot;/bowtie2/example/index/lambda_virus&quot;;
+let reads = &quot;/bowtie2/example/reads/reads_1.fq&quot;;
+let output = await CLI.exec(`bowtie2-align-s -x ${ref} -U ${reads}`)
+
+document.write(`&lt;pre&gt;${output.stdout}&lt;/pre&gt;`);
+&lt;/script&gt;
+								</pre>
+							</div>
 						</div>
 
 
 						<div class="container mt-4">
 								<h4>Evaluate .fastq quality with <code>fastp</code></h4>
+								<div class="codepen" data-prefill data-height="270" data-theme-id="39912" data-default-tab="html,result" data-editable="true">
+									<pre data-lang="html">
+&lt;script src=&quot;https://cdn.biowasm.com/v2/aioli/latest/aioli.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;module&quot;&gt;
+let CLI = await new Aioli(&quot;fastp/0.20.1&quot;);
 
-								<p class="codepen" data-height="260" data-theme-id="39912" data-default-tab="html,result" data-user="robertaboukhalil" data-slug-hash="962b20ca577aac86b6653175c7564250" data-editable="true" style="height: 260px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="fastp">
-										<span>Loading...</span>
-								</p>
+// Get a QC report on a FASTQ file
+await CLI.exec(&quot;fastp -i /fastp/testdata/R1.fq&quot;);
+let output = await CLI.cat(&quot;fastp.json&quot;)
+document.write(`&lt;pre&gt;${output}&lt;/pre&gt;`);
+&lt;/script&gt;
+									</pre>
+								</div>
 						</div>
 							
 						<div class="container mt-4">
 								<h4>Call variants and filter VCFs with <code>bcftools</code></h4>
+								<div class="codepen" data-prefill data-height="270" data-theme-id="39912" data-default-tab="html,result" data-editable="true">
+									<pre data-lang="html">
+&lt;script src=&quot;https://cdn.biowasm.com/v2/aioli/latest/aioli.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;module&quot;&gt;
+let CLI = await new Aioli(&quot;bcftools/1.10&quot;);
 
-								<p class="codepen" data-height="260" data-theme-id="39912" data-default-tab="html,result" data-user="robertaboukhalil" data-slug-hash="0b51530654b1baa538dd2fb58887b07b" data-editable="true" style="height: 260px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="bcftools">
-										<span>Loading...</span>
-								</p>
+// Filter VCF by QUAL column value, and only output chromosome, position, reference, and alternate allele
+let output = await CLI.exec(`bcftools query -i %QUAL>=60 -f %CHROM:%POSt%REFt%ALTn /bcftools/annotate.vcf`)
+document.write(`&lt;pre&gt;${output}&lt;/pre&gt;`);
+&lt;/script&gt;
+									</pre>
+								</div>
 						</div>
-
 					</div>
 				</div>
 			</div>
