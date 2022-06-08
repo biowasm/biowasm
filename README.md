@@ -37,6 +37,7 @@ C/C++ tools that have been compiled to WebAssembly:
 | [bowtie2](tools/bowtie2) | 2.4.2 | Align sequencing reads (`.fastq`) files to a reference genome |
 | [minimap2](tools/minimap2) | 2.22 | Pairwise sequence alignment |
 | [kalign](tools/kalign) | 3.3.1 | Multiple sequence alignment |
+| [fasttree](tools/fasttree) | 2.1.11 | Build phylogenetic trees from multiple sequence alignments |
 | [seq-align](tools/seq-align) | 2017.10.18 | Align sequences using Smith-Waterman/Needleman-Wunsch |
 | [ssw](tools/ssw) | 1.2.4 | A SIMD implementation of the Smith-Waterman algorithm |
 | [ivar](tools/ivar) | 1.3.1 | Tools for viral amplicon-based sequencing |
