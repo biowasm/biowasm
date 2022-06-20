@@ -1,8 +1,6 @@
 # Contributing
 
-See [CONTRIBUTING.md](https://github.com/biowasm/biowasm/blob/main/CONTRIBUTING.md).
-
-## Setup
+## Development Setup
 
 Tools listed in biowasm were compiled to WebAssembly using `Emscripten 2.0.25`.
 
@@ -57,7 +55,7 @@ ls tools/seqtk/build
 ```
 
 
-## Add a new tool to compile
+## Add a new tool to biowasm
 
 First, add the tool as a git module:
 
@@ -101,10 +99,3 @@ Finally, you can edit:
 
 * `config/tools.json` to make sure the new tool gets deployed
 * `cloudflare/cdn/public/index.html` to list the new tool on the CDN's [packages page](https://cdn.biowasm.com/v2/)
-
-
-## Future candidates
-
-- [Sniffles](https://github.com/fritzsedlazeck/Sniffles)
-- [FreeBayes](https://github.com/freebayes/freebayes)
-- [HISAT2](https://github.com/DaehwanKimLab/hisat2)
