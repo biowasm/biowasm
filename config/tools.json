@@ -110,6 +110,11 @@
 			"branch": "v3.7"
 		},
 		{
+			"name": "sed",
+			"version": "4.8",
+			"branch": "v4.8"
+		},
+		{
 			"name": "coreutils",
 			"version": "8.32",
 			"branch": "v8.32",
