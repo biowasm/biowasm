@@ -22,4 +22,4 @@ function EM_GNU_NANOSLEEP() {
 
 # Export
 export EM_FLAGS;
-export EM_GNU_NANOSLEEP;
+export -f EM_GNU_NANOSLEEP;
