@@ -10,5 +10,5 @@ EM_GNU_NANOSLEEP
 emconfigure ./configure --disable-nls
 
 # Build
-emmake make sed CC=emcc -k WERROR_CFLAGS="" CFLAGS="$EM_FLAGS -O2 -s ERROR_ON_UNDEFINED_SYMBOLS=0" EXEEXT=.js
+emmake make all CC=emcc -k WERROR_CFLAGS="" CFLAGS="$EM_FLAGS -O2 -s ERROR_ON_UNDEFINED_SYMBOLS=0" EXEEXT=.js
 mv sed/sed.{js,wasm} ../build/
