@@ -73,3 +73,7 @@
 [submodule "tools/ivar/src"]
 	path = tools/ivar/src
 	url = https://github.com/andersen-lab/ivar.git
+
+[submodule "tools/sed/src"]
+	path = tools/sed/src
+	url = git://git.savannah.gnu.org/sed.git
