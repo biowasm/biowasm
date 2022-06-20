@@ -5,11 +5,7 @@ UTILS=$(echo src/{basename,cat,comm,cut,date,df,dirname,du,echo,env,fold,head,jo
 # Install dependencies
 sudo apt-get install -y autopoint gperf help2man gettext texinfo bison
 ./bootstrap
-
-# Nanosleep not supported in Emscripten
-sed -i 's|if ${gl_cv_func_sleep_works+:} false|if true|g' configure
-sed -i 's|if ${ac_cv_search_nanosleep+:} false|if true|g' configure
-sed -i 's|if ${gl_cv_func_nanosleep+:} false|if true|g' configure
+EM_GNU_NANOSLEEP
 
 # Configure (--disable-nls to avoid Memory out of bounds error)
 emconfigure ./configure \

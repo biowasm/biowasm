@@ -4,11 +4,8 @@ cd src/
 # Install dependencies
 sudo apt-get install -y pkg-config autopoint gperf help2man gettext texinfo bison
 ./bootstrap
+EM_GNU_NANOSLEEP
 
-# Nanosleep not supported in Emscripten
-sed -i 's|if ${gl_cv_func_sleep_works+:} false|if true|g' configure
-sed -i 's|if ${ac_cv_search_nanosleep+:} false|if true|g' configure
-sed -i 's|if ${gl_cv_func_nanosleep+:} false|if true|g' configure
 # Avoid grep --help showing `Usage: (null) ...`
 sed -i 's/getprogname ()/"grep"/g' src/grep.c
 

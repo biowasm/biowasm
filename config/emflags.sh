@@ -13,5 +13,13 @@ EOF
 # Remove whitespace
 EM_FLAGS=$(echo $EM_FLAGS)
 
+# Nanosleep not supported in Emscripten
+function EM_GNU_NANOSLEEP() {
+    sed -i 's|if ${gl_cv_func_sleep_works+:} false|if true|g' configure
+    sed -i 's|if ${ac_cv_search_nanosleep+:} false|if true|g' configure
+    sed -i 's|if ${gl_cv_func_nanosleep+:} false|if true|g' configure
+}
+
 # Export
 export EM_FLAGS;
+export EM_GNU_NANOSLEEP;
