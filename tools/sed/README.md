@@ -5,7 +5,11 @@
 ```html
 <script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
 <script type="module">
-const CLI = await new Aioli("sed/4.8");
+const CLI = await new Aioli({
+    tool: "sed",
+    version: "4.8",
+    reinit: true
+});
 
 // Create mock data
 await CLI.fs.writeFile("test.fastq", "@read1\nACGTACGACTAGCAG\n+\nJJJJJJJJJJJJJJJ\n@read2\nACGATCATACCAGCA\n+\nJJJJJJJJJJJJJJJ\n");
