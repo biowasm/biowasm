@@ -1,6 +1,8 @@
 build/
 dist/
 worker/
-.DS_Store
 node_modules/
 trash/
+.DS_Store
+.svelte-kit/
+.cloudflare/
