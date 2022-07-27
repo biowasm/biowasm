@@ -1,4 +1,4 @@
-cd src/
+#!/bin/bash
 
 # Dependencies
 apt-get install -y libtool

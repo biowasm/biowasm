@@ -1,4 +1,4 @@
-cd src/
+#!/bin/bash
 
 # Configure
 ./autogen.sh

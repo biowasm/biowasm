@@ -1,13 +1,11 @@
 #!/bin/bash
 
-# This script compiles a tool to WebAssembly and is invoked by the Makefile.
+# This script compiles the tool in the given folder to WebAssembly. Invoked by compile.py; do not call directly.
+usage="Do not call compile.sh directly; see README"
+DIR_TOOL=${1?$usage}
+BRANCH=${2?$usage}
+TOOL=$(basename $DIR_TOOL)
 
-usage="Usage: ./compile.sh toolName toolVersion toolBranch targetName"
-TOOL=${1?$usage}
-VERSION=${2?$usage}
-BRANCH=${3?$usage}
-TARGET=${4?$usage}
-DIR_TOOLS=tools/
 
 # ------------------------------------------------------------------------------
 # Shared Emscripten settings
@@ -38,50 +36,52 @@ function EM_GNU_NANOSLEEP() {
 export EM_FLAGS;
 export -f EM_GNU_NANOSLEEP;
 
-# Prep build/ folder
-cd "${DIR_TOOLS}/${TOOL}/"
-mkdir -p build
 
 # ------------------------------------------------------------------------------
 # Setup codebase
 # ------------------------------------------------------------------------------
 
 echo "——————————————————————————————————————————————————"
-echo "🧬 Processing $TOOL v$VERSION @ branch '$BRANCH'..."
+echo "🧬 $TOOL, branch '$BRANCH'"
 echo "——————————————————————————————————————————————————"
 
-    cd src/
+function log() {
+    BLUE="\033[1;34m"
+    OFF="\033[0m"
+    echo -e "$BLUE> $1$OFF"
+}
 
-    # Go to branch/tag of interest (clean up previous iterations)
-    git reset --hard
-    git clean -f -d
-    git checkout "$BRANCH"
+# Prepare build folder
+cd $DIR_TOOL
+mkdir -p build/
+cd src/
 
-    # Apply patches, if any
-    patch_file=../patches/${BRANCH}.patch
-    if [[ -f "$patch_file" ]]; then
-        echo "Applying patch file <$patch_file>"
-        git apply -v $patch_file
-    else
-        echo "No patch file found at <$patch_file>"
-    fi
+# Go to branch/tag of interest (clean up previous iterations)
+log "Resetting code changes..."
+git reset --hard
+git clean -f -d
+git checkout "$BRANCH"
 
-    cd ../
+# Apply patches, if any
+patch_file=../patches/${BRANCH}.patch
+if [[ -f "$patch_file" ]]; then
+    log "Applying patch file <$patch_file>..."
+    git apply -v $patch_file
+else
+    log "No patch file found at <$patch_file>"
+fi
+
 
 # ------------------------------------------------------------------------------
 # Compile tool
 # ------------------------------------------------------------------------------
 
-echo "——————————————————————————————————————————————————"
-echo "🧬 Compiling $TOOL v$VERSION to WebAssembly..."
-echo "——————————————————————————————————————————————————"
-./compile.sh
+log "Compiling to WebAssembly..."
+../compile.sh
 
-# ------------------------------------------------------------------------------
-# Finalize
-# ------------------------------------------------------------------------------
-
-for glueCode in $(ls build/*.js);
+# Finalize glue code (there can be more than one program per tool, e.g. coreutils has many utilities)
+log "Finalizing glue code..."
+for glueCode in $(ls ../build/*.js);
 do
     # TODO: Remove this once fixed in Emscripten
     # Patch Emscripten bug #12367 - see <https://github.com/emscripten-core/emscripten/issues/12367>

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-cd src/
 emcc wgsim.c \
     -o ../build/wgsim.js \
     $EM_FLAGS \

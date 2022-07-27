@@ -1,5 +1,4 @@
 #!/bin/bash
-cd src/
 
 # Install dependencies
 sudo apt-get install -y pkg-config autopoint gperf help2man gettext texinfo bison

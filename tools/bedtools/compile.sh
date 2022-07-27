@@ -1,7 +1,5 @@
 #!/bin/bash
 
-cd src/
-
 # Remove large files (we'll pre-load the rest of the files as examples)
 rm -rf ./test/intersect/sortAndNaming/bigTests
 

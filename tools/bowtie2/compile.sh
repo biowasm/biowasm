@@ -1,7 +1,5 @@
 #!/bin/bash
 
-cd src/
-
 # Remove unneeded files to keep .data files small so they load quickly
 rm example/reads/combined_reads.bam
 rm example/reads/longreads.fq

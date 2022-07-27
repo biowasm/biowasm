@@ -1,7 +1,5 @@
 #!/bin/bash
 
-cd src/
-
 # Cleanup previous builds if any
 rm bin/*
 make clean

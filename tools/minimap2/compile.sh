@@ -1,4 +1,4 @@
-cd src/
+#!/bin/bash
 
 WASM_FLAGS="$EM_FLAGS --preload-file test/@/minimap2/"
 

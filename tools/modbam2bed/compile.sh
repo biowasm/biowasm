@@ -5,7 +5,6 @@
 
 sudo apt-get install -y zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev libssl-dev autoconf
 
-cd src
 make clean
 
 # build htslib.a

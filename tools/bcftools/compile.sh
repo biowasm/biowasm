@@ -1,7 +1,5 @@
 #!/bin/bash
 
-cd src/
-
 # Configure
 autoheader
 autoconf

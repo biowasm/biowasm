@@ -1,8 +1,7 @@
 #!/bin/bash
 
-cd src/src/
-
 # Compile with SIMD
+cd src/
 emmake make ../../build/ssw.js \
     CC=emcc \
     PROG=../../build/ssw.js \

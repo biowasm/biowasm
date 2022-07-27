@@ -1,6 +1,5 @@
 #!/bin/bash
 
-cd src/
 cp ../data/NA12878.fastq.gz testdata/
 emmake make \
     TARGET="../build/fastp.js" \
