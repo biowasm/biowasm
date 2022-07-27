@@ -1,3 +1,7 @@
+[submodule "tools/aioli/src"]
+	path = tools/aioli/src
+	url = https://github.com/biowasm/aioli.git
+
 [submodule "tools/bcftools/src"]
 	path = tools/bcftools/src
 	url = https://github.com/samtools/bcftools.git
