@@ -19,6 +19,7 @@ def compile(tools, versions=None):
 	"""
 	for tool in tools:
 		tool = next(t for t in CONFIG["tools"] if t["name"] == tool)
+		print(f"make init {tool['name']}")
 		if versions != ['']:
 			tool["versions"] = [ v for v in tool["versions"] if v["version"] in versions ]
 		for version in tool["versions"]:

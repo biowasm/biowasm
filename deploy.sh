@@ -1,3 +1,4 @@
+# FIXME:
 #!/bin/bash
 
 # This script compiles the bioinformatics tools to WebAssembly and is invoked by
@@ -30,14 +31,14 @@ allTools=($(jq -rc '.tools[]' $DIR_TOOLS))
 # Load list of tools to compile into an array
 IFS="," read -r -a TOOLS_TO_COMPILE <<< "$TOOLS_TO_COMPILE"
 
-# Initialize repo for tools of interest
-if [[ "${TOOLS_TO_COMPILE[0]}" == "all" ]]; then
-	make init
-else
-	for tool in "${TOOLS_TO_COMPILE[@]}"; do
-		TOOL=$tool make init
-	done
-fi
+# # Initialize repo for tools of interest
+# if [[ "${TOOLS_TO_COMPILE[0]}" == "all" ]]; then
+# 	make init
+# else
+# 	for tool in "${TOOLS_TO_COMPILE[@]}"; do
+# 		TOOL=$tool make init
+# 	done
+# fi
 
 # Build each tool
 for tool in "${allTools[@]}";
@@ -50,21 +51,21 @@ do
 	[[ "$toolPrograms" == "null" ]] && toolPrograms="[\"$toolName\"]"
 	toolPrograms=($(jq -rc '.[]' <<< $toolPrograms))
 
-	# Compile it to WebAssembly or fetch pre-compiled from existing CDN!
-	if ( [[ "${TOOLS_TO_COMPILE[0]}" == "all" ]] || [[ " ${TOOLS_TO_COMPILE[@]} " =~ " ${toolName} " ]] ); then
-		VERSION="$toolVersion" BRANCH="$toolBranch" make "$toolName"
-	else
-		mkdir -p tools/${toolName}/build/
-		[[ "$ENV" == "prd" ]] && url=$URL_CDN || url="${URL_CDN//cdn/cdn-stg}"
-		curl -s -o tools/${toolName}/build/config.json "${url}/${toolName}/${toolVersion}/config.json"
-		for program in "${toolPrograms[@]}"; do
-			curl -s -o tools/${toolName}/build/${program}.js "${url}/${toolName}/${toolVersion}/${program}.js"
-			curl -s -o tools/${toolName}/build/${program}.wasm "${url}/${toolName}/${toolVersion}/${program}.wasm"
-			curl -s --fail -o tools/${toolName}/build/${program}.data "${url}/${toolName}/${toolVersion}/${program}.data"  # ignore .data failures since not all tools have .data files
-		done
-	fi
-	echo "> tools/${toolName}/build/"
-	ls -lah tools/${toolName}/build/
+	# # Compile it to WebAssembly or fetch pre-compiled from existing CDN!
+	# if ( [[ "${TOOLS_TO_COMPILE[0]}" == "all" ]] || [[ " ${TOOLS_TO_COMPILE[@]} " =~ " ${toolName} " ]] ); then
+	# 	VERSION="$toolVersion" BRANCH="$toolBranch" make "$toolName"
+	# else
+	# 	mkdir -p tools/${toolName}/build/
+	# 	[[ "$ENV" == "prd" ]] && url=$URL_CDN || url="${URL_CDN//cdn/cdn-stg}"
+	# 	curl -s -o tools/${toolName}/build/config.json "${url}/${toolName}/${toolVersion}/config.json"
+	# 	for program in "${toolPrograms[@]}"; do
+	# 		curl -s -o tools/${toolName}/build/${program}.js "${url}/${toolName}/${toolVersion}/${program}.js"
+	# 		curl -s -o tools/${toolName}/build/${program}.wasm "${url}/${toolName}/${toolVersion}/${program}.wasm"
+	# 		curl -s --fail -o tools/${toolName}/build/${program}.data "${url}/${toolName}/${toolVersion}/${program}.data"  # ignore .data failures since not all tools have .data files
+	# 	done
+	# fi
+	# echo "> tools/${toolName}/build/"
+	# ls -lah tools/${toolName}/build/
 
 	# Copy files over to the expected CDN folder
 	mkdir -p ${DIR_CDN}/${toolName}/${toolVersion}/
@@ -80,14 +81,14 @@ allAiolis=($(jq -rc '.aioli[]' $DIR_TOOLS))
 
 git clone "https://github.com/biowasm/aioli.git"
 cd aioli/
-dir_out_latest="../$DIR_CDN/aioli/latest"
-mkdir -p "$dir_out_latest/"
+# dir_out_latest="../$DIR_CDN/aioli/latest"
+# mkdir -p "$dir_out_latest/"
 
 for aioli in ${allAiolis[@]};
 do
 	aioliVersion=$(jq -rc '.version' <<< $aioli)
 	aioliBranch=$(jq -rc '.branch' <<< $aioli)
-	aioliLatest=$(jq -rc '.latest' <<< $aioli)
+	# aioliLatest=$(jq -rc '.latest' <<< $aioli)
 
 	git checkout "$aioliBranch"
 	dir_out="../$DIR_CDN/aioli/$aioliVersion"
@@ -97,9 +98,9 @@ do
 	npm run build
 
 	cp dist/aioli{,.worker}.js "$dir_out/"
-	if [[ "$aioliLatest" != "false" ]]; then
-		cp dist/aioli{,.worker}.js "$dir_out_latest/"
-	fi
+	# if [[ "$aioliLatest" != "false" ]]; then
+	# 	cp dist/aioli{,.worker}.js "$dir_out_latest/"
+	# fi
 done
 cd ../
 
