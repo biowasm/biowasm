@@ -76,7 +76,7 @@ fi
 # Compile tool
 # ------------------------------------------------------------------------------
 
-log "Compiling to WebAssembly..."
+log "Compiling..."
 ../compile.sh
 
 # Finalize glue code (there can be more than one program per tool, e.g. coreutils has many utilities)
