@@ -5,14 +5,12 @@ export async function GET({ params, request, platform }) {
 		"cdn/v3/samtools/1.10/samtools.json": "test123"
 	};
 
-	console.log("platform =", platform)
+	console.log("platform =", platform);
 
 	return getAssetFromKV(
 		{
 			request,
-			waitUntil(promise) {
-				return platform.context.waitUntil(promise)
-			},
+			waitUntil: promise => platform.context.waitUntil(promise)
 		},
 		{
 			ASSET_MANIFEST,
@@ -24,12 +22,4 @@ export async function GET({ params, request, platform }) {
 			}
 		}
 	);
-
-	return {
-		status: 200,
-		headers: {},
-		body: {
-			params
-		}
-	};
 }
