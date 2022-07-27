@@ -1,4 +1,8 @@
-name: Deploy biowasm v2
+name: Deploy biowasm v3
+
+env:
+  EM_VERSION: 2.0.25
+  EM_CACHE_FOLDER: "emsdk-cache"
 
 on:
   workflow_dispatch:
@@ -8,74 +12,57 @@ on:
         required: true
         default: "stg"
       tools_to_compile:
-        description: "Tools to compile to WebAssembly (comma-separated; 'all')"
+        description: "Tools to compile to WebAssembly (comma-separated; 'all'; 'none')"
         required: false
         default: "all"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy CDN v2 (${{ github.event.inputs.env }})
+    name: Deploy biowasm v3 (${{ github.event.inputs.env }})
     steps:
       # ------------------------------------------------------------------------
       # Setup
       # ------------------------------------------------------------------------
       - name: Checkout biowasm repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.ref }}
 
+      - name: Setup cache
+        id: cache-system-libraries
+        uses: actions/cache@v3
+        with:
+          path: ${{env.EM_CACHE_FOLDER}}
+          key: ${{env.EM_VERSION}}-${{ runner.os }}
+
       - name: Download Emscripten
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-        uses: mymindstorm/setup-emsdk@v10
+        uses: mymindstorm/setup-emsdk@v11
         with:
-          version: 2.0.25
+          version: ${{env.EM_VERSION}}
+          actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
 
       - name: Test Emscripten
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
         run: emcc -v
 
-      # ------------------------------------------------------------------------
-      # Compile
-      # ------------------------------------------------------------------------
-      - name: Compile to WebAssembly
-        run: TOOLS_TO_COMPILE=${{ github.event.inputs.tools_to_compile }} ENV=${{ github.event.inputs.env }} ./deploy.sh
-
-      # ------------------------------------------------------------------------
-      # Deploy to Cloudflare Workers
-      # ------------------------------------------------------------------------
-      - name: Deploy cdn.biowasm.com/v2/ (${{ github.event.inputs.env }})
-        if: ${{ !env.ACT }}
-        uses: cloudflare/wrangler-action@1.3.0
-        env:
-          USER: root
-          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          environment: ${{ github.event.inputs.env }}
-          preCommands: cd cloudflare/cdn
-
-      - name: Deploy stats.biowasm.com (${{ github.event.inputs.env }})
-        if: ${{ !env.ACT }}
-        uses: cloudflare/wrangler-action@1.3.0
-        env:
-          USER: root
-          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          environment: ${{ github.event.inputs.env }}
-          preCommands: cd cloudflare/stats
-
-      - name: Deploy biowasm.com home page (${{ github.event.inputs.env }})
-        if: ${{ !env.ACT }}
-        uses: cloudflare/wrangler-action@1.3.0
-        env:
-          USER: root
-          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          environment: ${{ github.event.inputs.env }}
-          preCommands: cd cloudflare/web
+      # # ------------------------------------------------------------------------
+      # # Compile
+      # # ------------------------------------------------------------------------
+      # - name: Compile to WebAssembly
+      #   run: TOOLS_TO_COMPILE=${{ github.event.inputs.tools_to_compile }} ENV=${{ github.event.inputs.env }} ./deploy.sh
+      # # ------------------------------------------------------------------------
+      # # Deploy to Cloudflare Workers
+      # # ------------------------------------------------------------------------
+      # - name: Deploy cdn.biowasm.com/v3/ (${{ github.event.inputs.env }})
+      #   if: ${{ !env.ACT }}
+      #   uses: cloudflare/wrangler-action@1.3.0
+      #   env:
+      #     USER: root
+      #     CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+      #     CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+      #   with:
+      #     apiToken: ${{ secrets.CF_API_TOKEN }}
+      #     environment: ${{ github.event.inputs.env }}
+      #     preCommands: cd cloudflare/cdn
