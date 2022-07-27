@@ -28,14 +28,11 @@ echo "————————————————————————�
 echo "🧬 Processing $TOOL v$VERSION @ branch '$BRANCH'..."
 echo "——————————————————————————————————————————————————"
 
-# Base package isn't a repo
-if [[ "$TOOL" != "base" ]]; then
     cd src/
 
     # Go to branch/tag of interest (clean up previous iterations)
     git reset --hard
     git clean -f -d
-    git fetch --all
     git checkout "$BRANCH"
 
     # Apply patches, if any
@@ -48,7 +45,6 @@ if [[ "$TOOL" != "base" ]]; then
     fi
 
     cd ../
-fi
 
 # ------------------------------------------------------------------------------
 # Compile tool
@@ -80,10 +76,3 @@ do
     cat "$glueCode" >> "${glueCode}.tmp"
     mv "${glueCode}.tmp" "$glueCode"
 done
-
-# Copy over (or create) config.json file
-if [[ -f "configs/${BRANCH}.json" ]]; then
-    cp "configs/${BRANCH}.json" "build/config.json"
-else
-    echo '{"wasm-features":[]}' > "build/config.json"
-fi
