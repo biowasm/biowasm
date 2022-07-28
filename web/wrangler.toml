@@ -1,4 +1,3 @@
-name = "biowasm-v3"
 workers_dev = true
 compatibility_date = "2022-06-26"
 
@@ -6,4 +5,10 @@ main = "./.cloudflare/worker.js"
 site.bucket = "./.cloudflare/public"
 build.command = "npm run build"
 
+[env.stg]
+name = "biowasm-v3-stg"
+kv_namespaces = [{ binding = "CDN", id = "ceb6fce5bbe54655a0ca3add95d29954" }]
+
+[env.prd]
+name = "biowasm-v3"
 kv_namespaces = [{ binding = "CDN", id = "ceb6fce5bbe54655a0ca3add95d29954" }]
