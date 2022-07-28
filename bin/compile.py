@@ -1,14 +1,17 @@
 #!/usr/bin/python3.8
+# This script compiles tools of interest to WebAssembly and regenerates "biowasm.manifest.json"
 
-import os
 import json
 import argparse
 import subprocess
 from pathlib import Path
 
 # Config
-DIR_BUILD = "build"
-DIR_CONFIG = (Path(__file__).parent / "../biowasm.json").resolve()
+DIR_ROOT = Path(__file__).parent / "../"
+DIR_BUILD = (DIR_ROOT / "build").resolve()
+DIR_MANIFEST = (DIR_ROOT / "biowasm.manifest.json").resolve()
+DIR_MANIFEST_TEMP = (DIR_BUILD / "manifest.tmp").resolve()
+DIR_CONFIG = (DIR_ROOT / "biowasm.json").resolve()
 COLOR_GREEN = "\033[1;33m"
 COLOR_OFF = "\033[0m"
 
@@ -59,7 +62,13 @@ def compile(tool, versions=[], level=0):
 		for program in programs:
 			for file in files:
 				exec(f"cp tools/{tool}/build/{program}.{file} {dir_build}/")
+				exec(f"md5sum {dir_build}/{program}.{file} | sed 's|{DIR_BUILD}/||' >> {DIR_MANIFEST_TEMP}")
 
+	if level == 0:
+		# Convert file with "value  key" to JSON {"key": "value"}
+		exec('jq -R -s \'split("\\n")[0:-1] | map(split("  ")) | map({(.[1]): .[0]}) | add\' ' + f"{DIR_MANIFEST_TEMP} > {DIR_MANIFEST_TEMP}.json")
+		exec(f"jq -s '.[0] * .[1]' {DIR_MANIFEST} {DIR_MANIFEST_TEMP}.json > {DIR_MANIFEST}.tmp && mv {DIR_MANIFEST}.tmp {DIR_MANIFEST}")
+		exec(f"rm {DIR_MANIFEST_TEMP} {DIR_MANIFEST_TEMP}.json")
 
 def exec(cmd):
 	cmd_dry = f"{COLOR_GREEN}{'    ' * LEVEL}{cmd}{COLOR_OFF}"
@@ -75,6 +84,10 @@ if __name__ == "__main__":
 	"""
 	Parse user arguments
 	"""
+	if DIR_MANIFEST_TEMP.is_file():
+		print("Manifest file already exists from previous run. Delete it first.")
+		exit(1)
+
 	with open(DIR_CONFIG) as f:
 		CONFIG = json.load(f)
 
