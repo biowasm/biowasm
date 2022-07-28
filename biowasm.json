@@ -11,6 +11,7 @@
 		},
 		{
 			"name": "bcftools",
+			"files": ["wasm", "js", "data"],
 			"versions": [
 				{ "version": "1.10", "branch": "1.10", "dependencies": [{ "name": "htslib", "version": "1.10" }] }
 			]
@@ -24,12 +25,14 @@
 		},
 		{
 			"name": "bhtsne",
+			"files": ["wasm", "js", "data"],
 			"versions": [
 				{ "version": "2016.08.22", "branch": "1a62a5d" }
 			]
 		},
 		{
 			"name": "bowtie2",
+			"files": ["wasm", "js", "data"],
 			"programs": ["bowtie2-align-s"],
 			"versions": [
 				{ "version": "2.4.2", "branch": "v2.4.2" }
@@ -44,6 +47,7 @@
 		},
 		{
 			"name": "fastp",
+			"files": ["wasm", "js", "data"],
 			"versions": [
 				{ "version": "0.20.1", "branch": "0.20.1" }
 			]
@@ -94,6 +98,7 @@
 		{
 			"name": "minimap2",
 			"programs": ["minimap2", "minimap2-nosimd"],
+			"files": ["wasm", "js", "data"],
 			"versions": [
 				{ "version": "2.22", "branch": "v2.22" }
 			]
@@ -106,6 +111,7 @@
 		},
 		{
 			"name": "samtools",
+			"files": ["wasm", "js", "data"],
 			"versions": [
 				{ "version": "1.10", "branch": "1.10", "dependencies": [{ "name": "htslib", "version": "1.10" }] }
 			]
