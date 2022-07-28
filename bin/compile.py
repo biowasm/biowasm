@@ -2,6 +2,7 @@
 # This script compiles tools of interest to WebAssembly and regenerates "biowasm.manifest.json"
 
 import json
+import base64
 import argparse
 import subprocess
 from pathlib import Path
@@ -11,12 +12,14 @@ DIR_ROOT = Path(__file__).parent / "../"
 DIR_BUILD = (DIR_ROOT / "build").resolve()
 DIR_MANIFEST = (DIR_ROOT / "biowasm.manifest.json").resolve()
 DIR_MANIFEST_TEMP = (DIR_BUILD / "manifest.tmp").resolve()
+DIR_CF_UPLOAD = (DIR_BUILD / "cf_kv_upload.json").resolve()
 DIR_CONFIG = (DIR_ROOT / "biowasm.json").resolve()
 COLOR_GREEN = "\033[1;33m"
 COLOR_OFF = "\033[0m"
 
 # Global state
 CONFIG = {}
+MANIFEST = {}
 LEVEL = 0
 
 
@@ -28,6 +31,34 @@ def list():
 		name = tool["name"]
 		versions = ", ".join([ v["version"] for v in tool["versions"] ])
 		print(f"{name.ljust(10)}\t{versions}")
+
+
+def exec(cmd):
+	"""
+	Execute a Bash command or just print it on screen if dry run enabled
+	"""
+	cmd_dry = f"{COLOR_GREEN}{'    ' * LEVEL}{cmd}{COLOR_OFF}"
+	print(cmd_dry)
+
+	if not args.dry_run:
+		# Not safe to use shell=True generally but this is only running trusted code
+		output = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.decode().strip()
+		if output:
+			print(output)
+
+
+def get_file_contents(path):
+	if args.dry_run:
+		return f"<path>"
+
+	if path.endswith(".wasm") or path.endswith(".data"):
+		with open(path, "rb") as f:
+			return base64.b64encode(f.read()).decode("utf-8"), True
+	elif path.endswith(".js"):
+		with open(path, "r") as f:
+			return f.read(), False
+	else:
+		raise f"Unexpected file extension for file '{path}'."
 
 
 def compile(tool, versions=[], level=0):
@@ -66,22 +97,33 @@ def compile(tool, versions=[], level=0):
 
 	# At the end, update the Biowasm manifest
 	if level == 0:
-		# Convert file with "value  key" to JSON {"key": "value"}
-		exec('jq -R -s \'split("\\n")[0:-1] | map(split("  ")) | map({(.[1]): (.[1] + ":" + .[0])}) | add\' ' + f"{DIR_MANIFEST_TEMP} > {DIR_MANIFEST_TEMP}.json")
-		exec(f"jq -s '.[0] * .[1]' {DIR_MANIFEST} {DIR_MANIFEST_TEMP}.json > {DIR_MANIFEST}.tmp && mv {DIR_MANIFEST}.tmp {DIR_MANIFEST}")
-		exec(f"rm {DIR_MANIFEST_TEMP} {DIR_MANIFEST_TEMP}.json")
+		# Update the MANIFEST where needed
+		to_upload = []
+		with open(DIR_MANIFEST_TEMP) as f:
+			for row in f.readlines():
+				hash, path = row.rstrip().split("  ")
 
+				# Prepare the KV pair for Cloudflare Workers KV
+				kv_key = f"{path}:{hash}"
+				kv_value, kv_base64 = get_file_contents(str(DIR_BUILD / path))
 
+				# If adding new file, or hash of a file has changed, update the manifest
+				if path not in MANIFEST or MANIFEST[path] != kv_key:
+					MANIFEST[path] = kv_key
+					to_upload.append({
+						"key": kv_key,
+						"value": kv_value,
+						"base64": kv_base64
+					})
 
-def exec(cmd):
-	cmd_dry = f"{COLOR_GREEN}{'    ' * LEVEL}{cmd}{COLOR_OFF}"
-	print(cmd_dry)
+		# Save manifest JSON files
+		if not args.dry_run:
+			with open(DIR_CF_UPLOAD, "w", encoding="utf-8") as f:
+				json.dump(to_upload, f, ensure_ascii=False, indent=2)
+			with open(DIR_MANIFEST, "w", encoding="utf-8") as f:
+				json.dump(MANIFEST, f, ensure_ascii=False, indent=2)
+			exec(f"rm {DIR_MANIFEST_TEMP}")
 
-	if not args.dry_run:
-		# Not safe to use shell=True generally but this is only running trusted code
-		output = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.decode().strip()
-		if output:
-			print(output)
 
 if __name__ == "__main__":
 	"""
@@ -93,6 +135,8 @@ if __name__ == "__main__":
 
 	with open(DIR_CONFIG) as f:
 		CONFIG = json.load(f)
+	with open(DIR_MANIFEST) as f:
+		MANIFEST = json.load(f)
 
 	parser = argparse.ArgumentParser()
 	parser.add_argument("--list", default=False, action="store_true", help="List tools available")
