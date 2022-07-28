@@ -64,11 +64,14 @@ def compile(tool, versions=[], level=0):
 				exec(f"cp tools/{tool}/build/{program}.{file} {dir_build}/")
 				exec(f"md5sum {dir_build}/{program}.{file} | sed 's|{DIR_BUILD}/||' >> {DIR_MANIFEST_TEMP}")
 
+	# At the end, update the Biowasm manifest
 	if level == 0:
 		# Convert file with "value  key" to JSON {"key": "value"}
-		exec('jq -R -s \'split("\\n")[0:-1] | map(split("  ")) | map({(.[1]): .[0]}) | add\' ' + f"{DIR_MANIFEST_TEMP} > {DIR_MANIFEST_TEMP}.json")
+		exec('jq -R -s \'split("\\n")[0:-1] | map(split("  ")) | map({(.[1]): (.[1] + ":" + .[0])}) | add\' ' + f"{DIR_MANIFEST_TEMP} > {DIR_MANIFEST_TEMP}.json")
 		exec(f"jq -s '.[0] * .[1]' {DIR_MANIFEST} {DIR_MANIFEST_TEMP}.json > {DIR_MANIFEST}.tmp && mv {DIR_MANIFEST}.tmp {DIR_MANIFEST}")
 		exec(f"rm {DIR_MANIFEST_TEMP} {DIR_MANIFEST_TEMP}.json")
+
+
 
 def exec(cmd):
 	cmd_dry = f"{COLOR_GREEN}{'    ' * LEVEL}{cmd}{COLOR_OFF}"
