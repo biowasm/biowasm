@@ -2,7 +2,7 @@
 
 ### Warning
 
-This implementation of Smith-Waterman relies on SIMD instructions to run in a performant way. If the end user does not have SIMD enabled, Aioli will load the `ssw-nosimd.wasm` version, though it is considerably slower.
+This implementation of Smith-Waterman relies on SIMD instructions to run in a performant way. If the end user does not have SIMD enabled, Aioli will load the non-SIMD version, though it is considerably slower.
 
 To enable SIMD in your browser:
 

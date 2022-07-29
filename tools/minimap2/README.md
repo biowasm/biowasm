@@ -2,7 +2,7 @@
 
 ### Warning
 
-Minimap2 relies on SIMD instructions. If the end user does not have SIMD enabled, Aioli will load the `minimap2-nosimd.wasm` version, though it is considerably slower.
+Minimap2 relies on SIMD instructions. If the end user does not have SIMD enabled, Aioli will load the version without SIMD, though it is considerably slower.
 
 To enable SIMD in your browser:
 
