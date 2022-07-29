@@ -5,16 +5,19 @@ env:
   EM_CACHE_FOLDER: "emsdk-cache"
 
 on:
-  workflow_dispatch:
-    inputs:
-      env:
-        description: "Environment"
-        required: true
-        default: "stg"
-      tools_to_compile:
-        description: "Tools to compile to WebAssembly (comma-separated; 'all'; 'none')"
-        required: false
-        default: "all"
+  push:
+    branches:
+      - v3
+  # workflow_dispatch:
+  #   inputs:
+  #     env:
+  #       description: "Environment"
+  #       required: true
+  #       default: "stg"
+  #     tools_to_compile:
+  #       description: "Tools to compile to WebAssembly (comma-separated; 'all'; 'none')"
+  #       required: false
+  #       default: "all"
 
 jobs:
   deploy:
@@ -47,23 +50,26 @@ jobs:
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
         run: emcc -v
 
-      # # ------------------------------------------------------------------------
-      # # Compile
-      # # ------------------------------------------------------------------------
-      # - name: Compile to WebAssembly
-      #   if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-      #   run: bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }} --env ${{ github.event.inputs.env }}
-      # # ------------------------------------------------------------------------
-      # # Deploy to Cloudflare Workers
-      # # ------------------------------------------------------------------------
-      # - name: Deploy cdn.biowasm.com/v3/ (${{ github.event.inputs.env }})
-      #   if: ${{ !env.ACT }}
-      #   uses: cloudflare/wrangler-action@1.3.0
-      #   env:
-      #     USER: root
-      #     CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-      #     CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-      #   with:
-      #     apiToken: ${{ secrets.CF_API_TOKEN }}
-      #     environment: ${{ github.event.inputs.env }}
-      #     preCommands: cd cloudflare/cdn
+      # ------------------------------------------------------------------------
+      # Compile
+      # ------------------------------------------------------------------------
+      - name: Compile to WebAssembly
+        if: ${{ github.event.inputs.tools_to_compile != 'none' }}
+        run: bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }}
+
+      # ------------------------------------------------------------------------
+      # Deploy to Cloudflare Workers
+      # ------------------------------------------------------------------------
+      - name: Deploy biowasm.com/v3/ (${{ github.event.inputs.env }})
+        if: ${{ !env.ACT }}
+        uses: cloudflare/wrangler-action@2.0.0
+        env:
+          USER: root
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          environment: ${{ github.event.inputs.env }}
+          preCommands: |
+            npx wrangler kv:bulk put --binding=CDN build/cf_kv_upload.json
+            cd web/
