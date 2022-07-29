@@ -4,7 +4,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-		"deploy": "wrangler publish",
+		"deploy": "wrangler publish --env=stg",
 		"tail": "wrangler tail",
 		"preview": "vite preview"
 	},
