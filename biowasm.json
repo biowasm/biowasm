@@ -97,7 +97,7 @@
 		},
 		{
 			"name": "minimap2",
-			"programs": ["minimap2", "minimap2-nosimd"],
+			"programs": ["minimap2", "minimap2-simd"],
 			"files": ["wasm", "js", "data"],
 			"versions": [
 				{ "version": "2.22", "branch": "v2.22" }
@@ -138,7 +138,7 @@
 		},
 		{
 			"name": "ssw",
-			"programs": ["ssw", "ssw-nosimd"],
+			"programs": ["ssw", "ssw-simd"],
 			"versions": [
 				{ "version": "1.2.4", "branch": "ad452ea" }
 			]
