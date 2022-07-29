@@ -1,5 +1,7 @@
 {
   "aioli/3.0.0/aioli.js": "aioli/3.0.0/aioli.js:9868f3700bd92f9d2ae43dd7ddaa532b",
+  "fasttree/2.1.11/fasttree.js": "fasttree/2.1.11/fasttree.js:f21f67c91991c6b4a478604f9d4d8706",
+  "fasttree/2.1.11/fasttree.wasm": "fasttree/2.1.11/fasttree.wasm:2297cb402492c9a384b9ee3a47fea0cf",
   "htslib/1.10/bgzip.js": "htslib/1.10/bgzip.js:d638bbf592dc4280b33486f7c82aeb6d",
   "htslib/1.10/bgzip.wasm": "htslib/1.10/bgzip.wasm:6c849031074ecbc8c05bc37e63346774",
   "htslib/1.10/htsfile.js": "htslib/1.10/htsfile.js:3837d70980875433f4dcdcf7ac7b5f64",
