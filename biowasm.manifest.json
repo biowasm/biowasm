@@ -13,5 +13,6 @@
   "htslib/1.10/bgzip.wasm": "htslib/1.10/bgzip.wasm:6c849031074ecbc8c05bc37e63346774",
   "samtools/1.10/samtools.wasm": "samtools/1.10/samtools.wasm:52e01e5af280d1c5db01e20702b5bf0f",
   "samtools/1.10/samtools.js": "samtools/1.10/samtools.js:555bf59caea94f0eabcf1a80ea55ed1e",
-  "samtools/1.10/samtools.data": "samtools/1.10/samtools.data:54091f3049293ecfb30bc8ce47750fd4"
+  "samtools/1.10/samtools.data": "samtools/1.10/samtools.data:54091f3049293ecfb30bc8ce47750fd4",
+  "aioli/3.0.0/aioli.js": "aioli/3.0.0/aioli.js:9868f3700bd92f9d2ae43dd7ddaa532b"
 }
