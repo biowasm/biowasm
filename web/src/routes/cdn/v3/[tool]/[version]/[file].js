@@ -1,4 +1,5 @@
 import { getAssetFromKV } from "@cloudflare/kv-asset-handler";
+import CONFIG from "../../../../../../../biowasm.json";
 import ASSET_MANIFEST from "../../../../../../../biowasm.manifest.json";
 
 // Settings
@@ -11,6 +12,22 @@ const CACHE_CONFIG = {
 
 // GET /cdn/v3/:tool/:version/:file
 export async function GET({ request, platform, params }) {
+	// Artificial /latest route for Aioli
+	if(params.tool === "aioli" && params.version === "latest")
+		params.version = CONFIG.tools.find(t => t.name === "aioli").versions.at(-1).version;
+
+	// Unrecognized file
+	const path = `${params.tool}/${params.version}/${params.file}`;
+	if(!ASSET_MANIFEST[path]) {
+		return {
+			status: 404,
+			body: {
+				error: `Could not find tool`,
+				params,
+		} };
+	}
+
+	// Local dev
 	if(platform === undefined) {
 		return { body: {
 			"download": params
