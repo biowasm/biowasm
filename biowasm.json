@@ -1,5 +1,5 @@
 {
-	"url": "cdn/v3",
+	"url": "/cdn/v3",
 	"tools": [
 		{
 			"name": "aioli",

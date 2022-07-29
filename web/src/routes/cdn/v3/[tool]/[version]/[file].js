@@ -1,8 +1,8 @@
-import { getAssetFromKV, mapRequestToAsset } from "@cloudflare/kv-asset-handler";
+import { getAssetFromKV } from "@cloudflare/kv-asset-handler";
 import ASSET_MANIFEST from "../../../../../../../biowasm.manifest.json";
 
 // Settings
-const URL_CDN = "cdn/v3";
+const URL_CDN = "/cdn/v3";
 const CACHE_CONFIG = {
 	browserTTL: 604800,  // 1 week (default: null)
 	edgeTTL: 172800,     // 2 days (default: 2 days)
@@ -29,7 +29,7 @@ export async function GET({ request, platform, params }) {
 		mapRequestToAsset: request => {
 			let url = request.url;
 			url = url.replace(URL_CDN, "");
-			return mapRequestToAsset(new Request(url, request));
+			return new Request(url, request);
 		},
 	});
 

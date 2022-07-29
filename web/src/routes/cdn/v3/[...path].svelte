@@ -23,9 +23,9 @@ $: tools = CONFIG.tools.filter(t => tool === null || t.name === tool);
 </script>
 
 <h3>
-	<a href="/{CONFIG.url}">CDN</a>
+	<a href="{CONFIG.url}">CDN</a>
 	{#if tool}
-		/ <a href="/{CONFIG.url}/{tool}">{tool}</a>
+		/ <a href="{CONFIG.url}/{tool}">{tool}</a>
 	{/if}
 	{#if version}
 		/ {version}
@@ -34,7 +34,7 @@ $: tools = CONFIG.tools.filter(t => tool === null || t.name === tool);
 
 {#each tools as t}
 	{#if !tool}
-		<a href="/{CONFIG.url}/{t.name}">
+		<a href="{CONFIG.url}/{t.name}">
 			<strong>{t.name}</strong>
 		</a>
 		<br />
@@ -43,11 +43,11 @@ $: tools = CONFIG.tools.filter(t => tool === null || t.name === tool);
 	<!-- View all versions -->
 	{#if version === null}
 		{#each t.versions as version}
-			* <a href="/{CONFIG.url}/{t.name}/{version.version}">{version.version}</a>
+			* <a href="{CONFIG.url}/{t.name}/{version.version}">{version.version}</a>
 			{#if version.dependencies}
 				( depends on:
 					{#each version.dependencies as dependency}
-						<a href="/{CONFIG.url}/{dependency.name}/{dependency.version}">{dependency.name} v{dependency.version}</a>
+						<a href="{CONFIG.url}/{dependency.name}/{dependency.version}">{dependency.name} v{dependency.version}</a>
 					{/each}
 				)
 			{/if}
@@ -59,7 +59,8 @@ $: tools = CONFIG.tools.filter(t => tool === null || t.name === tool);
 	{:else}
 		{#each t.programs || [tool] as program}
 			{#each t.files || ["js", "wasm"] as file}
-				* <a href="/{CONFIG.url}/{t.name}/{version}/{program}.{file}">{program}.{file}</a><br />
+				<!-- Need full page reload to download the file -->
+				* <a sveltekit:reload href="{CONFIG.url}/{t.name}/{version}/{program}.{file}">{program}.{file}</a><br />
 			{/each}
 		{/each}
 	{/if}
