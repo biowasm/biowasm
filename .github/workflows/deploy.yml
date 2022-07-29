@@ -69,7 +69,7 @@ jobs:
           environment: ${{ github.event.inputs.env }}
           preCommands: |
             cd web/
-            npx wrangler kv:bulk put --binding=CDN ../build/cf_kv_upload.json
+            wrangler kv:bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
 
       # ------------------------------------------------------------------------
       # Save changes to manifest (only after successful deploy!)
