@@ -10,9 +10,14 @@ const CACHE_CONFIG = {
 };
 
 // GET /cdn/v3/:tool/:version/:file
-export async function GET({ request, platform }) {
-	console.log("platform =", platform);
+export async function GET({ request, platform, params }) {
+	if(platform === undefined) {
+		return { body: {
+			"download": params
+		} };
+	}
 
+	// Download file from Cloudflare Workers
 	let response = await getAssetFromKV({
 		request,
 		waitUntil: promise => platform.context.waitUntil(promise)
