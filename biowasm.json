@@ -6,28 +6,41 @@
 			"name": "aioli",
 			"files": ["js"],
 			"versions": [
-				{ "version": "3.0.0", "branch": "v3" }
+				{
+					"version": "3.0.0",
+					"branch": "v3"
+				}
 			]
 		},
 		{
 			"name": "bcftools",
 			"files": ["wasm", "js", "data"],
 			"versions": [
-				{ "version": "1.10", "branch": "1.10", "dependencies": [{ "name": "htslib", "version": "1.10" }] }
+				{
+					"version": "1.10",
+					"branch": "1.10",
+					"dependencies": [{ "name": "htslib", "version": "1.10" }]
+				}
 			]
 		},
 		{
 			"name": "bedtools",
 			"files": ["wasm", "js", "data"],
 			"versions": [
-				{ "version": "2.29.2", "branch": "v2.29.2" }
+				{
+					"version": "2.29.2",
+					"branch": "v2.29.2"
+				}
 			]
 		},
 		{
 			"name": "bhtsne",
 			"files": ["wasm", "js", "data"],
 			"versions": [
-				{ "version": "2016.08.22", "branch": "1a62a5d" }
+				{
+					"version": "2016.08.22",
+					"branch": "1a62a5d"
+				}
 			]
 		},
 		{
@@ -35,64 +48,95 @@
 			"files": ["wasm", "js", "data"],
 			"programs": ["bowtie2-align-s"],
 			"versions": [
-				{ "version": "2.4.2", "branch": "v2.4.2" }
+				{
+					"version": "2.4.2",
+					"branch": "v2.4.2"
+				}
 			]
 		},
 		{
 			"name": "coreutils",
 			"programs": ["basename", "cat", "comm", "cut", "date", "df", "dirname", "du", "echo", "env", "fold", "head", "join", "ls", "md5sum", "paste", "seq", "shuf", "sort", "tail", "tr", "uniq", "wc"],
 			"versions": [
-				{ "version": "8.32", "branch": "v8.32" }
+				{
+					"version": "8.32",
+					"branch": "v8.32"
+				}
 			]
 		},
 		{
 			"name": "fastp",
 			"files": ["wasm", "js", "data"],
 			"versions": [
-				{ "version": "0.20.1", "branch": "0.20.1" }
+				{
+					"version": "0.20.1",
+					"branch": "0.20.1"
+				}
 			]
 		},
 		{
 			"name": "fasttree",
 			"versions": [
-				{ "version": "2.1.11", "branch": "main" }
+				{
+					"version": "2.1.11",
+					"branch": "main"
+				}
 			]
 		},
 		{
 			"name": "gawk",
 			"versions": [
-				{ "version": "5.1.0", "branch": "gawk-5.1.0" }
+				{
+					"version": "5.1.0",
+					"branch": "gawk-5.1.0"
+				}
 			]
 		},
 		{
 			"name": "grep",
 			"versions": [
-				{ "version": "3.7", "branch": "v3.7" }
+				{
+					"version": "3.7",
+					"branch": "v3.7"
+				}
 			]
 		},
 		{
 			"name": "htslib",
 			"programs": ["tabix", "htsfile", "bgzip"],
 			"versions": [
-				{ "version": "1.10", "branch": "1.10" }
+				{
+					"version": "1.10",
+					"branch": "1.10"
+				}
 			]
 		},
 		{
 			"name": "ivar",
 			"versions": [
-				{ "version": "1.3.1", "branch": "v1.3.1", "dependencies": [{ "name": "htslib", "version": "1.10" }] }
+				{
+					"version": "1.3.1",
+					"branch": "v1.3.1",
+					"dependencies": [{ "name": "htslib", "version": "1.10" }]
+				}
 			]
 		},
 		{
 			"name": "jq",
 			"versions": [
-				{ "version": "1.6", "branch": "jq-1.6" }
+				{
+					"version": "1.6",
+					"branch": "jq-1.6"
+				}
 			]
 		},
 		{
 			"name": "kalign",
 			"versions": [
-				{ "version": "3.3.1", "branch": "v3.3.1" }
+				{
+					"version": "3.3.1",
+					"branch": "v3.3.1"
+				}
 			]
 		},
 		{
@@ -100,53 +144,81 @@
 			"programs": ["minimap2", "minimap2-simd"],
 			"files": ["wasm", "js", "data"],
 			"versions": [
-				{ "version": "2.22", "branch": "v2.22" }
+				{
+					"version": "2.22",
+					"branch": "v2.22"
+				}
 			]
 		},
 		{
 			"name": "modbam2bed",
 			"versions": [
-				{ "version": "0.3.1", "branch": "wasm" }
+				{
+					"version": "0.3.1",
+					"branch": "wasm"
+				}
 			]
 		},
 		{
 			"name": "samtools",
 			"files": ["wasm", "js", "data"],
 			"versions": [
-				{ "version": "1.10", "branch": "1.10", "dependencies": [{ "name": "htslib", "version": "1.10" }] }
+				{
+					"version": "1.10",
+					"branch": "1.10",
+					"dependencies": [{ "name": "htslib", "version": "1.10" }]
+				}
 			]
 		},
 		{
 			"name": "sed",
 			"versions": [
-				{ "version": "4.8", "branch": "v4.8" }
+				{
+					"version": "4.8",
+					"branch": "v4.8"
+				}
 			]
 		},
 		{
 			"name": "seq-align",
 			"programs": ["lcs", "needleman_wunsch", "smith_waterman"],
 			"versions": [
-				{ "version": "2017.10.18", "branch": "dc41988" }
+				{
+					"version": "2017.10.18",
+					"branch": "dc41988"
+				}
 			]
 		},
 		{
 			"name": "seqtk",
 			"versions": [
-				{ "version": "1.2", "branch": "v1.2" },
-				{ "version": "1.3", "branch": "v1.3" }
+				{
+					"version": "1.2",
+					"branch": "v1.2"
+				},
+				{
+					"version": "1.3",
+					"branch": "v1.3"
+				}
 			]
 		},
 		{
 			"name": "ssw",
 			"programs": ["ssw", "ssw-simd"],
 			"versions": [
-				{ "version": "1.2.4", "branch": "ad452ea" }
+				{
+					"version": "1.2.4",
+					"branch": "ad452ea"
+				}
 			]
 		},
 		{
 			"name": "wgsim",
 			"versions": [
-				{ "version": "2011.10.17", "branch": "a12da33" }
+				{
+					"version": "2011.10.17",
+					"branch": "a12da33"
+				}
 			]
 		}
 	]
