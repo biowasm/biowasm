@@ -97,6 +97,10 @@ def compile(tool, versions=[], level=0):
 
 	# At the end, update the Biowasm manifest
 	if level == 0:
+		if args.dry_run:
+			print("<update manifest>")
+			return
+
 		# Update the MANIFEST where needed
 		to_upload = []
 		with open(DIR_MANIFEST_TEMP) as f:
@@ -117,12 +121,11 @@ def compile(tool, versions=[], level=0):
 					})
 
 		# Save manifest JSON files
-		if not args.dry_run:
-			with open(DIR_CF_UPLOAD, "w", encoding="utf-8") as f:
-				json.dump(to_upload, f, ensure_ascii=False, indent=2)
-			with open(DIR_MANIFEST, "w", encoding="utf-8") as f:
-				json.dump(MANIFEST, f, ensure_ascii=False, indent=2)
-			exec(f"rm {DIR_MANIFEST_TEMP}")
+		with open(DIR_CF_UPLOAD, "w", encoding="utf-8") as f:
+			json.dump(to_upload, f, ensure_ascii=False)
+		with open(DIR_MANIFEST, "w", encoding="utf-8") as f:
+			json.dump(MANIFEST, f, ensure_ascii=False, sort_keys=True, indent=2)
+		exec(f"rm {DIR_MANIFEST_TEMP}")
 
 
 if __name__ == "__main__":
@@ -148,7 +151,8 @@ if __name__ == "__main__":
 	if args.list:
 		list()
 	elif args.tools:
-		for tool_name in args.tools.split(","):
+		tools = args.tools.split(",") if args.tools != "all" else [ t["name"] for t in CONFIG["tools"] ]
+		for tool_name in tools:
 			compile(tool_name, args.versions.split(",") if args.versions is not None else [])
 	else:
 		parser.print_usage()
