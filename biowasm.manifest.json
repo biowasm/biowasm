@@ -2,7 +2,5 @@
   "seqtk/1.2/seqtk.js": "seqtk/1.2/seqtk.js:661b9c072aa6b86aa10bfb611b49a5ef",
   "seqtk/1.2/seqtk.wasm": "seqtk/1.2/seqtk.wasm:c1032f800dda06ff37710ee918e08835",
   "seqtk/1.3/seqtk.js": "seqtk/1.3/seqtk.js:661b9c072aa6b86aa10bfb611b49a5ef",
-  "seqtk/1.3/seqtk.wasm": "seqtk/1.3/seqtk.wasm:968f60288edb9703179f0fac1f87276a",
-  "wgsim/2011.10.17/wgsim.js": "wgsim/2011.10.17/wgsim.js:160ed04faa193026f4b861dcfdbda0cf",
-  "wgsim/2011.10.17/wgsim.wasm": "wgsim/2011.10.17/wgsim.wasm:2b9bc9ca3462cc1d3f35859e400a17f1"
+  "seqtk/1.3/seqtk.wasm": "seqtk/1.3/seqtk.wasm:968f60288edb9703179f0fac1f87276a"
 }

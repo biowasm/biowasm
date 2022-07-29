@@ -54,13 +54,6 @@ jobs:
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
         run: bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }}
 
-      - name: Save changes to manifest.json
-        if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Update Biowasm manifest
-          file_pattern: biowasm.manifest.json
-
       # ------------------------------------------------------------------------
       # Deploy to Cloudflare Workers
       # ------------------------------------------------------------------------
@@ -75,5 +68,15 @@ jobs:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           environment: ${{ github.event.inputs.env }}
           preCommands: |
-            npx wrangler kv:bulk put --binding=CDN build/cf_kv_upload.json
             cd web/
+            npx wrangler kv:bulk put --binding=CDN ../build/cf_kv_upload.json
+
+      # ------------------------------------------------------------------------
+      # Save changes to manifest (only after successful deploy!)
+      # ------------------------------------------------------------------------
+      - name: Save changes to manifest.json
+        if: ${{ github.event.inputs.tools_to_compile != 'none' }}
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update Biowasm manifest
+          file_pattern: biowasm.manifest.json
