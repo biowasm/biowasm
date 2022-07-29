@@ -9,16 +9,13 @@ const CACHE_CONFIG = {
 	edgeTTL: 172800,     // 2 days (default: 2 days)
 	bypassCache: false   // Do not bypass Cloudflare's cache (default: false)
 };
+const latestAioliVersion = CONFIG.tools.find(t => t.name === "aioli").versions.at(-1).version;
 
 // GET /cdn/v3/:tool/:version/:file
 export async function GET({ request, platform, params }) {
-	// Artificial /latest route for Aioli
-	if(params.tool === "aioli" && params.version === "latest")
-		params.version = CONFIG.tools.find(t => t.name === "aioli").versions.at(-1).version;
-
 	// Unrecognized file
 	const path = `${params.tool}/${params.version}/${params.file}`;
-	if(!ASSET_MANIFEST[path]) {
+	if(!ASSET_MANIFEST[path] && params.version !== "latest") {
 		return {
 			status: 404,
 			body: {
@@ -46,6 +43,9 @@ export async function GET({ request, platform, params }) {
 		mapRequestToAsset: request => {
 			let url = request.url;
 			url = url.replace(URL_CDN, "");
+			// Artificial /latest route for Aioli
+			if(params.tool === "aioli" && params.version === "latest")
+				url = url.replace("latest", latestAioliVersion);
 			return new Request(url, request);
 		},
 	});

@@ -11,4 +11,4 @@ kv_namespaces = [{ binding = "CDN", id = "ceb6fce5bbe54655a0ca3add95d29954" }]
 
 [env.prd]
 name = "biowasm-v3"
-kv_namespaces = [{ binding = "CDN", id = "ceb6fce5bbe54655a0ca3add95d29954" }]
+kv_namespaces = [{ binding = "CDN", id = "2ddb9221f3e64a0a9f113971204a8675" }]
