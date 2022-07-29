@@ -57,6 +57,12 @@ jobs:
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
         run: bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }}
 
+      - name: Save changes to manifest.json
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update Biowasm manifest
+          file_pattern: biowasm.manifest.json
+
       # ------------------------------------------------------------------------
       # Deploy to Cloudflare Workers
       # ------------------------------------------------------------------------
