@@ -5,19 +5,16 @@ env:
   EM_CACHE_FOLDER: "emsdk-cache"
 
 on:
-  push:
-    branches:
-      - v3
-  # workflow_dispatch:
-  #   inputs:
-  #     env:
-  #       description: "Environment"
-  #       required: true
-  #       default: "stg"
-  #     tools_to_compile:
-  #       description: "Tools to compile to WebAssembly (comma-separated; 'all'; 'none')"
-  #       required: false
-  #       default: "all"
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Environment"
+        required: true
+        default: "stg"
+      tools_to_compile:
+        description: "Tools to compile to WebAssembly (comma-separated; 'all'; 'none')"
+        required: false
+        default: "all"
 
 jobs:
   deploy:
