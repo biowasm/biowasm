@@ -10,6 +10,7 @@ export async function GET({ request, platform, params }) {
 		};
 	}
 
+	const path = `${params.tool}/${params.version}/${params.file}`;
 	const id = platform.env.stats.idFromName(path);
 	const obj = platform.env.stats.get(id);
 
