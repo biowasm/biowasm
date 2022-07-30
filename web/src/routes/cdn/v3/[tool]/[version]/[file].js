@@ -3,7 +3,6 @@ import CONFIG from "../../../../../../../biowasm.json";
 import ASSET_MANIFEST from "../../../../../../../biowasm.manifest.json";
 
 // Settings
-const URL_CDN = "/cdn/v3";
 const CACHE_CONFIG = {
 	browserTTL: 604800,  // 1 week (default: null)
 	edgeTTL: 172800,     // 2 days (default: 2 days)
@@ -43,7 +42,7 @@ export async function GET({ request, platform, params }) {
 		cacheControl: CACHE_CONFIG,
 		mapRequestToAsset: request => {
 			let url = request.url;
-			url = url.replace(URL_CDN, "");
+			url = url.replace(CONFIG.url, "");
 			// Artificial /latest route for Aioli
 			if(params.tool === "aioli" && params.version === "latest")
 				url = url.replace("latest", latestAioliVersion);
@@ -52,17 +51,19 @@ export async function GET({ request, platform, params }) {
 	});
 
 	// Log event only after return file to user
-	const id = platform.env.stats.idFromName(path);
-	const obj = platform.env.stats.get(id);
-	platform.context.waitUntil(logEvent(obj));
+	platform.context.waitUntil(logEvent({ request, platform, path }));
 
 	// Enable CORS
 	response.headers.set("Access-Control-Allow-Origin", "*");
 	return response;
 }
 
-async function logEvent(obj) {
-	const resp = await obj.fetch("https://biowasm-v3-stg.robert.workers.dev/increment");
-	const count = await resp.text();
-	console.log(">>>", count)
+async function logEvent({ request, platform, path }) {
+	const id = platform.env.stats.idFromName(path);
+	const obj = platform.env.stats.get(id);
+
+	// Send HTTP request to Durable Object (needs full path)
+	const hostname = new URL(request.url).origin;
+	const counts = await (await obj.fetch(`${hostname}/increment`)).json();
+	console.log("Counts:", counts);
 }

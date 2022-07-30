@@ -1,38 +1,40 @@
-// Cloudflare Durable Object that is added to the build via `build.command` in "wrangler.toml"
+// Cloudflare Durable Object that is added to the build via `build.command` in "wrangler.toml".
+// Durable Object ID = CDN path, e.g. "seqtk/1.3/seqtk.js"
+// Durable Object Names =
+// - total: total downloads for one version of a tool
+// - YYYY-MM-DD: daily downloads for one version of a tool
 export class CDNStats {
-	constructor(state, env) {
+	constructor(state) {
 		this.state = state;
 	}
 
-	// Handle HTTP requests from clients.
+	// Handle HTTP requests from Cloudflare Worker (called from `[file].js`)
 	async fetch(request) {
-		let url = new URL(request.url);
+		const date = new Date().toISOString().split("T")[0];
+		let total = (await this.state.storage.get("total")) || 0;
+		let daily = (await this.state.storage.get(date)) || 0;
 
-		// Durable Object storage is automatically cached in-memory, so reading the
-		// same key every request is fast. (That said, you could also store the
-		// value in a class member if you prefer.)
-		let value = (await this.state.storage.get("value")) || 0;
-
+		const url = new URL(request.url);
 		switch (url.pathname) {
-		case "/increment":
-			++value;
-			break;
-		case "/decrement":
-			--value;
-			break;
-		case "/":
-			// Just serve the current value.
-			break;
-		default:
-			return new Response("Not found", { status: 404 });
+			// Increment daily and total download counts
+			case "/increment":
+				total++;
+				daily++;
+				await this.state.storage.put("total", total);
+				await this.state.storage.put(date, daily);
+				break;
+
+			// Fetch values
+			case "/":
+				break;
+
+			default:
+				return new Response("Durable Object endpoint not found", { status: 404 });
 		}
 
-		// You do not have to worry about a concurrent request having modified the
-		// value in storage because "input gates" will automatically protect against
-		// unwanted concurrency. So, read-modify-write is safe. For more details,
-		// refer to: https://blog.cloudflare.com/durable-objects-easy-fast-correct-choose-three/
-		await this.state.storage.put("value", value);
-
-		return new Response(value);
+		return new Response(JSON.stringify({
+			total,
+			daily
+		}));
 	}
 }
