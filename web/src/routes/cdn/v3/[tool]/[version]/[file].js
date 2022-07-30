@@ -34,6 +34,7 @@ export async function GET({ request, platform, params }) {
 	// Download file from Cloudflare Workers
 	let response = await getAssetFromKV({
 		request,
+		// The package `kv-asset-handler` will update Cloudflare Cache after the request is done
 		waitUntil: promise => platform.context.waitUntil(promise)
 	},
 	{
@@ -50,7 +51,18 @@ export async function GET({ request, platform, params }) {
 		},
 	});
 
+	// Log event only after return file to user
+	const id = platform.env.stats.idFromName(path);
+	const obj = platform.env.stats.get(id);
+	platform.context.waitUntil(logEvent(obj));
+
 	// Enable CORS
 	response.headers.set("Access-Control-Allow-Origin", "*");
 	return response;
+}
+
+async function logEvent(obj) {
+	const resp = await obj.fetch("https://biowasm-v3-stg.robert.workers.dev/increment");
+	const count = await resp.text();
+	console.log(">>>", count)
 }
