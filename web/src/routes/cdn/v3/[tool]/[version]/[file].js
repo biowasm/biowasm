@@ -1,6 +1,7 @@
 import { getAssetFromKV } from "@cloudflare/kv-asset-handler";
 import CONFIG from "../../../../../../../biowasm.json";
 import ASSET_MANIFEST from "../../../../../../../biowasm.manifest.json";
+import { isValidTool } from "$lib/utils";
 
 // Settings
 const CACHE_CONFIG = {
@@ -12,15 +13,12 @@ const latestAioliVersion = CONFIG.tools.find(t => t.name === "aioli").versions.a
 
 // GET /cdn/v3/:tool/:version/:file
 export async function GET({ request, platform, params }) {
-	// Unrecognized file
-	const path = `${params.tool}/${params.version}/${params.file}`;
-	if(!ASSET_MANIFEST[path] && params.version !== "latest") {
+	// Stop if unrecognized file
+	if(params.version !== "latest" && !isValidTool(params)) {
 		return {
 			status: 404,
-			body: {
-				error: `Could not find tool`,
-				params,
-		} };
+			body: { error: `Could not find tool`, params }
+		};
 	}
 
 	// Local dev
@@ -51,6 +49,7 @@ export async function GET({ request, platform, params }) {
 	});
 
 	// Log event only after return file to user
+	const path = `${params.tool}/${params.version}/${params.file}`;
 	platform.context.waitUntil(logEvent({ request, platform, path }));
 
 	// Enable CORS
