@@ -18,10 +18,9 @@ export class CDNStats {
 		switch (url.pathname) {
 			// Increment daily and total download counts
 			case "/increment":
-				total++;
-				daily++;
-				await this.state.storage.put("total", total);
-				await this.state.storage.put(date, daily);
+				// Durable Objects feature automatic "write coalescing", so either all writes fail or all succeed
+				await this.state.storage.put("total", ++total);
+				await this.state.storage.put(date, ++daily);
 				break;
 
 			// Fetch values
@@ -34,7 +33,7 @@ export class CDNStats {
 
 		return new Response(JSON.stringify({
 			total,
-			daily
+			[date]: daily
 		}));
 	}
 }
