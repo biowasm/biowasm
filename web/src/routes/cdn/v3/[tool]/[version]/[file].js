@@ -58,11 +58,12 @@ export async function GET({ request, platform, params }) {
 }
 
 async function logEvent({ request, platform, path }) {
+	const hostname = new URL(request.url).origin;
+
+	// Get (or create) a durable object based on a valid path
 	const id = platform.env.stats.idFromName(path);
 	const obj = platform.env.stats.get(id);
 
-	// Send HTTP request to Durable Object (needs full path)
-	const hostname = new URL(request.url).origin;
-	const counts = await (await obj.fetch(`${hostname}/increment`)).json();
-	console.log("Counts:", counts);
+	// Send HTTP request to Durable Object (needs full URL, just "/increment" doesn't work)
+	await obj.fetch(`${hostname}/increment`);
 }
