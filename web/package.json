@@ -5,7 +5,8 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"deploy": "wrangler publish --env=stg",
-		"tail": "wrangler tail -–env=stg"
+		"tail": "wrangler tail --env=stg",
+		"postinstall": "bin/postinstall.sh"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "next",
