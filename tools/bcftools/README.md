@@ -13,8 +13,5 @@ document.write(`<pre>${output}</pre>`);
 </script>
 ```
 
-### Dependencies
-- Run `make htslib` before running `make bcftools`
-
 ### Patch
 - Need to reset `opt` variables so that it works properly when call `main()` multiple times

@@ -15,9 +15,6 @@ document.write(`<pre>${output}</pre>`);
 </script>
 ```
 
-### Dependencies
-- Run `make htslib` before running `make samtools`
-
 ### Patch
 - Need to reset `opt` variables so that it works properly when call `main()` multiple times
 - Need to remove `pthread_create` in `samtools sort` so it works without thread support
