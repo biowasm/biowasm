@@ -17,6 +17,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@cloudflare/kv-asset-handler": "^0.2.0"
+		"@cloudflare/kv-asset-handler": "^0.2.0",
+		"sveltestrap": "^5.9.0"
 	}
 }
