@@ -110,16 +110,16 @@ async function downloadAsZip(program) {
 		{program}
 		
 		<!-- Button to download all files for this program -->
-		<Tooltip target="icon-{program}">
-			Download files as .zip file
-		</Tooltip>
-		<Badge class="ms-2" color={busyDownload ? "secondary" : "primary"} style="cursor: {busyDownload ? "default" : "pointer"}">
-			<Icon id="icon-{program}" name="download" onclick={() => downloadAsZip(program)} />
-		</Badge>
+		<span on:click={() => downloadAsZip(program)} >
+			<Badge class="ms-2" color={busyDownload ? "secondary" : "primary"} style="cursor: {busyDownload ? "default" : "pointer"}">
+				<Icon name="download" />
+				<span class="ps-1">Download as .zip</span>
+			</Badge>
+		</span>
 
 		<!-- List dependencies -->
 		{#each version.dependencies || [] as dependency}
-			<Badge pill color="primary" class="ms-1">
+			<Badge pill color="secondary" class="ms-1">
 				Depends on
 				<a class="text-light" href="{CONFIG.url}/{dependency.name}/{dependency.version}">
 					{dependency.name} v{dependency.version}
