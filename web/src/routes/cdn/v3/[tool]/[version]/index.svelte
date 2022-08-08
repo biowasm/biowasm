@@ -1,6 +1,6 @@
 <script context="module">
 import CONFIG from "@/biowasm.json";
-import { Badge, ListGroup, ListGroupItem } from "sveltestrap";
+import { Badge, Icon, ListGroup, ListGroupItem, Tooltip } from "sveltestrap";
 
 export async function load({ params }) {
 	// Get tool/version info
@@ -39,19 +39,48 @@ export async function load({ params }) {
 
 <script>
 import { onMount } from "svelte";
+import * as ZipJS from "@zip.js/zip.js";
 
 export let tool;
 export let version;
 export let usedBy = [];
 
-// Load stats on page load
 let stats = {};
+let busyDownload = false;
+
+// Load stats on page load
 onMount(async () => {
 	const response = await fetch(`/api/v3/stats/${tool.name}/${version.version}`).then(d => d.json());
 	const statsPerProgram = response.stats[tool.name];  // cat: { version: { date: ..., total: ... } }
 	for(let program in statsPerProgram)
 		stats[program] = statsPerProgram[program][version.version]?.total || 0;
-})
+});
+
+// Download program files as a .zip file
+async function downloadAsZip(program) {
+	busyDownload = true;
+
+	// Prepare zip file
+	const blobWriter = new ZipJS.BlobWriter("application/zip");
+	const zipWriter = new ZipJS.ZipWriter(blobWriter);
+
+	// Download and zip up every file
+	for(let extension of tool.files || ["js", "wasm"]) {
+		const filename = `${program}.${extension}`;
+		const url = `${CONFIG.url}/${tool.name}/${version.version}/${filename}`;
+		const blob = await (await fetch(url)).blob();
+		await zipWriter.add(filename, new ZipJS.BlobReader(blob));
+	}
+	await zipWriter.close();
+
+	// Trigger download
+	const anchorElement = document.createElement("a");
+	anchorElement.href = URL.createObjectURL(blobWriter.blob);
+	anchorElement.download = `${program}-${version.version}.zip`;
+	anchorElement.click();
+
+	busyDownload = false;
+}
 </script>
 
 <base href="{CONFIG.url}/{tool.name}/{version.version}/" />
@@ -79,6 +108,16 @@ onMount(async () => {
 {#each tool.programs || [tool.name] as program}
 	<h6 class="mt-3">
 		{program}
+		
+		<!-- Button to download all files for this program -->
+		<Tooltip target="icon-{program}">
+			Download files as .zip file
+		</Tooltip>
+		<Badge class="ms-2" color={busyDownload ? "secondary" : "primary"} style="cursor: {busyDownload ? "default" : "pointer"}">
+			<Icon id="icon-{program}" name="download" onclick={() => downloadAsZip(program)} />
+		</Badge>
+
+		<!-- List dependencies -->
 		{#each version.dependencies || [] as dependency}
 			<Badge pill color="primary" class="ms-1">
 				Depends on
@@ -87,6 +126,8 @@ onMount(async () => {
 				</a>
 			</Badge>
 		{/each}
+
+		<!-- Show overall download stats -->
 		{#if stats[program]}
 			<Badge pill color="secondary" class="ms-1">{stats[program]} downloads</Badge>
 		{/if}
