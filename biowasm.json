@@ -15,7 +15,7 @@
 		{
 			"name": "bcftools",
 			"programs": ["bcftools"],
-			"files": ["wasm", "js", "data"],
+			"files": ["js", "wasm", "data"],
 			"versions": [
 				{
 					"version": "1.10",
@@ -27,7 +27,7 @@
 		{
 			"name": "bedtools",
 			"programs": ["bedtools"],
-			"files": ["wasm", "js", "data"],
+			"files": ["js", "wasm", "data"],
 			"versions": [
 				{
 					"version": "2.29.2",
@@ -38,7 +38,7 @@
 		{
 			"name": "bhtsne",
 			"programs": ["bhtsne"],
-			"files": ["wasm", "js", "data"],
+			"files": ["js", "wasm", "data"],
 			"versions": [
 				{
 					"version": "2016.08.22",
@@ -49,7 +49,7 @@
 		{
 			"name": "bowtie2",
 			"programs": ["bowtie2-align-s"],
-			"files": ["wasm", "js", "data"],
+			"files": ["js", "wasm", "data"],
 			"versions": [
 				{
 					"version": "2.4.2",
@@ -70,7 +70,7 @@
 		{
 			"name": "fastp",
 			"programs": ["fastp"],
-			"files": ["wasm", "js", "data"],
+			"files": ["js", "wasm", "data"],
 			"versions": [
 				{
 					"version": "0.20.1",
@@ -152,7 +152,7 @@
 		{
 			"name": "minimap2",
 			"programs": ["minimap2", "minimap2-simd"],
-			"files": ["wasm", "js", "data"],
+			"files": ["js", "wasm", "data"],
 			"versions": [
 				{
 					"version": "2.22",
@@ -173,7 +173,7 @@
 		{
 			"name": "samtools",
 			"programs": ["samtools"],
-			"files": ["wasm", "js", "data"],
+			"files": ["js", "wasm", "data"],
 			"versions": [
 				{
 					"version": "1.10",

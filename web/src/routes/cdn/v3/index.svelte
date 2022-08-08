@@ -1,5 +1,6 @@
 <script context="module">
 import CONFIG from "@/biowasm.json";
+import { ListGroup, ListGroupItem } from "sveltestrap";
 
 export async function load() {
 	return { props: {
@@ -14,6 +15,8 @@ export let tools;
 
 <base href="{CONFIG.url}/" />
 
-{#each tools as t}
-	* <a href={t.name}>{t.name}</a> v{t.versions[0].version}<br />
-{/each}
+<ListGroup>
+	{#each tools as t}
+		<ListGroupItem tag="a" href={t.name} action>{t.name} v{t.versions[0].version}</ListGroupItem>
+	{/each}
+</ListGroup>
