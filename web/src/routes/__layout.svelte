@@ -1,5 +1,31 @@
-<a href="/">Home</a> &bullet; <a href="/stats">Stats</a> &bullet; <a href="/cdn/v3">Packages</a>
+<script>
+import { Styles } from "sveltestrap";
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from "sveltestrap";
 
-<hr />
+let isOpen = false;
+</script>
 
-<slot></slot>
+<!-- Bootstrap CSS and icons -->
+<Styles />
+
+<!-- Navbar -->
+<Navbar color="light" light expand="md">
+	<NavbarBrand href="/">biowasm</NavbarBrand>
+	<NavbarToggler on:click={() => (isOpen = !isOpen)} />
+	<Collapse {isOpen} navbar expand="md" on:update={evt => isOpen = evt.detail.isOpen}>
+		<Nav class="ms-auto" navbar>
+			<NavItem>
+				<NavLink href="/cdn/v3">Packages</NavLink>
+			</NavItem>
+			<NavItem>
+				<NavLink href="/stats">Stats</NavLink>
+			</NavItem>
+			<NavItem>
+				<NavLink href="https://sandbox.bio/playground">Playground</NavLink>
+			</NavItem>
+		</Nav>
+	</Collapse>
+</Navbar>
+
+<!-- Page Content -->
+<slot />
