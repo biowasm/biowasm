@@ -1,6 +1,5 @@
 <script>
-import { Styles } from "sveltestrap";
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from "sveltestrap";
+import { Styles, Container, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from "sveltestrap";
 
 let isOpen = false;
 </script>
@@ -28,4 +27,6 @@ let isOpen = false;
 </Navbar>
 
 <!-- Page Content -->
-<slot />
+<Container fluid class="mt-3">
+	<slot />
+</Container>

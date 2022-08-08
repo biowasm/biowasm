@@ -23,8 +23,6 @@ export let version;
 
 <base href="{CONFIG.url}/{tool.name}/{version.version}/" />
 
-<h3><a href={CONFIG.url}>CDN</a> / <a href="../">{tool.name}</a> / {version.version}</h3>
-
 {#if version.dependencies}
 	Dependencies:<br />
 	{#each version.dependencies as dependency}

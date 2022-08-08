@@ -18,8 +18,6 @@ export let tool;
 
 <base href="{CONFIG.url}/{tool.name}/" />
 
-<h3><a href={CONFIG.url}>CDN</a> / {tool.name}</h3>
-
 {#each tool.versions as version}
 	* <a href={version.version}>{version.version}</a><br />
 {/each}

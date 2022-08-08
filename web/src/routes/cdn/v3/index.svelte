@@ -12,7 +12,6 @@ export async function load() {
 export let tools;
 </script>
 
-<h3>CDN</h3>
 <base href="{CONFIG.url}/" />
 
 {#each tools as t}
