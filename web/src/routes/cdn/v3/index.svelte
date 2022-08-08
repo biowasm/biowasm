@@ -26,8 +26,8 @@ export let tools;
 	</thead>
 	<tbody>
 		{#each tools as t}
-			<tr on:click={() => goto(t.name)}>
-				<td><a href={t.name}>{t.name}</a></td>
+			<tr on:click={() => goto(t.versions.length === 1 ? `${t.name}/${t.versions[0].version}` : t.name)}>
+				<td class="text-primary fw-bold">{t.name}</td>
 				<td>{t.description}</td>
 				<td>v{t.versions[0].version}</td>
 			</tr>
