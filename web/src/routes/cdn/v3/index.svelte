@@ -1,6 +1,7 @@
 <script context="module">
+import { goto } from "$app/navigation";
 import CONFIG from "@/biowasm.json";
-import { ListGroup, ListGroupItem } from "sveltestrap";
+import { Table } from "sveltestrap";
 
 export async function load() {
 	return { props: {
@@ -15,8 +16,25 @@ export let tools;
 
 <base href="{CONFIG.url}/" />
 
-<ListGroup>
-	{#each tools as t}
-		<ListGroupItem tag="a" href={t.name} action>{t.name} v{t.versions[0].version}</ListGroupItem>
-	{/each}
-</ListGroup>
+<Table hover>
+	<thead>
+		<tr>
+			<th width="20%">Name</th>
+			<th>Description</th>
+			<th width="20%">Latest Version</th>
+		</tr>
+	</thead>
+	<tbody>
+		{#each tools as t}
+			<tr on:click={() => goto(t.name)}>
+				<td><a href={t.name}>{t.name}</a></td>
+				<td>{t.description}</td>
+				<td>v{t.versions[0].version}</td>
+			</tr>
+		{/each}
+	</tbody>
+</Table>
+
+<style>
+	td { cursor: pointer; }
+</style>
