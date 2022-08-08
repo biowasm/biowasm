@@ -29,7 +29,7 @@ export let tools;
 			<tr on:click={() => goto(t.versions.length === 1 ? `${t.name}/${t.versions[0].version}` : t.name)}>
 				<td class="text-primary fw-bold">{t.name}</td>
 				<td>{t.description}</td>
-				<td>v{t.versions[0].version}</td>
+				<td>{t.versions[0].version}</td>
 			</tr>
 		{/each}
 	</tbody>
