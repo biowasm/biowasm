@@ -9,7 +9,10 @@ let isOpen = false;
 
 <!-- Navbar -->
 <Navbar color="light" light expand="md">
-	<NavbarBrand href="/">biowasm</NavbarBrand>
+	<NavbarBrand href="/">
+		<img alt="biowasm logo" height="40" src="/logo.png" />
+		biowasm
+	</NavbarBrand>
 	<NavbarToggler on:click={() => (isOpen = !isOpen)} />
 	<Collapse {isOpen} navbar expand="md" on:update={evt => isOpen = evt.detail.isOpen}>
 		<Nav class="ms-auto" navbar>
