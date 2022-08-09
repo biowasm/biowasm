@@ -5,7 +5,12 @@ import { Breadcrumb, BreadcrumbItem } from "sveltestrap";
 
 // Parse tool and version info from URL path
 $: [tool, version] = $page.url.pathname.split("/").slice(3);
+$: title = `Packages${!tool ? "" : ": " + tool}${!version ? "" : " / " + version}`;
 </script>
+
+<svelte:head>
+	<title>{title}</title>
+</svelte:head>
 
 <h4>
 	<Breadcrumb>
