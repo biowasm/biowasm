@@ -39,7 +39,9 @@ export async function load({ params }) {
 
 <script>
 import { onMount } from "svelte";
+import { browser } from "$app/env";
 import * as ZipJS from "@zip.js/zip.js";
+import CodePen from "$components/CodePen.svelte";
 
 export let tool;
 export let version;
@@ -90,9 +92,11 @@ async function downloadAsZip(program) {
 	{tool.description}
 </p>
 
-<!-- Sample Usage -->
+<!-- Sample Usage (use `browser` check to skip SSR) -->
 <h5 class="mt-4">Sample Usage</h5>
-
+{#if browser}
+	<CodePen />
+{/if}
 
 {#if usedBy.length > 0}
 <h5 class="mt-4">Used By</h5>
