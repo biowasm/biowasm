@@ -5,7 +5,7 @@ new Aioli(["samtools/1.10"]).then(async CLI => {
 	const file = "/samtools/examples/toy.sam";
 	const output = await CLI.exec(`samtools view -f 16 ${file}`);
 
-	document.getElementById("output").innerHTML = output
+	document.getElementById("output").innerHTML = output;
 });
 </script>
 
