@@ -3,13 +3,8 @@
 // * https://codepen.io/embed-theme-builder
 // * https://codepen.io/assets/
 
-// Import code samples dynamically!
-const codeSamples = import.meta.glob("@/tools/**/examples/*.html", { as: "raw", eager: true });
-
-export let tool;
-export let version;
 export let lang = "html";
-export let code = codeSamples[`../tools/${tool}/examples/${version}.html`];
+export let code = "<strong>Hello</strong> World.";
 </script>
 
 <svelte:head>

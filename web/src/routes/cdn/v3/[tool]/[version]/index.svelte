@@ -2,6 +2,8 @@
 import CONFIG from "@/biowasm.json";
 import { browser } from "$app/env";
 import { Badge, Icon, ListGroup, ListGroupItem } from "sveltestrap";
+// Import code samples dynamically!
+const codeSamples = import.meta.glob("@/tools/**/examples/*.html", { as: "raw", eager: true });
 
 export async function load({ params }) {
 	// Get tool/version info
@@ -50,6 +52,9 @@ export let usedBy = [];
 let stats = {};
 let busyDownload = false;
 
+// Load sample code from this repo
+$: code = codeSamples[`../tools/${tool.name}/examples/${version.version}.html`];
+
 // Load stats on page load
 onMount(async () => {
 	const response = await fetch(`/api/v3/stats/${tool.name}/${version.version}`).then(d => d.json());
@@ -93,11 +98,11 @@ async function downloadAsZip(program) {
 </p>
 
 <!-- Sample Code (use `browser` check to skip SSR) -->
-<h5 class="mt-4">Sample Code</h5>
-{#if browser}
+{#if browser && code}
+	<h5 class="mt-4">Sample Code</h5>
 	<!-- Re-render CodePen component when change tool -->
 	{#key tool}
-		<CodePen tool={tool.name} version={version.version} />
+		<CodePen code={code} />
 	{/key}
 {/if}
 
