@@ -94,8 +94,8 @@ async function downloadAsZip(program) {
 	{tool.description}
 </p>
 
-<!-- Sample Usage (use `browser` check to skip SSR) -->
-<h5 class="mt-4">Sample Usage</h5>
+<!-- Sample Code (use `browser` check to skip SSR) -->
+<h5 class="mt-4">Sample Code</h5>
 {#if browser}
 	<CodePen code={codeSamples[`../tools/${tool.name}/examples/${version.version}.html`]} />
 {/if}
