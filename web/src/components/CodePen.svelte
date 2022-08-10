@@ -1,17 +1,18 @@
 <script>
+// CodePen IDE - Custom theme ID# 41857:
+// * https://codepen.io/embed-theme-builder
+// * https://codepen.io/assets/
+
 export let code = "Hello World";
 export let lang = "html";
 </script>
 
 <svelte:head>
-	<script async src="https://static.codepen.io/assets/embed/ei.js" on:load={d => {
-		console.log("LOADED", d)
-		// window.__CPEmbed(".codepen-later");
-	}}></script>
+	<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 </svelte:head>
 
 <div>
-	<div class="codepen" data-prefill data-height="270" data-theme-id="39912" data-default-tab="html,result" data-editable="true">
+	<div class="codepen" data-prefill data-height="350" data-theme-id="41857" data-default-tab="html,result" data-editable="true">
 		<pre data-lang={lang}>{code}</pre>
 	</div>
 </div>

@@ -1,6 +1,9 @@
 <script context="module">
 import CONFIG from "@/biowasm.json";
+import { browser } from "$app/env";
 import { Badge, Icon, ListGroup, ListGroupItem } from "sveltestrap";
+// Import code samples dynamically!
+const codeSamples = import.meta.glob("@/tools/**/examples/*.html", { as: "raw", eager: true });
 
 export async function load({ params }) {
 	// Get tool/version info
@@ -39,7 +42,6 @@ export async function load({ params }) {
 
 <script>
 import { onMount } from "svelte";
-import { browser } from "$app/env";
 import * as ZipJS from "@zip.js/zip.js";
 import CodePen from "$components/CodePen.svelte";
 
@@ -95,9 +97,10 @@ async function downloadAsZip(program) {
 <!-- Sample Usage (use `browser` check to skip SSR) -->
 <h5 class="mt-4">Sample Usage</h5>
 {#if browser}
-	<CodePen />
+	<CodePen code={codeSamples[`../tools/${tool.name}/examples/${version.version}.html`]} />
 {/if}
 
+<!-- List who relies on this package -->
 {#if usedBy.length > 0}
 <h5 class="mt-4">Used By</h5>
 <ListGroup>
