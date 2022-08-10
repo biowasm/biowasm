@@ -1,6 +1,6 @@
 <script context="module">
 import CONFIG from "@/biowasm.json";
-import { Badge, Icon, ListGroup, ListGroupItem, Tooltip } from "sveltestrap";
+import { Badge, Icon, ListGroup, ListGroupItem } from "sveltestrap";
 
 export async function load({ params }) {
 	// Get tool/version info

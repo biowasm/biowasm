@@ -19,6 +19,11 @@ export let tool;
 
 <base href="{CONFIG.url}/{tool.name}/" />
 
+<!-- Description -->
+<p class="lead">
+	{tool.description}
+</p>
+
 <h5>Versions</h5>
 
 <ListGroup>
