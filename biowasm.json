@@ -64,7 +64,7 @@
 		},
 		{
 			"name": "coreutils",
-			"programs": ["basename", "cat", "comm", "cut", "date", "df", "dirname", "du", "echo", "env", "fold", "head", "join", "ls", "md5sum", "paste", "seq", "shuf", "sort", "tail", "tr", "uniq", "wc"],
+			"programs": ["basename", "cat", "comm", "cut", "date", "df", "dirname", "du", "echo", "env", "fold", "head", "join", "ls", "md5sum", "paste", "seq", "shuf", "sort", "tail", "tee", "tr", "uniq", "wc"],
 			"description": "Bash utilities such as head, tail, ls, sort, uniq, etc.",
 			"versions": [
 				{
