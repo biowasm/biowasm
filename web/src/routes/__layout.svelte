@@ -1,7 +1,9 @@
 <script>
+import { page } from "$app/stores";
 import { Styles, Container, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from "sveltestrap";
 
 let isOpen = false;
+$: path = $page.url.pathname.split("/")[1];
 </script>
 
 <!-- Bootstrap CSS and icons -->
@@ -13,14 +15,20 @@ let isOpen = false;
 		<img alt="biowasm logo" height="40" src="/logo.png" />
 		biowasm
 	</NavbarBrand>
-	<NavbarToggler on:click={() => (isOpen = !isOpen)} />
+	<NavbarToggler on:click={() => isOpen = !isOpen} />
 	<Collapse {isOpen} navbar expand="md" on:update={evt => isOpen = evt.detail.isOpen}>
 		<Nav class="ms-auto" navbar>
 			<NavItem>
-				<NavLink href="/cdn/v3">Packages</NavLink>
+				<NavLink href="/" active={path === ""}>Home</NavLink>
 			</NavItem>
 			<NavItem>
-				<NavLink href="/stats">Stats</NavLink>
+				<NavLink href="/documentation" active={path === "documentation"}>Get Started</NavLink>
+			</NavItem>
+			<NavItem>
+				<NavLink href="/cdn/v3" active={path === "cdn"}>Packages</NavLink>
+			</NavItem>
+			<NavItem>
+				<NavLink href="/stats" active={path === "stats"}>Stats</NavLink>
 			</NavItem>
 			<NavItem>
 				<NavLink href="https://sandbox.bio/playground">Playground</NavLink>
