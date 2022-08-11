@@ -1,7 +1,7 @@
 <script context="module">
 import CONFIG from "@/biowasm.json";
 import { browser } from "$app/env";
-import { Badge, Icon, ListGroup, ListGroupItem } from "sveltestrap";
+import { Badge, Icon, ListGroup, ListGroupItem, Tooltip } from "sveltestrap";
 // Import code samples dynamically!
 const codeSamples = import.meta.glob("@/tools/**/examples/*.html", { as: "raw", eager: true });
 
@@ -117,7 +117,15 @@ async function downloadAsZip(program) {
 {/if}
 
 <!-- Files to download -->
-<h5 class="mt-4">Files</h5>
+<h5 class="mt-4">
+	Files
+	<Tooltip target="info-files-{tool.name}">
+		Only download these files if you don't use the biowasm CDN. Click for details.
+	</Tooltip>
+	<a href="/documentation/">
+		<Icon id="info-files-{tool.name}" name="question-circle-fill" class="text-info" />
+	</a>
+</h5>
 {#each tool.programs || [tool.name] as program}
 	<h6 class="mt-3">
 		{program}
