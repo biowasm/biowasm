@@ -53,7 +53,7 @@ let stats = {};
 let busyDownload = false;
 
 // Load sample code from this repo
-$: code = codeSamples[`../tools/${tool.name}/examples/${version.version}.html`];
+$: code = codeSamples[`../tools/${tool.name}/examples/${version.branch}.html`];
 
 // Load stats on page load
 onMount(async () => {
