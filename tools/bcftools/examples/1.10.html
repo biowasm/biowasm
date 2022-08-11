@@ -1,0 +1,11 @@
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["bcftools/1.10"]);
+
+// Filter VCF by QUAL column value, and output chromosome, position, reference, and alternate allele
+const output = await CLI.exec("bcftools query -i %QUAL>=60 -f %CHROM:%POS\t%REF\t%ALT\n /bcftools/annotate.vcf");
+document.getElementById("output").innerHTML = output;
+</script>
+
+<h4>Output of <code>bcftools query</code>:</h4>
+<pre id="output">Loading...</pre>

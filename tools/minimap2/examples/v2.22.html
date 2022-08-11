@@ -1,0 +1,14 @@
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["minimap2/2.22"], {
+	printInterleaved: false
+});
+
+const output = await CLI.exec("minimap2 -a /minimap2/MT-human.fa /minimap2/MT-orang.fa");
+
+// Extract the SAM file from stdout (stderr contains timing information)
+document.getElementById("output").innerHTML = output.stdout;
+</script>
+
+<h4>Output of <code>minimap2</code>:</h4>
+<pre id="output">Loading...</pre>

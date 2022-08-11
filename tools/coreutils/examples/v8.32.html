@@ -1,0 +1,11 @@
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+// Coreutils has a lot of tools; you can load just the ones you need
+const CLI = await new Aioli(["coreutils/ls/8.32"]);
+const output = await CLI.exec("ls -lah /");
+
+document.getElementById("output").innerHTML = output;
+</script>
+
+<h4>Output of <code>ls -lah /</code>:</h4>
+<pre id="output">Loading...</pre>

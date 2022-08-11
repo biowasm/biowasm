@@ -1,0 +1,13 @@
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["fastp/0.20.1"]);
+
+// Get a QC report on a FASTQ file
+await CLI.exec("fastp -i /fastp/testdata/R1.fq");
+const output = await CLI.cat("fastp.json");
+
+document.getElementById("output").innerHTML = output;
+</script>
+
+<h4>Output of <code>fastp</code>:</h4>
+<pre id="output">Loading...</pre>

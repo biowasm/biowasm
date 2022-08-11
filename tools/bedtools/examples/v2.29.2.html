@@ -1,0 +1,14 @@
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["bedtools/2.29.2"]);
+
+// Intersect two .bed files
+const bed1 = "/bedtools/test/intersect/a.bed";
+const bed2 = "/bedtools/test/intersect/b.bed";
+
+const output = await CLI.exec(`bedtools intersect -a ${bed1} -b ${bed2}`);
+document.getElementById("output").innerHTML = output;
+</script>
+
+<h4>Output of <code>bedtools intersect</code>:</h4>
+<pre id="output">Loading...</pre>

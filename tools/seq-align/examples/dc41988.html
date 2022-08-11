@@ -1,0 +1,30 @@
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+// seq-align has Smith-Waterman and Needleman-Wunsch tools; you can load one or more of them
+const CLI = await new Aioli([
+	"seq-align/smith_waterman/2017.10.18",
+	"seq-align/needleman_wunsch/2017.10.18",
+	"seq-align/lcs/2017.10.18",
+]);
+
+// Align two sequences with the Smith-Waterman algorithm
+const outputSW = await CLI.exec("smith_waterman ACGT ACCCCGT");
+document.getElementById("output-sw").innerHTML = outputSW;
+
+// Align same sequences with the Smith-Waterman algorithm
+const outputNW = await CLI.exec("needleman_wunsch ACGT ACCCCGT");
+document.getElementById("output-nw").innerHTML = outputNW;
+
+// Find longest common substring in DNA sequence
+const outputLCS = await CLI.exec("lcs ACGTACGATCGACTACGAC");
+document.getElementById("output-lcs").innerHTML = outputLCS;
+</script>
+
+<h4>Output of <code>smith_waterman</code>:</h4>
+<pre id="output-sw">Loading...</pre>
+
+<h4>Output of <code>needleman_wunsch</code>:</h4>
+<pre id="output-nw">Loading...</pre>
+
+<h4>Output of <code>lcs</code>:</h4>
+<pre id="output-lcs">Loading...</pre>

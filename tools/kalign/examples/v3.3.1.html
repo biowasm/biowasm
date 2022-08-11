@@ -1,11 +1,6 @@
-## fasttree.wasm
-
-### Usage
-
-```html
 <script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
 <script type="module">
-let CLI = await new Aioli(["kalign/3.3.1", "fasttree/2.1.11"]);
+const CLI = await new Aioli(["kalign/3.3.1"]);
 
 // Create sample data (source: https://github.com/TimoLassmann/kalign/blob/master/dev/data/BB11001.tfa)
 await CLI.fs.writeFile("input.fa", `>1aab_
@@ -21,9 +16,12 @@ ELPEKKKMKYIQDFQREKQEFERNLARFREDHPDLIQNAKK
 MHIKKPLNAFMLYMKEMRANVVAESTLKESAAINQILGRRWHALSREEQA
 KYYELARKERQLHMQLYPGWSARDNYGKKKKRKREK`);
 
-// Run kalign
+// Run kalign and fetch FASTA file output
 await CLI.exec("kalign input.fa -f fasta -o result.fasta");
-const output = await CLI.exec("fasttree result.fasta");
-document.write(`<pre>${output}</pre>`);
+const result = await CLI.cat("result.fasta");
+
+document.getElementById("output").innerHTML = result;
 </script>
-```
+
+<h4>Output of <code>kalign</code>:</h4>
+<pre id="output">Loading...</pre>

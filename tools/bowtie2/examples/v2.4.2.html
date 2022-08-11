@@ -1,0 +1,17 @@
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["bowtie2/bowtie2-align-s/2.4.2"], {
+  printInterleaved: false
+});
+
+// Map reads to the lambda genome
+const ref = "/bowtie2/example/index/lambda_virus";
+const reads = "/bowtie2/example/reads/reads_1.fq";
+const output = await CLI.exec(`bowtie2-align-s -x ${ref} -U ${reads}`);
+
+// We can fetch .stdout and .stderr separately if we set printInterleaved to false above
+document.getElementById("output").innerHTML = output.stdout;
+</script>
+
+<h4>Output of <code>bowtie2-align-s</code> on sample data:</h4>
+<pre id="output">Loading...</pre>

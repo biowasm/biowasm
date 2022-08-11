@@ -1,0 +1,17 @@
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["gawk/5.1.0"]);
+
+// Create mock tab-separated file
+await CLI.fs.writeFile("data.tsv", "column1\tcolumn2\tcolumn3\n1\t2\t3\n4\t5\t6\n7\t8\t9\n");
+
+// Retrieve 2nd column (note that we use an array of inputs to properly escape the arguments)
+let output = await CLI.exec("gawk", [
+	'BEGIN{ sum = 0; }{ print $2; sum += $2; } END { print("Total of column 2 = " sum) }',
+	"data.tsv"
+]);
+document.getElementById("output").innerHTML = output;
+</script>
+
+<h4>Output of <code>gawk</code>:</h4>
+<pre id="output">Loading...</pre>

@@ -1,8 +1,3 @@
-## sed.wasm
-
-### Usage
-
-```html
 <script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
 <script type="module">
 const CLI = await new Aioli({
@@ -16,10 +11,15 @@ await CLI.fs.writeFile("test.fastq", "@read1\nACGTACGACTAGCAG\n+\nJJJJJJJJJJJJJJ
 
 // Simple find/replace
 const output = await CLI.exec("sed s/GACT/----/ test.fastq");
-document.write(`<h3>Find/replace</h3><pre>${output}</pre>`);
+document.getElementById("output").innerHTML = output;
 
 // Convert FASTQ to FASTA (from https://github.com/stephenturner/oneliners#awk--sed-for-bioinformatics)
 const fasta = await CLI.exec("sed -n 1~4s/^@/>/p;2~4p test.fastq");
-document.write(`<h3>FASTQ to FASTA</h3><pre>${fasta}</pre>`);
+document.getElementById("fasta").innerHTML = fasta;
 </script>
-```
+
+<h4>Simple find and replace:</h4>
+<pre id="output">Loading...</pre>
+
+<h4>Convert FASTQ to FASTA one-liner:</h4>
+<pre id="fasta">Loading...</pre>

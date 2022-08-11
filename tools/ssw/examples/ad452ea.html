@@ -1,0 +1,21 @@
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["ssw/1.2.4"], {
+	printInterleaved: false
+});
+
+// Create mock reference & query fasta files
+await CLI.fs.writeFile("ref.fa", ">chr1\nACTACGACTACGACTACGACGCGCGATTCGCGCGCCGATATACGACTACGACTA\n");
+await CLI.fs.writeFile("query.fa", ">read1\nTACGACTACG\n");
+
+// Run "ssw" command to align query to reference and output SAM file
+const output = await CLI.exec("ssw -h -s -c ref.fa query.fa");
+document.getElementById("stdout").innerHTML = output.stdout;
+document.getElementById("stderr").innerHTML = output.stderr;
+</script>
+
+<h4>Output of <code>ssw</code> (stdout):</h4>
+<pre id="stdout">Loading...</pre>
+
+<h4>Output of <code>ssw</code> (stderr):</h4>
+<pre id="stderr">Loading...</pre>
