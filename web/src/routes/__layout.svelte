@@ -8,7 +8,7 @@ let isOpen = false;
 <Styles />
 
 <!-- Navbar -->
-<Navbar color="light" light expand="md">
+<Navbar color="light" expand="md" light container>
 	<NavbarBrand href="/">
 		<img alt="biowasm logo" height="40" src="/logo.png" />
 		biowasm
@@ -30,6 +30,6 @@ let isOpen = false;
 </Navbar>
 
 <!-- Page Content -->
-<Container fluid class="mt-3">
+<Container class="mt-3">
 	<slot />
 </Container>
