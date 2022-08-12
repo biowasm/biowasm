@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Post install script containing workarounds (ideally this file should not exist)
+# Post-install workarounds (runs after "npm install")
 
 # Set Popper JS to "type=module". Otherwise, we get the following error when using SvelteKit + Sveltestrap:
 # 	Cannot use import statement outside a module node_modules/@popperjs/core/dist/esm/popper.js:1
