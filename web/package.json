@@ -20,7 +20,6 @@
 	"type": "module",
 	"dependencies": {
 		"@cloudflare/kv-asset-handler": "^0.2.0",
-		"@fnando/sparkline": "^0.3.10",
 		"@zip.js/zip.js": "^2.6.11",
 		"sveltestrap": "^5.9.0"
 	}

@@ -43,7 +43,6 @@ export async function load({ params }) {
 <script>
 import { onMount } from "svelte";
 import * as ZipJS from "@zip.js/zip.js";
-import { sparkline } from "@fnando/sparkline";
 import CodePen from "$components/CodePen.svelte";
 
 export let tool;
@@ -51,43 +50,21 @@ export let version;
 export let usedBy = [];
 
 let busyDownload = false;
-let busyStats = true;
-let elSparklines = {};
+let stats = {};
 
 // Load sample code from this repo
 $: code = codeSamples[`../tools/${tool.name}/examples/${version.branch}.html`];
 
+// Fetch stats for all programs in parallel on load
 onMount(async () => {
-	busyStats = true;
-
-	// Fetch stats for all programs in parallel
-	const stats = {};
 	const promises = [];
 	for(let program of tool.programs) {
 		const promise = fetch(`/api/v3/stats/${tool.name}/${version.version}/${program}`)
 			.then(d => d.json())
-			.then(d => stats[program] = d?.stats?.[tool.name]?.[version.version]?.[program]);
+			.then(d => stats[program] = d?.stats?.[tool.name]?.[version.version]?.[program]?.total || 0);
 		promises.push(promise);
 	}
 	await Promise.all(promises);
-
-	// Plot Sparklines
-	for(let program of tool.programs) {
-		const data = [];
-		Object.entries(stats[program]).forEach(xy => {
-			if(xy[0] === "total")
-				return;
-			data.push({
-				date: xy[0], value: xy[1]
-			});
-		});
-		console.log(data)
-		// const dates = Object.keys(stats[program]).filter(d => d !== "total");
-		// console.log(stats[program])
-		sparkline(elSparklines[program], data);
-	}
-
-	busyStats = false;
 });
 
 // Download program files as a .zip file
@@ -176,9 +153,9 @@ async function downloadAsZip(program) {
 		</span>
 
 		<!-- Show overall download stats -->
-		<!-- {#if !busyStats} -->
-			<svg bind:this={elSparklines[program]} class="sparkline" width="100" height="20" stroke-width="3"></svg>
-		<!-- {/if} -->
+		{#if stats[program]}
+			<Badge pill color="secondary" class="ms-1">{stats[program]} downloads</Badge>
+		{/if}
 	</h6>
 	<ListGroup>
 		{#each tool.files || ["js", "wasm"] as extension}
