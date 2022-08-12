@@ -163,10 +163,3 @@ async function downloadAsZip(program) {
 		{/each}
 	</ListGroup>
 {/each}
-
-<style>
-svg {
-	stroke: rgba(61, 133, 222);
-	fill: rgba(61, 133, 222, 0.3);
-}
-</style>
