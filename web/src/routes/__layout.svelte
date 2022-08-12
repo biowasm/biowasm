@@ -38,6 +38,6 @@ $: path = $page.url.pathname.split("/")[1];
 </Navbar>
 
 <!-- Page Content -->
-<Container class="mt-3">
+<Container class="mt-4">
 	<slot />
 </Container>

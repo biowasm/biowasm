@@ -2,4 +2,4 @@
 	<title>Stats</title>
 </svelte:head>
 
-Stats
+<h4>Stats</h4>

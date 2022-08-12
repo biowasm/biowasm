@@ -1,4 +1,5 @@
 import CONFIG from "@/biowasm.json";
+import { getMockStats } from "$lib/utils";
 
 // GET /api/v3/stats
 // GET /api/v3/stats/:tool
@@ -70,9 +71,7 @@ export async function GET({ request, platform, params }) {
 	}
 
 	// Get stats from KV (faster than querying all Durable Objects)
-	let stats = getMockStats();
-	if(platform !== undefined)
-		stats = await platform.env.CDN.get("STATS", { type: "json" });
+	const stats = platform === undefined ? getMockStats() : await platform.env.CDN.get("STATS", { type: "json" });
 
 	// Subset stats based on URL parameters
 	if(toolName !== null)
@@ -107,29 +106,3 @@ function formatStats(stats={}, tool="samtools", version="1.10", program="samtool
 	}
 }
 
-// Generate mock stats for local development
-function getMockStats() {
-	const stats = { "2022-01-01": 10, "2022-01-02": 20, "total": 30 };
-	return {
-		samtools: {
-			"1.10": {
-				samtools: stats,
-			}
-		},
-		seqtk: {
-			"1.2": {
-				seqtk: stats
-			},
-			"1.3": {
-				seqtk: stats
-			}
-		},
-		coreutils: {
-			"8.32": {
-				head: stats,
-				tail: stats,
-				wc: stats
-			}
-		}
-	};
-}
