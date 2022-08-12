@@ -57,10 +57,14 @@ $: code = codeSamples[`../tools/${tool.name}/examples/${version.branch}.html`];
 
 // Load stats on page load
 onMount(async () => {
-	const response = await fetch(`/api/v3/stats/${tool.name}/${version.version}`).then(d => d.json());
-	const statsPerProgram = response.stats[tool.name];  // cat: { version: { date: ..., total: ... } }
-	for(let program in statsPerProgram)
-		stats[program] = statsPerProgram[program][version.version]?.total || 0;
+	const promises = [];
+	for(let program of tool.programs) {
+		const promise = fetch(`/api/v3/stats/${tool.name}/${version.version}/${program}`)
+			.then(d => d.json())
+			.then(d => stats[program] = d?.stats?.[tool.name]?.[version.version]?.[program]?.total || 0);
+		promises.push(promise);
+	}
+	await Promise.all(promises);
 });
 
 // Download program files as a .zip file
