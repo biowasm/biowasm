@@ -3,7 +3,6 @@ compatibility_date = "2022-06-26"
 
 main = "./.cloudflare/worker.mjs"
 site.bucket = "./.cloudflare/public"
-build.command = "npm run build && cat src/lib/durable_object.js >> .cloudflare/worker.mjs"
 
 [[migrations]]
 tag = "v1"
