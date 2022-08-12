@@ -47,7 +47,7 @@ export async function GET({ request, platform, params }) {
 	if(toolName !== null && versionName !== null && programName !== null) {
 		// Local dev
 		if(platform === undefined) {
-			const stats = { "2022-01-01": 10, "2022-01-02": 20, "total": 30 };
+			const stats = getMockStats()["samtools"]["1.10"]["samtools"];
 			return {
 				status: 200,
 				body: {
@@ -71,7 +71,7 @@ export async function GET({ request, platform, params }) {
 	}
 
 	// Get stats from KV (faster than querying all Durable Objects)
-	const stats = platform === undefined ? getMockStats() : await platform.env.CDN.get("STATS", { type: "json" });
+	let stats = platform === undefined ? getMockStats() : await platform.env.CDN.get("STATS", { type: "json" });
 
 	// Subset stats based on URL parameters
 	if(toolName !== null)
