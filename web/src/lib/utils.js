@@ -8,7 +8,7 @@ export function isValidTool(params) {
 
 // Generate mock stats for local development
 export function getMockStats() {
-	const stats = { "2022-01-01": 10, "2022-01-02": 20, "total": 30 };
+	const stats = { "2022-07-01": 10, "2022-07-02": 20, "total": 30 };
 	return {
 		samtools: {
 			"1.10": {

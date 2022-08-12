@@ -2,4 +2,4 @@
 	<title>Get Started</title>
 </svelte:head>
 
-Get Started
+<h4>Get Started</h4>

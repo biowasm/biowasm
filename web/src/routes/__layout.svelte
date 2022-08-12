@@ -30,9 +30,6 @@ $: path = $page.url.pathname.split("/")[1];
 			<NavItem>
 				<NavLink href="/stats" active={path === "stats"}>Stats</NavLink>
 			</NavItem>
-			<NavItem>
-				<NavLink href="https://sandbox.bio/playground">Playground</NavLink>
-			</NavItem>
 		</Nav>
 	</Collapse>
 </Navbar>
