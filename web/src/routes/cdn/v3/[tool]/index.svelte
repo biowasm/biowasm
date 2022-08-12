@@ -27,7 +27,7 @@ export let tool;
 <h5>Versions</h5>
 
 <ListGroup>
-	{#each tool.versions as version}
+	{#each tool.versions.reverse() as version}
 		<ListGroupItem tag="a" href="{version.version}" action>{version.version}</ListGroupItem>
 	{/each}
 </ListGroup>
