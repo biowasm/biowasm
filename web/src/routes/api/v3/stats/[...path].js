@@ -4,9 +4,22 @@ import CONFIG from "@/biowasm.json";
 // GET /api/v3/stats/:tool
 // GET /api/v3/stats/:tool/:version
 // GET /api/v3/stats/:tool/:version/:program
+// Format: {
+//   stats: {
+//     tool: {
+//       version: {
+//         program: {
+//           "YY-MM-DD": 123,
+//           [...]
+//           "total": 123
+//         }
+//       }
+//     }
+//   }
+// }
 export async function GET({ request, platform, params }) {
 	let [toolName, versionName, programName] = params.path.split("/", 3);
-	toolName ||= null, versionName ||= null, programName ||= toolName;
+	toolName ||= null, versionName ||= null, programName ||= null;
 
 	// Input validation
 	if(toolName !== null) {
@@ -32,11 +45,15 @@ export async function GET({ request, platform, params }) {
 	// Only get stats from Durable Object if we have a specific tool/version/program
 	if(toolName !== null && versionName !== null && programName !== null) {
 		// Local dev
-		if(platform === undefined)
+		if(platform === undefined) {
+			const stats = { "2022-01-01": 10, "2022-01-02": 20, "total": 30 };
 			return {
 				status: 200,
-				body: { stats: getMockStats(toolName, versionName, programName) }
+				body: {
+					stats: formatStats(stats, toolName, versionName, programName)
+				}
 			};
+		}
 
 		// Fetch stats
 		const path = `${toolName}/${versionName}/${programName}.js`;
@@ -60,10 +77,10 @@ export async function GET({ request, platform, params }) {
 	// Subset stats based on URL parameters
 	if(toolName !== null)
 		stats = { [toolName]: stats[toolName] };
-	if(programName !== null)
-		stats[toolName] = { [programName]: stats[toolName][programName] };
 	if(versionName !== null)
-		stats[toolName][programName] = { [versionName]: stats[toolName][programName][versionName] };
+		stats[toolName] = { [versionName]: stats[toolName][versionName] };
+	if(programName !== null)
+		stats[toolName][versionName] = { [programName]: stats[toolName][versionName][programName] };
 
 	return {
 		status: 200,
@@ -83,18 +100,36 @@ function error(params) {
 function formatStats(stats={}, tool="samtools", version="1.10", program="samtools") {
 	return {
 		[tool]: {
-			[program]: {
-				[version]: stats
+			[version]: {
+				[program]: stats
 			}
 		}
 	}
 }
 
 // Generate mock stats for local development
-function getMockStats(tool="samtools", version="1.10", program="samtools") {
-	return formatStats({
-		"2022-01-01": 10,
-		"2022-01-02": 20,
-		"total": 30
-	}, tool, version, program);
+function getMockStats() {
+	const stats = { "2022-01-01": 10, "2022-01-02": 20, "total": 30 };
+	return {
+		samtools: {
+			"1.10": {
+				samtools: stats,
+			}
+		},
+		seqtk: {
+			"1.2": {
+				seqtk: stats
+			},
+			"1.3": {
+				seqtk: stats
+			}
+		},
+		coreutils: {
+			"8.32": {
+				head: stats,
+				tail: stats,
+				wc: stats
+			}
+		}
+	};
 }
