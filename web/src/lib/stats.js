@@ -1,4 +1,5 @@
-// Cloudflare Durable Object that is added to the build via `build.command` in "wrangler.toml".
+// Cloudflare Durable Object (added to the Cloudflare Worker logic in `bin/postbuild.sh`).
+
 // Durable Object ID = CDN path, e.g. "seqtk/1.3/seqtk.js"
 // Durable Object Names =
 // - total: total downloads for one version of a tool
@@ -24,7 +25,8 @@ export class CDNStats {
 			let total = (await this.state.storage.get("total")) || 0;
 			let daily = (await this.state.storage.get(date)) || 0;
 
-			// No need for transactions since durable objects feature "automatic write coalescing", so either all writes fail or all succeed
+			// Don't need transactions since durable objects have "automatic
+			// write coalescing", i.e. all writes fail or all succeed.
 			await this.state.storage.put("total", ++total);
 			await this.state.storage.put(date, ++daily);
 			return new Response(JSON.stringify({
