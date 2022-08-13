@@ -1,13 +1,11 @@
 <script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
 <script type="module">
-// Note: `script type="module"` lets us use top-level await statements
 const CLI = await new Aioli(["samtools/1.10", "seqtk/1.2"]);
 
-// Here we write to a file with one tool, and use it as input for another tool!
-// Convert a ".sam" file to a ".fastq", and save the result to "./toy.fastq"
+// Convert .sam to a .fastq
 let output = await CLI.exec("samtools fastq -o toy.fastq /samtools/examples/toy.sam");
 
-// Run the tool "seqtk" on "toy.fastq" to generate QC metrics
+// Run seqtk on "toy.fastq" to generate metrics
 output = await CLI.exec("seqtk fqchk toy.fastq");
 document.getElementById("output").innerHTML = output;
 </script>
