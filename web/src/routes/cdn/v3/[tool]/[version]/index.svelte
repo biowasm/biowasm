@@ -134,7 +134,7 @@ async function downloadAsZip(program) {
 <h5 class="mt-4">
 	Files
 	<Tooltip target="info-files-{tool.name}">
-		Only download these files if you don't use the Biowasm CDN. Click for details.
+		You don't need to download files if you use the Biowasm CDN. Click for details.
 	</Tooltip>
 	<a href="/documentation/">
 		<Icon id="info-files-{tool.name}" name="question-circle-fill" class="text-info" />
