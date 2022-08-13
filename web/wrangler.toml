@@ -18,10 +18,16 @@ new_classes = ["CDNStats"]
 [env.stg]
 name = "biowasm-v3-stg"
 vars = { ENVIRONMENT = "stg" }
-kv_namespaces = [{ binding = "CDN", id = "ceb6fce5bbe54655a0ca3add95d29954" }]
+kv_namespaces = [
+	{ binding = "CDN", id = "ceb6fce5bbe54655a0ca3add95d29954" },
+	{ binding = "CDN_V2", id = "51cfc57233574476be9cd5bb2252dc79" }
+]
 durable_objects = { bindings = [{ name = "stats", class_name = "CDNStats" }] }
 
 [env.prd]
 name = "biowasm-v3-prd"
 vars = { ENVIRONMENT = "prd" }
-kv_namespaces = [{ binding = "CDN", id = "2ddb9221f3e64a0a9f113971204a8675" }]
+kv_namespaces = [
+	{ binding = "CDN", id = "2ddb9221f3e64a0a9f113971204a8675" },
+	{ binding = "CDN_V2", id = "51cfc57233574476be9cd5bb2252dc79" }
+]
