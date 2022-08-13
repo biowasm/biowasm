@@ -24,11 +24,10 @@ export async function load({ fetch }) {
 	for(let tool in statsAgg) {
 		const x = [];
 		const y = [];
-		for(let xy of Object.entries(statsAgg[tool])) {
-			if(xy[0] !== "total") {
-				x.push(xy[0]);
-				y.push(xy[1]);
-			}
+		const dates = Object.keys(statsAgg[tool]).filter(d => d !== "total").sort();
+		for(let date of dates) {
+			x.push(date);
+			y.push(statsAgg[tool][date]);
 		}
 		series.push({ name: tool, x, y });
 	}
