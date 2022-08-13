@@ -1,0 +1,14 @@
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+// Initialize the tools we want to use
+const CLI = await new Aioli(["samtools/1.10"]);
+
+// Run a samtools command
+const output = await CLI.exec("samtools view /samtools/examples/toy.sam");
+
+// Output the result to screen
+document.getElementById("output").innerHTML = output;
+</script>
+
+<h4>Output of <code>samtools view</code>:</h4>
+<pre id="output">Loading...</pre>

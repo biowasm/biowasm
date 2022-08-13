@@ -1,0 +1,18 @@
+<script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["samtools/1.10"]);
+
+// Run samtools whenever the user provides a file
+document.getElementById("myfile").addEventListener("change", async event => {
+	// This function returns the absolute path of each file mounted
+	const paths = await CLI.mount(event.target.files);
+
+	// Retrieve SAM header on the first file provided
+	const output = await CLI.exec(`samtools view -H ${paths[0]}`);
+	document.getElementById("output").innerHTML = output;
+});
+</script>
+
+<input id="myfile" type="file">
+<h4>Output of <code>samtools view</code>:</h4>
+<pre id="output">Please select a SAM/BAM file from your computer</pre>
