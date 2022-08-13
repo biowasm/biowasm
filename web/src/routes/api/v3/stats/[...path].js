@@ -9,7 +9,7 @@ import { getMockStats } from "$lib/utils";
 //   stats: {
 //     tool: {
 //       version: {
-//         program: {
+//         program: {  // <-- only if `program` is specified in URL
 //           "YY-MM-DD": 123,
 //           [...]
 //           "total": 123
@@ -78,8 +78,6 @@ export async function GET({ request, platform, params }) {
 		stats = { [toolName]: stats[toolName] };
 	if(versionName !== null)
 		stats[toolName] = { [versionName]: stats[toolName][versionName] };
-	if(programName !== null)
-		stats[toolName][versionName] = { [programName]: stats[toolName][versionName][programName] };
 
 	return {
 		status: 200,

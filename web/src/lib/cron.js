@@ -10,8 +10,10 @@ async function cron(env) {
 
 	// Loop through each tool
 	const stats = {};
+	const latestVersion = {};  // { "seqtk": "1.3", "samtools": "1.10" }
 	for(let tool of BIOWASM_CONFIG.tools) {
 		stats[tool.name] = {};
+		latestVersion[tool.name] = tool.versions.at(-1).version;
 
 		// Loop through each version
 		for(let version of tool.versions) {
@@ -25,9 +27,28 @@ async function cron(env) {
 				const obj = env.stats.get(id);
 
 				// Send HTTP request to Durable Object
-				const data = await (await obj.fetch(`https://biowasm-v3-${env.ENVIRONMENT}.robert.workers.dev`)).json();
-				stats[tool.name][version.version][program] = data;
+				const statsPrgm = await (await obj.fetch(`https://biowasm-v3-${env.ENVIRONMENT}.robert.workers.dev`)).json();
+				for(let date in statsPrgm) {
+					if(!(date in stats[tool.name][version.version]))
+						stats[tool.name][version.version][date] = 0;
+					stats[tool.name][version.version][date] += statsPrgm[date];
+				}
 			}
+		}
+	}
+
+	// Bring in stats from v2 CDN
+	const statsOld = await env.CDN_V2.get("summary", { type: "json" });
+	for(let date in statsOld) {
+		for(let toolName in statsOld[date]) {
+			const versionName = latestVersion[toolName];
+			if(!(toolName in stats))
+				stats[toolName] = {};
+			if(!(versionName in stats[toolName]))
+				stats[toolName][versionName] = {};
+			if(!(date in stats[toolName][versionName]))
+				stats[toolName][versionName][date] = 0
+			stats[toolName][versionName][date] += statsOld[date][toolName];
 		}
 	}
 

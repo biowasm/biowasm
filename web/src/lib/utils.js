@@ -11,24 +11,14 @@ export function getMockStats() {
 	const stats = { "2022-07-01": 10, "2022-07-02": 20, "total": 30 };
 	return {
 		samtools: {
-			"1.10": {
-				samtools: stats,
-			}
+			"1.10": stats
 		},
 		seqtk: {
-			"1.2": {
-				seqtk: stats
-			},
-			"1.3": {
-				seqtk: stats
-			}
+			"1.2": stats,
+			"1.3": stats
 		},
 		coreutils: {
-			"8.32": {
-				head: stats,
-				tail: stats,
-				wc: stats
-			}
+			"8.32": stats
 		}
 	};
 }
