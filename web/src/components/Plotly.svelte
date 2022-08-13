@@ -16,4 +16,4 @@ let elPlot;
 	}}></script>
 </svelte:head>
 
-<div bind:this={elPlot} style="width:100%; height:400px"></div>
+<div bind:this={elPlot} style="width:90vw; height:70vh"></div>
