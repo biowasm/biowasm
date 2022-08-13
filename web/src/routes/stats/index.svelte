@@ -39,7 +39,7 @@ export async function load({ fetch }) {
 </script>
 
 <script>
-import Plotly from "$components/Plotly.svelte";
+import StatsChart from "$components/StatsChart.svelte";
 
 export let series = {};
 </script>
@@ -50,11 +50,7 @@ export let series = {};
 
 <h4>Stats</h4>
 
-<p class="lead">
-	Downloads over time
-</p>
-
 <!-- Show plot (use `browser` check to skip SSR) -->
 {#if browser}
-	<Plotly {series} />
+	<StatsChart {series} />
 {/if}

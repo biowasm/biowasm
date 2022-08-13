@@ -11,8 +11,10 @@ let elPlot;
 		dateSixMonthsAgo.setMonth(dateToday.getMonth() - 3);
 
 		// Plot
-		const range = [dateSixMonthsAgo, dateToday].map(d => d.toISOString().slice(0, 10));
-		Plotly.newPlot(elPlot, series, { xaxis: { range } });
+		Plotly.newPlot(elPlot, series, {
+			title: { text: "Package downloads over time" },
+			xaxis: { range: [dateSixMonthsAgo, dateToday].map(d => d.toISOString().slice(0, 10)) }
+		});
 	}}></script>
 </svelte:head>
 
