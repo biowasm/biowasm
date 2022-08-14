@@ -53,7 +53,7 @@ jobs:
       - name: Compile to WebAssembly
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
         run: |
-          apt-get install -y jq
+          sudo apt-get install -y jq
           bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }}
 
       # ------------------------------------------------------------------------
@@ -71,7 +71,6 @@ jobs:
           environment: ${{ github.event.inputs.env }}
           preCommands: |
             cd web/
-            apt-get install -y jq
             npm install
             wrangler kv:bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
 
