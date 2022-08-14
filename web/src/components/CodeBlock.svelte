@@ -14,7 +14,7 @@ export let code = "<strong>Hello</strong> World.";
 export let lang = "xml";
 
 // Trim extra whitespace before highlighting the code
-const codeTrimmed = code.split("\n").map(d => d.trim()).join("\n").trim();
+const codeTrimmed = code.split("\n").map(d => d.replace("\t\t", "")).join("\n").trim();
 const codeHighlighted = hljs.highlight(codeTrimmed, { language: lang }).value;
 </script>
 
