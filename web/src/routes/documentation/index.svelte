@@ -172,6 +172,9 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		await CLI.mkdir("/some/path");
 		await CLI.ls("/some/path");
 		await CLI.cd("/some/path");
+
+		// Create a text file with some contents
+		await CLI.fs.writeFile("data.tsv", "column1\\tcolumn2\\tcolumn3\\n1\\t2\\t3\\n4\\t5\\t6\\n7\\t8\\t9\\n");
 	`} />
 
 	<Alert color="info">
