@@ -1,6 +1,7 @@
 <script>
 import { page } from "$app/stores";
 import { Styles, Container, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from "sveltestrap";
+import CONFIG from "@/biowasm.json";
 
 let isOpen = false;
 $: path = $page.url.pathname.split("/")[1];
@@ -25,7 +26,7 @@ $: path = $page.url.pathname.split("/")[1];
 				<NavLink href="/documentation" active={path === "documentation"}>Documentation</NavLink>
 			</NavItem>
 			<NavItem>
-				<NavLink href="/cdn/v3" active={path === "cdn"}>Packages</NavLink>
+				<NavLink href={CONFIG.url} active={path === "cdn"}>Packages</NavLink>
 			</NavItem>
 			<NavItem>
 				<NavLink href="/stats" active={path === "stats"}>Stats</NavLink>

@@ -1,6 +1,7 @@
 <script>
 import { Icon, Table } from "sveltestrap";
 import LinkPackage from "$components/LinkPackage.svelte";
+import CONFIG from "@/biowasm.json";
 </script>
 
 <svelte:head>
@@ -27,7 +28,7 @@ import LinkPackage from "$components/LinkPackage.svelte";
 				Biowasm supports many C/C++ bioinformatics tools (<LinkPackage tool="samtools" />, <LinkPackage tool="bedtools" />, <LinkPackage tool="bcftools" />, <LinkPackage tool="bowtie2" />, <LinkPackage tool="minimap2" />, <LinkPackage tool="fastp" />, <LinkPackage tool="wgsim" />, etc.)
 				and general data wrangling utilities (<LinkPackage tool="jq" />, <LinkPackage tool="gawk" />, <LinkPackage tool="grep" />, <LinkPackage tool="sed" />, etc.)
 			</p>
-			<a href="/cdn/v3" class="btn btn-outline-primary" type="button">
+			<a href={CONFIG.url} class="btn btn-outline-primary" type="button">
 				Browse all packages <Icon name="arrow-right" />
 			</a>
 		</div>

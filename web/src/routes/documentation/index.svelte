@@ -1,6 +1,7 @@
 <script>
 import { browser } from "$app/env";
 import { Alert, ListGroup, ListGroupItem } from "sveltestrap";
+import CONFIG from "@/biowasm.json";
 import CodePen from "$components/CodePen.svelte";
 import CodeBlock from "$components/CodeBlock.svelte";
 
@@ -101,7 +102,7 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 	<h5 id="aioli-init">Initialization</h5>
 	<h6 id="aioli-init-simple">Simple Initialization</h6>
 	<p>
-		Most tools can be initialized using a name and a version (see the <a href="/cdn/v3">Packages</a> page for supported versions):
+		Most tools can be initialized using a name and a version (see the <a href={CONFIG.url}>Packages</a> page for supported versions):
 	</p>
 
 	<CodeBlock lang="javascript" code={`
@@ -197,7 +198,7 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		Instead of importing Aioli using
 	</p>
 	<CodeBlock lang="xml" code={`
-		<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+		<script src="https://biowasm.com/${CONFIG.url}/aioli.js"></script>
 	`} />
 	<p>
 		you can install Aioli with npm:
@@ -217,7 +218,7 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		Note that even if you import Aioli locally with <code>npm</code>, the WebAssembly modules will still be downloaded from the biowasm CDN unless you download those assets locally as well.
 	</p>
 	<p>
-		To do so, navigate to the <a href="/cdn/v3">Packages page</a> and download the files for each tool of interest.
+		To do so, navigate to the <a href={CONFIG.url}>Packages page</a> and download the files for each tool of interest.
 	</p>
 
 	<h6>Step 3: Set up Aioli</h6>
