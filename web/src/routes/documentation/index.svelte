@@ -34,7 +34,8 @@ hljs.registerLanguage('bash', bash);
 		<ListGroupItem tag="a" href="#remote-files">Process remote user files</ListGroupItem>
 		<ListGroupItem tag="a" href="#multiple-tools">Run multiple tools</ListGroupItem>
 		<ListGroupItem tag="a" href="#no-cdn">Biowasm without a CDN</ListGroupItem>
-		<ListGroupItem tag="a" href="#aioli">Aioli API</ListGroupItem>
+		<ListGroupItem tag="a" href="#aioli-init">Aioli Initialization Settings</ListGroupItem>
+		<ListGroupItem tag="a" href="#aioli-api">Aioli API</ListGroupItem>
 		<ListGroupItem></ListGroupItem>
 	</ListGroup>
 
@@ -96,11 +97,17 @@ hljs.registerLanguage('bash', bash);
 	</p>
 
 	<h6>Step 1: Install the Aioli package</h6>
-	<p>Instead of importing Aioli using</p>
+	<p>
+		Instead of importing Aioli using
+	</p>
 	<pre>{@html hljs.highlight(`<script src="https://biowasm.com/cdn/v3/aioli.js"></script>`, {language: "xml"}).value}</pre>
-	<p>you can install Aioli with npm:</p>
+	<p>
+		you can install Aioli with npm:
+	</p>
 	<pre>{@html hljs.highlight(`npm install --save "@biowasm/aioli"`, {language: "bash"}).value}</pre>
-	<p>Then you can import Aioli as follows:</p>
+	<p>
+		Then you can import Aioli as follows:
+	</p>
 	<pre>{@html hljs.highlight(`import Aioli from "@biowasm/aioli";`, {language: "javascript"}).value}</pre>
 
 	<h6>Step 2: Download Biowasm assets</h6>
@@ -112,17 +119,26 @@ hljs.registerLanguage('bash', bash);
 	</p>
 
 	<h6>Step 3: Set up Aioli</h6>
-	<p>Once your assets are downloaded, you need to let Aioli know the relative URL path where it can find those assets from your server. Use the config parameter <code>urlPrefix</code> as shown in the <a href="#aioli-init-advanced:~:text=urlPrefix%3A%20%22./assets/%22%2C">Aioli API</a> section below.</p>
-	<!-- Aioli -->
-	<h5 id="aioli">Aioli API</h5>
+	<p>
+		Once your assets are downloaded, you need to let Aioli know the relative URL path where it can find those assets from your server. Use the config parameter <code>urlPrefix</code> as shown in the <a href="#aioli-init-advanced:~:text=urlPrefix%3A%20%22./assets/%22%2C">Initialization</a> section below.
+	</p>
+
+	<!-- Aioli Init -->
+	<h5 id="aioli-init">Aioli Initialization Settings</h5>
 	<h6 id="aioli-init-simple">Simple Initialization</h6>
-	<p>Most tools can be initialized using tool names and their versions:</p>
+	<p>
+		Most tools can be initialized using tool names and their versions:
+	</p>
 	<pre>{@html hljs.highlight(`new Aioli(["samtools/1.10", "seqtk/1.3"]);`, {language: "javascript"}).value}</pre>
-	<p>For tools that include multiple sub-tools, you need to specify which ones you want:</p>
+	<p>
+		For tools that include multiple sub-tools, you need to specify which ones you want to load:
+	</p>
 	<pre>{@html hljs.highlight(`new Aioli(["coreutils/head/8.32", "coreutils/tail/8.32"]);`, {language: "javascript"}).value}</pre>
 
 	<h6 id="aioli-init-advanced">Advanced Initialization</h6>
-	<p>If you need to customize the URL where the WebAssembly assets are stored or the lazy-loading behavior of a module:</p>
+	<p>
+		If you need to customize the URL where the WebAssembly assets are stored or the lazy-loading behavior of a module:
+	</p>
 	<pre>{@html hljs.highlight(`new Aioli([{
     tool: "coreutils",
     version: "8.32",
@@ -133,8 +149,32 @@ hljs.registerLanguage('bash', bash);
 }], {
     printInterleaved: true,  // Optional: whether to return interleaved stdout/stderr; if false, returns object with stdout/stderr keys (default: true)
     debug: false,            // Optional: set to true to see console log messages for debugging (default: false)
-}
-);`, {language: "javascript"}).value}</pre>
+});`, {language: "javascript"}).value}</pre>
+
+	<Alert color="info">
+		<strong>Note:</strong> The first module cannot be lazy-loaded since that is where the main filesystem is mounted.
+	</Alert>
+
+	<h5 id="aioli-api">Aioli API</h5>
+	<h6 id="aioli-api-exec">Run a command</h6>
+	<!-- Note: can't do "|" or ">" -->
+	<h6 id="aioli-api-mount">Mount local and remote files</h6>
+	<!-- See above for examples -->
+	<h6 id="aioli-api-fs">File system utilities</h6>
+	<p>
+		Aioli comes with a few utility functions for managing the virtual file system.
+	</p>
+	<pre>{@html hljs.highlight(`// Returns a blob URL so the user can download a file out of the virtual file system
+const url = await CLI.download("/path/to/a/file");
+
+// Basic ls, cd, mkdir utilities
+await CLI.mkdir("/some/path");
+await CLI.ls("/some/path");
+await CLI.cd("/some/path");`, {language: "javascript"}).value}</pre>
+	<Alert color="info">
+		<strong>Note:</strong> File system functions only operate on the virtual file system, never on the user's actual files.
+	</Alert>
+
 
 </div>
 
