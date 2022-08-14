@@ -69,6 +69,7 @@ jobs:
           environment: ${{ github.event.inputs.env }}
           preCommands: |
             cd web/
+            sudo apt-get install -y jq
             npm install
             wrangler kv:bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
 
