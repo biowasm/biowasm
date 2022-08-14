@@ -5,6 +5,7 @@
 
 export let lang = "html";
 export let code = "<strong>Hello</strong> World.";
+export let autorun = true;
 </script>
 
 <svelte:head>
@@ -12,7 +13,7 @@ export let code = "<strong>Hello</strong> World.";
 </svelte:head>
 
 <div>
-	<div class="codepen" data-prefill data-height="350" data-theme-id="41857" data-default-tab="html,result" data-editable="true">
+	<div class="codepen" data-prefill data-height="350" data-theme-id="41857" data-default-tab="html,result" data-editable="true" data-preview={!autorun}>
 		<pre data-lang={lang}>{code}</pre>
 	</div>
 </div>
