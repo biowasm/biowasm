@@ -22,7 +22,7 @@ $: path = $page.url.pathname.split("/")[1];
 				<NavLink href="/" active={path === ""}>Home</NavLink>
 			</NavItem>
 			<NavItem>
-				<NavLink href="/documentation" active={path === "documentation"}>Get Started</NavLink>
+				<NavLink href="/documentation" active={path === "documentation"}>Documentation</NavLink>
 			</NavItem>
 			<NavItem>
 				<NavLink href="/cdn/v3" active={path === "cdn"}>Packages</NavLink>
