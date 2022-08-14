@@ -52,7 +52,7 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		Say you're building a web app that analyzes sequencing data by parsing user-provided <a href="https://en.wikipedia.org/wiki/Binary_Alignment_Map" target="_blank">BAM files</a>. On the command-line, you would use the program <a href="http://www.htslib.org/" target="_blank">samtools</a> to parse these files; with biowasm, you can write a few lines of code and run <code>samtools</code> directly in the browser:
 	</p>
 	{#if browser}
-		<CodePen autorun={false} code={codeSimple} /><br />
+		<CodePen code={codeSimple} /><br />
 	{/if}
 	<p>
 		Note that we ran <code>samtools view</code> on a sample file <code>/samtools/examples/toy.sam</code> that comes preloaded with biowasm for testing purposes.
@@ -67,7 +67,7 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		<strong>Note:</strong> Mounting a file does <strong>not</strong> load its contents in memory! For example, selecting a 500GB BAM file below will work just fine since <code>samtools view -H</code> only parses the header of the file.<br /><br />One common use case for biowasm is to efficiently process small subsets of large files in the browser, e.g. parse the very top/bottom of a file, or randomly subsample a large file.
 	</Alert>
 	{#if browser}
-		<CodePen autorun={false} code={codeUserFiles} /><br />
+		<CodePen code={codeUserFiles} /><br />
 	{/if}
 
 	<!-- Process remote files -->
@@ -79,7 +79,7 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		<strong>Note:</strong> Similar to local files, mounting URLs does not load their entire contents into memory. Below, we mount a 300MB BAM file and ask <code>samtools</code> for a small subset of chromosome 20. As you can see in your browser's <code>Network</code> tab, only a few megabytes of relevant data are downloaded for this step.
 	</Alert>
 	{#if browser}
-		<CodePen autorun={false} code={codeRemoteFiles} /><br />
+		<CodePen code={codeRemoteFiles} /><br />
 	{/if}
 
 	<!-- Multiple tools -->
@@ -88,7 +88,7 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		Biowasm also supports running multiple tools at once. Below, we first run <code>seqtk</code> on the output of a <code>samtools</code> command:
 	</p>
 	{#if browser}
-		<CodePen autorun={false} code={codeMultipleTools} /><br />
+		<CodePen code={codeMultipleTools} /><br />
 	{/if}
 
 	<br />

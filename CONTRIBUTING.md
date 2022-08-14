@@ -2,7 +2,7 @@
 
 ## Development Setup
 
-Tools listed in biowasm were compiled to WebAssembly using `Emscripten 2.0.25`.
+Tools listed in biowasm were compiled to WebAssembly using `Emscripten 2.0.25`. Here is how to set up your dev environment:
 
 ```bash
 # Fetch Emscripten docker image
@@ -43,12 +43,9 @@ python3.7 /src/server.py &
 # Go into your container
 docker exec -it wasm bash
 
-# Set up biowasm (only need to do this once)
-cd biowasm/
-make init
-
 # Compile seqtk
-VERSION=1.2 BRANCH=v1.2 make seqtk
+cd biowasm/
+bin/compile.py --tools seqtk --versions 1.2
 
 # This will create tools/<tool name>/build with .js/.wasm files
 ls tools/seqtk/build
@@ -77,25 +74,20 @@ cd -
 # Stage changes for git
 git add tools/$TOOL/src .gitmodules
 
-# Other files needed
-echo "TODO" > tools/$TOOL/README.md
+# Then create a compile.sh script that compiles the tool to WebAssembly
 echo "# TODO" > tools/$TOOL/compile.sh
 chmod +x tools/$TOOL/compile.sh
 ```
 
-You should also create the following files:
+You should also modify/create the following files:
 
 ```bash
+biowasm.json         Add the new tool here so it gets deployed to the CDN
+
 tools/<tool>/
-    README.md        Details about the tool and dependencies
-    compile.sh       Script that will run to compile the tool to WebAssembly (can use `$EM_FLAGS` for common flags)
+    compile.sh       Script that will run to compile the tool to WebAssembly (use `$EM_FLAGS` for common flags)
     patches/    
         <tag>.patch  Patch applied to the code to compile it to WebAssembly; branch- or tag-specific (optional)
-    configs/
-        <tag>.json   Configuration file with info about which WebAssembly features are needed (see ssw for an example); branch- or tag-specific (optional)
+    examples/
+        <tag>.html   Example HTML code for running the tool; will be listed on biowasm.com (optional)
 ```
-
-Finally, you can edit:
-
-* `config/tools.json` to make sure the new tool gets deployed
-* `cloudflare/cdn/public/index.html` to list the new tool on the CDN's [packages page](https://cdn.biowasm.com/v2/)
