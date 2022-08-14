@@ -24,13 +24,9 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 	<ListGroup flush class="small">
 		<ListGroupItem></ListGroupItem>
 		<ListGroupItem tag="a" href="#introduction">Introduction</ListGroupItem>
-		<ListGroupItem tag="a" href="#simple-example">A simple example</ListGroupItem>
-		<ListGroupItem tag="a" href="#local-files">Process local user files</ListGroupItem>
-		<ListGroupItem tag="a" href="#remote-files">Process remote user files</ListGroupItem>
-		<ListGroupItem tag="a" href="#multiple-tools">Run multiple tools</ListGroupItem>
+		<ListGroupItem tag="a" href="#examples">Code Examples</ListGroupItem>
+		<ListGroupItem tag="a" href="#aioli">API documentation</ListGroupItem>
 		<ListGroupItem tag="a" href="#no-cdn">Biowasm without a CDN</ListGroupItem>
-		<ListGroupItem tag="a" href="#aioli-init">Aioli Initialization Settings</ListGroupItem>
-		<ListGroupItem tag="a" href="#aioli-api">Aioli API</ListGroupItem>
 		<ListGroupItem></ListGroupItem>
 	</ListGroup>
 
@@ -105,7 +101,7 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 	<h5 id="aioli-init">Initialization</h5>
 	<h6 id="aioli-init-simple">Simple Initialization</h6>
 	<p>
-		Most tools can be initialized using tool names and their versions:
+		Most tools can be initialized using a name and a version (see the <a href="/cdn/v3">Packages</a> page for supported versions):
 	</p>
 
 	<CodeBlock lang="javascript" code={`
@@ -120,7 +116,7 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 
 	<h6 id="aioli-init-advanced">Advanced Initialization</h6>
 	<p>
-		If you need to customize the URL where the WebAssembly assets are stored or the lazy-loading behavior of a module:
+		If you need to customize the URL where the WebAssembly assets are stored, or the lazy-loading behavior of a module, you can use the following initialization format:
 	</p>
 	<CodeBlock lang="javascript" code={`
 		new Aioli([{
@@ -140,11 +136,32 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		<strong>Note:</strong> The first module cannot be lazy-loaded since that is where the main filesystem is mounted.
 	</Alert>
 
-	<h5 id="aioli-api">Aioli API</h5>
+	<h5 id="aioli-api">Utility functions</h5>
 	<h6 id="aioli-api-exec">Run a command</h6>
-	<!-- Note: can't do "|" or ">" -->
+	<CodeBlock lang="javascript" code={`
+		// Simple command
+		await CLI.exec("samtools view");
+
+		// To escape arguments, use an array instead of a string
+		await CLI.exec("jq", [
+		    ".some.data",
+		    "data.json"
+		]);
+	`} />
+
 	<h6 id="aioli-api-mount">Mount local and remote files</h6>
-	<!-- See above for examples -->
+	<p>See examples above for how to mount <a href="#local-files">local files</a> and <a href="#remote-files">remote URLs</a>.</p>
+	<CodeBlock lang="javascript" code={`
+		// Mount a list of user-provided File objects
+		await CLI.mount([ <File>, <File> ]);
+
+		// Mount URLs
+		await CLI.mount(["https://somefile.com"]);
+
+		// Mount Blob objects
+		await CLI.mount([ { name: "blob.txt", data: <Blob> } ]);
+	`} />
+
 	<h6 id="aioli-api-fs">File system utilities</h6>
 	<CodeBlock lang="javascript" code={`
 		// Returns a blob URL so the user can download a file out of the virtual file system
@@ -160,15 +177,63 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		<strong>Note:</strong> File system utilities operate on the virtual file system, never on the user's actual files.
 	</Alert>
 
+	<h6 id="aioli-api-stdin">Standard IO</h6>
+	<p>If a tool needs to interact with <code>stdin</code>, use <code>CLI.stdin.set</code> before making the call to the tool:</p>
+	<CodeBlock lang="javascript" code={`
+		await CLI.stdin.set("Hello World");
+		await CLI.exec("cat");
+	`} />
 
+	<br />
+
+	<!-- No CDN -->
+	<h4 id="no-cdn">Biowasm without the CDN</h4>
+	<p>
+		The examples above use the biowasm CDN, which is where the WebAssembly assets for the genomics tools are hosted for free. Most tools that use biowasm rely on the CDN, but if you would like to store your assets alongside your app, here's how to do so:
+	</p>
+
+	<h6>Step 1: Install the Aioli package</h6>
+	<p>
+		Instead of importing Aioli using
+	</p>
+	<CodeBlock lang="xml" code={`
+		<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+	`} />
+	<p>
+		you can install Aioli with npm:
+	</p>
+	<CodeBlock code={`
+		npm install --save "@biowasm/aioli"
+	`} />
+	<p>
+		Then you can import Aioli as follows:
+	</p>
+	<CodeBlock lang="javascript" code={`
+		import Aioli from "@biowasm/aioli";
+	`} />
+
+	<h6>Step 2: Download Biowasm assets</h6>
+	<p>
+		Note that even if you import Aioli locally with <code>npm</code>, the WebAssembly modules will still be downloaded from the biowasm CDN unless you download those assets locally as well.
+	</p>
+	<p>
+		To do so, navigate to the <a href="/cdn/v3">Packages page</a> and download the files for each tool of interest.
+	</p>
+
+	<h6>Step 3: Set up Aioli</h6>
+	<p>
+		Once your assets are downloaded, you need to let Aioli know the relative URL path where it can find those assets from your server. Use the config parameter <code>urlPrefix</code> as shown in the <a href="#aioli-init-advanced:~:text=urlPrefix%3A%20%22./assets/%22%2C">Initialization</a> section above.
+	</p>
+
+	<br /><br /><br />
 </div>
 
 <style>
-h5 {
+h4:not(:first-child) {
 	margin-top: 40px;
 }
 
-h6 {
+h5, h6 {
 	margin-top: 20px;
 }
 
