@@ -134,7 +134,7 @@ async function downloadAsZip(program) {
 <h5 class="mt-4">
 	Files
 	<Tooltip target="info-files-{tool.name}">
-		You don't need to download files if you use the Biowasm CDN. Click for details.
+		You don't need to download the files below if you use the Biowasm CDN. Click for details.
 	</Tooltip>
 	<!-- Tooltip doesn't work with SSR -->
 	{#if browser}

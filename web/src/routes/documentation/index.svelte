@@ -198,7 +198,7 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		Instead of importing Aioli using
 	</p>
 	<CodeBlock lang="xml" code={`
-		<script src="https://biowasm.com/${CONFIG.url}/aioli.js"></script>
+		<script src="https://biowasm.com${CONFIG.url}/aioli.js"></script>
 	`} />
 	<p>
 		you can install Aioli with npm:
