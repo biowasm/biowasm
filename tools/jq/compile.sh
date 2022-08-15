@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Dependencies
-apt-get install -y libtool
+sudo apt-get install -y libtool
 
 # Generate and run ./configure
 autoreconf -fi
