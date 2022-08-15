@@ -1,11 +1,7 @@
 import CONFIG from "@/biowasm.json";
 
-// Redirect /aioli.js to latest Aioli
-export async function GET() {
-	return {
-		status: 301,
-		headers: {
-			location: `${CONFIG.url}/aioli/latest/aioli.js`
-		}
-	};
+// Point /aioli.js to latest Aioli version
+export async function GET({ request }) {
+	const origin = new URL(request.url).origin;
+	return await fetch(`${origin}${CONFIG.url}/aioli/latest/aioli.js`);
 }
