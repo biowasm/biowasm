@@ -48,6 +48,9 @@ def exec(cmd):
 
 
 def get_file_contents(path):
+	"""
+	Get file contents as text if .js, or base64 if .wasm/.data
+	"""
 	if args.dry_run:
 		return f"<path>"
 
@@ -95,24 +98,27 @@ def compile(tool, versions=[], level=0):
 				exec(f"cp tools/{tool}/build/{program}.{file} {dir_build}/")
 				exec(f"md5sum {dir_build}/{program}.{file} | sed 's|{DIR_BUILD}/||' >> {DIR_MANIFEST_TEMP}")
 
-	# At the end, update the Biowasm manifest
-	if level == 0:
-		if args.dry_run:
-			print("<update manifest>")
-			return
 
-		# Update the MANIFEST where needed
-		to_upload = []
-		with open(DIR_MANIFEST_TEMP) as f:
-			for row in f.readlines():
-				hash, path = row.rstrip().split("  ")
+def generate_manifests():
+	"""
+	Regenerate manifest files
+	"""
+	if args.dry_run:
+		print("<update manifest>")
+		return
 
-				# Prepare the KV pair for Cloudflare Workers KV
-				kv_key = f"{path}:{hash}"
-				kv_value, kv_base64 = get_file_contents(str(DIR_BUILD / path))
+	# Update the MANIFEST where needed
+	to_upload = []
+	with open(DIR_MANIFEST_TEMP) as f:
+		for row in f.readlines():
+			hash, path = row.rstrip().split("  ")
 
-				# If adding new file, or hash of a file has changed, update the manifest
-				# if path not in MANIFEST or MANIFEST[path] != kv_key:
+			# Prepare the KV pair for Cloudflare Workers KV
+			kv_key = f"{path}:{hash}"
+			kv_value, kv_base64 = get_file_contents(str(DIR_BUILD / path))
+
+			# If adding new file, or hash of a file has changed, update the manifest
+			if path not in MANIFEST or MANIFEST[path] != kv_key:
 				print(f"Adding {path} to list of KVs to upload...")
 				MANIFEST[path] = kv_key
 				to_upload.append({
@@ -121,12 +127,12 @@ def compile(tool, versions=[], level=0):
 					"base64": kv_base64
 				})
 
-		# Save manifest JSON files
-		with open(DIR_CF_UPLOAD, "w", encoding="utf-8") as f:
-			json.dump(to_upload, f, ensure_ascii=False)
-		with open(DIR_MANIFEST, "w", encoding="utf-8") as f:
-			json.dump(MANIFEST, f, ensure_ascii=False, sort_keys=True, indent=2)
-		exec(f"rm {DIR_MANIFEST_TEMP}")
+	# Save manifest JSON files
+	with open(DIR_CF_UPLOAD, "w", encoding="utf-8") as f:
+		json.dump(to_upload, f, ensure_ascii=False)
+	with open(DIR_MANIFEST, "w", encoding="utf-8") as f:
+		json.dump(MANIFEST, f, ensure_ascii=False, sort_keys=True, indent=2)
+	exec(f"rm {DIR_MANIFEST_TEMP}")
 
 
 if __name__ == "__main__":
@@ -152,8 +158,11 @@ if __name__ == "__main__":
 	if args.list:
 		list()
 	elif args.tools:
+		# Compile all tools
 		tools = args.tools.split(",") if args.tools != "all" else [ t["name"] for t in CONFIG["tools"] ]
 		for tool_name in tools:
 			compile(tool_name, args.versions.split(",") if args.versions is not None else [])
+		# Regenerate manifest files
+		generate_manifests()
 	else:
 		parser.print_usage()
