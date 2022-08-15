@@ -112,13 +112,14 @@ def compile(tool, versions=[], level=0):
 				kv_value, kv_base64 = get_file_contents(str(DIR_BUILD / path))
 
 				# If adding new file, or hash of a file has changed, update the manifest
-				if path not in MANIFEST or MANIFEST[path] != kv_key:
-					MANIFEST[path] = kv_key
-					to_upload.append({
-						"key": kv_key,
-						"value": kv_value,
-						"base64": kv_base64
-					})
+				# if path not in MANIFEST or MANIFEST[path] != kv_key:
+				print(f"Adding {path} to list of KVs to upload...")
+				MANIFEST[path] = kv_key
+				to_upload.append({
+					"key": kv_key,
+					"value": kv_value,
+					"base64": kv_base64
+				})
 
 		# Save manifest JSON files
 		with open(DIR_CF_UPLOAD, "w", encoding="utf-8") as f:
