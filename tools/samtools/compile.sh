@@ -2,8 +2,6 @@
 
 # TODO: look into LZMA support
 
-test -d ../htslib/build/ || (echo "Running 'make htslib' first." && cd ../../ && make htslib && cd tools/samtools/)
-
 make clean
 
 # Also, use autoheader/autoconf to generate config.h.in and configure
