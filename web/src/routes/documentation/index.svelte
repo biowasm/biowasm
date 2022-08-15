@@ -244,8 +244,4 @@ h5, h6 {
 p {
 	line-height: 1.7em;
 }
-
-pre {
-	margin-left: 20px;
-}
 </style>
