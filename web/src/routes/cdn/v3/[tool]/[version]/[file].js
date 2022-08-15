@@ -28,6 +28,10 @@ export async function GET({ request, platform, params }) {
 		} };
 	}
 
+	// Artificial /latest route for Aioli
+	if(params.tool === "aioli" && params.version === "latest")
+		params.version = latestAioliVersion;
+
 	// Download file from Cloudflare Workers
 	let response = await getAssetFromKV({
 		request,
@@ -39,11 +43,8 @@ export async function GET({ request, platform, params }) {
 		ASSET_NAMESPACE: platform.env.CDN,
 		cacheControl: CACHE_CONFIG,
 		mapRequestToAsset: request => {
-			let url = request.url;
-			url = url.replace(CONFIG.url, "");
-			// Artificial /latest route for Aioli
-			if(params.tool === "aioli" && params.version === "latest")
-				url = url.replace("latest", latestAioliVersion);
+			// Build up URL (can't rely on request.url containing the tool/version/file since it can be called from /latest/)
+			const url = `${new URL(request.url).origin}/${params.tool}/${params.version}/${params.file}`;
 			return new Request(url, request);
 		},
 	});

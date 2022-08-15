@@ -1,7 +1,10 @@
-import CONFIG from "@/biowasm.json";
+import { GET as getCDN } from "./[tool]/[version]/[file]";
 
 // Point /aioli.js to latest Aioli version
-export async function GET({ request }) {
-	const origin = new URL(request.url).origin;
-	return await fetch(`${origin}${CONFIG.url}/aioli/latest/aioli.js`);
+export async function GET({ request, platform }) {
+	return getCDN({ request, platform, params: {
+		tool: "aioli",
+		version: "latest",
+		file: "aioli.js"
+	} });
 }
