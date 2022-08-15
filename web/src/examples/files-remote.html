@@ -1,6 +1,6 @@
 <script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
 <script type="module">
-const CLI = await new Aioli("samtools/1.10");
+const CLI = await new Aioli(["samtools/1.10"]);
 
 // Mount a .bam and .bai from the 1000 Genomes Project. This lazy-mounts the URLs
 // on the virtual file system, i.e. no data is downloaded yet.
