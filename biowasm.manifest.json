@@ -1,5 +1,7 @@
 {
   "aioli/3.0.0/aioli.js": "aioli/3.0.0/aioli.js:9868f3700bd92f9d2ae43dd7ddaa532b",
+  "base/1.0.0/base.js": "base/1.0.0/base.js:fc9a74fc82b59a6f75cb94fa228202e5",
+  "base/1.0.0/base.wasm": "base/1.0.0/base.wasm:14a4f945419e5e17b6d1b80d9ee6370e",
   "bcftools/1.10/bcftools.data": "bcftools/1.10/bcftools.data:644b743543ded2d23ca5513723b91dba",
   "bcftools/1.10/bcftools.js": "bcftools/1.10/bcftools.js:0530315930ce471a54d6c8c777b44483",
   "bcftools/1.10/bcftools.wasm": "bcftools/1.10/bcftools.wasm:c67e898178d4adf0a6fbea8f163b5cf2",
