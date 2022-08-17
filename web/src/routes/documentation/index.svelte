@@ -187,7 +187,7 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 	`} />
 
 	<Alert color="info">
-		<strong>Note:</strong> File system utilities operate on the virtual file system, never on the user's actual files.
+		<strong>Note:</strong> File system utilities operate on a virtual file system; they cannot operate directly on user files.
 	</Alert>
 
 	<h6 id="aioli-api-stdin">Standard IO</h6>
