@@ -3,7 +3,10 @@
 const CLI = await new Aioli(["seqtk/1.2"]);
 
 // Create mock fasta file
-await CLI.fs.writeFile("test.fa", ">chr1\nACGTACGACTAGCAG\n>chr2\nACGATCATACCAGCA");
+await CLI.mount({
+	name: "test.fa",
+	data: ">chr1\nACGTACGACTAGCAG\n>chr2\nACGATCATACCAGCA"
+});
 
 // Run "seqtk comp" command to calculate nucleotide composition
 const output = await CLI.exec("seqtk comp test.fa");

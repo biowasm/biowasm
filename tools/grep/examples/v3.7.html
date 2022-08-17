@@ -3,7 +3,10 @@
 const CLI = await new Aioli(["grep/3.7"]);
 
 // Create sample file
-await CLI.fs.writeFile("data.txt", "hello\ngood\nand\ngreat\nmorning\n");
+await CLI.mount({
+	name: "data.txt",
+	data: "hello\ngood\nand\ngreat\nmorning\n"
+});
 
 // Retrieve lines that start with g
 const output = await CLI.exec("grep ^g data.txt");

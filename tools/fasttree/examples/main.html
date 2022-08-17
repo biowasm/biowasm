@@ -3,7 +3,9 @@
 const CLI = await new Aioli(["kalign/3.3.1", "fasttree/2.1.11"]);
 
 // Create sample data (source: https://github.com/TimoLassmann/kalign/blob/master/dev/data/BB11001.tfa)
-await CLI.fs.writeFile("input.fa", `>1aab_
+await CLI.mount({
+	name: "input.fa",
+	data: `>1aab_
 GKGDPKKPRGKMSSYAFFVQTSREEHKKKHPDASVNFSEFSKKCSERWKT
 MSAKEKGKFEDMAKADKARYEREMKTYIPPKGE
 >1j46_A
@@ -14,7 +16,8 @@ MKKLKKHPDFPKKPLTPYFRFFMEKRAKYAKLHPEMSNLDLTKILSKKYK
 ELPEKKKMKYIQDFQREKQEFERNLARFREDHPDLIQNAKK
 >2lef_A
 MHIKKPLNAFMLYMKEMRANVVAESTLKESAAINQILGRRWHALSREEQA
-KYYELARKERQLHMQLYPGWSARDNYGKKKKRKREK`);
+KYYELARKERQLHMQLYPGWSARDNYGKKKKRKREK`
+});
 
 // Run kalign
 await CLI.exec("kalign input.fa -f fasta -o result.fasta");

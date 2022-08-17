@@ -3,7 +3,10 @@
 const CLI = await new Aioli(["gawk/5.1.0"]);
 
 // Create mock tab-separated file
-await CLI.fs.writeFile("data.tsv", "column1\tcolumn2\tcolumn3\n1\t2\t3\n4\t5\t6\n7\t8\t9\n");
+await CLI.mount({
+	name: "data.tsv",
+	data: "column1\tcolumn2\tcolumn3\n1\t2\t3\n4\t5\t6\n7\t8\t9\n"
+});
 
 // Retrieve 2nd column (note that we use an array of inputs to properly escape the arguments)
 let output = await CLI.exec("gawk", [

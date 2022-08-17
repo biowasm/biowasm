@@ -5,8 +5,16 @@ const CLI = await new Aioli(["ssw/1.2.4"], {
 });
 
 // Create mock reference & query fasta files
-await CLI.fs.writeFile("ref.fa", ">chr1\nACTACGACTACGACTACGACGCGCGATTCGCGCGCCGATATACGACTACGACTA\n");
-await CLI.fs.writeFile("query.fa", ">read1\nTACGACTACG\n");
+await CLI.mount([
+	{
+		name: "ref.fa",
+		data: ">chr1\nACTACGACTACGACTACGACGCGCGATTCGCGCGCCGATATACGACTACGACTA\n"
+	},
+	{
+		name: "query.fa",
+		data: ">read1\nTACGACTACG\n"
+	}
+]);
 
 // Run "ssw" command to align query to reference and output SAM file
 const output = await CLI.exec("ssw -h -s -c ref.fa query.fa");

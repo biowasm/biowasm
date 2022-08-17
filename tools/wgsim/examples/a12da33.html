@@ -3,7 +3,10 @@
 const CLI = await new Aioli(["wgsim/2011.10.17"]);
 
 // Create mock reference fasta file
-await CLI.fs.writeFile("ref.fa", ">chr1\nACGTACGACTAGCAG\n>chr2\nACGATCATACCAGCA");
+await CLI.mount({
+	name: "ref.fa",
+	data: ">chr1\nACGTACGACTAGCAG\n>chr2\nACGATCATACCAGCA"
+});
 
 // Run "wgsim" command (overridding default options since reference is very small)
 // and output result to read1.fastq and read2.fastq
