@@ -190,10 +190,11 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 	</Alert>
 
 	<h6 id="aioli-api-stdin">Standard IO</h6>
-	<p>If a tool needs to interact with <code>stdin</code>, use <code>CLI.stdin.set</code> before making the call to the tool:</p>
+	<p>If a tool needs to interact with <code>stdin</code>, set <code>CLI.stdin</code> before making the call to the tool:</p>
 	<CodeBlock lang="javascript" code={`
-		await CLI.stdin.set("Hello World");
-		await CLI.exec("cat");
+		CLI = await new Aioli(["coreutils/cat/8.32"]);
+		CLI.stdin = "Hello World";
+		await CLI.exec("cat");  // Will return Hello World
 	`} />
 
 	<br />
