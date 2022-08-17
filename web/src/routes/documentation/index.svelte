@@ -133,10 +133,6 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		});
 	`} />
 
-	<Alert color="info">
-		<strong>Note:</strong> The first module cannot be lazy-loaded since that is where the main filesystem is mounted.
-	</Alert>
-
 	<h5 id="aioli-api">Utility functions</h5>
 	<h6 id="aioli-api-exec">Run a command</h6>
 	<CodeBlock lang="javascript" code={`
@@ -152,15 +148,30 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 
 	<h6 id="aioli-api-mount">Mount local and remote files</h6>
 	<p>See examples above for how to mount <a href="#local-files">local files</a> and <a href="#remote-files">remote URLs</a>.</p>
+	<p>The function <code>CLI.mount()</code> can mount one (or an array of) <code>File</code> objects, <code>Blob</code> objects, a <code>FileList</code>, strings, or URLs:</p>
 	<CodeBlock lang="javascript" code={`
 		// Mount a list of user-provided File objects
-		await CLI.mount([ <File>, <File> ]);
+		document.getElementById("myfiles").addEventListener("change", async event => {
+		    await CLI.mount(event.target.files);
+		});
 
 		// Mount URLs
-		await CLI.mount(["https://somefile.com"]);
+		await CLI.mount([
+			{ name: "filename.txt", url: "https://url..." },
+			{ name: "filename2.txt", url: "https://url2..." },
+		]);
 
-		// Mount Blob objects
-		await CLI.mount([ { name: "blob.txt", data: <Blob> } ]);
+		// Mount a string to path filename.txt
+		await CLI.mount([{
+			name: "filename.txt",
+			data: "This is a data file"
+		}]);
+
+		// Mount a Blob to path filename.txt
+		await CLI.mount([{
+			name: "filename.txt",
+			data: <Blob>
+		}]);
 	`} />
 
 	<h6 id="aioli-api-fs">File system utilities</h6>
@@ -172,9 +183,6 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		await CLI.mkdir("/some/path");
 		await CLI.ls("/some/path");
 		await CLI.cd("/some/path");
-
-		// Create a text file with some contents
-		await CLI.fs.writeFile("data.tsv", "column1\\tcolumn2\\tcolumn3\\n1\\t2\\t3\\n4\\t5\\t6\\n7\\t8\\t9\\n");
 	`} />
 
 	<Alert color="info">
