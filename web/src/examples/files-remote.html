@@ -1,17 +1,19 @@
 <script src="https://cdn.biowasm.com/v2/aioli/latest/aioli.js"></script>
 <script type="module">
 const CLI = await new Aioli(["samtools/1.10"]);
+const bamURL = "https://1000genomes.s3.amazonaws.com/phase3/data/NA12878/alignment/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam";
+const baiURL = bamURL + ".bai";
 
-// Mount a .bam and .bai from the 1000 Genomes Project. This lazy-mounts the URLs
-// on the virtual file system, i.e. no data is downloaded yet.
-const paths = await CLI.mount([
-    "https://1000genomes.s3.amazonaws.com/phase3/data/NA12878/alignment/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam",
-    "https://1000genomes.s3.amazonaws.com/phase3/data/NA12878/alignment/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam.bai"
+// Mount a .bam and .bai from the 1000 Genomes Project. This mounts the URLs lazily
+// on the virtual file system. In other words, no data is downloaded yet.
+await CLI.mount([
+    { name: "test.bam", url: bamURL },
+    { name: "test.bam.bai", url: baiURL },
 ]);
 
 // Since the .bai index file is present, samtools only downloads a subset of the .bam!
 // Check the "Network" tab in the developer console to confirm that.
-const output = await CLI.exec(`samtools view ${paths[0]} 20:39,352,829-39,352,842`);
+const output = await CLI.exec("samtools view test.bam 20:39,352,829-39,352,842");
 document.getElementById("output").innerHTML = output;
 </script>
 
