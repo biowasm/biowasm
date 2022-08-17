@@ -179,10 +179,11 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		// Returns a blob URL so the user can download a file out of the virtual file system
 		const url = await CLI.download("/path/to/a/file");
 
-		// Basic ls, cd, mkdir utilities
+		// Basic ls, cd, mkdir, pwd utilities
 		await CLI.mkdir("/some/path");
 		await CLI.ls("/some/path");
 		await CLI.cd("/some/path");
+		await CLI.pwd();
 	`} />
 
 	<Alert color="info">
