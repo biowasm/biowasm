@@ -157,20 +157,20 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 
 		// Mount URLs
 		await CLI.mount([
-			{ name: "filename.txt", url: "https://url..." },
-			{ name: "filename2.txt", url: "https://url2..." },
+		    { name: "filename.txt", url: "https://url..." },
+		    { name: "filename2.txt", url: "https://url2..." },
 		]);
 
 		// Mount a string to path filename.txt
 		await CLI.mount([{
-			name: "filename.txt",
-			data: "This is a data file"
+		    name: "filename.txt",
+		    data: "This is a data file"
 		}]);
 
 		// Mount a Blob to path filename.txt
 		await CLI.mount([{
-			name: "filename.txt",
-			data: <Blob>
+		    name: "filename.txt",
+		    data: <Blob>
 		}]);
 	`} />
 
