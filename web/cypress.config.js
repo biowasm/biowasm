@@ -4,7 +4,7 @@ export default defineConfig({
 	fixturesFolder: false,
 	video: false,
 	screenshotOnRunFailure: false,
-	defaultCommandTimeout: 10000,
+	defaultCommandTimeout: 30000,
 	fileServerFolder: "../",
 	e2e: {
 		experimentalSessionAndOrigin: true,
