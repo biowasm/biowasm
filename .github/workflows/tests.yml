@@ -1,0 +1,26 @@
+name: Tests
+
+# Run manually or after deploys
+on:
+  workflow_dispatch:
+    inputs:
+  workflow_run:
+    workflows: ["Deploy biowasm v3"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Tests
+    steps:
+      - name: Checkout biowasm repo
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Run tests
+        run: |
+          cd web/
+          npm install
+          npm run test
