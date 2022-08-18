@@ -43,33 +43,6 @@ export async function GET({ request, platform, params }) {
 		}
 	}
 
-	// Only get stats from Durable Object if we have a specific tool/version/program
-	if(toolName !== null && versionName !== null && programName !== null) {
-		// Local dev
-		if(platform === undefined) {
-			const stats = getMockStats()["samtools"]["1.10"]["samtools"];
-			return {
-				status: 200,
-				body: {
-					stats: formatStats(stats, toolName, versionName, programName)
-				}
-			};
-		}
-
-		// Fetch stats
-		const path = `${toolName}/${versionName}/${programName}.js`;
-		const id = platform.env.stats.idFromName(path);
-		const obj = platform.env.stats.get(id);
-
-		// Send HTTP request to Durable Object (`obj.fetch()` needs full path)
-		const hostname = new URL(request.url).origin;
-		const stats = await (await obj.fetch(hostname)).json();
-		return {
-			status: 200,
-			body: { stats: formatStats(stats, toolName, versionName, programName) }
-		};
-	}
-
 	// Get stats from KV (faster than querying all Durable Objects)
 	let stats = platform === undefined ? getMockStats() : await platform.env.CDN.get("STATS", { type: "json" });
 
