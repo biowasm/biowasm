@@ -50,22 +50,9 @@ export let version;
 export let usedBy = [];
 
 let busyDownload = false;
-let stats = {};
 
 // Load sample code from this repo
 $: code = codeSamples[`../tools/${tool.name}/examples/${version.branch}.html`];
-
-// Fetch stats for all programs in parallel on load
-onMount(async () => {
-	const promises = [];
-	for(let program of tool.programs) {
-		const promise = fetch(`/api/v3/stats/${tool.name}/${version.version}/${program}`)
-			.then(d => d.json())
-			.then(d => stats[program] = d?.stats?.[tool.name]?.[version.version]?.[program]?.total || 0);
-		promises.push(promise);
-	}
-	await Promise.all(promises);
-});
 
 // Download program files as a .zip file
 async function downloadAsZip(program) {
@@ -154,11 +141,6 @@ async function downloadAsZip(program) {
 				<span class="ps-1">Download as .zip</span>
 			</Badge>
 		</span>
-
-		<!-- Show overall download stats -->
-		{#if stats[program]}
-			<Badge pill color="secondary" class="ms-1">{stats[program]} downloads</Badge>
-		{/if}
 	</h6>
 	<ListGroup>
 		{#each tool.files || ["js", "wasm"] as extension}
