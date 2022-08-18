@@ -10,7 +10,8 @@ await CLI.mount({
 
 // Run "wgsim" command (overridding default options since reference is very small)
 // and output result to read1.fastq and read2.fastq
-await CLI.exec("wgsim -N 5 -d 2 -s 1 -1 5 -2 5 ref.fa read1.fastq read2.fastq");
+// Try changing the seed (-S) to get random results each time
+await CLI.exec("wgsim -N 5 -S 123 -d 2 -s 1 -1 5 -2 5 ref.fa read1.fastq read2.fastq");
 
 // Get the file contents of one of the two FASTQ files generated
 const output = await CLI.cat("read2.fastq");
