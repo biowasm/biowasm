@@ -2,7 +2,8 @@
 
 # biowasm
 
-![biowasm tests](https://github.com/biowasm/biowasm/workflows/Deploy%20biowasm%20v3/badge.svg)
+![Tests](https://github.com/biowasm/biowasm/workflows/Tests/badge.svg)
+![Deploy](https://github.com/biowasm/biowasm/workflows/Deploy%20biowasm%20v3/badge.svg)
 
 A repository of genomics tools, compiled from C/C++ to WebAssembly so they can run in a web browser.
 
