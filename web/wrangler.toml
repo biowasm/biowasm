@@ -27,7 +27,7 @@ durable_objects = { bindings = [{ name = "stats", class_name = "CDNStats" }] }
 
 [env.prd]
 name = "biowasm-v3-prd"
-# routes = [{ pattern = "biowasm.com/*", zone_name = "biowasm.com" }]
+routes = [{ pattern = "biowasm.com/*", zone_name = "biowasm.com" }]
 vars = { ENVIRONMENT = "prd" }
 kv_namespaces = [
 	{ binding = "CDN", id = "2ddb9221f3e64a0a9f113971204a8675" },
