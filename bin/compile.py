@@ -139,6 +139,19 @@ if __name__ == "__main__":
 	"""
 	Parse user arguments
 	"""
+	parser = argparse.ArgumentParser()
+	parser.add_argument("--list", default=False, action="store_true", help="List tools available")
+	parser.add_argument("--dry-run", default=False, action="store_true", help="Dry run")
+	parser.add_argument("--tools", type=str, help="Tool to compile to WebAssembly")
+	parser.add_argument("--versions", type=str, help="Tool version(s)")
+	parser.add_argument("--env", type=str, help="Environment (stg, prd)", default="stg")
+	args = parser.parse_args()
+
+	# Load configs
+	if args.env == "stg":
+		DIR_MANIFEST = DIR_MANIFEST.replace('.json', '.stg.json')
+		DIR_MANIFEST_TEMP = DIR_MANIFEST_TEMP.replace('.json', '.stg.json')
+
 	if DIR_MANIFEST_TEMP.is_file():
 		print("Manifest file already exists from previous run. Delete it first.")
 		exit(1)
@@ -148,13 +161,7 @@ if __name__ == "__main__":
 	with open(DIR_MANIFEST) as f:
 		MANIFEST = json.load(f)
 
-	parser = argparse.ArgumentParser()
-	parser.add_argument("--list", default=False, action="store_true", help="List tools available")
-	parser.add_argument("--dry-run", default=False, action="store_true", help="Dry run")
-	parser.add_argument("--tools", type=str, help="Tool to compile to WebAssembly")
-	parser.add_argument("--versions", type=str, help="Tool version(s)")
-	args = parser.parse_args()
-
+	# Process CLI parameters
 	if args.list:
 		list()
 	elif args.tools:

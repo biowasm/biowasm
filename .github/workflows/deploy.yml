@@ -52,7 +52,7 @@ jobs:
       # ------------------------------------------------------------------------
       - name: Compile to WebAssembly
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-        run: bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }}
+        run: bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }} --env ${{ github.event.inputs.env }}
 
       # ------------------------------------------------------------------------
       # Deploy to Cloudflare Workers
