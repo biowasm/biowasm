@@ -1,1 +1,9 @@
-{}
+{
+  "fastp/0.20.1/fastp.data": "fastp/0.20.1/fastp.data:f6110eee1b5bee63fa7539632a4bce9b",
+  "fastp/0.20.1/fastp.js": "fastp/0.20.1/fastp.js:dfe2498d3f91976591df7671826c3adc",
+  "fastp/0.20.1/fastp.wasm": "fastp/0.20.1/fastp.wasm:5391ca24da0ddf4a7b53ffad8a7e0d51",
+  "seqtk/1.2/seqtk.js": "seqtk/1.2/seqtk.js:661b9c072aa6b86aa10bfb611b49a5ef",
+  "seqtk/1.2/seqtk.wasm": "seqtk/1.2/seqtk.wasm:c1032f800dda06ff37710ee918e08835",
+  "seqtk/1.3/seqtk.js": "seqtk/1.3/seqtk.js:661b9c072aa6b86aa10bfb611b49a5ef",
+  "seqtk/1.3/seqtk.wasm": "seqtk/1.3/seqtk.wasm:968f60288edb9703179f0fac1f87276a"
+}
