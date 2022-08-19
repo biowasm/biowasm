@@ -51,7 +51,7 @@ async function getDownloadStats(tool, version) {
 				{#if tool && version && nbDownloads !== null}
 					<span class="text-small align-middle">
 						<Badge pill color="secondary" class="ms-1">
-							{nbDownloads} downloads
+							{nbDownloads.toLocaleString()} downloads
 						</Badge>
 					</span>
 				{/if}
