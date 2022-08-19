@@ -81,4 +81,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Update Biowasm manifest
-          file_pattern: biowasm.manifest.json
+          file_pattern: biowasm.manifest${{ github.event.inputs.env == "stg" && ".stg" || "" }}.json
