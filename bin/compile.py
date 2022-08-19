@@ -150,7 +150,7 @@ if __name__ == "__main__":
 	# Load configs
 	if args.env == "stg":
 		DIR_MANIFEST = DIR_MANIFEST.replace('.json', '.stg.json')
-		DIR_MANIFEST_TEMP = DIR_MANIFEST_TEMP.replace('.json', '.stg.json')
+		DIR_MANIFEST_TEMP = DIR_MANIFEST_TEMP.replace('.tmp', '.stg.tmp')
 
 	if DIR_MANIFEST_TEMP.is_file():
 		print("Manifest file already exists from previous run. Delete it first.")
