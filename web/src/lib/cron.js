@@ -41,10 +41,6 @@ async function cron(env) {
 	const statsOld = await env.CDN_V2.get("summary", { type: "json" });
 	for(let date in statsOld) {
 		for(let toolName in statsOld[date]) {
-			// Don't use "base" module in v3
-			if(toolName === "base")
-				continue;
-
 			const versionName = latestVersion[toolName];
 			if(!(toolName in stats))
 				stats[toolName] = {};
