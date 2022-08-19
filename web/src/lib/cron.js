@@ -56,6 +56,17 @@ async function cron(env) {
 		}
 	}
 
+	// Set totals
+	for(let toolName in stats) {
+		for(let versionName in stats[toolName]) {
+			let total = 0;
+			for(let date in stats[toolName][versionName])
+				if(date !== "total")
+					total += stats[toolName][versionName][date];
+			stats[toolName][versionName]["total"] = total;
+		}
+	}
+
 	// Save in KV store
 	await env.CDN.put("STATS", JSON.stringify(stats));
 
