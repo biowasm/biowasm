@@ -1,4 +1,7 @@
-import ASSET_MANIFEST from "@/biowasm.manifest.json";
+// On Cloudflare, `ENVIRONMENT` will be stg or prd (see wrangler.toml); locally, it will be undefined
+const ENV = typeof ENVIRONMENT === "undefined" ? "stg" : ENVIRONMENT;
+const ASSET_MANIFESTS = import.meta.glob("@/biowasm.manifest*.json", { eager: true });
+export const ASSET_MANIFEST = ASSET_MANIFESTS[ENV === "prd" ? "../biowasm.manifest.json" : "../biowasm.manifest.stg.json"].default;
 
 // Check if tool is valid
 export function isValidTool(params) {

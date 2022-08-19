@@ -1,7 +1,6 @@
 import { getAssetFromKV } from "@cloudflare/kv-asset-handler";
 import CONFIG from "@/biowasm.json";
-import ASSET_MANIFEST from "@/biowasm.manifest.json";
-import { isValidTool } from "$lib/utils";
+import { isValidTool, ASSET_MANIFEST } from "$lib/utils";
 
 // Settings
 const CACHE_CONFIG = {
