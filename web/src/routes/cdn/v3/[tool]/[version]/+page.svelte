@@ -4,54 +4,16 @@ import { browser } from "$app/env";
 import { Badge, Icon, ListGroup, ListGroupItem, Tooltip } from "sveltestrap";
 // Import code samples dynamically!
 const codeSamples = import.meta.glob("@/tools/**/examples/*.html", { as: "raw", eager: true });
-
-export async function load({ params }) {
-	// Get tool/version info
-	const tool = CONFIG.tools.find(t => t.name === params.tool);
-	const version = (tool?.versions || []).find(v => v.version === params.version);
-	if(!tool)
-		return { status: 303, redirect: CONFIG.url };
-	if(!version)
-		return { status: 303, redirect: `${CONFIG.url}/${tool.name}` };
-
-	// Find tools that depend on this current tool
-	const usedBy = [];
-	if(tool && version) {
-		// Loop through all tools
-		CONFIG.tools.forEach(t => {
-			// Loop through each tool's versions
-			t.versions.forEach(v => {
-				// Are there any that depend on this tool?
-				const dependsOnThisTool = (v.dependencies || []).find(d => d.name === tool.name && d.version === version.version);
-				if(dependsOnThisTool)
-					usedBy.push({
-						name: t.name,
-						version: v.version
-					});
-			})
-		});
-	}
-
-	return { props: {
-		tool,
-		version,
-		usedBy
-	} };
-}
 </script>
 
 <script>
-import { onMount } from "svelte";
 import * as ZipJS from "@zip.js/zip.js";
 import CodePen from "$components/CodePen.svelte";
 
-export let tool;
-export let version;
-export let usedBy = [];
-
+export let data;
 let busyDownload = false;
 
-// Load sample code from this repo
+$: ({ tool, version, usedBy } = data);
 $: code = codeSamples[`../tools/${tool.name}/examples/${version.branch}.html`];
 
 // Download program files as a .zip file

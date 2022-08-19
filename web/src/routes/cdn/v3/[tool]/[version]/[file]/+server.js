@@ -1,3 +1,4 @@
+import { json } from "@sveltejs/kit";
 import { getAssetFromKV } from "@cloudflare/kv-asset-handler";
 import CONFIG from "@/biowasm.json";
 const ASSET_MANIFESTS = import.meta.glob("@/biowasm.manifest*.json", { eager: true });
@@ -18,17 +19,19 @@ export async function GET({ request, platform, params }) {
 
 	// Stop if unrecognized file
 	if(params.version !== "latest" && !(`${params.tool}/${params.version}/${params.file}` in ASSET_MANIFEST)) {
-		return {
-			status: 404,
-			body: { error: `Could not find tool`, params }
-		};
+		return json({
+			params,
+			error: `Could not find tool`
+		}, {
+			status: 404
+		});
 	}
 
 	// Local dev
 	if(platform === undefined) {
-		return { body: {
+		return json({
 			"download": params
-		} };
+		});
 	}
 
 	// Artificial /latest route for Aioli

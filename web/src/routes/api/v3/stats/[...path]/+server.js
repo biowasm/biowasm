@@ -1,3 +1,4 @@
+import { json } from "@sveltejs/kit";
 import CONFIG from "@/biowasm.json";
 
 // GET /api/v3/stats
@@ -51,18 +52,17 @@ export async function GET({ request, platform, params }) {
 	if(versionName !== null)
 		stats[toolName] = { [versionName]: stats[toolName][versionName] };
 
-	return {
-		status: 200,
-		body: { stats }
-	};
+	return json({ stats });
 }
 
 // Return error response
 function error(params) {
-	return {
+	return json({
+		params,
+		error: "Could not find tool"
+	}, {
 		status: 404,
-		body: { error: "Could not find tool", params }
-	};
+	});
 }
 
 // Generate mock stats for local development

@@ -1,6 +1,3 @@
-<script context="module">
-import { browser } from "$app/env";
-
 export async function load({ fetch }) {
 	// Get stats
 	const stats = (await fetch("/api/v3/stats").then(d => d.json())).stats;
@@ -32,25 +29,7 @@ export async function load({ fetch }) {
 		series.push({ name: tool, x, y });
 	}
 
-	return { props: { 
+	return { 
 		series
-	} };
+	};
 }
-</script>
-
-<script>
-import StatsChart from "$components/StatsChart.svelte";
-
-export let series = {};
-</script>
-
-<svelte:head>
-	<title>Stats</title>
-</svelte:head>
-
-<h4>Stats</h4>
-
-<!-- Show plot (use `browser` check to skip SSR) -->
-{#if browser}
-	<StatsChart {series} />
-{/if}
