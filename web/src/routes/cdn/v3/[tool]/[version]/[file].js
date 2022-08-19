@@ -1,6 +1,6 @@
 import { getAssetFromKV } from "@cloudflare/kv-asset-handler";
 import CONFIG from "@/biowasm.json";
-import { isValidTool, ASSET_MANIFEST } from "$lib/utils";
+const ASSET_MANIFESTS = import.meta.glob("@/biowasm.manifest*.json", { eager: true });
 
 // Settings
 const CACHE_CONFIG = {
@@ -12,8 +12,12 @@ const latestAioliVersion = CONFIG.tools.find(t => t.name === "aioli").versions.a
 
 // GET /cdn/v3/:tool/:version/:file
 export async function GET({ request, platform, params }) {
+	// Load the right asset manifest file depending on the environment we're in
+	const ENV = platform === undefined ? "dev" : platform.env.ENVIRONMENT;
+	const ASSET_MANIFEST = ASSET_MANIFESTS[ENV === "prd" ? "../biowasm.manifest.json" : "../biowasm.manifest.stg.json"].default;
+
 	// Stop if unrecognized file
-	if(params.version !== "latest" && !isValidTool(params)) {
+	if(params.version !== "latest" && !(`${params.tool}/${params.version}/${params.file}` in ASSET_MANIFEST)) {
 		return {
 			status: 404,
 			body: { error: `Could not find tool`, params }

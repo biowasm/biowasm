@@ -1,5 +1,4 @@
 import CONFIG from "@/biowasm.json";
-import { getMockStats } from "$lib/utils";
 
 // GET /api/v3/stats
 // GET /api/v3/stats/:tool
@@ -66,14 +65,19 @@ function error(params) {
 	};
 }
 
-// Format stats object
-function formatStats(stats={}, tool="samtools", version="1.10", program="samtools") {
+// Generate mock stats for local development
+function getMockStats() {
+	const stats = { "2022-07-01": 10, "2022-07-02": 20, "total": 30 };
 	return {
-		[tool]: {
-			[version]: {
-				[program]: stats
-			}
+		samtools: {
+			"1.10": stats
+		},
+		seqtk: {
+			"1.2": stats,
+			"1.3": stats
+		},
+		coreutils: {
+			"8.32": stats
 		}
-	}
+	};
 }
-
