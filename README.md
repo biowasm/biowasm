@@ -16,10 +16,11 @@ A repository of genomics tools, compiled from C/C++ to WebAssembly so they can r
 
 | Tool | Why biowasm? |
 |-|-|
-| [sandbox.bio](https://sandbox.bio) | Run command-line tools in the browser to power interactive tutorials |
-| [bedqc](https://quinlan-lab.github.io/bedqc) ([repo](https://github.com/quinlan-lab/bedqc)) | Run `bedtools` in the browser to validate BED files |
-| [Ribbon](https://genomeribbon.com) ([repo](https://github.com/MariaNattestad/Ribbon)) | Run `samtools` in the browser to parse, estimate coverage and subsample BAM files |
-| [fastq.bio](https://www.fastq.bio) ([repo](https://github.com/robertaboukhalil/fastq.bio)) | Run `fastp` in the browser to evaluate sequencing data quality |
+| [sandbox.bio](https://sandbox.bio) | Runs command-line tools in the browser to power interactive tutorials |
+| [Datagrok](https://datagrok.ai) | Runs `kalign` in the browser for multiple-sequence alignment analysis |
+| [bedqc](https://quinlan-lab.github.io/bedqc) ([repo](https://github.com/quinlan-lab/bedqc)) | Runs `bedtools` in the browser to validate BED files |
+| [Ribbon](https://genomeribbon.com) ([repo](https://github.com/MariaNattestad/Ribbon)) | Runs `samtools` in the browser to parse, estimate coverage and subsample BAM files |
+| [fastq.bio](https://www.fastq.bio) ([repo](https://github.com/robertaboukhalil/fastq.bio)) | Runs `fastp` in the browser to evaluate sequencing data quality |
 
 ## How it works
 

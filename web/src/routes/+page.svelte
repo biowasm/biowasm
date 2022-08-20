@@ -46,15 +46,19 @@ import CONFIG from "@/biowasm.json";
 				<tbody>
 					<tr>
 						<td><a class="fw-bold" href="https://sandbox.bio">sandbox.bio</a></td>
-						<td>Run command-line tools in the browser to power interactive tutorials</td>
+						<td>Runs command-line tools in the browser to power interactive tutorials</td>
+					</tr>
+					<tr>
+						<td><a class="fw-bold" href="https://datagrok.ai/">Datagrok</a></td>
+						<td>Runs <code>kalign</code> in the browser for multiple-sequence alignment analysis</td>
 					</tr>
 					<tr>
 						<td><a class="fw-bold" href="https://quinlan-lab.github.io/bedqc/">bedqc</a></td>
-						<td>Run <code>bedtools</code> in the browser to validate .bed files</td>
+						<td>Runs <code>bedtools</code> in the browser to validate .bed files</td>
 					</tr>
 					<tr>
 						<td><a class="fw-bold" href="https://genomeribbon.com">Ribbon</a></td>
-						<td>Run <code>samtools</code> in the browser to parse, estimate coverage and subsample .bam files</td>
+						<td>Runs <code>samtools</code> in the browser to parse, estimate coverage and subsample .bam files</td>
 					</tr>
 				</tbody>
 			</Table>
