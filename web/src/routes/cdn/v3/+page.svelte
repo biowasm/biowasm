@@ -1,14 +1,12 @@
 <script context="module">
 import { goto } from "$app/navigation";
-import CONFIG from "@/biowasm.json";
 import { Table } from "sveltestrap";
+import { getToolURL } from "$lib/utils";
 </script>
 
 <script>
 export let data = { tools: [] };
 </script>
-
-<base href="{CONFIG.url}/" />
 
 <Table hover>
 	<thead>
@@ -20,8 +18,9 @@ export let data = { tools: [] };
 	</thead>
 	<tbody>
 		{#each data.tools.filter(d => d.listed !== false) as t}
-			<tr on:click={() => goto(t.versions.length === 1 ? `${t.name}/${t.versions[0].version}` : t.name)}>
-				<td class="text-primary fw-bold">{t.name}</td>
+			{@const toolURL = t.versions.length === 1 ? getToolURL(t.name, t.versions[0].version) : getToolURL(t.name)}
+			<tr on:click={() => goto(toolURL)}>
+				<td class="text-primary fw-bold"><a class="text-decoration-none" href={toolURL}>{t.name}</a></td>
 				<td>{t.description}</td>
 				<td>{t.versions[0].version}</td>
 			</tr>

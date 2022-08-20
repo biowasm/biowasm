@@ -1,13 +1,11 @@
 <script context="module">
-import CONFIG from "@/biowasm.json";
 import { ListGroup, ListGroupItem } from "sveltestrap";
+import { getToolURL } from "$lib/utils";
 </script>
 
 <script>
 export let data;
 </script>
-
-<base href="{CONFIG.url}/{data.tool.name}/" />
 
 <!-- Description -->
 <p class="lead">
@@ -18,6 +16,6 @@ export let data;
 
 <ListGroup>
 	{#each data.tool.versions.reverse() as version}
-		<ListGroupItem tag="a" href="{version.version}" action>{version.version}</ListGroupItem>
+		<ListGroupItem tag="a" href={getToolURL(data.tool.name, version.version)} action>{version.version}</ListGroupItem>
 	{/each}
 </ListGroup>

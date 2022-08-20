@@ -1,9 +1,8 @@
 <script context="module">
-import CONFIG from "@/biowasm.json";
 import { browser } from "$app/env";
 import { Badge, Icon, ListGroup, ListGroupItem, Tooltip } from "sveltestrap";
-// Import code samples dynamically!
-const codeSamples = import.meta.glob("@/tools/**/examples/*.html", { as: "raw", eager: true });
+import { getToolURL } from "$lib/utils";
+const codeSamples = import.meta.glob("@/tools/**/examples/*.html", { as: "raw", eager: true });  // Import code samples dynamically!
 </script>
 
 <script>
@@ -27,7 +26,7 @@ async function downloadAsZip(program) {
 	// Download and zip up every file
 	for(let extension of tool.files || ["js", "wasm"]) {
 		const filename = `${program}.${extension}`;
-		const url = `${CONFIG.url}/${tool.name}/${version.version}/${filename}`;
+		const url = getToolURL(tool.name, version.version, filename);
 		const blob = await (await fetch(url)).blob();
 		await zipWriter.add(filename, new ZipJS.BlobReader(blob));
 	}
@@ -42,8 +41,6 @@ async function downloadAsZip(program) {
 	busyDownload = false;
 }
 </script>
-
-<base href="{CONFIG.url}/{tool.name}/{version.version}/" />
 
 <!-- Description -->
 <p class="lead">
@@ -64,7 +61,7 @@ async function downloadAsZip(program) {
 	<h5 class="mt-4">Used By</h5>
 	<ListGroup>
 		{#each usedBy as t}
-			<ListGroupItem tag="a" href="{CONFIG.url}/{t.name}/{t.version}" action>{t.name} v{t.version}</ListGroupItem>
+			<ListGroupItem tag="a" href={getToolURL(t.name, t.version)} action>{t.name} v{t.version}</ListGroupItem>
 		{/each}
 	</ListGroup>
 {/if}
@@ -74,7 +71,7 @@ async function downloadAsZip(program) {
 	<h5 class="mt-4">Depends On</h5>
 	<ListGroup>
 		{#each version.dependencies as d}
-			<ListGroupItem tag="a" href="{CONFIG.url}/{d.name}/{d.version}" action>{d.name} v{d.version}</ListGroupItem>
+			<ListGroupItem tag="a" href="{getToolURL(d.name, d.version)}" action>{d.name} v{d.version}</ListGroupItem>
 		{/each}
 	</ListGroup>
 {/if}
@@ -106,7 +103,7 @@ async function downloadAsZip(program) {
 	</h6>
 	<ListGroup>
 		{#each tool.files || ["js", "wasm"] as extension}
-			<ListGroupItem tag="a" href="{program}.{extension}" action>{program}.{extension}</ListGroupItem>
+			<ListGroupItem tag="a" href={getToolURL(tool.name, version.version, `${program}.${extension}`)} action>{program}.{extension}</ListGroupItem>
 		{/each}
 	</ListGroup>
 {/each}
