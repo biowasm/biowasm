@@ -13,7 +13,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "next",
-		"@sveltejs/adapter-cloudflare-workers": "^1.0.0-next.52",
+		"@sveltejs/adapter-cloudflare-workers": "^1.0.0-next.53",
 		"@sveltejs/kit": "^1.0.0-next.427",
 		"cypress": "^10.6.0",
 		"svelte": "^3.44.0",
