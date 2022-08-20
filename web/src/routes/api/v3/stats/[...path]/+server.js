@@ -67,17 +67,12 @@ function error(params) {
 
 // Generate mock stats for local development
 function getMockStats() {
-	const stats = { "2022-07-01": 10, "2022-07-02": 20, "total": 30 };
-	return {
-		samtools: {
-			"1.10": stats
-		},
-		seqtk: {
-			"1.2": stats,
-			"1.3": stats
-		},
-		coreutils: {
-			"8.32": stats
-		}
-	};
+	const stats = {};
+	for(let tool of CONFIG.tools) {
+		stats[tool.name] = {};
+		for(let version of tool.versions)
+			stats[tool.name][version.version] = { "2022-07-01": 10, "2022-07-02": 20, "total": 30 };
+	}
+
+	return stats;
 }
