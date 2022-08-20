@@ -1,7 +1,9 @@
 name: Tests
 
-# Run manually or after deploys
+# Run twice a day (2am/2pm UTC), after deploys, or manually
 on:
+  schedule:
+    - cron: '0 2,14 * * *'
   workflow_dispatch:
     inputs:
   workflow_run:
