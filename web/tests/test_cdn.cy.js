@@ -54,7 +54,13 @@ const EXPECTED_OUTPUTS = {
 	}
 };
 
-// // Should error if we create a new .html example file but don't test it
+// Disable cache, otherwise cy.intercept/cy.wait don't work
+before(() => Cypress.automation("remote:debugger:protocol", {
+	command: "Network.setCacheDisabled",
+	params: { cacheDisabled: true }
+}));
+
+// Should error if we create a new .html example file but don't test it
 it("All code examples are being tested", () => {
 	cy.exec("ls ../tools/*/examples/*.html src/examples/*.html").then(result => {
 		const tests = result.stdout.split("\n");
@@ -64,17 +70,49 @@ it("All code examples are being tested", () => {
 
 // Dynamically create a test for each expected output
 Object.keys(EXPECTED_OUTPUTS).forEach(file => {
-	it(`Validate ${file}`, () => {
-		const config = EXPECTED_OUTPUTS[file];
-		const checks = config.checks || config;
-		cy.visit(file);
+	// Test on prd CDN
+	it(`Validate ${file} - prd`, () => {
+		validateHTML(file, "prd");
+	});
 
-		// If tests require UI clicking
-		if("ui" in config)
-			config.ui();
-
-		// Validate tool outputs
-		for(let check of checks)
-			cy.get("body").contains(check);
+	// Test on stg CDN
+	it(`Validate ${file} - stg`, () => {
+		const fileStg = file.replace(".html", ".stg.html");
+		cy.readFile(`../${file}`).then(code => {
+			// Convert prd to stg
+			code = code.replace("https://biowasm.com", "https://stg.biowasm.com");
+			// Replace format `new Aioli([...], { settings: 123 })` --> `new Aioli([...], { settings: 123, env: "stg" })`
+			// Replace format `new Aioli([...])` --> `new Aioli([...], { env: "stg" })`
+			code = code.replace(/new Aioli\(\[([\S\s]*?)\],.*\{([\S\s]*?)}\);/gm, `new Aioli([$1], { $2, env: "stg" });`);
+			code = code.replace(/new Aioli\(\[([\S\s]*?)\]\);/gm, `new Aioli([$1], { env: "stg" });`);
+			cy.writeFile(`../${fileStg}`, code).then(() => {
+				validateHTML(fileStg, "stg");
+			});
+		});
 	});
 });
+
+function validateHTML(file, env="prd") {
+	const config = EXPECTED_OUTPUTS[file.replace(`.${env}`, "")];  // stg & prd expected outputs are the same
+	const checks = config.checks || config;
+
+	// Make sure we're hitting the right CDN
+	const cdnURL = `https://${env === "stg" ? "stg." : ""}biowasm.com`;
+	cy.intercept({ url: /^https:\/\/(stg\.)?biowasm\.com\/cdn\/v3\/.*.js/ }).as("biowasmAPI");
+
+	// Visit file and wait for network requests to CDN (1 for aioli.js, 1 for tool.js)
+	cy.visit(file);
+	for(let i = 0; i < 2; i++)
+		cy.wait("@biowasmAPI").then(xhr => expect(xhr.request.url.startsWith(cdnURL)).to.be.true);
+
+	// If tests require UI clicking
+	if("ui" in config)
+		config.ui();
+
+	// Validate tool outputs
+	for(let check of checks)
+		cy.get("body").contains(check);
+
+	if(env === "stg")
+		cy.exec(`rm ../${file}`);
+}
