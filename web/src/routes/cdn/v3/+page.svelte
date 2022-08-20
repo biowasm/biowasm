@@ -19,8 +19,14 @@ export let data = { tools: [] };
 	<tbody>
 		{#each data.tools.filter(d => d.listed !== false) as t}
 			{@const toolURL = t.versions.length === 1 ? getToolURL(t.name, t.versions[0].version) : getToolURL(t.name)}
-			<tr on:click={() => goto(toolURL)}>
-				<td class="text-primary fw-bold"><a class="text-decoration-none" href={toolURL}>{t.name}</a></td>
+			<tr on:click={evt => {
+				// Support Cmd+Click on table row
+				if(evt.metaKey)
+					window.open(toolURL, '_blank');
+				else
+					goto(toolURL);
+			}}>
+				<td class="text-primary fw-bold">{t.name}</td>
 				<td>{t.description}</td>
 				<td>{t.versions[0].version}</td>
 			</tr>
