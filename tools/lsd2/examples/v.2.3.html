@@ -1,0 +1,11 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["lsd2/2.3"]);
+
+const result = await CLI.exec("lsd2 -i /shared/lsd2/tree.newick -d /shared/lsd2/tree.date -s 1000");
+
+document.getElementById("output").innerHTML = result;
+</script>
+
+<h4>Output of <code>lsd2</code>:</h4>
+<pre id="output">Loading...</pre>
