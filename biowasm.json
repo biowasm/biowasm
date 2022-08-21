@@ -176,6 +176,18 @@
 			]
 		},
 		{
+			"name": "lsd2",
+			"programs": ["lsd2"],
+			"description": "A phylogeny dating method",
+			"files": ["js", "wasm", "data"],
+			"versions": [
+				{
+					"version": "2.3",
+					"branch": "v.2.3"
+				}
+			]
+		},
+		{
 			"name": "minimap2",
 			"programs": ["minimap2", "minimap2-simd"],
 			"description": "Pairwise sequence alignment",
