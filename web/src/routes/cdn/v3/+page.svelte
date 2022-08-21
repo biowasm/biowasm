@@ -35,7 +35,7 @@ onMount(async () => {
 
 // Utilities
 function getNbDownloads(tool) {
-	return stats?.[tool.name]?.[tool.versions[0].version]?.total || 0;
+	return stats?.[tool.name]?.[tool.versions.at(-1).version]?.total || 0;
 }
 
 function sortBy(col) {
@@ -58,7 +58,7 @@ function sortBy(col) {
 	</thead>
 	<tbody>
 		{#each tools as t}
-			{@const toolURL = t.versions.length === 1 ? getToolURL(t.name, t.versions[0].version) : getToolURL(t.name)}
+			{@const toolURL = t.versions.length === 1 ? getToolURL(t.name, t.versions.at(-1).version) : getToolURL(t.name)}
 			<tr on:click={evt => {
 				// Support Cmd+Click on table row
 				if(evt.metaKey)
@@ -68,7 +68,7 @@ function sortBy(col) {
 			}}>
 				<td class="text-primary fw-bold">{t.name}</td>
 				<td>{t.description}</td>
-				<td>{t.versions[0].version}</td>
+				<td>{t.versions.at(-1).version}</td>
 				{#key stats}
 					<td>{getNbDownloads(t).toLocaleString()}</td>
 				{/key}
