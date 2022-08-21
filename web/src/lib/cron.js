@@ -36,11 +36,14 @@ async function cron(env) {
 			}
 		}
 	}
+	// Special case for Aioli: assign CDN v2 stats to 2.x.x versions
+	latestVersion["aioli"] = "2.x.x";
 
 	// Bring in stats from v2 CDN
 	const statsOld = await env.CDN_V2.get("summary", { type: "json" });
 	for(let date in statsOld) {
 		for(let toolName in statsOld[date]) {
+			// CDN v2 didn't store stats per version so we use latest version
 			const versionName = latestVersion[toolName];
 			if(!(toolName in stats))
 				stats[toolName] = {};
