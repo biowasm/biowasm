@@ -10,6 +10,7 @@ echo -e "5\t\t\t# number of temporal constraints\nA 1999.2\t\t# the date of A is
 TO_BUILD=$(ls *.cpp | sed "s/.cpp/.o/")
 
 # Build .cpp files
+make clean  # repo contains precompiled .o
 emmake make $TO_BUILD CXX=em++ CXXFLAGS="-O2"
 
 # Build .js/.wasm
