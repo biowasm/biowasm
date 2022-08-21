@@ -71,7 +71,11 @@ function getMockStats() {
 	for(let tool of CONFIG.tools) {
 		stats[tool.name] = {};
 		for(let version of tool.versions)
-			stats[tool.name][version.version] = { "2022-07-01": 10, "2022-07-02": 20, "total": 30 };
+			stats[tool.name][version.version] = {
+				"2022-07-01": Math.round(1000 * Math.random()),
+				"2022-07-02": Math.round(2000 * Math.random()),
+				"total": Math.round(3000 * Math.random())
+			};
 	}
 
 	return stats;

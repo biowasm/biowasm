@@ -1,4 +1,5 @@
 <script context="module">
+import { onMount } from "svelte";
 import { goto } from "$app/navigation";
 import { Table } from "sveltestrap";
 import { getToolURL } from "$lib/utils";
@@ -6,18 +7,57 @@ import { getToolURL } from "$lib/utils";
 
 <script>
 export let data = { tools: [] };
+
+// State
+let sortColumn = "name";
+let sortDirection = "asc";
+let stats = null;
+
+// Sort tools
+$: tools = data.tools.filter(d => d.listed !== false).sort((a, b) => {
+	let diff = 0;
+
+	if(sortColumn === "downloads") {
+		const downloadsA = getNbDownloads(a);
+		const downloadsB = getNbDownloads(b);
+		diff = downloadsA - downloadsB;
+	} else {
+		diff = a[sortColumn].localeCompare(b[sortColumn]);
+	}
+
+	return diff * (sortDirection === "asc" ? 1 : -1);
+});
+
+// Load stats on load
+onMount(async () => {
+	stats = (await (await fetch("/api/v3/stats")).json()).stats;
+});
+
+// Utilities
+function getNbDownloads(tool) {
+	return stats?.[tool.name]?.[tool.versions[0].version]?.total || 0;
+}
+
+function sortBy(col) {
+	sortColumn = col;
+	if(sortDirection === "asc")
+		sortDirection = "desc";
+	else
+		sortDirection = "asc";
+}
 </script>
 
 <Table hover>
 	<thead>
 		<tr>
-			<th width="20%">Name</th>
+			<th width="20%" on:click={() => sortBy("name")}>Name</th>
 			<th>Description</th>
-			<th width="20%">Latest Version</th>
+			<th width="10%">Latest</th>
+			<th width="10%" on:click={() => sortBy("downloads")}>Downloads</th>
 		</tr>
 	</thead>
 	<tbody>
-		{#each data.tools.filter(d => d.listed !== false) as t}
+		{#each tools as t}
 			{@const toolURL = t.versions.length === 1 ? getToolURL(t.name, t.versions[0].version) : getToolURL(t.name)}
 			<tr on:click={evt => {
 				// Support Cmd+Click on table row
@@ -29,6 +69,9 @@ export let data = { tools: [] };
 				<td class="text-primary fw-bold">{t.name}</td>
 				<td>{t.description}</td>
 				<td>{t.versions[0].version}</td>
+				{#key stats}
+					<td>{getNbDownloads(t).toLocaleString()}</td>
+				{/key}
 			</tr>
 		{/each}
 	</tbody>
