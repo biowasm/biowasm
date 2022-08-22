@@ -272,6 +272,17 @@
 			]
 		},
 		{
+			"name": "tn93",
+			"programs": ["tn93"],
+			"description": "Pairwise distance on FASTA files using Tamura Nei 93 distance",
+			"versions": [
+				{
+					"version": "1.0.9",
+					"branch": "v1.0.9"
+				}
+			]
+		},
+		{
 			"name": "wgsim",
 			"programs": ["wgsim"],
 			"description": "Simulate short reads from a reference genome",

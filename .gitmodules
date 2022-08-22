@@ -82,6 +82,10 @@
 	path = tools/ssw/src
 	url = https://github.com/mengyao/Complete-Striped-Smith-Waterman-Library.git
 
+[submodule "tools/tn93/src"]
+	path = tools/tn93/src
+	url = https://github.com/veg/tn93.git
+
 [submodule "tools/wgsim/src"]
 	path = tools/wgsim/src
 	url = https://github.com/lh3/wgsim.git
