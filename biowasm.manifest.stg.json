@@ -113,6 +113,8 @@
   "ssw/1.2.4/ssw-simd.wasm": "ssw/1.2.4/ssw-simd.wasm:0e6100ea78a18842f46279c262071763",
   "ssw/1.2.4/ssw.js": "ssw/1.2.4/ssw.js:1d414ceb403a620cf08b8d505ae4a3ce",
   "ssw/1.2.4/ssw.wasm": "ssw/1.2.4/ssw.wasm:27462cefef7b1dcdec3a49de6d0e0623",
+  "tn93/1.0.9/tn93.js": "tn93/1.0.9/tn93.js:cf23cf770244cdf3e0142a7f3d33154f",
+  "tn93/1.0.9/tn93.wasm": "tn93/1.0.9/tn93.wasm:c0aa093651f7275cbcc0afa5b3179042",
   "wgsim/2011.10.17/wgsim.js": "wgsim/2011.10.17/wgsim.js:160ed04faa193026f4b861dcfdbda0cf",
   "wgsim/2011.10.17/wgsim.wasm": "wgsim/2011.10.17/wgsim.wasm:2b9bc9ca3462cc1d3f35859e400a17f1"
 }
