@@ -275,6 +275,7 @@
 			"name": "tn93",
 			"programs": ["tn93"],
 			"description": "Pairwise distance on FASTA files using Tamura Nei 93 distance",
+			"files": ["js", "wasm", "data"],
 			"versions": [
 				{
 					"version": "1.0.9",
