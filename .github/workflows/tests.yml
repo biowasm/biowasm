@@ -6,10 +6,6 @@ on:
     - cron: '0 2,14 * * *'
   workflow_dispatch:
     inputs:
-  workflow_run:
-    workflows: ["Deploy biowasm v3"]
-    types:
-      - completed
 
 jobs:
   deploy:
