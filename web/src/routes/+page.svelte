@@ -49,11 +49,15 @@ import CONFIG from "@/biowasm.json";
 						<td>Runs command-line tools in the browser to power interactive tutorials</td>
 					</tr>
 					<tr>
-						<td><a class="fw-bold" href="https://datagrok.ai/">Datagrok</a></td>
+						<td><a class="fw-bold" href="https://czid.org">CZ ID</a></td>
+						<td>Runs <code>htsfile</code> and <code>seqtk</code> to identify data issues before file upload</td>
+					</tr>
+					<tr>
+						<td><a class="fw-bold" href="https://datagrok.ai">Datagrok</a></td>
 						<td>Runs <code>kalign</code> in the browser for multiple-sequence alignment analysis</td>
 					</tr>
 					<tr>
-						<td><a class="fw-bold" href="https://quinlan-lab.github.io/bedqc/">bedqc</a></td>
+						<td><a class="fw-bold" href="https://quinlan-lab.github.io/bedqc">bedqc</a></td>
 						<td>Runs <code>bedtools</code> in the browser to validate .bed files</td>
 					</tr>
 					<tr>
