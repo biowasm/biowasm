@@ -35,7 +35,11 @@ onMount(async () => {
 
 // Utilities
 function getNbDownloads(tool) {
-	return stats?.[tool.name]?.[tool.versions.at(-1).version]?.total || 0;
+	let sum = 0;
+	const statsPerVersion = stats?.[tool.name];
+	for(let version in statsPerVersion)
+		sum += statsPerVersion[version]?.total || 0;
+	return sum;
 }
 
 function sortBy(col) {
