@@ -1,0 +1,105 @@
+diff --git a/src/jkOwnLib/makefile b/src/jkOwnLib/makefile
+index 16f2cf58e9..0f7a8368e0 100644
+--- a/src/jkOwnLib/makefile
++++ b/src/jkOwnLib/makefile
+@@ -8,7 +8,7 @@ O = bandExt.o crudeali.o ffAliHelp.o ffSeedExtend.o fuzzyFind.o \
+ T = ../lib/$(MACHTYPE)/jkOwnLib.a
+ 
+ $(T): $(O) ../lib/$(MACHTYPE)
+-	ar rcus $(T) $(O)
++	emar rcus $(T) $(O)
+ 
+ ../lib/$(MACHTYPE):
+ 	mkdir ../lib/$(MACHTYPE)
+diff --git a/src/lib/bPlusTree.c b/src/lib/bPlusTree.c
+index 4f5a999a2c..2f04d70626 100644
+--- a/src/lib/bPlusTree.c
++++ b/src/lib/bPlusTree.c
+@@ -354,8 +354,9 @@ if (keySize != bpt->keySize)
+     }
+ 
+ /* Make sure the valSize matches what's in file. */
++// FIXME: Otherwise, it errors out for valid bigBed files (don't see that issue when compile to binary)
+ if (valSize != bpt->valSize)
+-    errAbort("Value size mismatch between bptFileFind (valSize=%d) and %s (valSize=%d)",
++    warn("Value size mismatch between bptFileFind (valSize=%d) and %s (valSize=%d)",
+     	valSize, bpt->fileName, bpt->valSize);
+ 
+ if (multi)
+diff --git a/src/lib/makefile b/src/lib/makefile
+index 2dc5d140a1..6f1f8e4c8a 100644
+--- a/src/lib/makefile
++++ b/src/lib/makefile
+@@ -2,6 +2,7 @@ kentSrc = ..
+ include ../inc/localEnvironment.mk
+ include ../inc/common.mk
+ 
++# Don't compile hmac.o and https.o since can't be compiled to WebAssembly
+ O = aliType.o annoAssembly.o annoFilter.o annoFormatter.o annoFormatTab.o \
+     annoGrator.o annoGrateWig.o annoGratorQuery.o annoOption.o annoRow.o annoStreamer.o \
+     annoStreamBigBed.o annoStreamBigWig.o annoStreamTab.o annoStreamLongTabix.o annoStreamVcf.o \
+@@ -27,7 +28,7 @@ O = aliType.o annoAssembly.o annoFilter.o annoFormatter.o annoFormatTab.o \
+     gapCalc.o gdf.o gemfont.o genomeRangeTree.o \
+     gfNet.o gff.o gff3.o gfxPoly.o gifLabel.o \
+     hacTree.o hash.o hex.o histogram.o hmmPfamParse.o hmmstats.o htmlColor.o htmlPage.o htmshell.o \
+-    hmac.o https.o intExp.o intValTree.o internet.o itsa.o iupac.o \
++    intExp.o intValTree.o internet.o itsa.o iupac.o \
+     jointalign.o jpegSize.o jsonParse.o jsonQuery.o jsonWrite.o \
+     keys.o knetUdc.o kxTok.o linefile.o lineFileOnBigBed.o localmem.o log.o longTabix.o longToList.o \
+     maf.o mafFromAxt.o mafScore.o mailViaPipe.o md5.o \
+@@ -50,7 +51,7 @@ O = aliType.o annoAssembly.o annoFilter.o annoFormatter.o annoFormatTab.o \
+     xAli.o xa.o xap.o xenshow.o xmlEscape.o xp.o zlibFace.o
+ 
+ $(MACHTYPE)/jkweb.a: $(O) $(MACHTYPE)
+-	ar rcus $(MACHTYPE)/jkweb.a $(O)
++	emar rcus $(MACHTYPE)/jkweb.a $(O)
+ 
+ $(MACHTYPE):
+ 	mkdir -p $(MACHTYPE)
+diff --git a/src/lib/udc.c b/src/lib/udc.c
+index b44ade370f..065cee02c8 100644
+--- a/src/lib/udc.c
++++ b/src/lib/udc.c
+@@ -38,7 +38,6 @@
+ #include "udc.h"
+ #include "hex.h"
+ #include <dirent.h>
+-#include <openssl/sha.h>
+ 
+ /* The stdio stream we'll use to output statistics on file i/o.  Off by default. */
+ FILE *udcLogStream = NULL;
+@@ -1041,18 +1040,8 @@ udcParseUrlFull(url, retProtocol, retAfterProtocol, retColon, NULL);
+ static void addElementToDy(struct dyString *dy, int maxLen, char *name)
+ /* add one element of a path to a dyString, hashing it if it's longer 
+  * than NAME_MAX */
++// Removed code that relies on openssl since it can't be compiled to WebAssembly
+ {
+-if (strlen(name) > maxLen)
+-    {
+-    unsigned char hash[SHA_DIGEST_LENGTH];
+-    char newName[(SHA_DIGEST_LENGTH + 1) * 2];
+-
+-    SHA1((const unsigned char *)name, strlen(name), hash);
+-    hexBinaryString(hash,  SHA_DIGEST_LENGTH, newName, (SHA_DIGEST_LENGTH + 1) * 2);
+-    
+-    dyStringAppend(dy, newName);
+-    }
+-else
+     dyStringAppend(dy, name);
+ }
+ 
+diff --git a/src/parasol/lib/makefile b/src/parasol/lib/makefile
+index 15c9132459..029d56d605 100644
+--- a/src/parasol/lib/makefile
++++ b/src/parasol/lib/makefile
+@@ -4,8 +4,8 @@ include ../../inc/common.mk
+ O = broadData.o paraLib.o paraMessage.o machSpec.o jobResult.o
+ 
+ ${MACHTYPE}/paralib.a: ${O} libdir
+-	ar rcu ${MACHTYPE}/paralib.a ${O}
+-	ranlib ${MACHTYPE}/paralib.a
++	emar rcu ${MACHTYPE}/paralib.a ${O}
++	emranlib ${MACHTYPE}/paralib.a
+ 
+ libdir::
+ 	${MKDIR} ${MACHTYPE}
