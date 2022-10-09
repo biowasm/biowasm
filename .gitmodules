@@ -50,6 +50,10 @@
 	path = tools/kalign/src
 	url = https://github.com/TimoLassmann/kalign.git
 
+[submodule "tools/kentutils/src"]
+	path = tools/kentutils/src
+	url = https://github.com/ucscGenomeBrowser/kent.git
+
 [submodule "tools/lsd2/src"]
 	path = tools/lsd2/src
 	url = https://github.com/tothuhien/lsd2.git
