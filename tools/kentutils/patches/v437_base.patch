@@ -103,3 +103,48 @@ index 15c9132459..029d56d605 100644
  
  libdir::
  	${MKDIR} ${MACHTYPE}
+diff --git a/src/utils/bigWigToWig/bigWigToWig.c b/src/utils/bigWigToWig/bigWigToWig.c
+index 566d5db88d..33477538c7 100644
+--- a/src/utils/bigWigToWig/bigWigToWig.c
++++ b/src/utils/bigWigToWig/bigWigToWig.c
+@@ -16,6 +16,7 @@
+ char *clChrom = NULL;
+ int clStart = -1;
+ int clEnd = -1;
++int maxItems = 0;
+ 
+ void usage()
+ /* Explain usage and exit. */
+@@ -30,6 +31,7 @@ errAbort(
+   "   -chrom=chr1 - if set restrict output to given chromosome\n"
+   "   -start=N - if set, restrict output to only that over start\n"
+   "   -end=N - if set, restict output to only that under end\n"
++  "   -maxItems=N - if set, restrict output to first N items\n"
+   "   -udcDir=/dir/to/cache - place to put cache for remote bigBed/bigWigs\n"
+   );
+ }
+@@ -38,6 +40,7 @@ static struct optionSpec options[] = {
+    {"chrom", OPTION_STRING},
+    {"start", OPTION_INT},
+    {"end", OPTION_INT},
++   {"maxItems", OPTION_INT},
+    {"udcDir", OPTION_STRING},
+    {NULL, 0},
+ };
+@@ -60,7 +63,7 @@ for (chrom = chromList; chrom != NULL; chrom = chrom->next)
+         start = clStart;
+     if (clEnd > 0)
+         end = clEnd;
+-    bigWigIntervalDump(bwf, chromName, start, end, 0, f);
++    bigWigIntervalDump(bwf, chromName, start, end, maxItems, f);
+     }
+ bbiChromInfoFreeList(&chromList);
+ carefulClose(&f);
+@@ -76,6 +79,7 @@ if (argc != 3)
+ clChrom = optionVal("chrom", clChrom);
+ clStart = optionInt("start", clStart);
+ clEnd = optionInt("end", clEnd);
++maxItems = optionInt("maxItems", maxItems);
+ udcSetDefaultDir(optionVal("udcDir", udcDefaultDir()));
+ bigWigToWig(argv[1], argv[2]);
+ if (verboseLevel() > 1)
