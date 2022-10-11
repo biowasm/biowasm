@@ -116,6 +116,37 @@ index 15c9132459..029d56d605 100644
  
  libdir::
  	${MKDIR} ${MACHTYPE}
+diff --git a/src/utils/bigWigInfo/bigWigInfo.c b/src/utils/bigWigInfo/bigWigInfo.c
+index def03719a8..207da4d21f 100644
+--- a/src/utils/bigWigInfo/bigWigInfo.c
++++ b/src/utils/bigWigInfo/bigWigInfo.c
+@@ -67,13 +67,25 @@ if (bwf->levelList != NULL)
+     printLabelAndLongNumber("primaryIndexSize", indexEnd - bwf->unzoomedIndexOffset);
+     }
+ printf("zoomLevels: %d\n", bwf->zoomLevels);
++struct bbiChromInfo *chrom, *chromList = bbiChromList(bwf);
++
+ if (optionExists("zooms"))
+     {
+     struct bbiZoomLevel *zoom;
+     for (zoom = bwf->levelList; zoom != NULL; zoom = zoom->next)
+ 	printf("\t%d\t%d\n", zoom->reductionLevel, (int)(zoom->indexOffset - zoom->dataOffset));
++
++    // Extend bigWigInfo to show regions like bigBedInfo does
++	for (chrom=chromList; chrom != NULL; chrom = chrom->next)
++	    {
++	    struct bbiSummary *sum, *sumList = bbiSummariesInRegion(zoom, bwf,   chrom->id,0, chrom->size);
++	     for (sum = sumList; sum != NULL; sum = sum->next)
++	             {
++		     printf("\t\t%s:%d-%d\n",chrom->name, sum->start, sum->end);
++		     }
++				       
++	    }
+     }
+-struct bbiChromInfo *chrom, *chromList = bbiChromList(bwf);
+ printf("chromCount: %d\n", slCount(chromList));
+ if (optionExists("chroms"))
+     for (chrom=chromList; chrom != NULL; chrom = chrom->next)
 diff --git a/src/utils/bigWigToWig/bigWigToWig.c b/src/utils/bigWigToWig/bigWigToWig.c
 index 566d5db88d..33477538c7 100644
 --- a/src/utils/bigWigToWig/bigWigToWig.c
