@@ -78,6 +78,11 @@ def compile(tool, versions=[], level=0):
 	versions = [v for v in tool_info["versions"] if v["version"] in versions] if versions else tool_info["versions"]
 	tool_git_path = f"tools/{tool}/src/"
 
+	# Validate
+	if len(versions) == 0:
+		print(f"No valid versions found in biowasm.json for {tool}. Make sure versions don't start with 'v'.")
+		exit(1)
+
 	# Init repo
 	exec(f"git submodule update --init --recursive {tool_git_path} && git submodule status {tool_git_path}")
 
