@@ -4,7 +4,7 @@ emmake make topLibs
 
 # Compile tools
 cd utils/
-TOOLS=("bigBedToBed" "bigWigToWig")
+TOOLS=("bigBedToBed" "bigBedInfo" "bigWigToWig" "bigWigInfo")
 for TOOL in ${TOOLS[@]};
 do
   cd $TOOL
