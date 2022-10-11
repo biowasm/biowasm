@@ -180,6 +180,17 @@
 			]
 		},
 		{
+			"name": "kentutils",
+			"programs": ["bigBedToBed", "bigWigToWig"],
+			"description": "File conversion utilities",
+			"versions": [
+				{
+					"version": "437",
+					"branch": "v437_base"
+				}
+			]
+		},
+		{
 			"name": "lsd2",
 			"programs": ["lsd2"],
 			"description": "A phylogeny dating method",
