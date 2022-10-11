@@ -1,3 +1,16 @@
+diff --git a/src/inc/common.mk b/src/inc/common.mk
+index 9d5dde25b9..4a7b1e3072 100644
+--- a/src/inc/common.mk
++++ b/src/inc/common.mk
+@@ -5,7 +5,7 @@ CFLAGS += -std=c99
+ 
+ # to build on sundance: CC=gcc -mcpu=v9 -m64
+ ifeq (${COPT},)
+-    COPT=-O -g
++    COPT=-O2 -g -s USE_ZLIB=1  # zlibFace.c needs zlib.h
+ endif
+ ifeq (${CFLAGS},)
+     CFLAGS=
 diff --git a/src/jkOwnLib/makefile b/src/jkOwnLib/makefile
 index 16f2cf58e9..0f7a8368e0 100644
 --- a/src/jkOwnLib/makefile
