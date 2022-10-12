@@ -181,7 +181,7 @@
 		},
 		{
 			"name": "kentutils",
-			"programs": ["bigBedToBed", "bigBedInfo", "bigWigToWig", "bigWigInfo"],
+			"programs": ["bigBedToBed", "bigBedInfo", "bigBedHead", "bigWigToWig", "bigWigInfo", "bigWigHead"],
 			"description": "File conversion utilities",
 			"versions": [
 				{
