@@ -116,79 +116,123 @@ index 15c9132459..029d56d605 100644
  
  libdir::
  	${MKDIR} ${MACHTYPE}
-diff --git a/src/utils/bigWigInfo/bigWigInfo.c b/src/utils/bigWigInfo/bigWigInfo.c
-index def03719a8..207da4d21f 100644
---- a/src/utils/bigWigInfo/bigWigInfo.c
-+++ b/src/utils/bigWigInfo/bigWigInfo.c
-@@ -67,13 +67,25 @@ if (bwf->levelList != NULL)
-     printLabelAndLongNumber("primaryIndexSize", indexEnd - bwf->unzoomedIndexOffset);
-     }
- printf("zoomLevels: %d\n", bwf->zoomLevels);
-+struct bbiChromInfo *chrom, *chromList = bbiChromList(bwf);
+diff --git a/src/utils/bigBedHead/bigBedHead.c b/src/utils/bigBedHead/bigBedHead.c
+new file mode 100644
+index 0000000000..6b283e4e7e
+--- /dev/null
++++ b/src/utils/bigBedHead/bigBedHead.c
+@@ -0,0 +1,60 @@
++/* bigBedHead - Print out first N records of a bigBed file */
++#include "options.h"
++#include "bigBed.h"
++// #include "localmem.h"
 +
- if (optionExists("zooms"))
-     {
-     struct bbiZoomLevel *zoom;
-     for (zoom = bwf->levelList; zoom != NULL; zoom = zoom->next)
- 	printf("\t%d\t%d\n", zoom->reductionLevel, (int)(zoom->indexOffset - zoom->dataOffset));
++int n = 0;
 +
-+    // Extend bigWigInfo to show regions like bigBedInfo does
-+	for (chrom=chromList; chrom != NULL; chrom = chrom->next)
-+	    {
-+	    struct bbiSummary *sum, *sumList = bbiSummariesInRegion(zoom, bwf,   chrom->id,0, chrom->size);
-+	     for (sum = sumList; sum != NULL; sum = sum->next)
-+	             {
-+		     printf("\t\t%s:%d-%d\n",chrom->name, sum->start, sum->end);
-+		     }
-+				       
-+	    }
-     }
--struct bbiChromInfo *chrom, *chromList = bbiChromList(bwf);
- printf("chromCount: %d\n", slCount(chromList));
- if (optionExists("chroms"))
-     for (chrom=chromList; chrom != NULL; chrom = chrom->next)
-diff --git a/src/utils/bigWigToWig/bigWigToWig.c b/src/utils/bigWigToWig/bigWigToWig.c
-index 566d5db88d..33477538c7 100644
---- a/src/utils/bigWigToWig/bigWigToWig.c
-+++ b/src/utils/bigWigToWig/bigWigToWig.c
-@@ -16,6 +16,7 @@
- char *clChrom = NULL;
- int clStart = -1;
- int clEnd = -1;
-+int maxItems = 0;
- 
- void usage()
- /* Explain usage and exit. */
-@@ -30,6 +31,7 @@ errAbort(
-   "   -chrom=chr1 - if set restrict output to given chromosome\n"
-   "   -start=N - if set, restrict output to only that over start\n"
-   "   -end=N - if set, restict output to only that under end\n"
-+  "   -maxItems=N - if set, restrict output to first N items\n"
-   "   -udcDir=/dir/to/cache - place to put cache for remote bigBed/bigWigs\n"
-   );
- }
-@@ -38,6 +40,7 @@ static struct optionSpec options[] = {
-    {"chrom", OPTION_STRING},
-    {"start", OPTION_INT},
-    {"end", OPTION_INT},
-+   {"maxItems", OPTION_INT},
-    {"udcDir", OPTION_STRING},
-    {NULL, 0},
- };
-@@ -60,7 +63,7 @@ for (chrom = chromList; chrom != NULL; chrom = chrom->next)
-         start = clStart;
-     if (clEnd > 0)
-         end = clEnd;
--    bigWigIntervalDump(bwf, chromName, start, end, 0, f);
-+    bigWigIntervalDump(bwf, chromName, start, end, maxItems, f);
-     }
- bbiChromInfoFreeList(&chromList);
- carefulClose(&f);
-@@ -76,6 +79,7 @@ if (argc != 3)
- clChrom = optionVal("chrom", clChrom);
- clStart = optionInt("start", clStart);
- clEnd = optionInt("end", clEnd);
-+maxItems = optionInt("maxItems", maxItems);
- udcSetDefaultDir(optionVal("udcDir", udcDefaultDir()));
- bigWigToWig(argv[1], argv[2]);
- if (verboseLevel() > 1)
++void usage() {
++	errAbort(
++		"bigBedHead - Print out first N records of a bigBed file.\n"
++		"usage:\n"
++		"   bigBedHead file.bw\n"
++		"options:\n"
++		"   -n=10 - Number of records to show\n"
++	);
++}
++
++static struct optionSpec options[] = {
++	{"n", OPTION_INT},
++	{NULL, 0},
++};
++
++void bigBedHead(char *fileName, char *outFile) {
++	struct bbiFile *bbi = bigBedFileOpen(fileName);
++
++	// Get first chromosome
++	struct bbiChromInfo *chrom = bbiChromList(bbi);
++
++	// Get first region on that chromosome
++	struct bbiZoomLevel *zoom = bbi->levelList;
++	struct bbiSummary *region = bbiSummariesInRegion(zoom, bbi, chrom->id, 0, chrom->size);
++
++	// Write to file
++	FILE *f = mustOpen(outFile, "w");
++	struct lm *lm = lmInit(0);
++	int printCount = 0;
++	while(printCount < n && region != NULL) {
++		struct bigBedInterval *interval, *intervalList = bigBedIntervalQuery(bbi, chrom->name, region->start, region->end, n - printCount, lm);
++		for (interval = intervalList; interval != NULL; interval = interval->next) {
++			fprintf(f, "%s\t%u\t%u", chrom->name, interval->start, interval->end);
++			char *rest = interval->rest;
++			if (rest != NULL)
++				fprintf(f, "\t%s\n", rest);
++			else
++				fprintf(f, "\n");
++			printCount++;
++		}
++		region = region->next;
++	}
++	lmCleanup(&lm);
++}
++
++int main(int argc, char *argv[]) {
++	optionInit(&argc, argv, options);
++	n = optionInt("n", n);
++	if (argc != 3)
++		usage();
++	bigBedHead(argv[1], argv[2]);
++	return 0;
++}
+diff --git a/src/utils/bigWigHead/bigWigHead.c b/src/utils/bigWigHead/bigWigHead.c
+new file mode 100644
+index 0000000000..73016d8227
+--- /dev/null
++++ b/src/utils/bigWigHead/bigWigHead.c
+@@ -0,0 +1,48 @@
++/* bigWigHead - Print out first N records of a bigWig file */
++#include "options.h"
++#include "bigWig.h"
++
++int n = 0;
++
++void usage() {
++	errAbort(
++		"bigWigHead - Print out first N records of a bigWig file.\n"
++		"usage:\n"
++		"   bigWigHead file.bw\n"
++		"options:\n"
++		"   -n=10 - Number of records to show\n"
++	);
++}
++
++static struct optionSpec options[] = {
++	{"n", OPTION_INT},
++	{NULL, 0},
++};
++
++void bigWigHead(char *fileName, char *outFile) {
++	struct bbiFile *bwf = bigWigFileOpen(fileName);
++
++	// Get first chromosome
++	struct bbiChromInfo *chrom = bbiChromList(bwf);
++
++	// Get first region on that chromosome
++	struct bbiZoomLevel *zoom = bwf->levelList;
++	struct bbiSummary *region = bbiSummariesInRegion(zoom, bwf, chrom->id, 0, chrom->size);
++
++	// Write to file
++	FILE *f = mustOpen(outFile, "w");
++	int printCount = 0;
++	while(printCount < n && region != NULL) {
++		printCount += bigWigIntervalDump(bwf, chrom->name, region->start, region->end, n - printCount, f);
++		region = region->next;
++	}
++}
++
++int main(int argc, char *argv[]) {
++	optionInit(&argc, argv, options);
++	n = optionInt("n", n);
++	if (argc != 3)
++		usage();
++	bigWigHead(argv[1], argv[2]);
++	return 0;
++}
