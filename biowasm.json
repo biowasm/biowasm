@@ -127,6 +127,7 @@
 			"name": "gffread",
 			"programs": ["gffread"],
 			"description": "Parse and file .gff/.gtf files",
+			"files": ["js", "wasm", "data"],
 			"versions": [
 				{
 					"version": "0.12.7",
