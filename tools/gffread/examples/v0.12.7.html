@@ -1,0 +1,12 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["gffread/0.12.7"]);
+
+// Run gffread on sample data
+const result = await CLI.exec("gffread /gffread/annotation.gff")
+
+document.getElementById("output").innerHTML = result;
+</script>
+
+<h4>Output of <code>gffread</code>:</h4>
+<pre id="output">Loading...</pre>

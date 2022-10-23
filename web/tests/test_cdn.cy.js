@@ -9,6 +9,7 @@ const EXPECTED_OUTPUTS = {
 	"tools/fastp/examples/0.20.1.html": [`	"summary": {\n		"before_filtering": {\n			"total_reads":9,\n			"total_bases":1208,\n			"q20_bases":1078,\n			"q30_bases":1005,\n			"q20_rate":0.892384,\n			"q30_rate":0.831954,\n			"read1_mean_length":134,\n			"gc_content":0.354305\n		},\n		"after_filtering": {\n			"total_reads":8,\n			"total_bases":1208,\n			"q20_bases":1078,\n			"q30_bases":1005,\n			"q20_rate":0.892384,\n			"q30_rate":0.831954,\n			"read1_mean_length":151,\n			"gc_content":0.354305\n		}\n	},\n`],
 	"tools/fasttree/examples/main.html": [`(1k99_A:1.45558,2lef_A:0.86773,(1aab_:2.02358,1j46_A:0.34215)0.877:0.65120);`],
 	"tools/gawk/examples/gawk-5.1.0.html": [`column2\n2\n5\n8\nTotal of column 2 = 15`],
+	"tools/gffread/examples/v0.12.7.html": [`##gff-version 3\n# gffread v0.12.7\n# gffread /gffread/annotation.gff\nNT_187562.1	BestRefSeq	mRNA	411	68627	.	+	.	ID=rna157470;geneID=gene55473;gene_name=MGAM\nNT_187562.1	BestRefSeq	exon	411	495	.	+	.	Parent=rna157470\nNT_187562.1	BestRefSeq	exon	1995	2051	.	+	.	Parent=rna157470`],
 	"tools/grep/examples/v3.7.html": [`good\ngreat`],
 	"tools/htslib/examples/1.10.html": [
 		`Usage:   tabix [OPTIONS] [FILE] [REGION [...]]`,
