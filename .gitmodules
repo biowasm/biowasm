@@ -30,6 +30,10 @@
 	path = tools/gawk/src
 	url = git://git.savannah.gnu.org/gawk.git
 
+[submodule "tools/gffread/src"]
+	path = tools/gffread/src
+	url = https://github.com/gpertea/gffread.git
+
 [submodule "tools/grep/src"]
 	path = tools/grep/src
 	url = git://git.savannah.gnu.org/grep.git
