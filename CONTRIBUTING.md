@@ -77,6 +77,9 @@ git add tools/$TOOL/src .gitmodules
 # Then create a compile.sh script that compiles the tool to WebAssembly
 echo "# TODO" > tools/$TOOL/compile.sh
 chmod +x tools/$TOOL/compile.sh
+
+mkdir -p tools/$TOOL/examples
+echo "#TODO" > tools/$TOOL/examples/$BRANCH.html
 ```
 
 You should also modify/create the following files:
