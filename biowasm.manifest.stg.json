@@ -70,6 +70,8 @@
   "fasttree/2.1.11/fasttree.wasm": "fasttree/2.1.11/fasttree.wasm:2297cb402492c9a384b9ee3a47fea0cf",
   "gawk/5.1.0/gawk.js": "gawk/5.1.0/gawk.js:675384dd0b8b6367dc0a70c93219a989",
   "gawk/5.1.0/gawk.wasm": "gawk/5.1.0/gawk.wasm:18ce06c9767b1ed182cb18690a22573a",
+  "gffread/0.12.7/gffread.js": "gffread/0.12.7/gffread.js:f94276117f69ba31ab28b3c84a7bc647",
+  "gffread/0.12.7/gffread.wasm": "gffread/0.12.7/gffread.wasm:f1dfaee664330201961194cf593c8530",
   "grep/3.7/grep.js": "grep/3.7/grep.js:9f5d588a3f1a113bd33fd7c97a0f30fc",
   "grep/3.7/grep.wasm": "grep/3.7/grep.wasm:0db4d082fa2c53c34d82038205b9a5a0",
   "htslib/1.10/bgzip.js": "htslib/1.10/bgzip.js:d638bbf592dc4280b33486f7c82aeb6d",
