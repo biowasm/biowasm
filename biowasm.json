@@ -124,6 +124,17 @@
 			]
 		},
 		{
+			"name": "gffread",
+			"programs": ["gffread"],
+			"description": "Parse and file .gff/.gtf files",
+			"versions": [
+				{
+					"version": "0.12.7",
+					"branch": "v0.12.7"
+				}
+			]
+		},
+		{
 			"name": "grep",
 			"programs": ["grep"],
 			"description": "Search and filter files",
