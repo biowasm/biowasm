@@ -17,6 +17,7 @@ A repository of genomics tools, compiled from C/C++ to WebAssembly so they can r
 | Tool | Why biowasm? |
 |-|-|
 | [sandbox.bio](https://sandbox.bio) | Runs command-line tools in the browser to power interactive tutorials |
+| [42basepairs](https://42basepairs.com) | Runs `samtools`, `bedtools`, `bcftools` and other tools to preview genomic files |
 | [CZ ID](https://czid.org/) ([repo](https://github.com/chanzuckerberg/czid-web)) | Runs `htsfile` and `seqtk` to identify data issues before file upload |
 | [Datagrok](https://datagrok.ai) ([repo](https://github.com/datagrok-ai/public)) | Runs `kalign` in the browser for multiple-sequence alignment analysis |
 | [bedqc](https://quinlan-lab.github.io/bedqc) ([repo](https://github.com/quinlan-lab/bedqc)) | Runs `bedtools` in the browser to validate BED files |

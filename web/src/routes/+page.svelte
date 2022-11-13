@@ -49,6 +49,10 @@ import CONFIG from "@/biowasm.json";
 						<td>Runs command-line tools in the browser to power interactive tutorials</td>
 					</tr>
 					<tr>
+						<td><a class="fw-bold" href="https://42basepairs.com">42basepairs</a></td>
+						<td>Runs <code>samtools</code>, <code>bedtools</code>, <code>bcftools</code> and other tools to preview genomic files</td>
+					</tr>
+					<tr>
 						<td><a class="fw-bold" href="https://czid.org">CZ ID</a></td>
 						<td>Runs <code>htsfile</code> and <code>seqtk</code> to identify data issues before file upload</td>
 					</tr>
