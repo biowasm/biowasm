@@ -311,6 +311,16 @@
 			]
 		},
 		{
+			"name": "tree",
+			"programs": ["tree"],
+			"description": "List folder contents in a tree format",
+			"versions": [
+				{
+					"version": "2.0.4",
+					"branch": "2.0.4"
+				}
+			]
+		},		{
 			"name": "wgsim",
 			"programs": ["wgsim"],
 			"description": "Simulate short reads from a reference genome",

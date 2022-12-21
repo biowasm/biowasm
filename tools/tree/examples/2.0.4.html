@@ -1,0 +1,11 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["tree/2.0.4"]);
+
+// Show folder structure of root directory
+await CLI.exec("tree /");
+document.getElementById("output").innerHTML = output;
+</script>
+
+<h4>Output of <code>tree /</code>:</h4>
+<pre id="output">Loading...</pre>
