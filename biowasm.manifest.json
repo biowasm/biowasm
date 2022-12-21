@@ -128,6 +128,8 @@
   "tn93/1.0.9/tn93.data": "tn93/1.0.9/tn93.data:8402fca7991de728b04742da92390b34",
   "tn93/1.0.9/tn93.js": "tn93/1.0.9/tn93.js:5513fa26ef12a4af40f3e057ed85c804",
   "tn93/1.0.9/tn93.wasm": "tn93/1.0.9/tn93.wasm:c0aa093651f7275cbcc0afa5b3179042",
+  "tree/2.0.4/tree.js": "tree/2.0.4/tree.js:3fe6db36d5046eb45e88062602b69a70",
+  "tree/2.0.4/tree.wasm": "tree/2.0.4/tree.wasm:d3e4cff81c178489e5ed354689488051",
   "wgsim/2011.10.17/wgsim.js": "wgsim/2011.10.17/wgsim.js:160ed04faa193026f4b861dcfdbda0cf",
   "wgsim/2011.10.17/wgsim.wasm": "wgsim/2011.10.17/wgsim.wasm:2b9bc9ca3462cc1d3f35859e400a17f1"
 }
