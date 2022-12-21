@@ -3,7 +3,7 @@
 const CLI = await new Aioli(["tree/2.0.4"]);
 
 // Show folder structure of root directory
-await CLI.exec("tree /");
+const output = await CLI.exec("tree /");
 document.getElementById("output").innerHTML = output;
 </script>
 
