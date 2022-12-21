@@ -1,4 +1,4 @@
-#!/usr/bin/python3.8
+#!/usr/bin/python3
 # This script compiles tools of interest to WebAssembly and regenerates "biowasm.manifest.json"
 
 import json
