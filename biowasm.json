@@ -320,7 +320,8 @@
 					"branch": "2.0.4"
 				}
 			]
-		},		{
+		},
+		{
 			"name": "wgsim",
 			"programs": ["wgsim"],
 			"description": "Simulate short reads from a reference genome",
