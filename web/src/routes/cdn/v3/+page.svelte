@@ -9,8 +9,8 @@ import { getToolURL } from "$lib/utils";
 export let data = { tools: [] };
 
 // State
-let sortColumn = "name";
-let sortDirection = "asc";
+let sortColumn = "downloads";
+let sortDirection = "desc";
 let stats = null;
 
 // Sort tools
