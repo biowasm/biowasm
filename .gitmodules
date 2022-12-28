@@ -26,6 +26,10 @@
 	path = tools/fastp/src
 	url = https://github.com/OpenGene/fastp.git
 
+[submodule "tools/findutils/src"]
+	path = tools/findutils/src
+	url = git://git.savannah.gnu.org/findutils.git
+
 [submodule "tools/gawk/src"]
 	path = tools/gawk/src
 	url = git://git.savannah.gnu.org/gawk.git

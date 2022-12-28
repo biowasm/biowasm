@@ -41,10 +41,12 @@ def exec(cmd):
 	print(cmd_dry)
 
 	if not args.dry_run:
-		# Not safe to use shell=True generally but this is only running trusted code
-		output = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.decode().strip()
-		if output:
-			print(output)
+		# Stream output to screen as we get it
+		with subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, universal_newlines=True) as p:
+			for line in p.stdout:
+				print(line, end='')
+		if p.returncode != 0:
+			print("Return code not 0: ", subprocess.CalledProcessError(p.returncode, p.args))
 
 
 def get_file_contents(path):

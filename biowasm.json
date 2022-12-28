@@ -102,6 +102,17 @@
 			]
 		},
 		{
+			"name": "findutils",
+			"programs": ["find"],
+			"description": "Search for files in a folder",
+			"versions": [
+				{
+					"version": "4.9.0",
+					"branch": "v4.9.0"
+				}
+			]
+		},
+		{
 			"name": "fasttree",
 			"programs": ["fasttree"],
 			"description": "Build phylogenetic trees from multiple sequence alignments",

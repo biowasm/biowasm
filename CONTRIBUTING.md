@@ -94,3 +94,12 @@ tools/<tool>/
     examples/
         <tag>.html   Example HTML code for running the tool; will be listed on biowasm.com (optional)
 ```
+
+## Clean up GitHub Actions
+
+```bash
+$ gh run list --limit 200 --repo biowasm/biowasm --json databaseId  -q '.[].databaseId' |
+  xargs -IID gh api \
+    "repos/$(gh repo view --json nameWithOwner -q .nameWithOwner)/actions/runs/ID" \
+    -X DELETE
+```

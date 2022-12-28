@@ -68,6 +68,8 @@
   "fastp/0.20.1/fastp.wasm": "fastp/0.20.1/fastp.wasm:7796cea96ce5d40a83ebf3c90dd35dd0",
   "fasttree/2.1.11/fasttree.js": "fasttree/2.1.11/fasttree.js:f21f67c91991c6b4a478604f9d4d8706",
   "fasttree/2.1.11/fasttree.wasm": "fasttree/2.1.11/fasttree.wasm:2297cb402492c9a384b9ee3a47fea0cf",
+  "findutils/4.9.0/find.js": "findutils/4.9.0/find.js:448adf73ef1f4e24d6e030559c806007",
+  "findutils/4.9.0/find.wasm": "findutils/4.9.0/find.wasm:f47fea13f770c7e815df2a0d798762d2",
   "gawk/5.1.0/gawk.js": "gawk/5.1.0/gawk.js:675384dd0b8b6367dc0a70c93219a989",
   "gawk/5.1.0/gawk.wasm": "gawk/5.1.0/gawk.wasm:18ce06c9767b1ed182cb18690a22573a",
   "gffread/0.12.7/gffread.data": "gffread/0.12.7/gffread.data:3e85ebb8410f62f7f376af7890615708",

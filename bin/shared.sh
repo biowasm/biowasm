@@ -15,11 +15,24 @@ EM_FLAGS=$(echo $EM_FLAGS)  # Remove whitespace
 
 # Function to remove Nanosleep requirements for GNU tools (Nanosleep not supported in Emscripten)
 function EM_GNU_NANOSLEEP() {
+	echo "Running EM_GNU_NANOSLEEP..."
 	sed -i 's|if ${gl_cv_func_sleep_works+:} false|if true|g' configure
 	sed -i 's|if ${ac_cv_search_nanosleep+:} false|if true|g' configure
 	sed -i 's|if ${gl_cv_func_nanosleep+:} false|if true|g' configure
+
+	sed -i 's|if test ${gl_cv_func_sleep_works+y}|if true|g' configure
+	sed -i 's|if test ${ac_cv_search_nanosleep+y}|if true|g' configure
+	sed -i 's|if test ${gl_cv_func_nanosleep+y}|if true|g' configure
+}
+
+# Prevent ./configure from stalling at "checking whether strcasestr works in linear time..."
+function EM_GNU_STRCASESTR_LINEAR() {
+	echo "Running EM_GNU_STRCASESTR_LINEAR..."
+	sed -i 's|if ${gl_cv_func_strcasestr_linear+:} false|if true|g' configure
+
+	sed -i 's|if test ${gl_cv_func_strcasestr_linear+y}|if true|g' configure
 }
 
 # Export vars and functions
 export EM_FLAGS;
-export -f EM_GNU_NANOSLEEP;
+export -f EM_GNU_NANOSLEEP EM_GNU_STRCASESTR_LINEAR;
