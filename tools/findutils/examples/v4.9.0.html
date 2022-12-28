@@ -1,0 +1,19 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["findutils/find/4.9.0"]);
+
+// Generate mock files
+await CLI.mount([
+    { name: "test1.txt", data: "This is a data file" },
+    { name: "test11.txt", data: "This is a data file" },
+    { name: "test2.txt", data: "This is a data file" },
+    { name: "test3.txt", data: "This is a data file" },
+]);
+
+// Find files that match a certain pattern
+const output = await CLI.exec("find . -name test1*.txt");
+document.getElementById("output").innerHTML = output;
+</script>
+
+<h4>Output of <code>find . -name test1*.txt</code>:</h4>
+<pre id="output">Loading...</pre>
