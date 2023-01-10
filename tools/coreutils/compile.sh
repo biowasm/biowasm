@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# When update this list, need to update tools.json
 UTILS=$(echo src/{basename,cat,comm,cut,date,df,dirname,du,echo,env,fold,head,join,ls,md5sum,paste,seq,shuf,sort,tail,tee,tr,uniq,wc}.js)
 
 # Install dependencies
@@ -19,7 +20,6 @@ emconfigure ./configure \
 sed -i 's|$(MAKE) src/make-prime-list$(EXEEXT)|gcc src/make-prime-list.c -o src/make-prime-list$(EXEEXT) -Ilib/|' Makefile
 
 # Make all commands and skip "man" errors
-# When update this list, need to update tools.json
 emmake make all CC=emcc -k WERROR_CFLAGS=""
 emmake make $UTILS \
   CC=emcc EXEEXT=.js \
