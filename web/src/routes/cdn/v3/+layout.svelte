@@ -1,5 +1,5 @@
 <script>
-import { browser } from "$app/env";
+import { browser } from "$app/environment";
 import { page } from "$app/stores";
 import { Badge, Breadcrumb, BreadcrumbItem } from "sveltestrap";
 import CONFIG from "@/biowasm.json";

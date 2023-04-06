@@ -1,5 +1,5 @@
 <script context="module">
-import { browser } from "$app/env";
+import { browser } from "$app/environment";
 import { Badge, Icon, ListGroup, ListGroupItem, Tooltip } from "sveltestrap";
 import { getToolURL } from "$lib/utils";
 const codeSamples = import.meta.glob("@/tools/**/examples/*.html", { as: "raw", eager: true });  // Import code samples dynamically!
@@ -34,7 +34,7 @@ async function downloadAsZip(program) {
 
 	// Trigger download
 	const anchorElement = document.createElement("a");
-	anchorElement.href = URL.createObjectURL(blobWriter.blob);
+	anchorElement.href = URL.createObjectURL(await blobWriter.blob);
 	anchorElement.download = `${program}-${version.version}.zip`;
 	anchorElement.click();
 
@@ -94,7 +94,7 @@ async function downloadAsZip(program) {
 		{program}
 		
 		<!-- Button to download all files for this program -->
-		<span on:click={() => downloadAsZip(program)} >
+		<span on:click={() => downloadAsZip(program)} on:keypress={() => downloadAsZip(program)}>
 			<Badge class="ms-2" color={busyDownload ? "secondary" : "primary"} style="cursor: {busyDownload ? "default" : "pointer"}">
 				<Icon name="download" />
 				<span class="ps-1">Download as .zip</span>

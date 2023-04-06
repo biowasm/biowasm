@@ -1,5 +1,5 @@
 <script>
-import { browser } from "$app/env";
+import { browser } from "$app/environment";
 import { Alert, ListGroup, ListGroupItem } from "sveltestrap";
 import CONFIG from "@/biowasm.json";
 import CodePen from "$components/CodePen.svelte";

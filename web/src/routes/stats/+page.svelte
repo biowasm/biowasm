@@ -1,5 +1,5 @@
 <script context="module">
-import { browser } from "$app/env";
+import { browser } from "$app/environment";
 </script>
 
 <script>
