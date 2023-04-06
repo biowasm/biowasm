@@ -22,7 +22,7 @@ import CONFIG from "@/biowasm.json";
 <!-- More info -->
 <div class="row align-items-md-stretch">
 	<div class="col-md-4">
-		<div class="h-100 p-5 text-bg-dark rounded-3">
+		<div class="h-100 p-5 text-bg-light rounded-3">
 			<h2 class="fw-bold">Supported Tools</h2>
 			<p>
 				Biowasm supports many C/C++ bioinformatics tools (<LinkPackage tool="samtools" />, <LinkPackage tool="bedtools" />, <LinkPackage tool="bcftools" />, <LinkPackage tool="bowtie2" />, <LinkPackage tool="minimap2" />, <LinkPackage tool="fastp" />, <LinkPackage tool="wgsim" />, etc.)
