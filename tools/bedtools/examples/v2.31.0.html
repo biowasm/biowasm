@@ -5,10 +5,19 @@ const CLI = await new Aioli(["bedtools/2.31.0"]);
 // Intersect two .bed files
 const bed1 = "/bedtools/test/intersect/a.bed";
 const bed2 = "/bedtools/test/intersect/b.bed";
+const bedGenome = "/bedtools/test/complement/issue_503.genome";
+const bedIntervals = "/bedtools/test/complement/issue_503.bed";
 
-const output = await CLI.exec(`bedtools intersect -a ${bed1} -b ${bed2}`);
-document.getElementById("output").innerHTML = output;
+const output_intersect = await CLI.exec(`bedtools intersect -a ${bed1} -b ${bed2}`);
+document.getElementById("output-intersect").innerHTML = output_intersect;
+
+// v2.31.0 introduces a `summary` command
+const output_summary = await CLI.exec(`bedtools summary -g ${bedGenome} -i ${bedIntervals}`);
+document.getElementById("output-summary").innerHTML = output_summary;
 </script>
 
 <h4>Output of <code>bedtools intersect</code>:</h4>
-<pre id="output">Loading...</pre>
+<pre id="output-intersect">Loading...</pre>
+
+<h4>Output of <code>bedtools summary</code>:</h4>
+<pre id="output-summary">Loading...</pre>
