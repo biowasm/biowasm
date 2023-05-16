@@ -1,0 +1,11 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["gfatools/253"]);
+
+// Extract subgraph from test data
+const output = await CLI.exec("gfatools view -l MTh4502 -r 1 test/MT.gfa");
+document.getElementById("output").innerHTML = output;
+</script>
+
+<h4>Output of <code>gfatools view</code>:</h4>
+<pre id="output">Loading...</pre>
