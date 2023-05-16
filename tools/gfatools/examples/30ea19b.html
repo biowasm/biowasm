@@ -3,7 +3,7 @@
 const CLI = await new Aioli(["gfatools/253"]);
 
 // Extract subgraph from test data
-const output = await CLI.exec("gfatools view -l MTh4502 -r 1 test/MT.gfa");
+const output = await CLI.exec("gfatools view -l MTh4502 -r 1 /gfatools/test/MT.gfa");
 document.getElementById("output").innerHTML = output;
 </script>
 
