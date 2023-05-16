@@ -78,6 +78,10 @@
 	path = tools/modbam2bed/src
 	url = https://github.com/epi2me-labs/modbam2bed.git
 
+[submodule "tools/ogdf/src"]
+	path = tools/ogdf/src
+	url = https://github.com/ogdf/ogdf.git
+
 [submodule "tools/samtools/src"]
 	path = tools/samtools/src
 	url = https://github.com/samtools/samtools.git

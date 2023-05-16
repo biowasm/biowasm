@@ -1,0 +1,590 @@
+root@f534a0c0ae7f:/src/biowasm/tools/ogdf/src# emmake make
+make: make
+Scanning dependencies of target COIN
+[  0%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpCholeskyBase.cpp.o
+[  0%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpCholeskyDense.cpp.o
+[  0%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpCholeskyTaucs.cpp.o
+[  0%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpConstraint.cpp.o
+[  0%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpConstraintLinear.cpp.o
+[  1%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpConstraintQuadratic.cpp.o
+[  1%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpDualRowDantzig.cpp.o
+[  1%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpDualRowPivot.cpp.o
+[  1%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpDualRowSteepest.cpp.o
+[  1%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpDummyMatrix.cpp.o
+[  2%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpDynamicExampleMatrix.cpp.o
+[  2%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpDynamicMatrix.cpp.o
+[  2%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpEventHandler.cpp.o
+[  2%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpFactorization.cpp.o
+[  2%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpGubDynamicMatrix.cpp.o
+[  2%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpGubMatrix.cpp.o
+[  3%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpHelperFunctions.cpp.o
+[  3%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpInterior.cpp.o
+[  3%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpLinearObjective.cpp.o
+[  3%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpLsqr.cpp.o
+[  3%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpMatrixBase.cpp.o
+[  4%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpMessage.cpp.o
+[  4%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpModel.cpp.o
+[  4%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpNetworkBasis.cpp.o
+[  4%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpNetworkMatrix.cpp.o
+[  4%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpNode.cpp.o
+[  4%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpNonLinearCost.cpp.o
+[  5%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpObjective.cpp.o
+[  5%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpPackedMatrix.cpp.o
+[  5%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpPdco.cpp.o
+[  5%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpPdcoBase.cpp.o
+[  5%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpPlusMinusOneMatrix.cpp.o
+[  7%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpPredictorCorrector.cpp.o
+[  7%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpPresolve.cpp.o
+[  7%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpPrimalColumnDantzig.cpp.o
+[  7%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpPrimalColumnPivot.cpp.o
+[  7%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpPrimalColumnSteepest.cpp.o
+[  7%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpQuadraticObjective.cpp.o
+[  8%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpSimplex.cpp.o
+[  8%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpSimplexDual.cpp.o
+[  8%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpSimplexNonlinear.cpp.o
+[  8%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpSimplexOther.cpp.o
+[  8%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpSimplexPrimal.cpp.o
+[  9%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/ClpSolve.cpp.o
+In file included from /src/biowasm/tools/ogdf/src/src/coin/Clp/ClpSolve.cpp:340:
+/src/biowasm/tools/ogdf/src/include/coin/CoinSignal.hpp:110:2: warning: ("OS and/or compiler is not recognized. Defaulting to:"); [-W#warnings]
+#warning("OS and/or compiler is not recognized. Defaulting to:");
+ ^
+/src/biowasm/tools/ogdf/src/include/coin/CoinSignal.hpp:111:2: warning: ("extern \"C\" {") [-W#warnings]
+#warning("extern \"C\" {")
+ ^
+/src/biowasm/tools/ogdf/src/include/coin/CoinSignal.hpp:112:2: warning: ("   typedef void (*CoinSighandler_t) (int);") [-W#warnings]
+#warning("   typedef void (*CoinSighandler_t) (int);")
+ ^
+/src/biowasm/tools/ogdf/src/include/coin/CoinSignal.hpp:113:2: warning: ("}") [-W#warnings]
+#warning("}")
+ ^
+4 warnings generated.
+[  9%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/Clp_C_Interface.cpp.o
+[  9%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/IdiSolve.cpp.o
+[  9%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/Idiot.cpp.o
+[  9%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/MyEventHandler.cpp.o
+[  9%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/MyMessageHandler.cpp.o
+[ 10%] Building CXX object CMakeFiles/COIN.dir/src/coin/Clp/unitTest.cpp.o
+[ 10%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinAlloc.cpp.o
+[ 10%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinBuild.cpp.o
+[ 10%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinDenseFactorization.cpp.o
+[ 10%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinDenseVector.cpp.o
+[ 11%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinError.cpp.o
+[ 11%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinFactorization1.cpp.o
+[ 11%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinFactorization2.cpp.o
+[ 11%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinFactorization3.cpp.o
+[ 11%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinFactorization4.cpp.o
+[ 11%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinFileIO.cpp.o
+[ 12%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinFinite.cpp.o
+[ 12%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinIndexedVector.cpp.o
+[ 12%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinLpIO.cpp.o
+[ 12%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinMessage.cpp.o
+[ 12%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinMessageHandler.cpp.o
+[ 14%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinModel.cpp.o
+[ 14%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinModelUseful.cpp.o
+[ 14%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinModelUseful2.cpp.o
+[ 14%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinMpsIO.cpp.o
+[ 14%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinOslFactorization.cpp.o
+[ 14%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinOslFactorization2.cpp.o
+[ 15%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinOslFactorization3.cpp.o
+[ 15%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPackedMatrix.cpp.o
+/src/biowasm/tools/ogdf/src/src/coin/CoinUtils/CoinPackedMatrix.cpp:1497:8: warning: 'bind2nd<std::plus<int>, int>' is deprecated [-Wdeprecated-declarations]
+                std::bind2nd(std::plus<int>(), minorDim_));
+                     ^
+/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1/functional:1093:1: note: 'bind2nd<std::plus<int>, int>' has been explicitly marked deprecated here
+_LIBCPP_DEPRECATED_IN_CXX11 inline _LIBCPP_INLINE_VISIBILITY
+^
+/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1/__config:990:39: note: expanded from macro '_LIBCPP_DEPRECATED_IN_CXX11'
+#  define _LIBCPP_DEPRECATED_IN_CXX11 _LIBCPP_DEPRECATED
+                                      ^
+/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1/__config:979:48: note: expanded from macro '_LIBCPP_DEPRECATED'
+#    define _LIBCPP_DEPRECATED __attribute__ ((deprecated))
+                                               ^
+1 warning generated.
+[ 15%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPackedVector.cpp.o
+/src/biowasm/tools/ogdf/src/src/coin/CoinUtils/CoinPackedVector.cpp:288:10: warning: 'bind2nd<std::plus<double>, double>' is deprecated [-Wdeprecated-declarations]
+                  std::bind2nd(std::plus<double>(), value) );
+                       ^
+/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1/functional:1093:1: note: 'bind2nd<std::plus<double>, double>' has been explicitly marked deprecated here
+_LIBCPP_DEPRECATED_IN_CXX11 inline _LIBCPP_INLINE_VISIBILITY
+^
+/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1/__config:990:39: note: expanded from macro '_LIBCPP_DEPRECATED_IN_CXX11'
+#  define _LIBCPP_DEPRECATED_IN_CXX11 _LIBCPP_DEPRECATED
+                                      ^
+/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1/__config:979:48: note: expanded from macro '_LIBCPP_DEPRECATED'
+#    define _LIBCPP_DEPRECATED __attribute__ ((deprecated))
+                                               ^
+/src/biowasm/tools/ogdf/src/src/coin/CoinUtils/CoinPackedVector.cpp:297:10: warning: 'bind2nd<std::minus<double>, double>' is deprecated [-Wdeprecated-declarations]
+                  std::bind2nd(std::minus<double>(), value) );
+                       ^
+/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1/functional:1093:1: note: 'bind2nd<std::minus<double>, double>' has been explicitly marked deprecated here
+_LIBCPP_DEPRECATED_IN_CXX11 inline _LIBCPP_INLINE_VISIBILITY
+^
+/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1/__config:990:39: note: expanded from macro '_LIBCPP_DEPRECATED_IN_CXX11'
+#  define _LIBCPP_DEPRECATED_IN_CXX11 _LIBCPP_DEPRECATED
+                                      ^
+/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1/__config:979:48: note: expanded from macro '_LIBCPP_DEPRECATED'
+#    define _LIBCPP_DEPRECATED __attribute__ ((deprecated))
+                                               ^
+/src/biowasm/tools/ogdf/src/src/coin/CoinUtils/CoinPackedVector.cpp:306:10: warning: 'bind2nd<std::multiplies<double>, double>' is deprecated [-Wdeprecated-declarations]
+                  std::bind2nd(std::multiplies<double>(), value) );
+                       ^
+/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1/functional:1093:1: note: 'bind2nd<std::multiplies<double>, double>' has been explicitly marked deprecated here
+_LIBCPP_DEPRECATED_IN_CXX11 inline _LIBCPP_INLINE_VISIBILITY
+^
+/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1/__config:990:39: note: expanded from macro '_LIBCPP_DEPRECATED_IN_CXX11'
+#  define _LIBCPP_DEPRECATED_IN_CXX11 _LIBCPP_DEPRECATED
+                                      ^
+/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1/__config:979:48: note: expanded from macro '_LIBCPP_DEPRECATED'
+#    define _LIBCPP_DEPRECATED __attribute__ ((deprecated))
+                                               ^
+/src/biowasm/tools/ogdf/src/src/coin/CoinUtils/CoinPackedVector.cpp:315:10: warning: 'bind2nd<std::divides<double>, double>' is deprecated [-Wdeprecated-declarations]
+                  std::bind2nd(std::divides<double>(), value) );
+                       ^
+/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1/functional:1093:1: note: 'bind2nd<std::divides<double>, double>' has been explicitly marked deprecated here
+_LIBCPP_DEPRECATED_IN_CXX11 inline _LIBCPP_INLINE_VISIBILITY
+^
+/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1/__config:990:39: note: expanded from macro '_LIBCPP_DEPRECATED_IN_CXX11'
+#  define _LIBCPP_DEPRECATED_IN_CXX11 _LIBCPP_DEPRECATED
+                                      ^
+/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1/__config:979:48: note: expanded from macro '_LIBCPP_DEPRECATED'
+#    define _LIBCPP_DEPRECATED __attribute__ ((deprecated))
+                                               ^
+4 warnings generated.
+[ 15%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPackedVectorBase.cpp.o
+[ 15%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinParam.cpp.o
+[ 16%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinParamUtils.cpp.o
+[ 16%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPostsolveMatrix.cpp.o
+[ 16%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPrePostsolveMatrix.cpp.o
+[ 16%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolveDoubleton.cpp.o
+[ 16%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolveDual.cpp.o
+[ 16%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolveDupcol.cpp.o
+[ 17%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolveEmpty.cpp.o
+[ 17%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolveFixed.cpp.o
+[ 17%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolveForcing.cpp.o
+[ 17%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolveHelperFunctions.cpp.o
+[ 17%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolveImpliedFree.cpp.o
+[ 18%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolveIsolated.cpp.o
+[ 18%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolveMatrix.cpp.o
+[ 18%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolvePsdebug.cpp.o
+[ 18%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolveSingleton.cpp.o
+[ 18%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolveSubst.cpp.o
+[ 18%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolveTighten.cpp.o
+[ 20%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolveTripleton.cpp.o
+[ 20%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolveUseless.cpp.o
+[ 20%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinPresolveZeros.cpp.o
+[ 20%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinSearchTree.cpp.o
+[ 20%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinShallowPackedVector.cpp.o
+[ 21%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinSimpFactorization.cpp.o
+[ 21%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinSnapshot.cpp.o
+[ 21%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinStructuredModel.cpp.o
+[ 21%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinWarmStartBasis.cpp.o
+[ 21%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinWarmStartDual.cpp.o
+[ 21%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinWarmStartPrimalDual.cpp.o
+[ 22%] Building CXX object CMakeFiles/COIN.dir/src/coin/CoinUtils/CoinWarmStartVector.cpp.o
+[ 22%] Building CXX object CMakeFiles/COIN.dir/src/coin/Osi/OsiAuxInfo.cpp.o
+[ 22%] Building CXX object CMakeFiles/COIN.dir/src/coin/Osi/OsiBranchingObject.cpp.o
+[ 22%] Building CXX object CMakeFiles/COIN.dir/src/coin/Osi/OsiChooseVariable.cpp.o
+[ 22%] Building CXX object CMakeFiles/COIN.dir/src/coin/Osi/OsiColCut.cpp.o
+[ 23%] Building CXX object CMakeFiles/COIN.dir/src/coin/Osi/OsiCut.cpp.o
+[ 23%] Building CXX object CMakeFiles/COIN.dir/src/coin/Osi/OsiCuts.cpp.o
+[ 23%] Building CXX object CMakeFiles/COIN.dir/src/coin/Osi/OsiNames.cpp.o
+[ 23%] Building CXX object CMakeFiles/COIN.dir/src/coin/Osi/OsiPresolve.cpp.o
+[ 23%] Building CXX object CMakeFiles/COIN.dir/src/coin/Osi/OsiRowCut.cpp.o
+[ 23%] Building CXX object CMakeFiles/COIN.dir/src/coin/Osi/OsiRowCutDebugger.cpp.o
+[ 24%] Building CXX object CMakeFiles/COIN.dir/src/coin/Osi/OsiSolverBranch.cpp.o
+[ 24%] Building CXX object CMakeFiles/COIN.dir/src/coin/Osi/OsiSolverInterface.cpp.o
+[ 24%] Building CXX object CMakeFiles/COIN.dir/src/coin/OsiClp/OsiClpSolverInterface.cpp.o
+[ 24%] Linking CXX static library libCOIN.a
+[ 24%] Built target COIN
+Scanning dependencies of target OGDF
+[ 24%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/augmentation/DfsMakeBiconnected.cpp.o
+[ 25%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/augmentation/PlanarAugmentation.cpp.o
+[ 25%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/augmentation/PlanarAugmentationFix.cpp.o
+[ 25%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/AdjacencyOracle.cpp.o
+[ 25%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/CombinatorialEmbedding.cpp.o
+[ 25%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/EdgeComparer.cpp.o
+[ 25%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/EdgeComparerSimple.cpp.o
+[ 27%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/GF2Solver.cpp.o
+[ 27%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/Graph.cpp.o
+[ 27%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/GraphAttributes.cpp.o
+[ 27%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/GraphCopy.cpp.o
+[ 27%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/GridLayout.cpp.o
+[ 28%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/Hashing.cpp.o
+[ 28%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/Layout.cpp.o
+[ 28%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/LayoutStandards.cpp.o
+[ 28%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/LayoutStatistics.cpp.o
+[ 28%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/LayoutStatistics_intersect.cpp.o
+[ 28%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/Logger.cpp.o
+[ 29%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/Math.cpp.o
+[ 29%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/Module.cpp.o
+[ 29%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/NearestRectangleFinder.cpp.o
+[ 29%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/PreprocessorLayout.cpp.o
+[ 29%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/STNumbering.cpp.o
+[ 30%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/Stopwatch.cpp.o
+[ 30%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/System.cpp.o
+[ 30%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/basic.cpp.o
+[ 30%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/extended_graph_alg.cpp.o
+[ 30%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/geometry.cpp.o
+[ 30%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/graph_generators/deterministic.cpp.o
+[ 31%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/graph_generators/operations.cpp.o
+[ 31%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/graph_generators/randomHierarchy.cpp.o
+[ 31%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/graph_generators/randomized.cpp.o
+[ 31%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/graphics.cpp.o
+[ 31%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/internal/config.cpp.o
+[ 32%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/memory/PoolMemoryAllocator.cpp.o
+[ 32%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/basic/simple_graph_alg.cpp.o
+[ 32%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/clique/CliqueFinderHeuristic.cpp.o
+[ 32%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/clique/CliqueFinderModule.cpp.o
+[ 32%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/clique/CliqueFinderSPQR.cpp.o
+[ 32%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/CPlanarEdgeInserter.cpp.o
+[ 34%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/CPlanarSubClusteredGraph.cpp.o
+[ 34%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/CconnectClusterPlanar.cpp.o
+[ 34%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/CconnectClusterPlanarEmbed.cpp.o
+[ 34%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/ClusterAnalysis.cpp.o
+[ 34%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/ClusterGraph.cpp.o
+[ 35%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/ClusterGraphAttributes.cpp.o
+[ 35%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/ClusterOrthoLayout.cpp.o
+[ 35%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/ClusterOrthoShaper.cpp.o
+/src/biowasm/tools/ogdf/src/src/ogdf/cluster/ClusterOrthoShaper.cpp:1006:8: warning: variable 'lowsum' set but not used [-Wunused-but-set-variable]
+                        int lowsum = 0, upsum = 0;
+                            ^
+/src/biowasm/tools/ogdf/src/src/ogdf/cluster/ClusterOrthoShaper.cpp:1006:20: warning: variable 'upsum' set but not used [-Wunused-but-set-variable]
+                        int lowsum = 0, upsum = 0;
+                                        ^
+/src/biowasm/tools/ogdf/src/src/ogdf/cluster/ClusterOrthoShaper.cpp:1107:6: warning: variable 'totalNumBends' set but not used [-Wunused-but-set-variable]
+        int totalNumBends = 0;
+            ^
+/src/biowasm/tools/ogdf/src/src/ogdf/cluster/ClusterOrthoShaper.cpp:163:6: warning: variable 'checksum' set but not used [-Wunused-but-set-variable]
+        int checksum = 0;
+            ^
+4 warnings generated.
+[ 35%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/ClusterPlanRep.cpp.o
+[ 35%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/ClusterPlanarity.cpp.o
+[ 35%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/ClusterPlanarizationLayout.cpp.o
+[ 36%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/HananiTutteCPlanarity.cpp.o
+[ 36%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/MaximumCPlanarSubgraph.cpp.o
+[ 36%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/internal/CP_MasterBase.cpp.o
+[ 36%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/internal/CPlanarSubClusteredST.cpp.o
+[ 36%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/internal/CPlanarityMaster.cpp.o
+[ 37%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/internal/CPlanaritySub.cpp.o
+[ 37%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/internal/ChunkConnection.cpp.o
+[ 37%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/internal/ClusterKuratowskiConstraint.cpp.o
+[ 37%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/internal/CutConstraint.cpp.o
+[ 37%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/internal/EdgeVar.cpp.o
+[ 37%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/internal/MaxCPlanarMaster.cpp.o
+[ 38%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/internal/MaxCPlanarSub.cpp.o
+[ 38%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/internal/MaxPlanarEdgesConstraint.cpp.o
+[ 38%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/cluster/internal/MinimalClusterConnection.cpp.o
+[ 38%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/decomposition/BCTree.cpp.o
+[ 38%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/decomposition/DynamicBCTree.cpp.o
+[ 40%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/decomposition/DynamicSPQRForest.cpp.o
+[ 40%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/decomposition/DynamicSPQRTree.cpp.o
+[ 40%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/decomposition/PlanarSPQRTree.cpp.o
+[ 40%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/decomposition/StaticSPQRTree.cpp.o
+[ 40%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/DavidsonHarel.cpp.o
+[ 40%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/DavidsonHarelLayout.cpp.o
+[ 41%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/FMMMLayout.cpp.o
+[ 41%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/FastMultipoleEmbedder.cpp.o
+[ 41%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/GEMLayout.cpp.o
+[ 41%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/MultilevelLayout.cpp.o
+[ 41%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/NodeRespecterLayout.cpp.o
+[ 42%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/PivotMDS.cpp.o
+[ 42%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/SpringEmbedderFRExact.cpp.o
+[ 42%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/SpringEmbedderGridVariant.cpp.o
+[ 42%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/SpringEmbedderKK.cpp.o
+[ 42%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/StressMinimization.cpp.o
+[ 42%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/TutteLayout.cpp.o
+[ 43%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/davidson_harel/Attraction.cpp.o
+[ 43%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/davidson_harel/EnergyFunction.cpp.o
+[ 43%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/davidson_harel/NodePairEnergy.cpp.o
+[ 43%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/davidson_harel/Overlap.cpp.o
+[ 43%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/davidson_harel/Planarity.cpp.o
+[ 44%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/davidson_harel/PlanarityGrid.cpp.o
+[ 44%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/davidson_harel/Repulsion.cpp.o
+[ 44%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/davidson_harel/UniformGrid.cpp.o
+[ 44%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/dtree/GalaxyLevel.cpp.o
+[ 44%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fast_multipole_embedder/ArrayGraph.cpp.o
+[ 44%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fast_multipole_embedder/EdgeChain.cpp.o
+[ 45%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fast_multipole_embedder/FMEKernel.cpp.o
+[ 45%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fast_multipole_embedder/FMEMultipoleKernel.cpp.o
+[ 45%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fast_multipole_embedder/FMEThread.cpp.o
+[ 45%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fast_multipole_embedder/GalaxyMultilevel.cpp.o
+[ 45%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fast_multipole_embedder/LinearQuadtree.cpp.o
+[ 47%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fast_multipole_embedder/LinearQuadtreeBuilder.cpp.o
+[ 47%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fast_multipole_embedder/LinearQuadtreeExpansion.cpp.o
+[ 47%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fast_multipole_embedder/WSPD.cpp.o
+[ 47%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fmmm/EdgeAttributes.cpp.o
+[ 47%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fmmm/FruchtermanReingold.cpp.o
+[ 47%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fmmm/MAARPacking.cpp.o
+[ 48%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fmmm/Multilevel.cpp.o
+[ 48%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fmmm/NewMultipoleMethod.cpp.o
+[ 48%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fmmm/NodeAttributes.cpp.o
+[ 48%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fmmm/Set.cpp.o
+[ 48%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fmmm/new_multipole_method/QuadTreeNM.cpp.o
+[ 49%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fmmm/new_multipole_method/QuadTreeNodeNM.cpp.o
+[ 49%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/fmmm/numexcept.cpp.o
+[ 49%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/multilevel_mixer/BarycenterPlacer.cpp.o
+[ 49%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/multilevel_mixer/CirclePlacer.cpp.o
+[ 49%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/multilevel_mixer/EdgeCoverMerger.cpp.o
+[ 49%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/multilevel_mixer/IndependentSetMerger.cpp.o
+[ 50%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/multilevel_mixer/LocalBiconnectedMerger.cpp.o
+[ 50%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/multilevel_mixer/MatchingMerger.cpp.o
+[ 50%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/multilevel_mixer/MedianPlacer.cpp.o
+[ 50%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/multilevel_mixer/ModularMultilevelMixer.cpp.o
+[ 50%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/multilevel_mixer/MultilevelGraph.cpp.o
+[ 51%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/multilevel_mixer/RandomMerger.cpp.o
+[ 51%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/multilevel_mixer/RandomPlacer.cpp.o
+[ 51%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/multilevel_mixer/ScalingLayout.cpp.o
+[ 51%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/multilevel_mixer/SolarMerger.cpp.o
+[ 51%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/multilevel_mixer/SolarPlacer.cpp.o
+[ 51%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/multilevel_mixer/ZeroPlacer.cpp.o
+[ 52%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/energybased/spring_embedder/SEGV_ForceModel.cpp.o
+[ 52%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/external/Minisat.cpp.o
+[ 52%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/external/backward.cpp.o
+[ 52%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/DLParser.cpp.o
+[ 52%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/DOT.cpp.o
+[ 54%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/DotLexer.cpp.o
+[ 54%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/DotParser.cpp.o
+[ 54%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GDF.cpp.o
+[ 54%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GEXF.cpp.o
+[ 54%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GML.cpp.o
+[ 54%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GdfParser.cpp.o
+[ 55%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GexfParser.cpp.o
+[ 55%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GmlParser.cpp.o
+[ 55%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GraphIO.cpp.o
+[ 55%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GraphIO_dl.cpp.o
+[ 55%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GraphIO_dot.cpp.o
+[ 56%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GraphIO_g6.cpp.o
+[ 56%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GraphIO_gdf.cpp.o
+[ 56%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GraphIO_gexf.cpp.o
+[ 56%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GraphIO_gml.cpp.o
+[ 56%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GraphIO_graphml.cpp.o
+[ 56%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GraphIO_hyper.cpp.o
+[ 57%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GraphIO_leda.cpp.o
+[ 57%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GraphIO_tlp.cpp.o
+[ 57%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GraphML.cpp.o
+[ 57%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/GraphMLParser.cpp.o
+[ 57%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/SvgPrinter.cpp.o
+[ 58%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/Tlp.cpp.o
+[ 58%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/TlpLexer.cpp.o
+[ 58%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/TlpParser.cpp.o
+[ 58%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/TsplibXmlParser.cpp.o
+[ 58%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/fileformats/Utils.cpp.o
+[ 58%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/graphalg/Clusterer.cpp.o
+[ 60%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/graphalg/ConnectivityTester.cpp.o
+[ 60%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/graphalg/ConvexHull.cpp.o
+[ 60%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/graphalg/EdgeIndependentSpanningTrees.cpp.o
+[ 60%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/graphalg/GraphReduction.cpp.o
+[ 60%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/graphalg/Matching.cpp.o
+[ 61%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/graphalg/MaxAdjOrdering.cpp.o
+[ 61%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/graphalg/MinimumCut.cpp.o
+[ 61%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/graphalg/ModifiedNibbleClusterer.cpp.o
+[ 61%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/graphalg/PageRank.cpp.o
+[ 61%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/graphalg/ShortestPathWithBFM.cpp.o
+[ 61%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/graphalg/Triconnectivity.cpp.o
+[ 62%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/hypergraph/EdgeStandardRep.cpp.o
+[ 62%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/hypergraph/Hypergraph.cpp.o
+[ 62%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/hypergraph/HypergraphLayout.cpp.o
+[ 62%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/labeling/ELabelPosSimple.cpp.o
+[ 62%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/AcyclicSubgraphModule.cpp.o
+[ 63%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/BarycenterHeuristic.cpp.o
+[ 63%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/BlockOrder.cpp.o
+[ 63%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/CoffmanGrahamRanking.cpp.o
+[ 63%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/CrossingMinInterfaces.cpp.o
+[ 63%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/CrossingsMatrix.cpp.o
+[ 63%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/DfsAcyclicSubgraph.cpp.o
+[ 64%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/ExtendedNestingGraph.cpp.o
+[ 64%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/FastHierarchyLayout.cpp.o
+[ 64%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/FastSimpleHierarchyLayout.cpp.o
+[ 64%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/GreedyCycleRemoval.cpp.o
+[ 64%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/GreedyInsertHeuristic.cpp.o
+[ 65%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/GreedySwitchHeuristic.cpp.o
+[ 65%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/HierarchyLayoutModule.cpp.o
+[ 65%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/LongestPathRanking.cpp.o
+[ 65%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/MedianHeuristic.cpp.o
+[ 65%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/OptimalHierarchyClusterLayout.cpp.o
+[ 65%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/OptimalHierarchyLayout.cpp.o
+[ 67%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/OptimalRanking.cpp.o
+[ 67%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/SiftingHeuristic.cpp.o
+[ 67%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/SplitHeuristic.cpp.o
+[ 67%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/layered/SugiyamaLayout.cpp.o
+[ 67%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/aba_constraint.cpp.o
+[ 68%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/abacusroot.cpp.o
+[ 68%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/branchrule.cpp.o
+[ 68%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/column.cpp.o
+[ 68%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/conbranchrule.cpp.o
+[ 68%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/conclass.cpp.o
+[ 68%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/convar.cpp.o
+[ 69%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/csense.cpp.o
+[ 69%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/fixcand.cpp.o
+[ 69%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/fsvarstat.cpp.o
+[ 69%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/global.cpp.o
+[ 69%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/history.cpp.o
+[ 70%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/infeascon.cpp.o
+[ 70%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/lp.cpp.o
+[ 70%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/lpif.cpp.o
+[ 70%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/lpmasterosi.cpp.o
+[ 70%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/lpsub.cpp.o
+[ 70%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/lpvarstat.cpp.o
+[ 71%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/master.cpp.o
+[ 71%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/opensub.cpp.o
+[ 71%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/optsense.cpp.o
+[ 71%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/osiif.cpp.o
+[ 71%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/row.cpp.o
+[ 72%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/setbranchrule.cpp.o
+[ 72%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/slackstat.cpp.o
+[ 72%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/sparvec.cpp.o
+[ 72%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/srowcon.cpp.o
+[ 72%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/sub.cpp.o
+[ 72%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/tailoff.cpp.o
+[ 74%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/valbranchrule.cpp.o
+[ 74%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/variable.cpp.o
+[ 74%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/abacus/vartype.cpp.o
+[ 74%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/minisat/core/Solver.cpp.o
+[ 74%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/minisat/simp/SimpSolver.cpp.o
+[ 75%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lib/pugixml/pugixml.cpp.o
+[ 75%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/lpsolver/LPSolver.cpp.o
+[ 75%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/misclayout/BalloonLayout.cpp.o
+[ 75%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/misclayout/BertaultLayout.cpp.o
+[ 75%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/misclayout/CircularLayout.cpp.o
+[ 75%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/misclayout/LinearLayout.cpp.o
+[ 76%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/misclayout/ProcrustesSubLayout.cpp.o
+[ 76%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/orthogonal/CompactionConstraintGraph.cpp.o
+[ 76%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/orthogonal/EdgeRouter.cpp.o
+[ 76%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/orthogonal/FlowCompaction.cpp.o
+[ 76%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/orthogonal/LongestPathCompaction.cpp.o
+[ 77%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/orthogonal/OrthoLayout.cpp.o
+[ 77%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/orthogonal/OrthoRep.cpp.o
+[ 77%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/orthogonal/OrthoShaper.cpp.o
+/src/biowasm/tools/ogdf/src/src/ogdf/orthogonal/OrthoShaper.cpp:1363:8: warning: variable 'lowsum' set but not used [-Wunused-but-set-variable]
+                        int lowsum = 0, upsum = 0;
+                            ^
+/src/biowasm/tools/ogdf/src/src/ogdf/orthogonal/OrthoShaper.cpp:1363:20: warning: variable 'upsum' set but not used [-Wunused-but-set-variable]
+                        int lowsum = 0, upsum = 0;
+                                        ^
+/src/biowasm/tools/ogdf/src/src/ogdf/orthogonal/OrthoShaper.cpp:1465:6: warning: variable 'totalNumBends' set but not used [-Wunused-but-set-variable]
+        int totalNumBends = 0;
+            ^
+/src/biowasm/tools/ogdf/src/src/ogdf/orthogonal/OrthoShaper.cpp:176:6: warning: variable 'checksum' set but not used [-Wunused-but-set-variable]
+        int checksum = 0;
+            ^
+/src/biowasm/tools/ogdf/src/src/ogdf/orthogonal/OrthoShaper.cpp:2503:7: warning: variable 'lowsum' set but not used [-Wunused-but-set-variable]
+                int lowsum = 0, upsum = 0;
+                    ^
+/src/biowasm/tools/ogdf/src/src/ogdf/orthogonal/OrthoShaper.cpp:2503:19: warning: variable 'upsum' set but not used [-Wunused-but-set-variable]
+                int lowsum = 0, upsum = 0;
+                                ^
+/src/biowasm/tools/ogdf/src/src/ogdf/orthogonal/OrthoShaper.cpp:2601:6: warning: variable 'totalNumBends' set but not used [-Wunused-but-set-variable]
+        int totalNumBends = 0;
+            ^
+/src/biowasm/tools/ogdf/src/src/ogdf/orthogonal/OrthoShaper.cpp:1660:6: warning: variable 'checksum' set but not used [-Wunused-but-set-variable]
+        int checksum = 0;
+            ^
+8 warnings generated.
+[ 77%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/orthogonal/edge_router/NodeInfo.cpp.o
+[ 77%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/orthogonal/internal/CommonCompactionConstraintGraphBase.cpp.o
+[ 77%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/packing/CCLayoutPackModule.cpp.o
+[ 78%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/packing/ComponentSplitterLayout.cpp.o
+[ 78%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/packing/SimpleCCPacker.cpp.o
+[ 78%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/packing/TileToRowsCCPacker.cpp.o
+[ 78%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/BoothLueker.cpp.o
+[ 78%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/BoyerMyrvold.cpp.o
+[ 80%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/EmbedderMaxFace.cpp.o
+[ 80%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/EmbedderMaxFaceLayers.cpp.o
+[ 80%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/EmbedderMinDepth.cpp.o
+[ 80%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/EmbedderMinDepthMaxFace.cpp.o
+[ 80%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/EmbedderMinDepthMaxFaceLayers.cpp.o
+[ 80%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/EmbedderMinDepthPiTa.cpp.o
+[ 81%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/EmbedderOptimalFlexDraw.cpp.o
+[ 81%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/ExtractKuratowskis.cpp.o
+[ 81%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/FixedEmbeddingInserter.cpp.o
+[ 81%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/MMCrossingMinimizationModule.cpp.o
+[ 81%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/MMFixedEmbeddingInserter.cpp.o
+[ 82%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/MMSubgraphPlanarizer.cpp.o
+[ 82%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/MMVariableEmbeddingInserter.cpp.o
+[ 82%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/MultiEdgeApproxInserter.cpp.o
+[ 82%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/PlanRep.cpp.o
+[ 82%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/PlanRepExpansion.cpp.o
+[ 82%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/PlanRepInc.cpp.o
+[ 83%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/PlanRepLight.cpp.o
+[ 83%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/PlanarSubgraphBoyerMyrvold.cpp.o
+[ 83%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/PlanarizationGridLayout.cpp.o
+[ 83%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/PlanarizationLayout.cpp.o
+[ 83%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/PlanarizerChordlessCycle.cpp.o
+[ 84%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/PlanarizerMixedInsertion.cpp.o
+[ 84%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/PlanarizerStarReinsertion.cpp.o
+[ 84%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/SimpleEmbedder.cpp.o
+[ 84%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/SimpleIncNodeInserter.cpp.o
+[ 84%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/StarInserter.cpp.o
+[ 84%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/SubgraphPlanarizer.cpp.o
+[ 85%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/TopologyModule.cpp.o
+[ 85%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/VariableEmbeddingInserter.cpp.o
+[ 85%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/VariableEmbeddingInserterDyn.cpp.o
+[ 85%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/booth_lueker/EmbedPQTree.cpp.o
+[ 85%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/booth_lueker/PlanarPQTree.cpp.o
+[ 87%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/boyer_myrvold/BoyerMyrvoldInit.cpp.o
+[ 87%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/boyer_myrvold/BoyerMyrvoldPlanar.cpp.o
+[ 87%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/boyer_myrvold/FindKuratowskis.cpp.o
+[ 87%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/embedder/CrossingStructure.cpp.o
+[ 87%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/embedding_inserter/FixEdgeInserterCore.cpp.o
+[ 87%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/embedding_inserter/VarEdgeInserterCore.cpp.o
+[ 88%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/embedding_inserter/VarEdgeInserterDynCore.cpp.o
+[ 88%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/planar_subgraph_fast/PlanarSubgraphPQTree.cpp.o
+[ 88%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarity/planarization_layout/CliqueReplacer.cpp.o
+[ 88%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarlayout/BiconnectedShellingOrder.cpp.o
+[ 88%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarlayout/BitonicOrdering.cpp.o
+[ 89%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarlayout/FPPLayout.cpp.o
+[ 89%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarlayout/GridLayoutModule.cpp.o
+[ 89%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarlayout/LeftistOrdering.cpp.o
+[ 89%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarlayout/MMCBBase.cpp.o
+[ 89%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarlayout/MixedModelCrossingsBeautifierModule.cpp.o
+[ 89%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarlayout/MixedModelLayout.cpp.o
+[ 90%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarlayout/PlanarDrawLayout.cpp.o
+[ 90%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarlayout/PlanarStraightLayout.cpp.o
+[ 90%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarlayout/SchnyderLayout.cpp.o
+[ 90%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarlayout/ShellingOrder.cpp.o
+[ 90%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarlayout/ShellingOrderModule.cpp.o
+[ 91%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarlayout/TriconnectedShellingOrder.cpp.o
+[ 91%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarlayout/mixed_model_layout/IOPoints.cpp.o
+[ 91%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/planarlayout/mixed_model_layout/MixedModelBase.cpp.o
+[ 91%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/simultaneous/SimDraw.cpp.o
+[ 91%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/simultaneous/SimDrawCaller.cpp.o
+[ 91%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/simultaneous/SimDrawColorizer.cpp.o
+[ 92%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/simultaneous/SimDrawCreator.cpp.o
+[ 92%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/simultaneous/SimDrawCreatorSimple.cpp.o
+[ 92%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/simultaneous/SimDrawManipulatorModule.cpp.o
+[ 92%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/tree/LCA.cpp.o
+[ 92%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/tree/RadialTreeLayout.cpp.o
+[ 94%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/tree/TreeLayout.cpp.o
+[ 94%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/uml/FixedEmbeddingInserterUML.cpp.o
+[ 94%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/uml/OrthoLayoutUML.cpp.o
+[ 94%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/uml/PlanRepUML.cpp.o
+[ 94%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/uml/PlanarizationLayoutUML.cpp.o
+[ 94%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/uml/PlanarizationLayoutUML_inc.cpp.o
+[ 95%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/uml/SubgraphPlanarizerUML.cpp.o
+[ 95%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/uml/UMLCrossingMinimizationModule.cpp.o
+[ 95%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/uml/UMLGraph.cpp.o
+[ 95%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/uml/UmlDiagramGraph.cpp.o
+[ 95%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/uml/UmlModelGraph.cpp.o
+[ 96%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/uml/VariableEmbeddingInserterDynUML.cpp.o
+[ 96%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/uml/VariableEmbeddingInserterUML.cpp.o
+[ 96%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/upward/DominanceLayout.cpp.o
+[ 96%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/upward/ExpansionGraph.cpp.o
+[ 96%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/upward/FUPSSimple.cpp.o
+[ 96%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/upward/FaceSinkGraph.cpp.o
+[ 97%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/upward/FixedEmbeddingUpwardEdgeInserter.cpp.o
+[ 97%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/upward/LayerBasedUPRLayout.cpp.o
+[ 97%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/upward/MaximalFUPS.cpp.o
+[ 97%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/upward/SubgraphUpwardPlanarizer.cpp.o
+[ 97%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/upward/UpwardPlanRep.cpp.o
+[ 98%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/upward/UpwardPlanarSubgraphModule.cpp.o
+[ 98%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/upward/UpwardPlanarSubgraphSimple.cpp.o
+[ 98%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/upward/UpwardPlanarity.cpp.o
+[ 98%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/upward/VisibilityLayout.cpp.o
+[ 98%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/upward/internal/UpSAT.cpp.o
+[ 98%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/upward/internal/UpwardPlanarityEmbeddedDigraph.cpp.o
+[100%] Building CXX object CMakeFiles/OGDF.dir/src/ogdf/upward/internal/UpwardPlanaritySingleSource.cpp.o
+[100%] Linking CXX static library libOGDF.a
+[100%] Built target OGDF
+root@f534a0c0ae7f:/src/biowasm/tools/ogdf/src# 
