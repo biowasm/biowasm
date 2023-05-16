@@ -1,0 +1,13 @@
+diff --git a/Makefile b/Makefile
+index 3f51e40..26bd75f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -21,7 +21,7 @@ endif
+ all:$(EXE)
+ 
+ gfatools:main.o sys.o libgfa1.a
+-		$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
++		$(CC) $(CFLAGS) $^ -o ../build/$@.js $(LIBS)
+ 
+ libgfa1.a:$(OBJS)
+ 		$(AR) -csr $@ $(OBJS)

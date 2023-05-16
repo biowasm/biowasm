@@ -139,6 +139,16 @@
 			]
 		},
 		{
+			"name": "gfatools",
+			"description": "Tools for manipulating pangenome sequence graphs",
+			"versions": [
+				{
+					"version": "253",
+					"branch": "30ea19b"
+				}
+			]
+		},
+		{
 			"name": "gffread",
 			"programs": ["gffread"],
 			"description": "Parse and file .gff/.gtf files",

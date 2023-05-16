@@ -34,6 +34,10 @@
 	path = tools/gawk/src
 	url = git://git.savannah.gnu.org/gawk.git
 
+[submodule "tools/gfatools/src"]
+	path = tools/gfatools/src
+	url = https://github.com/lh3/gfatools.git
+
 [submodule "tools/gffread/src"]
 	path = tools/gffread/src
 	url = https://github.com/gpertea/gffread.git
