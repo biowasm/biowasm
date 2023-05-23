@@ -3,7 +3,7 @@ name: Deploy biowasm v3
 env:
   EM_VERSION: 2.0.25
   EM_CACHE_FOLDER: "emsdk-cache"
-  CYPRESS_CACHE_FOLDER: "/root/.cache/Cypress"
+  CYPRESS_CACHE_FOLDER: "cypress"
 
 on:
   workflow_dispatch:
