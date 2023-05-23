@@ -39,6 +39,8 @@ jobs:
           path: ${{env.EM_CACHE_FOLDER}}
           key: ${{env.EM_VERSION}}-${{ runner.os }}
 
+      - run: chown -R 1001:1001 /github/workspace/.cache/
+
       - name: Download Emscripten
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
         uses: mymindstorm/setup-emsdk@v11
