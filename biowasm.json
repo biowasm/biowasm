@@ -140,6 +140,7 @@
 		},
 		{
 			"name": "gfatools",
+			"programs": ["gfatools"],
 			"description": "Tools for manipulating pangenome sequence graphs",
 			"files": ["js", "wasm", "data"],
 			"versions": [
