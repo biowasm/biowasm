@@ -332,8 +332,8 @@
 			"files": ["js", "wasm", "data"],
 			"versions": [
 				{
-					"version": "1.0.9",
-					"branch": "v1.0.9"
+					"version": "1.0.11",
+					"branch": "v.1.0.11"
 				}
 			]
 		},
@@ -354,8 +354,8 @@
 			"description": "Call viral consensus genomes from read alignments",
 			"versions": [
 				{
-					"version": "0.0.1",
-					"branch": "0.0.1",
+					"version": "0.0.2",
+					"branch": "0.0.2",
 					"dependencies": [{ "name": "htslib", "version": "1.10" }]
 				}
 			]
