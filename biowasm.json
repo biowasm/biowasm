@@ -311,6 +311,10 @@
 				{
 					"version": "1.3",
 					"branch": "v1.3"
+				},
+				{
+					"version": "1.4",
+					"branch": "v1.4"
 				}
 			]
 		},

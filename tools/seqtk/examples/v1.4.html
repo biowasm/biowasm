@@ -1,0 +1,31 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["seqtk/1.4"]);
+
+// Create mock fasta file
+await CLI.mount({
+	name: "test.fa",
+	data: ">chr1\nACGTACGACTAGCAG\n>chr2\nACGATCATACCAGCA"
+});
+
+// Run "seqtk comp" command to calculate nucleotide composition
+const output = await CLI.exec("seqtk comp test.fa");
+document.getElementById("output").innerHTML = output;
+
+// Run some of the new commands introduced in v1.4 (size, telo, hpc, split, gap)
+const output2 = await CLI.exec("seqtk size test.fa");
+document.getElementById("output2").innerHTML = output2;
+
+await CLI.exec("seqtk split -n 2 prefix test.fa");
+const output3 = await CLI.ls(".");
+document.getElementById("output3").innerHTML = output3;
+</script>
+
+<h4>Output of <code>seqtk comp</code>:</h4>
+<pre id="output">Loading...</pre>
+
+<h4>Output of <code>seqtk size</code>:</h4>
+<pre id="output2">Loading...</pre>
+
+<h4>Output of <code>seqtk split</code>:</h4>
+<pre id="output3">Loading...</pre>

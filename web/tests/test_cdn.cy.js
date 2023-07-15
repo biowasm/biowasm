@@ -37,6 +37,11 @@ const EXPECTED_OUTPUTS = {
 	],
 	"tools/seqtk/examples/v1.2.html": [`chr1	15	5	4	4	2	0	0	0	4	0	0	0\nchr2	15	6	5	2	2	0	0	0	2	0	0	0`],
 	"tools/seqtk/examples/v1.3.html": [`chr1	15	5	4	4	2	0	0	0	4	0	0	0\nchr2	15	6	5	2	2	0	0	0	2	0	0	0`],
+	"tools/seqtk/examples/v1.4.html": [
+		`chr1	15	5	4	4	2	0	0	0	4	0	0	0\nchr2	15	6	5	2	2	0	0	0	2	0	0	0`,
+		`2	30`,
+		`prefix.00001.fa`
+	],
 	"tools/ssw/examples/ad452ea.html": [
 		`@HD	VN:1.4	SO:queryname\n@SQ	SN:chr1	LN:54\nread1	0	chr1	3	4	10=	*	0	0	TACGACTACG	*	AS:i:20	NM:i:0`,
 		`When maskLen < 15, the function ssw_align doesn't return 2nd best alignment information.`
