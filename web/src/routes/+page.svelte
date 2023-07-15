@@ -57,6 +57,10 @@ import CONFIG from "@/biowasm.json";
 						<td>Runs <code>htsfile</code> and <code>seqtk</code> to identify data issues before file upload</td>
 					</tr>
 					<tr>
+						<td><a class="fw-bold" href="https://bonito.epi2me.io/">Nanopore</a></td>
+						<td>Runs <code>samtools</code> to generate <code>.bam</code> files after basecalling in the browser</td>
+					</tr>
+					<tr>
 						<td><a class="fw-bold" href="https://datagrok.ai">Datagrok</a></td>
 						<td>Runs <code>kalign</code> in the browser for multiple-sequence alignment analysis</td>
 					</tr>
