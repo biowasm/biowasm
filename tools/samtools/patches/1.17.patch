@@ -1,0 +1,61 @@
+diff --git a/Makefile b/Makefile
+index 01d8e02..3eaaa65 100644
+--- a/Makefile
++++ b/Makefile
+@@ -142,7 +142,7 @@ LIBST_OBJS = sam_opts.o sam_utils.o bedidx.o bam.o
+ 
+ 
+ samtools: $(AOBJS) $(LZ4OBJS) libst.a $(HTSLIB)
+-	$(CC) $(ALL_LDFLAGS) -o $@ $(AOBJS) $(LZ4OBJS) libst.a $(HTSLIB_LIB) $(CURSES_LIB) -lm $(ALL_LIBS) -lpthread
++	$(CC) $(ALL_LDFLAGS) -o ../build/$@.js $(AOBJS) $(LZ4OBJS) libst.a $(HTSLIB_LIB) $(CURSES_LIB) -lm $(ALL_LIBS) -lpthread
+ 
+ # For building samtools and its test suite only: NOT to be installed.
+ libst.a: $(LIBST_OBJS)
+diff --git a/bam_sort.c b/bam_sort.c
+index 875e29c..66393d1 100644
+--- a/bam_sort.c
++++ b/bam_sort.c
+@@ -2622,16 +2622,8 @@ static int sort_blocks(size_t k, bam1_tag *buf, const sam_hdr_t *h,
+         in_mem[i].from = pos;
+         in_mem[i].to = pos + w[i].buf_len;
+         pos += w[i].buf_len; rest -= w[i].buf_len;
+-        pthread_create(&tid[i], &attr, worker, &w[i]);
+-    }
+-    for (i = 0; i < n_threads; ++i) {
+-        pthread_join(tid[i], 0);
+-        if (w[i].error != 0) {
+-            errno = w[i].error;
+-            print_error_errno("sort", "failed to sort block %d", i);
+-            n_failed++;
+-        }
+     }
++    worker(&w[0]);
+     free(w);
+     free(tid);
+ 
+diff --git a/bamtk.c b/bamtk.c
+index e05ea18..a159a91 100644
+--- a/bamtk.c
++++ b/bamtk.c
+@@ -240,7 +240,7 @@ int main(int argc, char *argv[])
+         argc = 2;
+     }
+ 
+-    int ret = 0;
++    int ret = 0; optind = 1; opterr = 1; optopt = 0;
+     if (strcmp(argv[1], "view") == 0)           ret = main_samview(argc-1, argv+1);
+     else if (strcmp(argv[1], "import") == 0)    ret = main_import(argc-1, argv+1);
+     else if (strcmp(argv[1], "mpileup") == 0)   ret = bam_mpileup(argc-1, argv+1);
+diff --git a/version.sh b/version.sh
+index 1ac9413..15a0d2b 100755
+--- a/version.sh
++++ b/version.sh
+@@ -30,7 +30,7 @@ VERSION=1.17
+ if [ -e .git ]
+ then
+     # If we ever get to 10.x this will need to be more liberal
+-    VERSION=`git describe --match '[0-9].[0-9]*' --dirty --always`
++    VERSION=`git describe --match '[0-9].[0-9]*' --always`
+ fi
+ 
+ echo $VERSION

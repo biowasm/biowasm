@@ -16,5 +16,5 @@ TOOLS=("tabix" "htsfile" "bgzip")
 for tool in ${TOOLS[@]}; do
     emmake make $tool CC=emcc AR=emar \
         CFLAGS="-O2 -s USE_ZLIB=1 -s USE_BZIP2=1" \
-        LDFLAGS="$EM_FLAGS -O2"
+        LDFLAGS="$EM_FLAGS -O2 -s ERROR_ON_UNDEFINED_SYMBOLS=0"
 done

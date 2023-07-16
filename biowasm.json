@@ -181,6 +181,10 @@
 				{
 					"version": "1.10",
 					"branch": "1.10"
+				},
+				{
+					"version": "1.17",
+					"branch": "1.17"
 				}
 			]
 		},
@@ -274,6 +278,11 @@
 					"version": "1.10",
 					"branch": "1.10",
 					"dependencies": [{ "name": "htslib", "version": "1.10" }]
+				},
+				{
+					"version": "1.17",
+					"branch": "1.17",
+					"dependencies": [{ "name": "htslib", "version": "1.17" }]
 				}
 			]
 		},

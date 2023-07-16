@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# TODO: look into LZMA support
+# TODO: look into LZMA support (disabled in htslib/compile.sh)
 
 make clean
 
