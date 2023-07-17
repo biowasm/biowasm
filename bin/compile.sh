@@ -31,7 +31,7 @@ cd src/
 log "Resetting code changes..."
 git reset --hard
 git clean -f -d
-git checkout -f --recurse-submodules "$BRANCH"
+git checkout --recurse-submodules "$BRANCH"
 
 # Apply patches, if any
 patch_file=../patches/${BRANCH}.patch

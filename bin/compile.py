@@ -86,7 +86,7 @@ def compile(tool, versions=[], level=0):
 		exit(1)
 
 	# Init repo
-	exec(f"git submodule update --init --recursive {tool_git_path} && git submodule status {tool_git_path}")
+	exec(f"git stash && git submodule update --init --recursive {tool_git_path} && git submodule status {tool_git_path}")
 
 	# Compile each version and its dependencies
 	for version_info in versions:
