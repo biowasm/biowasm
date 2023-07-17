@@ -85,8 +85,10 @@ def compile(tool, versions=[], level=0):
 		print(f"No valid versions found in biowasm.json for {tool}. Make sure versions don't start with 'v'.")
 		exit(1)
 
+	# Cleanup to avoid "Your local changes to the following files would be overwritten by checkout"
+	exec(f"cd {tool_git_path} && git stash && cd -")
 	# Init repo
-	exec(f"git stash && git submodule update --init --recursive {tool_git_path} && git submodule status {tool_git_path}")
+	exec(f"git submodule update --init --recursive {tool_git_path} && git submodule status {tool_git_path}")
 
 	# Compile each version and its dependencies
 	for version_info in versions:
