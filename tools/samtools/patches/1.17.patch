@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 01d8e02..e91adc6 100644
+index 01d8e02..cfadab8 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -124,7 +124,7 @@ version.h:
@@ -7,7 +7,7 @@ index 01d8e02..e91adc6 100644
  	echo '#define SAMTOOLS_CPPFLAGS "$(CPPFLAGS)"' >> $@
  	echo '#define SAMTOOLS_CFLAGS "$(CFLAGS)"' >> $@
 -	echo '#define SAMTOOLS_LDFLAGS "$(LDFLAGS)"' >> $@
-+	echo '#define SAMTOOLS_LDFLAGS "$(patsubst "%",%,$(LDFLAGS))"' >> $@
++	echo '#define SAMTOOLS_LDFLAGS "--preload-file examples/@/samtools/examples/ -s ERROR_ON_UNDEFINED_SYMBOLS=0 -O2"' >> $@
  	echo '#define SAMTOOLS_HTSDIR "$(HTSDIR)"' >> $@
  	echo '#define SAMTOOLS_LIBS "$(LIBS)"' >> $@
  	echo '#define SAMTOOLS_CURSES_LIB "$(CURSES_LIB)"' >> $@
