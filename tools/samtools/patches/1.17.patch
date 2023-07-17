@@ -1,7 +1,16 @@
 diff --git a/Makefile b/Makefile
-index 01d8e02..3eaaa65 100644
+index 01d8e02..e91adc6 100644
 --- a/Makefile
 +++ b/Makefile
+@@ -124,7 +124,7 @@ version.h:
+ 	echo '#define SAMTOOLS_CC "$(CC)"' >> $@
+ 	echo '#define SAMTOOLS_CPPFLAGS "$(CPPFLAGS)"' >> $@
+ 	echo '#define SAMTOOLS_CFLAGS "$(CFLAGS)"' >> $@
+-	echo '#define SAMTOOLS_LDFLAGS "$(LDFLAGS)"' >> $@
++	echo '#define SAMTOOLS_LDFLAGS "$(patsubst "%",%,$(LDFLAGS))"' >> $@
+ 	echo '#define SAMTOOLS_HTSDIR "$(HTSDIR)"' >> $@
+ 	echo '#define SAMTOOLS_LIBS "$(LIBS)"' >> $@
+ 	echo '#define SAMTOOLS_CURSES_LIB "$(CURSES_LIB)"' >> $@
 @@ -142,7 +142,7 @@ LIBST_OBJS = sam_opts.o sam_utils.o bedidx.o bam.o
  
  
