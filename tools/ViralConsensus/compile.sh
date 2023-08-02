@@ -1,3 +1,4 @@
+# Because Emscripten does not support the -fpermissive flag, we need to modify htslib source code so that it compiles without errors.
 sed -i 's/unsigned char \*tmp = realloc(b->data, len);/unsigned char \*tmp = static_cast<unsigned char \*>(realloc(b->data, len));/g' htslib/cram/cram_io.h
 
 emmake make \
