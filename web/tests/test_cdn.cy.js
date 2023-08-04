@@ -61,6 +61,7 @@ const EXPECTED_OUTPUTS = {
 	"tools/tree/examples/2.0.4.html": ["11 directories, 8 files", "└── web_user", "├── stderr -> /dev/tty1"],
 	"tools/ViralConsensus/examples/0.0.1.html": ["AAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTC"],
 	"tools/ViralConsensus/examples/0.0.2.html": ["AAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTC"],
+	"tools/ViralConsensus/examples/0.0.3.html": ["AAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTC"],
 	"tools/wgsim/examples/a12da33.html": [`chr1_5_9_0:0:0_0:0:0_0/2\nACGAC\n+\n22222\n@chr1_9_13_0:0:0_0:0:0_1/2\nCTAGC\n+\n22222\n@chr1_6_10_0:0:0_0:0:0_2/2\nAGTCG\n+\n22222\n@chr2_8_12_1:0:0_0:0:0_0/2\nTGGTA\n+\n22222\n@chr2_4_8_0:0:0_0:0:0_1/2\nATCAT\n+\n22222\n@chr2_2_6_0:0:0_0:0:0_2/2\nGATCG\n+\n22222`],
 
 	// Test code examples from docs
