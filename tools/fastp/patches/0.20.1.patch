@@ -1,16 +1,3 @@
-diff --git a/Makefile b/Makefile
-index afc7e9e..343b587 100644
---- a/Makefile
-+++ b/Makefile
-@@ -15,7 +15,7 @@ TARGET := fastp
- BIN_TARGET := ${TARGET}
- 
- CXX ?= g++
--CXXFLAGS := -std=c++11 -g -O3 -I${DIR_INC} $(foreach includedir,$(INCLUDE_DIRS),-I$(includedir)) ${CXXFLAGS}
-+CXXFLAGS := -std=c++11 -O3 -I${DIR_INC} $(foreach includedir,$(INCLUDE_DIRS),-I$(includedir)) ${CXXFLAGS}
- LIBS := -lz -lpthread
- LD_FLAGS := $(foreach librarydir,$(LIBRARY_DIRS),-L$(librarydir)) $(LIBS) $(LD_FLAGS)
- 
 diff --git a/src/htmlreporter.cpp b/src/htmlreporter.cpp
 index c3ac291..e81d0d7 100644
 --- a/src/htmlreporter.cpp

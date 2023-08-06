@@ -6,8 +6,16 @@ const CLI = await new Aioli(["fastp/0.20.1"]);
 await CLI.exec("fastp -i /fastp/testdata/R1.fq");
 const output = await CLI.cat("fastp.json");
 
+// Test it with a .gz FASTQ file
+await CLI.exec("fastp -i /fastp/testdata/NA12878.fastq.gz --json fastp2.json");
+const output2 = await CLI.cat("fastp2.json");
+
 document.getElementById("output").innerHTML = output;
+document.getElementById("output2").innerHTML = output2;
 </script>
 
-<h4>Output of <code>fastp</code>:</h4>
+<h4>Output of <code>fastp</code> (.fq):</h4>
 <pre id="output">Loading...</pre>
+
+<h4>Output of <code>fastp</code> (.fq.gz):</h4>
+<pre id="output2">Loading...</pre>
