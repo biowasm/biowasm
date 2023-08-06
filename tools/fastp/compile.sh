@@ -9,5 +9,5 @@
 cp ../data/NA12878.fastq.gz testdata/
 emmake make \
     TARGET="../build/fastp.js" \
-    CXXFLAGS="-std=c++11 -O3 -DDYNAMIC_ZLIB" \
+    CXXFLAGS="-std=c++11 -O3 -DDYNAMIC_ZLIB -s USE_ZLIB=1" \
     LIBS="-s USE_ZLIB=1 $EM_FLAGS --preload-file testdata@/fastp/testdata"
