@@ -1,0 +1,44 @@
+diff --git a/Makefile b/Makefile
+index a8304e6..b02a5eb 100644
+--- a/Makefile
++++ b/Makefile
+@@ -67,8 +67,8 @@ clean_htslib:
+ 
+ %.o: src/%.c
+ 	mkdir -p obj && \
+-		$(CC) -c -pthread -Wall -fstack-protector-strong -D_FORTIFY_SOURCE=2 $(CFLAGS) \
+-		-Isrc -Ihtslib $(ARGP_INCLUDE) $(EXTRA_CFLAGS) $^ -o $@
++		$(CC) -c -Wall -fstack-protector-strong -D_FORTIFY_SOURCE=2 $(CFLAGS) \
++		-Isrc -I../../htslib/src/ $(ARGP_INCLUDE) $(EXTRA_CFLAGS) $^ -o $@
+ 
+ .PHONY: clean_obj
+ clean_obj:
+@@ -76,11 +76,11 @@ clean_obj:
+ 
+ 
+ modbam2bed: modbam2bed.o common.o counts.o bamiter.o args.o $(STATIC_HTSLIB)
+-	$(CC) -pthread -Wall -fstack-protector-strong -D_FORTIFY_SOURCE=2 $(CFLAGS) \
+-		-Isrc -Ihtslib $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS)\
++	$(CC) -Wall -fstack-protector-strong -D_FORTIFY_SOURCE=2 $(CFLAGS) \
++		-Isrc -I../../htslib/src/ $(EXTRA_CFLAGS) $(EXTRA_LDFLAGS)\
+ 		$^ $(ARGP) \
+-		-lm -lz -llzma -lbz2 -lpthread -lcurl -lcrypto $(EXTRA_LIBS) \
+-		-o $(@)
++		-lm -lz -lbz2 $(EXTRA_LIBS) \
++		-o ../build/$(@).js
+ 
+ .PHONY: clean
+ clean: clean_obj clean_htslib
+diff --git a/src/modbam2bed.c b/src/modbam2bed.c
+index f34f179..c37b3e1 100644
+--- a/src/modbam2bed.c
++++ b/src/modbam2bed.c
+@@ -52,7 +52,7 @@ void *pileup_worker(void *arg) {
+ #ifdef NOTHREADS
+ void process_region(arguments_t args, const char *chr, int start, int end, char *ref, output_files bed_files) {
+     fprintf(stderr, "Processing: %s:%d-%d\n", chr, start, end);
+-    set_fsets* files = create_filesets(j.args.bam);
++    set_fsets* files = create_filesets(args.bam);
+     if (files == NULL) return;
+     plp_data pileup = calculate_pileup(
+         args.bam, chr, start, end,
