@@ -264,7 +264,8 @@
 			"versions": [
 				{
 					"version": "0.9.5",
-					"branch": "v0.9.5"
+					"branch": "v0.9.5",
+					"dependencies": [{ "name": "htslib", "version": "1.17" }]
 				}
 			]
 		},
