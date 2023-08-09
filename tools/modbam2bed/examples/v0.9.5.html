@@ -1,0 +1,14 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["modbam2bed/0.9.5"]);
+
+const fasta = "/modbam2bed/test_data/ecoli.fasta.gz";
+const bam = "/modbam2bed/test_data/400ecoli.bam";
+const region = "ecoli1:100000-101000";
+const output = await CLI.exec(`modbam2bed ${fasta} ${bam} -r ${region}`);
+
+document.getElementById("output").innerHTML = output;
+</script>
+
+<h4>Output of <code>modbam2bed</code>:</h4>
+<pre id="output">Loading...</pre>

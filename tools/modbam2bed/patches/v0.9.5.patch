@@ -30,10 +30,10 @@ index a8304e6..b02a5eb 100644
  .PHONY: clean
  clean: clean_obj clean_htslib
 diff --git a/src/modbam2bed.c b/src/modbam2bed.c
-index f34f179..c37b3e1 100644
+index f34f179..06f9ca0 100644
 --- a/src/modbam2bed.c
 +++ b/src/modbam2bed.c
-@@ -52,7 +52,7 @@ void *pileup_worker(void *arg) {
+@@ -52,10 +52,10 @@ void *pileup_worker(void *arg) {
  #ifdef NOTHREADS
  void process_region(arguments_t args, const char *chr, int start, int end, char *ref, output_files bed_files) {
      fprintf(stderr, "Processing: %s:%d-%d\n", chr, start, end);
@@ -41,4 +41,8 @@ index f34f179..c37b3e1 100644
 +    set_fsets* files = create_filesets(args.bam);
      if (files == NULL) return;
      plp_data pileup = calculate_pileup(
-         args.bam, chr, start, end,
+-        args.bam, chr, start, end,
++        files, chr, start, end,
+         args.read_group, args.tag_name, args.tag_value,
+         args.threshold, args.mod_base, args.combine,
+         args.hts_maxcnt, args.min_mapQ);

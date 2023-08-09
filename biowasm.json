@@ -263,8 +263,8 @@
 			"description": "Summarize .bam modified bases as .bed files with counts",
 			"versions": [
 				{
-					"version": "0.3.1",
-					"branch": "wasm"
+					"version": "0.9.5",
+					"branch": "v0.9.5"
 				}
 			]
 		},
