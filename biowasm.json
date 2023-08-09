@@ -261,6 +261,7 @@
 			"name": "modbam2bed",
 			"programs": ["modbam2bed"],
 			"description": "Summarize .bam modified bases as .bed files with counts",
+			"files": ["js", "wasm", "data"],
 			"versions": [
 				{
 					"version": "0.9.5",
