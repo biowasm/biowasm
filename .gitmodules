@@ -113,3 +113,6 @@
 [submodule "tools/wgsim/src"]
 	path = tools/wgsim/src
 	url = https://github.com/lh3/wgsim.git
+[submodule "tools/hyphy/src"]
+	path = tools/hyphy/src
+	url = git@github.com:veg/hyphy.git

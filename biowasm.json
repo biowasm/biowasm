@@ -357,6 +357,22 @@
 			]
 		},
 		{
+			"name": "hyphy",
+			"programs": ["hyphy"],
+			"description": "HyPhy",
+			"files": ["js", "wasm", "data"],
+			"versions": [
+				{
+					"version": "1.0.9",
+					"branch": "v1.0.9"
+				},
+				{
+					"version": "1.0.11",
+					"branch": "v.1.0.11"
+				}
+			]
+		},
+		{
 			"name": "tree",
 			"programs": ["tree"],
 			"description": "List folder contents in a tree format",

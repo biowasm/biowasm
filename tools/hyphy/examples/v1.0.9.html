@@ -1,0 +1,18 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["tn93/1.0.9"]);
+
+// Calculate pairwise distances of sequences in test.fas
+const output = await CLI.exec("tn93 -t 0.05 -o test.dst /shared/tn93/test.fas");
+const result = await CLI.cat("test.dst");
+
+// Output results
+document.getElementById("output").innerHTML = output;
+document.getElementById("result").innerHTML = result;
+</script>
+
+<h4>Output of <code>tn93</code>:</h4>
+<pre id="output">Loading...</pre>
+
+<h4>Pairwise distances:</h4>
+<pre id="result">Loading...</pre>
