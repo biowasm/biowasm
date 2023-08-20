@@ -189,6 +189,22 @@
 			]
 		},
 		{
+			"name": "HyPhy",
+			"programs": ["hyphy"],
+			"description": "Hypothesis Testing using Phylogenies. An open-source software package for comparative sequence analysis using stochastic evolutionary models",
+			"files": ["js", "wasm", "data"],
+			"versions": [
+				{
+					"version": "1.0.9",
+					"branch": "v1.0.9"
+				},
+				{
+					"version": "1.0.11",
+					"branch": "v.1.0.11"
+				}
+			]
+		},
+		{
 			"name": "ivar",
 			"programs": ["ivar"],
 			"description": "Tools for viral amplicon-based sequencing",
@@ -344,22 +360,6 @@
 			"name": "tn93",
 			"programs": ["tn93"],
 			"description": "Pairwise distance on FASTA files using Tamura Nei 93 distance",
-			"files": ["js", "wasm", "data"],
-			"versions": [
-				{
-					"version": "1.0.9",
-					"branch": "v1.0.9"
-				},
-				{
-					"version": "1.0.11",
-					"branch": "v.1.0.11"
-				}
-			]
-		},
-		{
-			"name": "hyphy",
-			"programs": ["hyphy"],
-			"description": "HyPhy",
 			"files": ["js", "wasm", "data"],
 			"versions": [
 				{
