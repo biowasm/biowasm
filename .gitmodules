@@ -50,6 +50,10 @@
 	path = tools/htslib/src
 	url = https://github.com/samtools/htslib.git
 
+[submodule "tools/hyphy/src"]
+	path = tools/hyphy/src
+	url = git@github.com:veg/hyphy.git
+
 [submodule "tools/ivar/src"]
 	path = tools/ivar/src
 	url = https://github.com/andersen-lab/ivar.git
@@ -113,6 +117,4 @@
 [submodule "tools/wgsim/src"]
 	path = tools/wgsim/src
 	url = https://github.com/lh3/wgsim.git
-[submodule "tools/hyphy/src"]
-	path = tools/hyphy/src
-	url = git@github.com:veg/hyphy.git
+
