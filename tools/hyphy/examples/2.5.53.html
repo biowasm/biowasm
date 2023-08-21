@@ -1,0 +1,18 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["hyphy/2.5.53"]);
+
+// Calculate pairwise distances of sequences in test.fas
+const output = await CLI.exec("hyphy -v");
+const result = await CLI.cat("test.dst");
+
+// Output results
+document.getElementById("output").innerHTML = output;
+document.getElementById("result").innerHTML = result;
+</script>
+
+<h4>Output of <code>hyphy</code>:</h4>
+<pre id="output">Loading...</pre>
+
+<h4>Output:</h4>
+<pre id="result">Loading...</pre>
