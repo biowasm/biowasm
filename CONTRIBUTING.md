@@ -24,10 +24,17 @@ apt-get install -y autoconf liblzma-dev less vim
 # Create small web server for testing
 cat << EOF > server.py
 import http.server
+from http.server import SimpleHTTPRequestHandler
 import socketserver
 
-handler = http.server.SimpleHTTPRequestHandler
+class CORSRequestHandler (SimpleHTTPRequestHandler):
+    def end_headers (self):
+        self.send_header('Access-Control-Allow-Origin', '*')
+       	SimpleHTTPRequestHandler.end_headers(self)
+
+handler = CORSRequestHandler
 handler.extensions_map['.wasm'] = 'application/wasm'
+
 httpd = socketserver.TCPServer(('', 80), handler)
 httpd.serve_forever()
 EOF
