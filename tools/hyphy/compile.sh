@@ -6,4 +6,4 @@ EM_FLAGS="-sTOTAL_STACK=2097152 -02 -sASSERTIONS=1"
 emcmake cmake -DCMAKE_EXE_LINKER_FLAGS="${EM_FLAGS//-s /-s} --preload-file res@/hyphy --preload-file tests@/hyphy" .
 emmake make hyphy
 emmake make install
-mv hyphy.{js,wasm} ../build/
+mv hyphy.{js,wasm,data} ../build/
