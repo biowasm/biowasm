@@ -179,11 +179,15 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		// Returns a blob URL so the user can download a file out of the virtual file system
 		const url = await CLI.download("/path/to/a/file");
 
-		// Basic ls, cd, mkdir, pwd utilities
+		// Basic file system utilities
 		await CLI.mkdir("/some/path");
 		await CLI.ls("/some/path");
 		await CLI.cd("/some/path");
 		await CLI.pwd();
+
+		// Call Emscripten's virtual file system utilities (docs: https://emscripten.org/docs/api_reference/Filesystem-API.html)
+		await CLI.fs.unlink("/some/path/here"); // Delete a file
+		await CLI.fs.stat("/some/path/here"); // Get file size/timestamps
 	`} />
 
 	<Alert color="info">
