@@ -57,8 +57,12 @@ import CONFIG from "@/biowasm.json";
 						<td>Runs <code>htsfile</code> and <code>seqtk</code> to identify data issues before file upload</td>
 					</tr>
 					<tr>
-						<td><a class="fw-bold" href="https://bonito.epi2me.io/">Nanopore</a></td>
+						<td><a class="fw-bold" href="https://bonito.epi2me.io">Nanopore</a></td>
 						<td>Runs <code>samtools</code> to generate <code>.bam</code> files after basecalling in the browser</td>
+					</tr>
+					<tr>
+						<td><a class="fw-bold" href="https://niema-lab.github.io/ViralWasm">ViralWasm</a></td>
+						<td>Runs <code>minimap2</code> and <code>ViralConsensus</code> for viral molecular epidemiology analysis</td>
 					</tr>
 					<tr>
 						<td><a class="fw-bold" href="https://datagrok.ai">Datagrok</a></td>
@@ -71,6 +75,10 @@ import CONFIG from "@/biowasm.json";
 					<tr>
 						<td><a class="fw-bold" href="https://genomeribbon.com">Ribbon</a></td>
 						<td>Runs <code>samtools</code> in the browser to parse, estimate coverage and subsample .bam files</td>
+					</tr>
+					<tr>
+						<td><a class="fw-bold" href="https://fastq.bio">fastq.bio</a></td>
+						<td>Runs <code>fastp</code> in the browser to evaluate sequencing data quality</td>
 					</tr>
 				</tbody>
 			</Table>
