@@ -399,6 +399,17 @@
 					"branch": "a12da33"
 				}
 			]
+		},
+		{
+			"name": "muscle",
+			"programs": ["muscle"],
+			"description": "MUSCLE is widely-used software for making multiple alignments of biological sequences",
+			"versions": [
+				{
+					"version": "5.1.0",
+					"branch": "v5.1.0"
+				}
+			]
 		}
 	]
 }
