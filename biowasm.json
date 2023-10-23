@@ -410,6 +410,17 @@
 					"branch": "5.1.0"
 				}
 			]
-		}
+		},
+		{
+			"name": "TMalign",
+			"programs": ["TMalign"],
+			"description": "TM-align is an algorithm for sequence independent protein structure comparisons",
+			"versions": [
+				{
+					"version": "2022.4.12",
+					"branch": " 2022.4.12"
+				}
+			]
+		},
 	]
 }
