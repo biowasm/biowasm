@@ -401,17 +401,6 @@
 			]
 		},
 		{
-			"name": "muscle",
-			"programs": ["muscle"],
-			"description": "MUSCLE is widely-used software for making multiple alignments of biological sequences",
-			"versions": [
-				{
-					"version": "5.1.0",
-					"branch": "5.1.0"
-				}
-			]
-		},
-		{
 			"name": "TMalign",
 			"programs": ["TMalign"],
 			"description": "TM-align is an algorithm for sequence independent protein structure comparisons",
