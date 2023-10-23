@@ -1,0 +1,106 @@
+diff --git a/src/Makefile b/src/Makefile
+index df16673..f5956ed 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -24,9 +24,12 @@ ifeq ($(OS),Darwin)
+ 	CXX := g++-11
+ endif
+ 
+-CXXFLAGS := $(CXXFLAGS) -O3 -fopenmp -ffast-math
++CXXFLAGS := $(CXXFLAGS) -O3 -fno-openmp -ffast-math 
+ 
+-LDFLAGS := $(LDFLAGS) -O3 -fopenmp -pthread -lpthread ${LDFLAGS2}
++LDFLAGS := $(LDFLAGS) -O3 -fno-openmp -pthread -lpthread
++ifeq ($(OS),Linux)
++    LDFLAGS += -static
++endif
+ 
+ HDRS := $(shell echo *.h)
+ OBJS := $(shell echo *.cpp | sed "-es/^/$(OS)\//" | sed "-es/ / $(OS)\//g" | sed "-es/\.cpp/.o/g")
+@@ -35,10 +38,10 @@ SRCS := $(shell ls *.cpp *.h)
+ .PHONY: clean
+ 
+ $(OS)/muscle : gitver.txt $(OS)/ $(OBJS)
+-	$(CXX) $(LDFLAGS) $(OBJS) -o $@
++	$(CXX) $(LDFLAGS) $(OBJS) -o ../../build/muscle.js $(EM_FLAGS)
+ 
+ 	# Warning: do not add -d option to strip, this is not portable
+-	strip $(OS)/muscle
++	#strip $(OS)/muscle
+ 
+ gitver.txt : $(SRCS)
+ 	bash ./gitver.bash
+@@ -47,7 +50,7 @@ $(OS)/ :
+ 	mkdir -p $(OS)/
+ 
+ $(OS)/%.o : %.cpp $(HDRS)
+-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
++	$(CXX) $(CPPFLAGS) $(CXXFLAGS)  -c -o $@ $<
+ 
+ clean:
+ 	rm -rf gitver.txt $(OS)/
+diff --git a/src/locallock.h b/src/locallock.h
+index a7584a7..8dafc2f 100644
+--- a/src/locallock.h
++++ b/src/locallock.h
+@@ -1,6 +1,6 @@
+ #pragma once
+ 
+-#include <omp.h>
++#include "omp.h"
+ 
+ static omp_lock_t g_Lock;
+ static bool InitLock()
+@@ -19,3 +19,5 @@ static void Unlock()
+ 	{
+ 	omp_unset_lock(&g_Lock);
+ 	}
++
++
+diff --git a/src/myutils.cpp b/src/myutils.cpp
+index 2426f9e..dde01df 100644
+--- a/src/myutils.cpp
++++ b/src/myutils.cpp
+@@ -1101,6 +1101,10 @@ double GetPhysMemBytes()
+ 	return double(mempages);
+ 	}
+ #else
++double GetPhysMemBytes() // add by myth
++	{
++	return 100000000;
++	}
+ double GetMemUseBytes()
+ 	{
+ 	return 0.0;
+diff --git a/src/myutils.h b/src/myutils.h
+index 49d28ef..97d1173 100644
+--- a/src/myutils.h
++++ b/src/myutils.h
+@@ -28,7 +28,7 @@
+ #include <cstdlib>
+ #include <climits>
+ #include <float.h>
+-#include <omp.h>
++#include "omp.h"
+ #include <algorithm>
+ #include <map>
+ #include <inttypes.h>
+diff --git a/src/omp.h b/src/omp.h
+index 139597f..70ab0c4 100644
+--- a/src/omp.h
++++ b/src/omp.h
+@@ -1,2 +1,14 @@
+ 
++/* referebce to https://github.com/rcedgar/muscle/issues/65 */
++
++#define omp_init_lock(x)  /* do nothing */
++#define omp_set_lock(x)   /* do nothing */
++#define omp_unset_lock(x) /* do nothing */
++#define omp_lock_lock(x)  /* do nothing */
++typedef void *omp_lock_t;
++
++#define omp_get_num_threads(x)  1
++#define omp_get_thread_num(x)  0
++
++#define omp_get_max_threads(x) 1
+ 

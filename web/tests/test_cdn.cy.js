@@ -12,6 +12,7 @@ const EXPECTED_OUTPUTS = {
 		`\t"summary": {\n\t\t"before_filtering": {\n\t\t\t"total_reads":50,\n\t\t\t"total_bases":7400,\n\t\t\t"q20_bases":7308,\n\t\t\t"q30_bases":7169,\n\t\t\t"q20_rate":0.987568,\n\t\t\t"q30_rate":0.968784,\n\t\t\t"read1_mean_length":148,\n\t\t\t"gc_content":0.409459\n\t\t},\n\t\t"after_filtering": {\n\t\t\t"total_reads":50,\n\t\t\t"total_bases":7400,\n\t\t\t"q20_bases":7308,\n\t\t\t"q30_bases":7169,\n\t\t\t"q20_rate":0.987568,\n\t\t\t"q30_rate":0.968784,\n\t\t\t"read1_mean_length":148,\n\t\t\t"gc_content":0.409459\n\t\t}\n\t}`
 	],
 	"tools/fasttree/examples/main.html": [`(1k99_A:1.455604057,2lef_A:0.867678506,(1aab_:2.021714810,1j46_A:0.342407321)0.877:0.650876783);`],
+	"tools/muscle/examples/5.1.0.html": [`>2lef_\nA-------MHIKKPLNAFMLYMKEMRANVVAESTL--KESAAINQILGRRWHALSREEQAKYYELARKERQLHMQLYPGWSARDNYGKKKKRKREK\n>1k99_A\nMKKLKKHPDFPKKPLTPYFRFFMEKRAKYAKLHPE--MSNLDLTKILSKKYKELPEKKKMKYIQDFQREKQEFERNLARFREDH---PDLIQNAKK\n>1j46_A\nMQ------DRVKRPMNAFIVWSRDQRRKMALENPR--MRNSEISKQLGYQWKMLTEAEKWPFFQEAQKLQAMHREKYPNYKYRP---RRKAKMLPK\n>x2_1aab_\nGK---GDPKKPRGKMSSYAFFVQTSREEHKKKHPDASVNFSEFSKKCSERWKTMSAKEKGKFEDMAKADKARYEREMKTY----------IPPKGE`],
 	"tools/findutils/examples/v4.9.0.html": [`./test1.txt`, `./test11.txt`],
 	"tools/gawk/examples/gawk-5.1.0.html": [`column2\n2\n5\n8\nTotal of column 2 = 15`],
 	"tools/gfatools/examples/30ea19b.html": [`MTh4001	+	MTh4502	+	0M	SR:i:0	L1:i:501	L2:i:5003`],
