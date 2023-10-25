@@ -12,7 +12,7 @@ index c3ac291..e81d0d7 100644
      ofs << "    function showOrHide(divname) {" << endl;
      ofs << "        div = document.getElementById(divname);" << endl;
 diff --git a/src/peprocessor.cpp b/src/peprocessor.cpp
-index 44443ea..5c077f6 100644
+index 44443ea..194da5b 100644
 --- a/src/peprocessor.cpp
 +++ b/src/peprocessor.cpp
 @@ -111,59 +111,68 @@ bool PairEndProcessor::process(){
@@ -167,7 +167,51 @@ index 44443ea..5c077f6 100644
  
      if(!mOptions->split.enabled)
          closeOutput();
-@@ -818,14 +827,14 @@ void PairEndProcessor::consumerTask(ThreadConfig* config)
+@@ -646,11 +655,12 @@ void PairEndProcessor::consumePack(ThreadConfig* config){
+ 
+     mInputMtx.lock();
+     while(mRepo.writePos <= mRepo.readPos) {
+-        usleep(1000);
+         if(mProduceFinished) {
+             mInputMtx.unlock();
+             return;
+         }
++        loginfo("usleep - PairEndProcessor::consumePack()");
++        break;
+     }
+     data = mRepo.packBuffer[mRepo.readPos];
+     mRepo.readPos++;
+@@ -719,7 +729,8 @@ void PairEndProcessor::producerTask()
+             // if the consumer is far behind this producer, sleep and wait to limit memory usage
+             while(mRepo.writePos - mRepo.readPos > PACK_IN_MEM_LIMIT){
+                 slept++;
+-                usleep(1000);
++                loginfo("usleep - PairEndProcessor::producerTask()");
++                break;
+             }
+             readNum += count;
+             // if the writer threads are far behind this producer, sleep and wait
+@@ -727,7 +738,8 @@ void PairEndProcessor::producerTask()
+             if(readNum % (PACK_SIZE * PACK_IN_MEM_LIMIT) == 0 && mLeftWriter) {
+                 while( (mLeftWriter && mLeftWriter->bufferLength() > PACK_IN_MEM_LIMIT) || (mRightWriter && mRightWriter->bufferLength() > PACK_IN_MEM_LIMIT) ){
+                     slept++;
+-                    usleep(1000);
++                    loginfo("usleep - PairEndProcessor::producerTask() - 2");
++                    break;
+                 }
+             }
+             // reset count to 0
+@@ -770,7 +782,8 @@ void PairEndProcessor::consumerTask(ThreadConfig* config)
+         while(mRepo.writePos <= mRepo.readPos) {
+             if(mProduceFinished)
+                 break;
+-            usleep(1000);
++            loginfo("usleep - PairEndProcessor::consumerTask()");
++            break;
+         }
+         //std::unique_lock<std::mutex> lock(mRepo.readCounterMtx);
+         if(mProduceFinished && mRepo.writePos == mRepo.readPos){
+@@ -818,14 +831,14 @@ void PairEndProcessor::consumerTask(ThreadConfig* config)
  
  void PairEndProcessor::writeTask(WriterThread* config)
  {
@@ -190,7 +234,7 @@ index 44443ea..5c077f6 100644
      if(mOptions->verbose) {
          string msg = config->getFilename() + " writer finished";
 diff --git a/src/seprocessor.cpp b/src/seprocessor.cpp
-index a9c968f..a7b0388 100644
+index a9c968f..b5426a7 100644
 --- a/src/seprocessor.cpp
 +++ b/src/seprocessor.cpp
 @@ -69,39 +69,44 @@ bool SingleEndProcessor::process(){
@@ -287,7 +331,54 @@ index a9c968f..a7b0388 100644
  
      if(!mOptions->split.enabled)
          closeOutput();
-@@ -514,14 +519,14 @@ void SingleEndProcessor::consumerTask(ThreadConfig* config)
+@@ -350,11 +355,13 @@ void SingleEndProcessor::consumePack(ThreadConfig* config){
+ 
+     mInputMtx.lock();
+     while(mRepo.writePos <= mRepo.readPos) {
+-        usleep(1000);
+         if(mProduceFinished) {
+             mInputMtx.unlock();
+             return;
+         }
++        loginfo("usleep - consumePack()");
++        break;
++
+     }
+     data = mRepo.packBuffer[mRepo.readPos];
+     mRepo.readPos++;
+@@ -421,9 +428,9 @@ void SingleEndProcessor::producerTask()
+             memset(data, 0, sizeof(Read*)*PACK_SIZE);
+             // if the consumer is far behind this producer, sleep and wait to limit memory usage
+             while(mRepo.writePos - mRepo.readPos > PACK_IN_MEM_LIMIT){
+-                //cerr<<"sleep"<<endl;
+                 slept++;
+-                usleep(100);
++                loginfo("usleep - SingleEndProcessor::producerTask()");
++                break;
+             }
+             readNum += count;
+             // if the writer threads are far behind this producer, sleep and wait
+@@ -431,7 +438,8 @@ void SingleEndProcessor::producerTask()
+             if(readNum % (PACK_SIZE * PACK_IN_MEM_LIMIT) == 0 && mLeftWriter) {
+                 while(mLeftWriter->bufferLength() > PACK_IN_MEM_LIMIT) {
+                     slept++;
+-                    usleep(1000);
++                    loginfo("usleep - SingleEndProcessor::producerTask() - 2");
++                    break;
+                 }
+             }
+             // reset count to 0
+@@ -474,7 +482,8 @@ void SingleEndProcessor::consumerTask(ThreadConfig* config)
+         while(mRepo.writePos <= mRepo.readPos) {
+             if(mProduceFinished)
+                 break;
+-            usleep(1000);
++            loginfo("usleep - SingleEndProcessor::consumerTask()");
++            break;
+         }
+         //std::unique_lock<std::mutex> lock(mRepo.readCounterMtx);
+         if(mProduceFinished && mRepo.writePos == mRepo.readPos){
+@@ -514,14 +523,14 @@ void SingleEndProcessor::consumerTask(ThreadConfig* config)
  
  void SingleEndProcessor::writeTask(WriterThread* config)
  {
@@ -309,3 +400,16 @@ index a9c968f..a7b0388 100644
  
      if(mOptions->verbose) {
          string msg = config->getFilename() + " writer finished";
+diff --git a/src/writerthread.cpp b/src/writerthread.cpp
+index 8104567..d601040 100644
+--- a/src/writerthread.cpp
++++ b/src/writerthread.cpp
+@@ -37,7 +37,7 @@ bool WriterThread::setInputCompleted() {
+ 
+ void WriterThread::output(){
+     if(mOutputCounter >= mInputCounter) {
+-        usleep(100);
++        loginfo("usleep - WriterThread::output()");
+     }
+     while( mOutputCounter < mInputCounter) 
+     {
