@@ -1,5 +1,5 @@
 diff --git a/src/Makefile b/src/Makefile
-index df16673..f5956ed 100644
+index df16673..b7855b6 100644
 --- a/src/Makefile
 +++ b/src/Makefile
 @@ -24,9 +24,12 @@ ifeq ($(OS),Darwin)
@@ -7,7 +7,7 @@ index df16673..f5956ed 100644
  endif
  
 -CXXFLAGS := $(CXXFLAGS) -O3 -fopenmp -ffast-math
-+CXXFLAGS := $(CXXFLAGS) -O3 -fno-openmp -ffast-math 
++CXXFLAGS := $(CXXFLAGS) -O3 -fno-openmp -ffast-math
  
 -LDFLAGS := $(LDFLAGS) -O3 -fopenmp -pthread -lpthread ${LDFLAGS2}
 +LDFLAGS := $(LDFLAGS) -O3 -fno-openmp -s USE_PTHREADS=0 ${LDFLAGS2}
@@ -40,7 +40,7 @@ index df16673..f5956ed 100644
  clean:
  	rm -rf gitver.txt $(OS)/
 diff --git a/src/locallock.h b/src/locallock.h
-index a7584a7..8dafc2f 100644
+index a7584a7..768d9f7 100644
 --- a/src/locallock.h
 +++ b/src/locallock.h
 @@ -1,6 +1,6 @@
@@ -51,12 +51,6 @@ index a7584a7..8dafc2f 100644
  
  static omp_lock_t g_Lock;
  static bool InitLock()
-@@ -19,3 +19,5 @@ static void Unlock()
- 	{
- 	omp_unset_lock(&g_Lock);
- 	}
-+
-+
 diff --git a/src/myutils.cpp b/src/myutils.cpp
 index 2426f9e..dde01df 100644
 --- a/src/myutils.cpp
@@ -86,21 +80,18 @@ index 49d28ef..97d1173 100644
  #include <map>
  #include <inttypes.h>
 diff --git a/src/omp.h b/src/omp.h
-index 139597f..70ab0c4 100644
---- a/src/omp.h
+new file mode 100644
+index 0000000..bfd184c
+--- /dev/null
 +++ b/src/omp.h
-@@ -1,2 +1,14 @@
- 
-+/* referebce to https://github.com/rcedgar/muscle/issues/65 */
+@@ -0,0 +1,10 @@
++/* Mock OMP dependency; see https://github.com/rcedgar/muscle/issues/65 */
 +
 +#define omp_init_lock(x)  /* do nothing */
 +#define omp_set_lock(x)   /* do nothing */
 +#define omp_unset_lock(x) /* do nothing */
 +#define omp_lock_lock(x)  /* do nothing */
 +typedef void *omp_lock_t;
-+
-+#define omp_get_num_threads(x)  1
-+#define omp_get_thread_num(x)  0
-+
++#define omp_get_num_threads(x) 1
++#define omp_get_thread_num(x) 0
 +#define omp_get_max_threads(x) 1
- 
