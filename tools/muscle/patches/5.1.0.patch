@@ -1,8 +1,16 @@
 diff --git a/src/Makefile b/src/Makefile
-index df16673..b7855b6 100644
+index df16673..16b0049 100644
 --- a/src/Makefile
 +++ b/src/Makefile
-@@ -24,9 +24,12 @@ ifeq ($(OS),Darwin)
+@@ -17,16 +17,19 @@
+ 
+ OS := $(shell uname)
+ 
+-CPPFLAGS := $(CPPFLAGS) -DNDEBUG -pthread
++CPPFLAGS := $(CPPFLAGS) -DNDEBUG -s USE_PTHREADS=0
+ 
+ CXX := g++
+ ifeq ($(OS),Darwin)
  	CXX := g++-11
  endif
  
