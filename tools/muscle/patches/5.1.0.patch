@@ -10,7 +10,7 @@ index df16673..f5956ed 100644
 +CXXFLAGS := $(CXXFLAGS) -O3 -fno-openmp -ffast-math 
  
 -LDFLAGS := $(LDFLAGS) -O3 -fopenmp -pthread -lpthread ${LDFLAGS2}
-+LDFLAGS := $(LDFLAGS) -O3 -fno-openmp -pthread -lpthread
++LDFLAGS := $(LDFLAGS) -O3 -fno-openmp -s USE_PTHREADS=0 ${LDFLAGS2}
 +ifeq ($(OS),Linux)
 +    LDFLAGS += -static
 +endif
