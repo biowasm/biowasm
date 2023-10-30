@@ -271,6 +271,17 @@
 			]
 		},
 		{
+			"name": "muscle",
+			"programs": ["muscle"],
+			"description": "Multiple alignments of biological sequences",
+			"versions": [
+				{
+					"version": "5.1.0",
+					"branch": "5.1.0"
+				}
+			]
+		},
+		{
 			"name": "samtools",
 			"programs": ["samtools"],
 			"description": "Parse .sam / .bam read alignment files",
@@ -397,17 +408,6 @@
 				{
 					"version": "2011.10.17",
 					"branch": "a12da33"
-				}
-			]
-		},
-		{
-			"name": "muscle",
-			"programs": ["muscle"],
-			"description": "Multiple alignments of biological sequences",
-			"versions": [
-				{
-					"version": "5.1.0",
-					"branch": "5.1.0"
 				}
 			]
 		}
