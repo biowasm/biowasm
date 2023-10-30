@@ -1,0 +1,19 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["muscle/5.1.0"]);
+
+// mount pep file
+await CLI.mount({
+	name: "input.fa",
+	data: ">x2_1aab_\nGKGDPKKPRGKMSSYAFFVQTSREEHKKKHPDASVNFSEFSKKCSERWKTMSAKEKGKFEDMAKADKARYEREMKTYIPPKGE\n>1j46_A\nMQDRVKRPMNAFIVWSRDQRRKMALENPRMRNSEISKQLGYQWKMLTEAEKWPFFQEAQKLQAMHREKYPNYKYRPRRKAKMLPK\n>1k99_A\nMKKLKKHPDFPKKPLTPYFRFFMEKRAKYAKLHPEMSNLDLTKILSKKYKELPEKKKMKYIQDFQREKQEFERNLARFREDHPDLIQNAKK\n>2lef_\nAMHIKKPLNAFMLYMKEMRANVVAESTLKESAAINQILGRRWHALSREEQAKYYELARKERQLHMQLYPGWSARDNYGKKKKRKREK",
+});
+
+await CLI.exec("muscle -align input.fa -output out.msa.muscle.fasta");
+const output = await CLI.cat("out.msa.muscle.fasta");
+
+document.getElementById("output").innerHTML = output;
+</script>
+
+<h4>Output of <code>muscle</code>pep:</h4>
+<pre id="output">Loading...</pre>
+
