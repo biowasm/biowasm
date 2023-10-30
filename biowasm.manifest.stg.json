@@ -133,6 +133,8 @@
   "modbam2bed/0.9.5/modbam2bed.data": "modbam2bed/0.9.5/modbam2bed.data:82e948f338123505d2bfba0fdcc08612",
   "modbam2bed/0.9.5/modbam2bed.js": "modbam2bed/0.9.5/modbam2bed.js:d493746a418cdc3307afd33dd7999c27",
   "modbam2bed/0.9.5/modbam2bed.wasm": "modbam2bed/0.9.5/modbam2bed.wasm:94d2921d505129a469d2e35352729c94",
+  "muscle/5.1.0/muscle.js": "muscle/5.1.0/muscle.js:eb5ba9b209391e8ff5c9f669d3025686",
+  "muscle/5.1.0/muscle.wasm": "muscle/5.1.0/muscle.wasm:2e88d71e147b7ecb9af0c59e36f1d467",
   "samtools/1.10/samtools.data": "samtools/1.10/samtools.data:434600c948d9ed7720093cfae327f433",
   "samtools/1.10/samtools.js": "samtools/1.10/samtools.js:ffe220f0e572605f19d5f2b639b681a6",
   "samtools/1.10/samtools.wasm": "samtools/1.10/samtools.wasm:52e01e5af280d1c5db01e20702b5bf0f",
