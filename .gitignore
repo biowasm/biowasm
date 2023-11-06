@@ -2,7 +2,7 @@ build/
 dist/
 worker/
 node_modules/
-trash/
 .DS_Store
 .svelte-kit/
 .cloudflare/
+tools/muscle/src-v3/

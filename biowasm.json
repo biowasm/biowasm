@@ -276,12 +276,12 @@
 			"description": "Multiple alignments of biological sequences",
 			"versions": [
 				{
-					"version": "5.1.0",
-					"branch": "5.1.0"
-				},
-				{
 					"version": "3.8.1551",
 					"branch": "main"
+				},
+				{
+					"version": "5.1.0",
+					"branch": "5.1.0"
 				}
 			]
 		},
