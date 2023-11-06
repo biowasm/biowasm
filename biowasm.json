@@ -192,11 +192,11 @@
 			"name": "HyPhy",
 			"programs": ["hyphy"],
 			"description": "Hypothesis Testing using Phylogenies. An open-source software package for comparative sequence analysis using stochastic evolutionary models",
-			"files": ["js", "wasm", "data"],
+			"files": ["js", "wasm"],
 			"versions": [
 				{
-					"version": "2.5.3",
-					"branch": "2.5.3"
+					"version": "2.5.56",
+					"branch": "2.5.56"
 				}
 			]
 		},
