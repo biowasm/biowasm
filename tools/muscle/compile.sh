@@ -5,6 +5,7 @@ BRANCH_OR_TAG=$(git symbolic-ref -q --short HEAD || git describe --tags --exact-
 
 # New versions
 if [[ "$BRANCH_OR_TAG" != "main" ]]; then
+    cd src/
     emmake make CC=emcc CXX=em++
 # Muscle v3
 else
