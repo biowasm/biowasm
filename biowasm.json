@@ -195,8 +195,8 @@
 			"files": ["js", "wasm"],
 			"versions": [
 				{
-					"version": "2.5.56",
-					"branch": "2.5.56"
+					"version": "2.5.57",
+					"branch": "2.5.57"
 				}
 			]
 		},
