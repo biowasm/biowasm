@@ -8,7 +8,6 @@ EXTRA_FLAGS=$(cat <<EOF
     -s EXPORTED_RUNTIME_METHODS=['callMain','FS','PROXYFS','WORKERFS','UTF8ToString','getValue','AsciiToString']
     -fwasm-exceptions
     --preload-file res@/hyphy
-    --preload-file tests/hbltests@/tests
 EOF
 )
 EXTRA_FLAGS=$(echo $EXTRA_FLAGS)  # Remove whitespace
