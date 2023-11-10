@@ -52,7 +52,7 @@
 
 [submodule "tools/hyphy/src"]
 	path = tools/hyphy/src
-	url = git@github.com:veg/hyphy.git
+	url = https://github.com/veg/hyphy.git
 
 [submodule "tools/ivar/src"]
 	path = tools/ivar/src
