@@ -189,6 +189,18 @@
 			]
 		},
 		{
+			"name": "hyphy",
+			"programs": ["hyphy"],
+			"description": "Comparative sequence analysis using stochastic evolutionary models",
+			"files": ["js", "wasm", "data"],
+			"versions": [
+				{
+					"version": "2.5.57",
+					"branch": "2.5.57"
+				}
+			]
+		},
+		{
 			"name": "ivar",
 			"programs": ["ivar"],
 			"description": "Tools for viral amplicon-based sequencing",

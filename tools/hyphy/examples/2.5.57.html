@@ -1,0 +1,10 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+
+const CLI = await new Aioli(["hyphy/2.5.57"]);
+const output = await CLI.exec("hyphy -v");
+document.getElementById("output").innerHTML = output;
+</script>
+
+<h4>Output of <code>hyphy -v</code>:</h4>
+<pre id="output">Loading...</pre>
