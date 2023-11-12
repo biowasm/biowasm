@@ -1,0 +1,11 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["TMalign/2022.4.12"]);
+
+const output = await CLI.exec("TMalign /shared/TMalign/testdata/strA.pdb /shared/TMalign/testdata/strB.pdb");
+document.getElementById("output").innerHTML = output;
+</script>
+
+<h4>Output of <code>TMalign</code>pdb:</h4>
+<pre id="output">Loading...</pre>
+

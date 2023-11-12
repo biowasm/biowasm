@@ -368,6 +368,18 @@
 			]
 		},
 		{
+			"name": "TM-align",
+			"programs": ["TMalign"],
+			"description": "An algorithm for sequence independent protein structure comparisons",
+			"files": ["js", "wasm", "data"],
+			"versions": [
+				{
+					"version": "2022.4.12",
+					"branch": "main"
+				}
+			]
+		},
+		{
 			"name": "tn93",
 			"programs": ["tn93"],
 			"description": "Pairwise distance on FASTA files using Tamura Nei 93 distance",
