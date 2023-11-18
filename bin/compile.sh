@@ -29,8 +29,8 @@ cd src/
 
 # Go to branch/tag of interest (clean up previous iterations)
 log "Resetting code changes..."
-git reset --hard
-git clean -f -d
+git reset --hard --recurse-submodules
+git clean -xdf
 git checkout --recurse-submodules "$BRANCH"
 
 # Apply patches, if any
