@@ -108,6 +108,8 @@
   "ivar/1.3.1/ivar.wasm": "ivar/1.3.1/ivar.wasm:70d45ed8a8d7fada2c9ecc3c8ebaa045",
   "jq/1.6/jq.js": "jq/1.6/jq.js:9e398072b78de45e6c97ac4690a5fd20",
   "jq/1.6/jq.wasm": "jq/1.6/jq.wasm:4ae538cea95dc131147c2799e72c6a55",
+  "jq/1.7/jq.js": "jq/1.7/jq.js:9e398072b78de45e6c97ac4690a5fd20",
+  "jq/1.7/jq.wasm": "jq/1.7/jq.wasm:03a162ceead17c9b2c675e07ec50ba6b",
   "kalign/3.3.1/kalign.js": "kalign/3.3.1/kalign.js:e4f2b9653b03c51d2befa030f754b5bd",
   "kalign/3.3.1/kalign.wasm": "kalign/3.3.1/kalign.wasm:c09fdaaaea0e6127f31e07987e8b1274",
   "kentutils/437/bigBedHead.js": "kentutils/437/bigBedHead.js:a3fcdacad75ac84c583a6fc3d008e350",
