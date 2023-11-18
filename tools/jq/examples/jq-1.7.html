@@ -1,0 +1,22 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["jq/1.7"]);
+
+// Create mock JSON file
+await CLI.mount({
+	name: "test.json",
+	data: `[{"some":{"data": "here"}}, {"some": {"data": "there"}}]`
+});
+
+// Retrieve JSON subset (note that we use an array of inputs to properly escape the arguments)
+const output = await CLI.exec("jq", [
+	"-r",
+	".[1].some.data",
+	"test.json"
+]);
+
+document.getElementById("output").innerHTML = output;
+</script>
+
+<h4>Output of <code>jq</code>:</h4>
+<pre id="output">Loading...</pre>

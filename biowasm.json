@@ -220,6 +220,10 @@
 				{
 					"version": "1.6",
 					"branch": "jq-1.6"
+				},
+				{
+					"version": "1.7",
+					"branch": "jq-1.7"
 				}
 			]
 		},
