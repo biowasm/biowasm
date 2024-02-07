@@ -3,7 +3,7 @@
 const CLI = await new Aioli(["libarchive/bsdunzip/3.7.2"]);
 
 const output = await CLI.exec("bsdunzip --version");
-document.getElementById("output").innerHTML = output.stdout;
+document.getElementById("output").innerHTML = output;
 </script>
 
 <h4>Output of <code>bsdunzip</code>:</h4>
