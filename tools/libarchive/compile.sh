@@ -5,11 +5,12 @@ unzip libarchive-3.7.2.zip
 cd libarchive-3.7.2
 
 emconfigure ./configure --enable-static --disable-shared \
-    --enable-bsdunzip=static \
-    --disable-bsdtar --disable-bsdcat --disable-bsdcpio \
+    --enable-bsdunzip=static --enable-largefile \
+    --enable-bsdtar=static --enable-bsdcat=static --enable-bsdcpio=static \
     --enable-posix-regex-lib=libc \
     --disable-xattr --disable-acl \
-    --without-xml2 --without-nettle --without-lzo2 --without-cng  --without-lz4 --without-expat
+    --without-xml2 --without-nettle --without-lzo2 --without-cng  --without-lz4 --without-expat \
+    CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1"
 
 emmake make bsdunzip.js \
     EXEEXT=".js" \
