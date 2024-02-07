@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# TODO: look into LZMA support (disabled in htslib/compile.sh)
-
 make clean
 
 # Also, use autoheader/autoconf to generate config.h.in and configure

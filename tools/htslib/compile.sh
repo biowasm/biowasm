@@ -1,20 +1,32 @@
 #!/bin/bash
 
-# TODO: look into LZMA support
-
 # Dependencies
-sudo apt-get install -y zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev libssl-dev autoconf
+sudo apt-get install -y zlib1g-dev libbz2-dev libcurl4-gnutls-dev libssl-dev autoconf
+
+# Compile LZMA to WebAssembly
+LZMA_VERSION="5.2.5"
+curl -LO "https://tukaani.org/xz/xz-${LZMA_VERSION}.tar.gz"
+tar -xvf xz-${LZMA_VERSION}.tar.gz
+cd xz-${LZMA_VERSION}
+emconfigure ./configure --disable-shared --disable-threads
+emmake make -j4 CFLAGS="-Oz -fPIC -s USE_PTHREADS=0 -s EXPORT_ALL=1 -s ASSERTIONS=1"
+cd -
+
+# Set up flags
+DIR_LZMA=./xz-${LZMA_VERSION}/src/liblzma
+CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1 -I${DIR_LZMA}/api -I${DIR_LZMA}/api/lzma"
+LFDLAGS="-L${DIR_LZMA}/.libs"
 
 # Run ./configure
 make clean
 autoheader
 autoconf
-emconfigure ./configure CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1" --disable-lzma
+emconfigure ./configure CFLAGS="$CFLAGS" LDFLAGS="$LFDLAGS"
 
 # Build
 TOOLS=("tabix" "htsfile" "bgzip")
 for tool in ${TOOLS[@]}; do
     emmake make $tool CC=emcc AR=emar \
-        CFLAGS="-O2 -s USE_ZLIB=1 -s USE_BZIP2=1" \
-        LDFLAGS="$EM_FLAGS -O2 -s ERROR_ON_UNDEFINED_SYMBOLS=0"
+        CFLAGS="-O2 $CFLAGS" \
+        LDFLAGS="$EM_FLAGS -O2 -s ERROR_ON_UNDEFINED_SYMBOLS=0 $LFDLAGS"
 done
