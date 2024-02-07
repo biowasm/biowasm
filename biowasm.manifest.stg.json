@@ -124,6 +124,8 @@
   "kentutils/437/bigWigInfo.wasm": "kentutils/437/bigWigInfo.wasm:5a6033d01538a385c33eafe839dbd16d",
   "kentutils/437/bigWigToWig.js": "kentutils/437/bigWigToWig.js:cafe6883095d3430d2cdd4540fe497bb",
   "kentutils/437/bigWigToWig.wasm": "kentutils/437/bigWigToWig.wasm:13c0f832aa769fc7f4d61e52b999ad52",
+  "libarchive/3.7.2/bsdunzip.js": "libarchive/3.7.2/bsdunzip.js:55fff49dcb3079ee8e86a3d7edaf533b",
+  "libarchive/3.7.2/bsdunzip.wasm": "libarchive/3.7.2/bsdunzip.wasm:e48affd585fb25ad0a3d3b1117fa44d0",
   "lsd2/2.3/lsd2.data": "lsd2/2.3/lsd2.data:965041e3e15ba539979045b36dca4be7",
   "lsd2/2.3/lsd2.js": "lsd2/2.3/lsd2.js:83a413b9641cf0eeab342a4b899455ae",
   "lsd2/2.3/lsd2.wasm": "lsd2/2.3/lsd2.wasm:75c12b024bf2449c7f5ee3ad8745b7f6",
