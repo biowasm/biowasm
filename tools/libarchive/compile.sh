@@ -13,6 +13,6 @@ emconfigure ./configure --enable-static --disable-shared \
 
 emmake make bsdunzip.js \
     EXEEXT=".js" \
-    CFLAGS="-O2 -ffunction-sections -fdata-sections -fvisibility=hidden -D__LIBARCHIVE_ENABLE_VISIBILITY"
+    CFLAGS="-O2 -ffunction-sections -fdata-sections -fvisibility=hidden -D__LIBARCHIVE_ENABLE_VISIBILITY $EM_FLAGS"
 
 mv bsdunzip.* ../../build/
