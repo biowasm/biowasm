@@ -1,0 +1,10 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["libarchive/bsdunzip/3.7.2"]);
+
+const output = await CLI.exec("bsdunzip --version");
+document.getElementById("output").innerHTML = output.stdout;
+</script>
+
+<h4>Output of <code>bsdunzip</code>:</h4>
+<pre id="output">Loading...</pre>
