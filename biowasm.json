@@ -250,6 +250,17 @@
 			]
 		},
 		{
+			"name": "libarchive",
+			"programs": ["bsdunzip"],
+			"description": "Unzip .zip files",
+			"versions": [
+				{
+					"version": "3.7.2",
+					"branch": "v3.7.2"
+				}
+			]
+		},
+		{
 			"name": "lsd2",
 			"programs": ["lsd2"],
 			"description": "A phylogeny dating method",
