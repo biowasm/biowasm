@@ -5,5 +5,5 @@ emmake make \
     CXX=em++ \
     EXE=../build/viral_consensus.js \
     HTSLIB_A=../../htslib/src/libhts.a \
-    LIBS="-lz -lbz2" \
-    CXXFLAGS="-std=c++11 -fpermissive $EM_FLAGS"
+    LIBS="-lz -lbz2 -llzma $LDFLAGS_LZMA" \
+    CXXFLAGS="-std=c++11 -fpermissive $EM_FLAGS $CFLAGS_LZMA"

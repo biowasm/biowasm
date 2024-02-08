@@ -19,8 +19,8 @@ cd ..
 # doesnt appear compatible with aioli. Consequently we need to set ERROR_ON_UNDEFINED_SYMBOLS=0 to
 # ignore the undefined pthread_attr_getstacksize function.
 emmake make modbam2bed CC=emcc AR=emar \
-    CFLAGS="-DNOTHREADS -DWASM -s ERROR_ON_UNDEFINED_SYMBOLS=0 -s USE_ZLIB=1 -s USE_BZIP2=1 -fno-stack-protector -O2  --preload-file test_data@/modbam2bed/test_data" \
-    EXTRA_LDFLAGS="$EM_FLAGS" \
+    CFLAGS="-DNOTHREADS -DWASM -s ERROR_ON_UNDEFINED_SYMBOLS=0 -s USE_ZLIB=1 -s USE_BZIP2=1 -fno-stack-protector -O2  --preload-file test_data@/modbam2bed/test_data $CFLAGS_LZMA" \
+    EXTRA_LDFLAGS="$EM_FLAGS $LDFLAGS_LZMA" \
     ARGP=argp-standalone-1.3/libargp.a \
     EXTRA_CFLAGS="-Iargp-standalone-1.3" \
     STATIC_HTSLIB="../../htslib/src/libhts.a"
