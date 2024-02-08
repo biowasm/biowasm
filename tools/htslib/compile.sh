@@ -12,11 +12,6 @@ emconfigure ./configure --disable-shared --disable-threads
 emmake make -j4 CFLAGS="-Oz -fPIC -s USE_PTHREADS=0 -s EXPORT_ALL=1 -s ASSERTIONS=1"
 cd -
 
-# Set up flags and export them so other tools can use them
-DIR_LZMA=../../htslib/src/xz-${LZMA_VERSION}/src/liblzma
-export CFLAGS_LZMA="-I${DIR_LZMA}/api -I${DIR_LZMA}/api/lzma"
-export LDFLAGS_LZMA="-L${DIR_LZMA}/.libs"
-
 # Run ./configure
 CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1 ${CFLAGS_LZMA}"
 LDFLAGS="$LDFLAGS_LZMA"

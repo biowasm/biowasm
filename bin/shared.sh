@@ -33,6 +33,12 @@ function EM_GNU_STRCASESTR_LINEAR() {
 	sed -i 's|if test ${gl_cv_func_strcasestr_linear+y}|if true|g' configure
 }
 
+# Shared LZMA flags
+LZMA_VERSION="5.2.5"
+DIR_LZMA=../../htslib/src/xz-${LZMA_VERSION}/src/liblzma
+CFLAGS_LZMA="-I${DIR_LZMA}/api -I${DIR_LZMA}/api/lzma"
+LDFLAGS_LZMA="-L${DIR_LZMA}/.libs"
+
 # Export vars and functions
-export EM_FLAGS;
+export EM_FLAGS CFLAGS_LZMA LDFLAGS_LZMA;
 export -f EM_GNU_NANOSLEEP EM_GNU_STRCASESTR_LINEAR;
