@@ -258,6 +258,17 @@
 			]
 		},
 		{
+			"name": "mafft",
+			"programs": ["tbfast", "dvtditr"],
+			"description": "Multiple alignment program for amino acid or nucleotide sequences",
+			"versions": [
+				{
+					"version": "7.520",
+					"branch": "v7.520"
+				}
+			]
+		},
+		{
 			"name": "minimap2",
 			"programs": ["minimap2", "minimap2-simd"],
 			"description": "Pairwise sequence alignment",
