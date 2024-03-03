@@ -1,0 +1,13 @@
+rm -rf binaries64-cygwin/
+mkdir binaries64-cygwin/
+make clean
+rm -f ../binaries/*
+make CC=x86_64-w64-mingw32-gcc CFLAGS="-static -O3 -Dmingw"
+mv ../binaries/* binaries64-cygwin/
+
+rm -rf binaries32-cygwin/
+mkdir binaries32-cygwin/
+make clean
+rm -f ../binaries/*
+make CC=i686-w64-mingw32-gcc CFLAGS="-static -O3 -Dmingw"
+mv ../binaries/* binaries32-cygwin/

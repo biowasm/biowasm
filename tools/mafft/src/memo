@@ -1,0 +1,9 @@
+--------------------------------------------------------------------------------------------------------------------
+                                                                              pikaia30   conda'sCI
+--------------------------------------------------------------------------------------------------------------------
+"go build dash_client.go"                                                     dynamic    dynamic
+"env CGO_ENABLED=0 go build dash_client.go"                                   static     dynamic
+"env CGO_ENABLED=0 go build --ldflags '-extldflags "-static"' dash_client.go" static     static but does not work
+"go build --ldflags '-extldflags "-static"' dash_client.go"                   static     static
+--------------------------------------------------------------------------------------------------------------------
+error message =  `Trace/BPT trap`

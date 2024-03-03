@@ -117,6 +117,17 @@
 			]
 		},
 		{
+			"name": "mafft",
+			"programs": ["tbfast", "dvtditr"],
+			"description": "Multiple alignment program for amino acid or nucleotide sequences",
+			"versions": [
+				{
+					"version": "7.520",
+					"branch": "main"
+				}
+			]
+		},
+		{
 			"name": "fasttree",
 			"programs": ["fasttree"],
 			"description": "Build phylogenetic trees from multiple sequence alignments",

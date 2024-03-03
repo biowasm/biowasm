@@ -1,0 +1,29 @@
+progs="_PROGS"
+progs="$progs dash_client"
+for prog in $progs; do
+	printf  $prog" "
+done
+
+make clean
+make CC="/opt/homebrew-x86_64/bin/gcc-11" CFLAGS="-O3 -arch x86_64 -mmacosx-version-min=10.9 -DMACOSX_DEPLOYMENT_TARGET=10.9" LIBS="-static-libgcc  -lm  -lpthread" ENABLE_MULTITHREAD="-Denablemultithread"
+rm -f dash_client
+env CC='/opt/homebrew-x86_64/bin/gcc-11 -static-libgcc -O3 -arch x86_64' GOARCH=amd64 GOOS=darwin CGO_ENABLED=0 /opt/homebrew-x86_64/bin/go build --ldflags '-extldflags "-static"' dash_client.go # uwagaki
+for prog in $progs; do
+	mv $prog $prog.x86_64
+done
+
+make clean
+make CC="/opt/homebrew/bin/gcc-11" CFLAGS="-static-libgcc -O3 -arch arm64 -mmacosx-version-min=11.1 -DMACOSX_DEPLOYMENT_TARGET=11.1" LIBS="-lm  -lpthread" ENABLE_MULTITHREAD="-Denablemultithread"
+rm -f dash_client
+env CC='/opt/homebrew/bin/gcc-11 -static-libgcc -O3 -arch arm64' GOARCH=arm64 GOOS=darwin CGO_ENABLED=0 /opt/homebrew/bin/go build --ldflags '-extldflags "-static"' dash_client.go # uwagaki
+for prog in $progs; do
+	mv $prog $prog.arm64
+done
+
+set $progs
+for prog in $progs; do
+#	lipo -create $prog.icc $prog.ppc32 $prog.ppc64 -output $prog
+#	lipo -create $prog.intel64 $prog.intel32 $prog.ppc32 $prog.ppc64 -output $prog
+	lipo -create $prog.x86_64 $prog.arm64 -output $prog
+	cp $prog ../binaries
+done

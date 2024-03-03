@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+export PATH=/home/mingw32/mingw32/bin:$PATH
+export C_INCLUDE_PATH=/home/mingw32/mingw32/include
+export LIBRARY_PATH=/home/mingw32/mingw32/lib
+make clean
+make ENABLE_MULTITHREAD="" CFLAGS="-Dmingw -O3"
+rm -rf binaries32
+mkdir binaries32
+mv ../binaries/* binaries32/
+
+export PATH=/home/mingw64/mingw64/bin:$PATH
+export C_INCLUDE_PATH=/home/mingw64/mingw64/include
+export LIBRARY_PATH=/home/mingw64/mingw64/lib
+make clean
+make ENABLE_MULTITHREAD="" CFLAGS="-Dmingw -O3"
+rm -rf binaries64
+mkdir binaries64
+mv ../binaries/* binaries64/
+
+
+
+export PATH=/home/mingw32/mingw32/bin:$PATH
+export C_INCLUDE_PATH=/home/mingw32/mingw32/include
+export LIBRARY_PATH=/home/mingw32/mingw32/lib
+make clean
+make LIBS="-static -lm -lpthread" CFLAGS="-Dmingw -O3"
+rm -rf binaries32-multithread
+mkdir binaries32-multithread
+mv ../binaries/* binaries32-multithread/
+
+export PATH=/home/mingw64/mingw64/bin:$PATH
+export C_INCLUDE_PATH=/home/mingw64/mingw64/include
+export LIBRARY_PATH=/home/mingw64/mingw64/lib
+make clean
+make LIBS="-static -lm -lpthread" CFLAGS="-Dmingw -O3"
+rm -rf binaries64-multithread
+mkdir binaries64-multithread
+mv ../binaries/* binaries64-multithread/

@@ -1,0 +1,12 @@
+@echo off
+
+setlocal
+
+set ROOTDIR="%~d0%~p0\ms"
+set PATH=/bin/:%PATH%
+set MAFFT_BINARIES=/lib/mafft
+set TMPDIR=%~d0%~p0/ms/tmp
+
+%ROOTDIR%\bin\sh %ROOTDIR%\bin\mafft %*
+
+:EOF

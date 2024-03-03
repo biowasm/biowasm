@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+export PATH=/home/mingw32/mingw32/bin:$PATH
+export C_INCLUDE_PATH=/home/mingw32/mingw32/include
+export LIBRARY_PATH=/home/mingw32/mingw32/lib
+make clean
+make ENABLE_MULTITHREAD="" dlls
+rm -rf dll32
+mkdir dll32
+mv *.dll dll32/
+
+export PATH=/home/mingw64/mingw64/bin:$PATH
+export C_INCLUDE_PATH=/home/mingw64/mingw64/include
+export LIBRARY_PATH=/home/mingw64/mingw64/lib
+make clean
+make ENABLE_MULTITHREAD="" dlls
+rm -rf dll64
+mkdir dll64
+mv *.dll dll64/

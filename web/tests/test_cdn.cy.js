@@ -15,6 +15,7 @@ const EXPECTED_OUTPUTS = {
 	"tools/muscle/examples/5.1.0.html": [`>2lef_\nA-------MHIKKPLNAFMLYMKEMRANVVAESTL--KESAAINQILGRRWHALSREEQAKYYELARKERQLHMQLYPGW\nSARDNYGKKKKRKREK`],
 	"tools/muscle/examples/main.html": [`>2lef_\n-------AMHIKKPLNAFMLYMKEMRANVVAES-TLK-ESAAINQILGRRWHALSREEQA\nKYYELARKERQLHMQLYPGWSARDNYGKKKKRKREK`],
 	"tools/findutils/examples/v4.9.0.html": [`./test1.txt`, `./test11.txt`],
+	"tools/mafft/examples/main.html": [`>x2_1aab_\nG---KGDPKKPRGKMSSYAFFVQTSREEHKKKHPDASVNFSEFSKKCSERWKTMSAKEKGKFEDMAKADKARYERE--MKTYIPP--------------KG----E`],
 	"tools/gawk/examples/gawk-5.1.0.html": [`column2\n2\n5\n8\nTotal of column 2 = 15`],
 	"tools/gfatools/examples/30ea19b.html": [`MTh4001	+	MTh4502	+	0M	SR:i:0	L1:i:501	L2:i:5003`],
 	"tools/gffread/examples/v0.12.7.html": [`##gff-version 3\n# gffread v0.12.7\n# gffread /gffread/annotation.gff\nNT_187562.1	BestRefSeq	mRNA	411	68627	.	+	.	ID=rna157470;geneID=gene55473;gene_name=MGAM\nNT_187562.1	BestRefSeq	exon	411	495	.	+	.	Parent=rna157470\nNT_187562.1	BestRefSeq	exon	1995	2051	.	+	.	Parent=rna157470`],
