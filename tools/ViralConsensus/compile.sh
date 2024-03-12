@@ -19,6 +19,6 @@ else
         CXX=em++ \
         EXE=../build/viral_consensus.js \
         INCLUDE="-I../../htslib/src/" \
-        LIBS="-lz -lbz2 -llzma $LDFLAGS_LZMA" \
+        LIBS="-O2 -lhts -L../../htslib/src/ -lz -lbz2 -llzma $LDFLAGS_LZMA" \
         CXXFLAGS="-Wall -pedantic -std=c++11 $EM_FLAGS -s ERROR_ON_UNDEFINED_SYMBOLS=0"
 fi
