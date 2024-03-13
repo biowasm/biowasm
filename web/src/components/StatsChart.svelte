@@ -7,14 +7,25 @@ let elPlot;
 <svelte:head>
 	<script async src="https://cdn.plot.ly/plotly-2.14.0.min.js" on:load={() => {
 		// Zoom on data from 3 months ago
-		let dateToday = new Date();
-		let dateSixMonthsAgo = new Date();
+		const dateToday = new Date();
+		const dateSixMonthsAgo = new Date();
 		dateSixMonthsAgo.setMonth(dateToday.getMonth() - 3);
+
+		// Determine initial y-range max
+		const yRange = Math.max(...series.map(toolStats => {
+			// Find first date in the 6 months time range
+			const index = toolStats.x.findIndex(date => new Date(date) > dateSixMonthsAgo)
+			const y = toolStats.y.slice(index)
+
+			// Get the max y value for that tool in that date range
+			return Math.max(...y);
+		}))
 
 		// Plot
 		Plotly.newPlot(elPlot, series, {
 			title: { text: "Package downloads over time" },
-			xaxis: { range: [dateSixMonthsAgo, dateToday].map(d => d.toISOString().slice(0, 10)) }
+			xaxis: { range: [dateSixMonthsAgo, dateToday].map(d => d.toISOString().slice(0, 10)) },
+			yaxis: { range: [0, yRange] },
 		});
 	}}></script>
 </svelte:head>
