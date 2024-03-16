@@ -126,3 +126,6 @@
 	path = tools/wgsim/src
 	url = https://github.com/lh3/wgsim.git
 
+[submodule "tools/mafft/src"]
+	path = tools/mafft/src
+	url = https://gitlab.com/sysimm/mafft.git
