@@ -1,5 +1,5 @@
 diff --git a/core/Makefile b/core/Makefile
-index 9c2aa4d..85b3c93 100644
+index 9c2aa4d..0709725 100644
 --- a/core/Makefile
 +++ b/core/Makefile
 @@ -36,7 +36,7 @@ CFLAGS = -O3
@@ -7,20 +7,24 @@ index 9c2aa4d..85b3c93 100644
  
  ifdef ENABLE_MULTITHREAD
 -LIBS = -lm  -lpthread
-+LIBS = -lm  ##-lpthread
++LIBS = -lm
  else
  LIBS = -lm
  endif
-@@ -54,7 +54,7 @@ INSTALL = install
+@@ -54,11 +54,7 @@ INSTALL = install
  STRIP = strip
  #STRIP = true # to disable strip
  
 -PROGS = dvtditr dndfast7 dndblast sextet5 mafft-distance pairlocalalign \
-+PROGS = dvtditr tbfast #= dvtditr dndfast7 dndblast sextet5 mafft-distance pairlocalalign \
- 		multi2hat3s pairash addsingle maffttext2hex hex2maffttext \
-         splittbfast disttbfast tbfast nodepair mafft-profile f2cl mccaskillwrap contrafoldwrap countlen \
- 		seq2regtable regtable2seq score getlag dndpre setcore filter replaceu restoreu setdirection makedirectionlist version \
-@@ -146,11 +146,11 @@ MANPAGES = mafft.1 mafft-homologs.1
+-		multi2hat3s pairash addsingle maffttext2hex hex2maffttext \
+-        splittbfast disttbfast tbfast nodepair mafft-profile f2cl mccaskillwrap contrafoldwrap countlen \
+-		seq2regtable regtable2seq score getlag dndpre setcore filter replaceu restoreu setdirection makedirectionlist version \
+-		$(DASH_CLIENT)
++PROGS = dvtditr tbfast
+ SOS = libdisttbfast.so
+ DLLS = libdisttbfast.dll
+ DYLIBS = libdisttbfast.dylib
+@@ -146,11 +142,6 @@ MANPAGES = mafft.1 mafft-homologs.1
  
  
  all : $(PERLPROGS) $(PROGS) $(SCRIPTS)
@@ -29,40 +33,29 @@ index 9c2aa4d..85b3c93 100644
 -	cp $(PERLPROGS) $(PROGS) ../binaries
 -	chmod 755 ../binaries/*
 -#	cp $(MANPAGES) ../binaries
-+#cp $(SCRIPTS) ../scripts
-+#chmod 755 ../scripts/*
-+#cp $(PERLPROGS) $(PROGS) ../binaries
-+#chmod 755 ../binaries/*
-+##cp $(MANPAGES) ../binaries
  	@echo done.
  
  sos : $(SOS)
-@@ -163,18 +163,18 @@ $(DASH_CLIENT): dash_client.go
+@@ -163,18 +154,12 @@ $(DASH_CLIENT): dash_client.go
  
  
  univscript: univscript.tmpl Makefile
 -	sed "s:_PROGS:$(PROGS):" univscript.tmpl  > univscript
-+#sed "s:_PROGS:$(PROGS):" univscript.tmpl  > univscript
  
  mafft: mafft.tmpl mltaln.h
 -	sed "s:_LIBDIR:$(LIBDIR):" mafft.tmpl  > mafft
-+#sed "s:_LIBDIR:$(LIBDIR):" mafft.tmpl  > mafft
  
  mafft-homologs.rb: mafft-homologs.tmpl
 -#	cp mafft-homologs.tmpl mafft-homologs.rb
 -	sed "s:_BINDIR:$(BINDIR):" mafft-homologs.tmpl  > mafft-homologs.rb
-+##cp mafft-homologs.tmpl mafft-homologs.rb
-+#sed "s:_BINDIR:$(BINDIR):" mafft-homologs.tmpl  > mafft-homologs.rb
  
  mafft-sparsecore.rb: mafft-sparsecore.tmpl
 -#	cp mafft-sparsecore.tmpl mafft-sparsecore.rb
 -	sed "s:_BINDIR:$(BINDIR):" mafft-sparsecore.tmpl  > mafft-sparsecore.rb
-+##cp mafft-sparsecore.tmpl mafft-sparsecore.rb
-+#sed "s:_BINDIR:$(BINDIR):" mafft-sparsecore.tmpl  > mafft-sparsecore.rb
  
  mltaln.h : functions.h
  	touch mltaln.h
-@@ -189,7 +189,7 @@ hex2maffttext : hex2maffttext.c
+@@ -189,7 +174,7 @@ hex2maffttext : hex2maffttext.c
  	$(CC) -o $@ hex2maffttext.c $(MYCFLAGS) $(LDFLAGS) $(LIBS)
  
  tbfast : $(OBJTBFAST)
@@ -71,7 +64,7 @@ index 9c2aa4d..85b3c93 100644
  
  nodepair : $(OBJNODPAIR)
  	$(CC) -o $@ $(OBJNODPAIR) $(MYCFLAGS) $(LDFLAGS) $(LIBS)
-@@ -270,7 +270,7 @@ tditr : $(OBJTDITR)
+@@ -270,7 +255,7 @@ tditr : $(OBJTDITR)
  	$(CC) -o $@ $(OBJTDITR) $(MYCFLAGS) $(LDFLAGS) $(LIBS)
  
  dvtditr : $(OBJDVTDITR)
@@ -80,42 +73,35 @@ index 9c2aa4d..85b3c93 100644
  
  mafft-profile : $(OBJGALN)
  	$(CC) -o $@ $(OBJGALN) $(MYCFLAGS) $(LDFLAGS) $(LIBS)
-@@ -321,10 +321,10 @@ genMtx : $(OBJGENMTX)
+@@ -321,10 +306,8 @@ genMtx : $(OBJGENMTX)
  	$(CC) -o $@ $(OBJGENMTX) $(MYCFLAGS) $(LDFLAGS) $(LIBS)
  
  mafftash_premafft.pl : mafftash_premafft.tmpl
 -	cp mafftash_premafft.tmpl mafftash_premafft.pl
-+#cp mafftash_premafft.tmpl mafftash_premafft.pl
  
  seekquencer_premafft.pl : seekquencer_premafft.tmpl
 -	cp seekquencer_premafft.tmpl seekquencer_premafft.pl
-+#cp seekquencer_premafft.tmpl seekquencer_premafft.pl
  
  gapfill.o : gapfill.c $(HEADER)
  	$(CC) $(MYCFLAGS) -c gapfill.c
-@@ -528,12 +528,12 @@ clean :
+@@ -528,12 +511,8 @@ clean :
  
  install : all
  	mkdir -p $(DESTDIR)$(LIBDIR)
 -	chmod 755 $(DESTDIR)$(LIBDIR)
-+#chmod 755 $(DESTDIR)$(LIBDIR)
  	mkdir -p $(DESTDIR)$(BINDIR)
 -	chmod 755 $(DESTDIR)$(BINDIR)
 -	chmod 755 $(SCRIPTS)
-+#chmod 755 $(DESTDIR)$(BINDIR)
-+#chmod 755 $(SCRIPTS)
  	$(INSTALL) $(SCRIPTS)  $(DESTDIR)$(BINDIR)
 -	chmod 755 $(PROGS) ||:     # in MinGW, it's ok if this fails
-+#chmod 755 $(PROGS) ||:     # in MinGW, it's ok if this fails
  #	$(INSTALL) -s $(PROGS) $(DESTDIR)$(LIBDIR)
  	$(STRIP) $(PROGS) ||: # may fail for dash_client on mac.
  	$(INSTALL) $(PROGS) $(DESTDIR)$(LIBDIR)
-@@ -553,7 +553,7 @@ rm -f mafft-profile mafft-profile.exe; ln -s $(LIBDIR)/mafft-profile .; \
+@@ -553,7 +532,6 @@ rm -f mafft-profile mafft-profile.exe; ln -s $(LIBDIR)/mafft-profile .; \
  rm -f mafft-distance mafft-distance.exe; ln -s $(LIBDIR)/mafft-distance . )
  
  	mkdir -p $(DESTDIR)$(MANDIR)
 -	chmod 755 $(DESTDIR)$(MANDIR)
-+#chmod 755 $(DESTDIR)$(MANDIR)
  	$(INSTALL) -m 644 $(MANPAGES) $(DESTDIR)$(MANDIR)
  # remove incorrectly installed manpages by previous versions
  #	rm -f /usr/local/man/man1/mafft.1 /usr/local/man/man1/mafft-homologs.1 

@@ -1,35 +1,24 @@
 <script src="https://biowasm.com/cdn/v3/aioli.js"></script>
 <script type="module">
-
 const version = "7.520";
 const CLI = await new Aioli([
-        "coreutils/echo/8.32", 
-        "coreutils/ls/8.32", 
-        "coreutils/cat/8.32", 
-        { tool: "mafft", version: version, program: "tbfast", reinit: false},
-        { tool: "mafft", version: version, program: "dvtditr", reinit: false},
-    ], { debug: true }); 
+	"coreutils/echo/8.32", 
+	"coreutils/ls/8.32", 
+	"coreutils/cat/8.32", 
+	{ tool: "mafft", version: version, program: "tbfast", reinit: false},
+	{ tool: "mafft", version: version, program: "dvtditr", reinit: false},
+], { debug: true }); 
 
-
-// mount pep file
+// Mount pep file
 await CLI.mount({
 	name: "input.fa",
 	data: ">x2_1aab_\nGKGDPKKPRGKMSSYAFFVQTSREEHKKKHPDASVNFSEFSKKCSERWKTMSAKEKGKFEDMAKADKARYEREMKTYIPPKGE\n>1j46_A\nMQDRVKRPMNAFIVWSRDQRRKMALENPRMRNSEISKQLGYQWKMLTEAEKWPFFQEAQKLQAMHREKYPNYKYRPRRKAKMLPK\n>1k99_A\nMKKLKKHPDFPKKPLTPYFRFFMEKRAKYAKLHPEMSNLDLTKILSKKYKELPEKKKMKYIQDFQREKQEFERNLARFREDHPDLIQNAKK\n>2lef_\nAMHIKKPLNAFMLYMKEMRANVVAESTLKESAAINQILGRRWHALSREEQAKYYELARKERQLHMQLYPGWSARDNYGKKKKRKREK",
 });
 
-
-
-// WARNNING: Below parameter of tbfast+dvtditr is only for E-INS-i mode of mafft, so if you want to use other mode of mafft should change the parameter!
+// Warning: The parameter below for tbfast+dvtditr is only for E-INS-i mode of mafft, so if you want to use other mode of mafft, you should change the parameter!
 await CLI.exec("tbfast _ -u 0.0 -l 2.7 -C 0 -b 62 -g 0.0 -f -2.00 -Q 100.0 -h 0.0 -O -6.00 -E -0.000 -N -Z _ -+ 16 -W 0.00001 -V -1.53 -s 0.0 -O -C 0 -b 62 -f -1.53 -Q 100.0 -h 0.000 -l 2.7 -X 0.1 -i input.fa");
-const tbfast_out = await CLI.exec("cat /shared/data/pre");
-await CLI.mount([
-    { name: "out1", data: tbfast_out},
-]);
-await CLI.exec("dvtditr -W 0.00001 -E 0.0 -s 0.0 -C 0 -t 0 -F -l 2.7 -z 50 -b 62 -f -1.53 -Q 100.0 -h 0.000 -I 16 -X 0.1 -p BAATARI2 -K 0 -i out1");
+await CLI.exec("dvtditr -W 0.00001 -E 0.0 -s 0.0 -C 0 -t 0 -F -l 2.7 -z 50 -b 62 -f -1.53 -Q 100.0 -h 0.000 -I 16 -X 0.1 -p BAATARI2 -K 0 -i /shared/data/pre");
 const output = await CLI.exec("cat /shared/data/pre");
-
-
-
 
 document.getElementById("output").innerHTML = output;
 </script>

@@ -78,6 +78,10 @@
 	path = tools/lsd2/src
 	url = https://github.com/tothuhien/lsd2.git
 
+[submodule "tools/mafft/src"]
+	path = tools/mafft/src
+	url = https://gitlab.com/sysimm/mafft.git
+
 [submodule "tools/minimap2/src"]
 	path = tools/minimap2/src
 	url = https://github.com/lh3/minimap2.git
@@ -125,7 +129,3 @@
 [submodule "tools/wgsim/src"]
 	path = tools/wgsim/src
 	url = https://github.com/lh3/wgsim.git
-
-[submodule "tools/mafft/src"]
-	path = tools/mafft/src
-	url = https://gitlab.com/sysimm/mafft.git

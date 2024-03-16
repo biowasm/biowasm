@@ -275,7 +275,7 @@
 		{
 			"name": "mafft",
 			"programs": ["tbfast", "dvtditr"],
-			"description": "Multiple alignment program for amino acid or nucleotide sequences",
+			"description": "Multiple sequence alignment for amino acid or nucleotide sequences",
 			"versions": [
 				{
 					"version": "7.520",
