@@ -1,0 +1,18 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["cawlign/0.1.0"]);
+
+// Align a sequence in test.fas against a reference genome
+// const output = await CLI.exec("tn93 -t 0.05 -o test.dst /shared/tn93/test.fas"); // TODO
+// const result = await CLI.cat("test.dst"); // TODO
+
+// Output results
+document.getElementById("output").innerHTML = output;
+document.getElementById("result").innerHTML = result;
+</script>
+
+<h4>Output of <code>cawlign</code>:</h4>
+<pre id="output">Loading...</pre>
+
+<h4>Pairwise distances:</h4>
+<pre id="result">Loading...</pre>
