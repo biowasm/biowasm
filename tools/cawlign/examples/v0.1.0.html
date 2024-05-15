@@ -3,8 +3,8 @@
 const CLI = await new Aioli(["cawlign/0.1.0"]);
 
 // Align a sequence in test.fas against a reference genome
-// const output = await CLI.exec("tn93 -t 0.05 -o test.dst /shared/tn93/test.fas"); // TODO
-// const result = await CLI.cat("test.dst"); // TODO
+const output = await CLI.exec("cawlign -o test.aln /shared/cawlign/HIV1-pol-326.fa");
+const result = await CLI.cat("test.aln");
 
 // Output results
 document.getElementById("output").innerHTML = output;
