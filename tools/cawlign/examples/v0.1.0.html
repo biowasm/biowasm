@@ -1,0 +1,23 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["cawlign/0.1.0"]);
+
+// Mount a ref genome from GitHub (this works because raw GitHub files are CORS-enabled)
+const mounts = await CLI.mount([
+    { name: "HIV1-pol-326.fa", url: "https://raw.githubusercontent.com/veg/cawlign/v0.1.0/test/HIV1-pol-326.fa" },
+]);
+
+// Align a sequence in test.fas against a reference genome
+const output = await CLI.exec(`cawlign -o test.aln -r /shared/cawlign/references/HXB2_pol ${mounts[0]}`);
+const result = await CLI.cat("test.aln");
+
+// Output results
+document.getElementById("output").innerHTML = output;
+document.getElementById("result").innerHTML = result;
+</script>
+
+<h4>Output of <code>cawlign</code>:</h4>
+<pre id="output">Loading...</pre>
+
+<h4>Pairwise distances:</h4>
+<pre id="result">Loading...</pre>

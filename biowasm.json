@@ -82,6 +82,18 @@
 				}
 			]
 		},
+        {
+            "name": "cawlign",
+            "programs": ["cawlign"],
+            "description": "Align/map sequences in a FASTA file to a reference sequence in a codon-aware manner",
+            "files": ["js", "wasm", "data"],
+            "versions": [
+                {
+                    "version": "0.1.0",
+                    "branch": "v0.1.0"
+                }
+            ]
+        },
 		{
 			"name": "coreutils",
 			"programs": ["basename", "cat", "comm", "cut", "date", "df", "dirname", "du", "echo", "env", "fold", "head", "join", "ls", "md5sum", "paste", "seq", "shuf", "sort", "tail", "tee", "tr", "uniq", "wc"],
