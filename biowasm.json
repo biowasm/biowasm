@@ -474,6 +474,17 @@
 					"branch": "a12da33"
 				}
 			]
+		},
+		{
+			"name": "mummer4",
+			"programs": ["mummer"],
+			"description": "rapidly align entire genomes",
+			"versions": [
+				{
+					"version": "4.0.0rc1",
+					"branch": "4.0.0rc1"
+				}
+			]
 		}
 	]
 }

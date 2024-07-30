@@ -6,3 +6,4 @@ node_modules/
 .svelte-kit/
 .cloudflare/
 tools/muscle/src-v3/
+.idea/
