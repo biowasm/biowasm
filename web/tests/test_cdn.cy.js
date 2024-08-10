@@ -13,6 +13,7 @@ const EXPECTED_OUTPUTS = {
 		`\t"summary": {\n\t\t"before_filtering": {\n\t\t\t"total_reads":50,\n\t\t\t"total_bases":7400,\n\t\t\t"q20_bases":7308,\n\t\t\t"q30_bases":7169,\n\t\t\t"q20_rate":0.987568,\n\t\t\t"q30_rate":0.968784,\n\t\t\t"read1_mean_length":148,\n\t\t\t"gc_content":0.409459\n\t\t},\n\t\t"after_filtering": {\n\t\t\t"total_reads":50,\n\t\t\t"total_bases":7400,\n\t\t\t"q20_bases":7308,\n\t\t\t"q30_bases":7169,\n\t\t\t"q20_rate":0.987568,\n\t\t\t"q30_rate":0.968784,\n\t\t\t"read1_mean_length":148,\n\t\t\t"gc_content":0.409459\n\t\t}\n\t}`
 	],
 	"tools/fasttree/examples/main.html": [`(1k99_A:1.455604057,2lef_A:0.867678506,(1aab_:2.021714810,1j46_A:0.342407321)0.877:0.650876783);`],
+	"tools/mummer4/examples/v4.0.0rc1.html": [`>B_anthracis_Mslice 137795 312600 863`],
 	"tools/muscle/examples/5.1.0.html": [`>2lef_\nA-------MHIKKPLNAFMLYMKEMRANVVAESTL--KESAAINQILGRRWHALSREEQAKYYELARKERQLHMQLYPGW\nSARDNYGKKKKRKREK`],
 	"tools/muscle/examples/main.html": [`>2lef_\n-------AMHIKKPLNAFMLYMKEMRANVVAES-TLK-ESAAINQILGRRWHALSREEQA\nKYYELARKERQLHMQLYPGWSARDNYGKKKKRKREK`],
 	"tools/findutils/examples/v4.9.0.html": [`./test1.txt`, `./test11.txt`],

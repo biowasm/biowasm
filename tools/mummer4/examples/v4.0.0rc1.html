@@ -2,7 +2,7 @@
 <script type="module">
 // Need base module for sed since it needs `reinit: true` (needs reinit so 
 // it can be called multiple times in a row)
-const CLI = await new Aioli(["mummer4/nucmer");
+const CLI = await new Aioli(["mummer4/nucmer/4.0.0rc1"]);
 
 // Create mock data
 await CLI.mount({
@@ -16,8 +16,8 @@ await CLI.mount({
 });
 
 // Run nucmer
-const output = await CLI.exec("nucmer B_anthracis_Mslice.fasta B_anthracis_contigs.fasta");
-document.getElementById("output").innerHTML = output;
+const output = await CLI.exec("nucmer -p out B_anthracis_Mslice.fasta B_anthracis_contigs.fasta");
+document.getElementById("output").innerHTML = await CLI.cat("out.delta");
 </script>
 
 <h4>Output of <code>nucmer</code>:</h4>
