@@ -8,7 +8,7 @@ tar -xzvf mummer.tar.gz -C src_release --strip-components=1
 
 # Configure
 cd src_release/
-emconfigure ./configure --disable-openmp --disable-shared --host=emscripten
+emconfigure ./configure --disable-openmp --disable-shared --host=none-none-none
 
 # Remove multithreading
 sed -i '152,156s/.*//' ./src/umd/nucmer_main.cc
