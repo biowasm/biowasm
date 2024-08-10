@@ -477,7 +477,7 @@
 		},
 		{
 			"name": "mummer4",
-			"programs": ["mummer"],
+			"programs": ["nucmer"],
 			"description": "rapidly align entire genomes",
 			"versions": [
 				{
