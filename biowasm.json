@@ -321,6 +321,17 @@
 			]
 		},
 		{
+			"name": "mummer4",
+			"programs": ["nucmer"],
+			"description": "Rapidly align entire genomes",
+			"versions": [
+				{
+					"version": "4.0.0rc1",
+					"branch": "v4.0.0rc1"
+				}
+			]
+		},
+		{
 			"name": "muscle",
 			"programs": ["muscle"],
 			"description": "Multiple alignments of biological sequences",

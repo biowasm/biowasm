@@ -94,6 +94,10 @@
 	path = tools/modbam2bed/src
 	url = https://github.com/epi2me-labs/modbam2bed.git
 
+[submodule "tools/mummer4/src"]
+	path = tools/mummer4/src
+	url = https://github.com/mummer4/mummer.git
+
 [submodule "tools/muscle/src"]
 	path = tools/muscle/src
 	url = https://github.com/rcedgar/muscle.git
