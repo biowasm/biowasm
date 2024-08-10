@@ -147,6 +147,8 @@
   "modbam2bed/0.9.5/modbam2bed.data": "modbam2bed/0.9.5/modbam2bed.data:3c6b035992e1f4ad8c48b8219c9f636e",
   "modbam2bed/0.9.5/modbam2bed.js": "modbam2bed/0.9.5/modbam2bed.js:38aa99f650cf6312e6bc9ac0cb92a855",
   "modbam2bed/0.9.5/modbam2bed.wasm": "modbam2bed/0.9.5/modbam2bed.wasm:381b461190875e46e96ab877248bf499",
+  "mummer4/4.0.0rc1/nucmer.js": "mummer4/4.0.0rc1/nucmer.js:f1b9696ec9327e262128aa71ec8c8d48",
+  "mummer4/4.0.0rc1/nucmer.wasm": "mummer4/4.0.0rc1/nucmer.wasm:087b8a751872830bb93406014517099b",
   "muscle/3.8.1551/muscle.js": "muscle/3.8.1551/muscle.js:163a2ec81ffdc1ed9ad6db08d820c946",
   "muscle/3.8.1551/muscle.wasm": "muscle/3.8.1551/muscle.wasm:e5cac542761446e76552cd44662b2422",
   "muscle/5.1.0/muscle.js": "muscle/5.1.0/muscle.js:eb5ba9b209391e8ff5c9f669d3025686",
