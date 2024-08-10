@@ -5,7 +5,7 @@ TARBALL=https://github.com/mummer4/mummer/releases/download/v$BRANCH_OR_TAG/mumm
 
 # Download source from release to avoid needing yaggo and autotools
 mkdir -p src_release
-wget -O mummer.tar.gz $TARBALL
+curl -L -o mummer.tar.gz $TARBALL
 tar -xzvf mummer.tar.gz -C src_release --strip-components=1
 
 # Configure
