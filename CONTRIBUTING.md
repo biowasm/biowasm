@@ -40,7 +40,7 @@ httpd.serve_forever()
 EOF
 chmod +x server.py
 # Launch the web server
-python3.7 /src/server.py &
+python3 /src/server.py &
 ```
 
 
