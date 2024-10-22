@@ -10,4 +10,4 @@ handler = CORSRequestHandler
 handler.extensions_map['.wasm'] = 'application/wasm'
 
 httpd = socketserver.TCPServer(('', 80), handler)
-htt pd.serve_forever()
+httpd.serve_forever()

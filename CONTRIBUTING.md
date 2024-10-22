@@ -6,7 +6,7 @@ Tools listed in biowasm were compiled to WebAssembly using `Emscripten 2.0.25`. 
 
 ```bash
 # Fetch Emscripten docker image
-docker build -t biowasm-dev -f Dockerfile-dev
+docker build -t biowasm-dev -f Dockerfile-dev .
 
 # Create the container and mount ~/wasm to /src in the container
 docker run \
