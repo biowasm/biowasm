@@ -16,7 +16,7 @@ index 671d838..be34fac 100644
  
  samtools: $(AOBJS) $(LZ4OBJS) libst.a $(HTSLIB)
 -	$(CC) $(ALL_LDFLAGS) -o $@ $(AOBJS) $(LZ4OBJS) libst.a $(HTSLIB_LIB) $(CURSES_LIB) -lm $(ALL_LIBS) -lpthread
-+    $(CC) $(ALL_LDFLAGS) -o ../build/$@.js $(AOBJS) $(LZ4OBJS) libst.a $(HTSLIB_LIB) $(CURSES_LIB) -lm $(ALL_LIBS) -lpthread
++	$(CC) $(ALL_LDFLAGS) -o ../build/$@.js $(AOBJS) $(LZ4OBJS) libst.a $(HTSLIB_LIB) $(CURSES_LIB) -lm $(ALL_LIBS) -lpthread
  
  # For building samtools and its test suite only: NOT to be installed.
  libst.a: $(LIBST_OBJS)
