@@ -1,3 +1,9 @@
+#!/usr/bin/python3
+"""
+Simple CORS enabled, but open HTTP server for test purposes.
+Maps `.wasm` extension files to MIME type `application/wasm`.
+Opens on TCP port 80.
+"""
 from http.server import SimpleHTTPRequestHandler
 import socketserver
 
