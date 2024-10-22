@@ -2,3 +2,7 @@ FROM emscripten/emsdk:2.0.25 as wasm-builder
 
 RUN apt-get update && apt-get install -y autoconf liblzma-dev
 
+COPY ./bin/test_server.py /usr/src/
+
+EXPOSE 80
+ ["python3", "/usr/src/test_server.py"]

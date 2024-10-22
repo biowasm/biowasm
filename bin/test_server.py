@@ -1,0 +1,13 @@
+from http.server import SimpleHTTPRequestHandler
+import socketserver
+
+class CORSRequestHandler (SimpleHTTPRequestHandler):
+    def end_headers (self):
+        self.send_header('Access-Control-Allow-Origin', '*')
+        SimpleHTTPRequestHandler.end_headers(self)
+
+handler = CORSRequestHandler
+handler.extensions_map['.wasm'] = 'application/wasm'
+
+httpd = socketserver.TCPServer(('', 80), handler)
+htt pd.serve_forever()

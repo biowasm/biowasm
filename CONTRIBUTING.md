@@ -6,7 +6,7 @@ Tools listed in biowasm were compiled to WebAssembly using `Emscripten 2.0.25`. 
 
 ```bash
 # Fetch Emscripten docker image
-docker pull emscripten/emsdk:2.0.25
+docker build -t biowasm-dev -f Dockerfile-dev
 
 # Create the container and mount ~/wasm to /src in the container
 docker run \
@@ -14,35 +14,11 @@ docker run \
     -p 80:80 \
     --name wasm \
     --volume ~/wasm:/src \
-    emscripten/emsdk:2.0.25
-
-# Go into the container
-docker exec -u root -it wasm bash
-# While inside the container, install dependencies
-apt-get update
-apt-get install -y autoconf liblzma-dev less vim
-# Create small web server for testing
-cat << EOF > server.py
-import http.server
-from http.server import SimpleHTTPRequestHandler
-import socketserver
-
-class CORSRequestHandler (SimpleHTTPRequestHandler):
-    def end_headers (self):
-        self.send_header('Access-Control-Allow-Origin', '*')
-        SimpleHTTPRequestHandler.end_headers(self)
-
-handler = CORSRequestHandler
-handler.extensions_map['.wasm'] = 'application/wasm'
-
-httpd = socketserver.TCPServer(('', 80), handler)
-httpd.serve_forever()
-EOF
-chmod +x server.py
-# Launch the web server
-python3 /src/server.py &
+    biowasm-dev
 ```
 
+This creates a simple CORS enabled development server serving the local `~/wasm` directory, 
+ideally the parent directory of your cloned `biowasm` repo.
 
 ## Compile an existing biowasm tool
 
