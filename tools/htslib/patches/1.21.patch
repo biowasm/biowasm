@@ -23,8 +23,6 @@ index ef9b5a9a..00607b9a 100644
  
  annot-tsv.o: annot-tsv.c config.h $(htslib_hts_h) $(htslib_hts_defs_h) $(htslib_khash_str2int_h) $(htslib_kstring_h) $(htslib_kseq_h) $(htslib_bgzf_h) $(htslib_regidx_h) $(textutils_internal_h)
  bgzip.o: bgzip.c config.h $(htslib_bgzf_h) $(htslib_hts_h) $(htslib_hfile_h)
-diff --git a/htscodecs b/htscodecs
-index 51794289..cd0737ff 160000
 diff --git a/version.sh b/version.sh
 index f35234c2..6393e406 100755
 --- a/version.sh
