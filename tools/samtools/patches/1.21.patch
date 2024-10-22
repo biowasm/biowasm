@@ -38,6 +38,7 @@ index 2ff6f7e..ca48903 100644
 -            n_failed++;
 -        }
      }
+     worker(&w[0]);
      free(w);
      free(tid);
 diff --git a/bamtk.c b/bamtk.c
