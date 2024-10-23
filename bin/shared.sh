@@ -34,7 +34,7 @@ function EM_GNU_STRCASESTR_LINEAR() {
 }
 
 # Shared LZMA flags
-LZMA_VERSION="5.2.5"
+LZMA_VERSION="5.6.3"
 DIR_LZMA=../../htslib/src/xz-${LZMA_VERSION}/src/liblzma
 CFLAGS_LZMA="-I${DIR_LZMA}/api -I${DIR_LZMA}/api/lzma"
 LDFLAGS_LZMA="-L${DIR_LZMA}/.libs"

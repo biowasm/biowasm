@@ -1,0 +1,28 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+// There are 3 tools in htslib; you can load one or more of them:
+const CLI = await new Aioli([
+	"htslib/tabix/1.21",
+	"htslib/htsfile/1.21",
+	"htslib/bgzip/1.21"
+]);
+
+// Get each tool's help screen
+const outputTabix = await CLI.exec("tabix --help");
+const outputHtsfile = await CLI.exec("htsfile --help");
+const outputBgzip = await CLI.exec("bgzip --help");
+
+// Output
+document.getElementById("output-tabix").innerHTML = outputTabix;
+document.getElementById("output-htsfile").innerHTML = outputHtsfile;
+document.getElementById("output-bgzip").innerHTML = outputBgzip;
+</script>
+
+<h4>Output of <code>tabix --help</code>:</h4>
+<pre id="output-tabix">Loading...</pre>
+
+<h4>Output of <code>htsfile --help</code>:</h4>
+<pre id="output-htsfile">Loading...</pre>
+
+<h4>Output of <code>bgzip --help</code>:</h4>
+<pre id="output-bgzip">Loading...</pre>
