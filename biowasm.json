@@ -480,6 +480,11 @@
 					"version": "0.0.5",
 					"branch": "0.0.5",
 					"dependencies": [{ "name": "htslib", "version": "1.10" }]
+				},
+				{
+					"version": "0.0.6",
+					"branch": "0.0.6",
+					"dependencies": [{ "name": "htslib", "version": "1.10" }]
 				}
 			]
 		},
