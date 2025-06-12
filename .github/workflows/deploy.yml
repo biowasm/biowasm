@@ -31,18 +31,18 @@ jobs:
         with:
           ref: ${{ github.ref }}
 
-      # - name: Test Emscripten
-      #   if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-      #   run: emcc -v
+      - name: Test Emscripten
+        if: ${{ github.event.inputs.tools_to_compile != 'none' }}
+        run: emcc -v
 
-      # # ------------------------------------------------------------------------
-      # # Compile
-      # # ------------------------------------------------------------------------
-      # - name: Compile to WebAssembly
-      #   if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-      #   run: |
-      #     apt-get update && apt-get install -yqq autoconf liblzma-dev
-      #     bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }} --env ${{ github.event.inputs.env }} --versions ${{ github.event.inputs.versions }}
+      # ------------------------------------------------------------------------
+      # Compile
+      # ------------------------------------------------------------------------
+      - name: Compile to WebAssembly
+        if: ${{ github.event.inputs.tools_to_compile != 'none' }}
+        run: |
+          apt-get update && apt-get install -yqq autoconf liblzma-dev
+          bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }} --env ${{ github.event.inputs.env }} --versions ${{ github.event.inputs.versions }}
 
       # ------------------------------------------------------------------------
       # Deploy to Cloudflare Workers
@@ -62,7 +62,7 @@ jobs:
           # Deploy
           cd web/
           ls -lah
-          ls -lah ../build/
+          ls -lah ../build
           npm install
           npx wrangler kv:bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
           npx wrangler publish --env=${{ github.event.inputs.env }}
