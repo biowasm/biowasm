@@ -28,6 +28,8 @@ jobs:
     # errors when installing 2.69 on ubuntu-latest).
     runs-on: ubuntu-latest
     name: Deploy biowasm v3 (${{ github.event.inputs.env }})
+    container:
+      image: emscripten/emsdk:2.0.25
     steps:
       # ------------------------------------------------------------------------
       # Setup
