@@ -3,26 +3,22 @@
 # Dependencies
 sudo apt-get install -yqq zlib1g-dev libbz2-dev libcurl4-gnutls-dev libssl-dev autoconf
 
-# # Compile LZMA to WebAssembly
-# LZMA_VERSION="5.6.3"
-# curl -LO "https://tukaani.org/xz/xz-${LZMA_VERSION}.tar.gz"
-# tar -xf xz-${LZMA_VERSION}.tar.gz
-# cd xz-${LZMA_VERSION}
-# emconfigure ./configure --disable-shared --disable-threads && \
-# emmake make -j4 CFLAGS="-Oz -fPIC -s USE_PTHREADS=0 -s EXPORT_ALL=1 -s ASSERTIONS=1"
-# cd -
+# Compile LZMA to WebAssembly
+LZMA_VERSION="5.6.3"
+curl -LO "https://tukaani.org/xz/xz-${LZMA_VERSION}.tar.gz"
+tar -xf xz-${LZMA_VERSION}.tar.gz
+cd xz-${LZMA_VERSION}
+emconfigure ./configure --disable-shared --disable-threads && \
+emmake make -j4 CFLAGS="-Oz -fPIC -s USE_PTHREADS=0 -s EXPORT_ALL=1 -s ASSERTIONS=1"
+cd -
 
 # Run ./configure
-# CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1 ${CFLAGS_LZMA}"
-# LDFLAGS="$LDFLAGS_LZMA"
-curl -LO "https://github.com/samtools/htslib/releases/download/1.21/htslib-1.21.tar.bz2" && tar -xjf htslib-1.21.tar.bz2 && cd htslib-1.21
-CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1"
-LDFLAGS=""
+CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1 ${CFLAGS_LZMA}"
+LDFLAGS="$LDFLAGS_LZMA"
 make clean
 autoheader
 autoconf
-emconfigure ./configure --disable-lzma CFLAGS="$CFLAGS"
-# LDFLAGS="$LDFLAGS"
+emconfigure ./configure --disable-lzma CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
 
 # Build htslib tools
 TOOLS=("tabix" "htsfile" "bgzip")
