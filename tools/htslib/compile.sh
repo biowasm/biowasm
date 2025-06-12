@@ -4,7 +4,7 @@
 sudo apt-get install -yqq zlib1g-dev libbz2-dev libcurl4-gnutls-dev libssl-dev autoconf
 
 # Compile LZMA to WebAssembly
-LZMA_VERSION="5.6.3"
+LZMA_VERSION="5.2.5"
 curl -LO "https://tukaani.org/xz/xz-${LZMA_VERSION}.tar.gz"
 tar -xf xz-${LZMA_VERSION}.tar.gz
 cd xz-${LZMA_VERSION}
