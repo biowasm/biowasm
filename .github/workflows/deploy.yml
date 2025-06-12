@@ -61,7 +61,7 @@ jobs:
             cd web/
             apt update && apt install -y jq
             npm install
-            curl https://get.volta.sh | bash
+            curl https://get.volta.sh | bash && which volta
             export PATH=$PATH:$HOME/.volta
             volta install node@22
             wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
