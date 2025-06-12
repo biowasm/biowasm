@@ -22,7 +22,7 @@ jobs:
     # FIXME: Ubuntu 20 comes with autoconf 2.69. But htslib <1.12 needs autoconf
     # < 2.70, otherwise get errors about missing configure files (it also gives
     # errors when installing 2.69 on ubuntu-latest).
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Deploy biowasm v3 (${{ github.event.inputs.env }})
     steps:
       # ------------------------------------------------------------------------
