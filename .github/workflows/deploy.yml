@@ -44,6 +44,17 @@ jobs:
       #     apt-get update && apt-get install -yqq autoconf liblzma-dev
       #     bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }} --env ${{ github.event.inputs.env }} --versions ${{ github.event.inputs.versions }}
 
+      - name: Install Node.js
+        if: ${{ github.event.inputs.tools_to_compile != 'none' }}
+        run: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+          \. "$HOME/.nvm/nvm.sh"
+          nvm install 22
+          node -v # Should print "v22.16.0".
+          nvm current # Should print "v22.16.0".
+          npm -v # Should print "10.9.2".
+
+
       # ------------------------------------------------------------------------
       # Deploy to Cloudflare Workers
       # ------------------------------------------------------------------------
@@ -58,12 +69,7 @@ jobs:
           environment: ${{ github.event.inputs.env }}
           preCommands: |
             cd web/
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-            \. "$HOME/.nvm/nvm.sh"
-            nvm install 22
-            node -v # Should print "v22.16.0".
-            nvm current # Should print "v22.16.0".
-            npm -v # Should print "10.9.2".
+            node -v
             wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
 
 # preCommands: |
