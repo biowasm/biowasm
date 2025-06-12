@@ -10,11 +10,11 @@ on:
       tools_to_compile:
         description: "Tools to compile to WebAssembly (comma-separated; 'all'; 'none')"
         required: true
-        default: "htslib"
+        default: "seqtk"
       versions:
         description: "Versions to compile (comma-separated)"
         required: true
-        default: "1.17"
+        default: "1.4"
 
 jobs:
   deploy:
