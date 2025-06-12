@@ -1,10 +1,5 @@
 name: Deploy biowasm v3
 
-env:
-  EM_VERSION: 2.0.25
-  EM_CACHE_FOLDER: "emsdk-cache"
-  CYPRESS_CACHE_FOLDER: "cypress"
-
 on:
   workflow_dispatch:
     inputs:
@@ -15,17 +10,14 @@ on:
       tools_to_compile:
         description: "Tools to compile to WebAssembly (comma-separated; 'all'; 'none')"
         required: true
-        default: ""
+        default: "htslib"
       versions:
         description: "Versions to compile (comma-separated)"
         required: true
-        default: ""
+        default: "1.21"
 
 jobs:
   deploy:
-    # FIXME: Ubuntu 20 comes with autoconf 2.69. But htslib <1.12 needs autoconf
-    # < 2.70, otherwise get errors about missing configure files (it also gives
-    # errors when installing 2.69 on ubuntu-latest).
     runs-on: ubuntu-latest
     name: Deploy biowasm v3 (${{ github.event.inputs.env }})
     container:
@@ -39,20 +31,6 @@ jobs:
         with:
           ref: ${{ github.ref }}
 
-      # - name: Setup cache
-      #   id: cache-system-libraries
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: ${{env.EM_CACHE_FOLDER}}
-      #     key: ${{env.EM_VERSION}}-${{ runner.os }}
-
-      # - name: Download Emscripten
-      #   if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-      #   uses: mymindstorm/setup-emsdk@v11
-      #   with:
-      #     version: ${{env.EM_VERSION}}
-      #     # actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
-
       - name: Test Emscripten
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
         run: emcc -v
@@ -62,7 +40,9 @@ jobs:
       # ------------------------------------------------------------------------
       - name: Compile to WebAssembly
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-        run: bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }} --env ${{ github.event.inputs.env }} --versions ${{ github.event.inputs.versions }}
+        run: |
+          apt-get install -yqq autoconf liblzma-dev
+          bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }} --env ${{ github.event.inputs.env }} --versions ${{ github.event.inputs.versions }}
 
       # # ------------------------------------------------------------------------
       # # Deploy to Cloudflare Workers
