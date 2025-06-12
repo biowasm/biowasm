@@ -49,7 +49,7 @@ jobs:
       # ------------------------------------------------------------------------
       - name: Deploy biowasm.com/v3/ (${{ github.event.inputs.env }})
         if: ${{ !env.ACT }}
-        uses: cloudflare/wrangler-action@2.0.0
+        uses: cloudflare/wrangler-action@v3.14.1
         env:
           USER: root
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
