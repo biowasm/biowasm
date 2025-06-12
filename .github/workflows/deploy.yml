@@ -14,8 +14,12 @@ on:
         default: "stg"
       tools_to_compile:
         description: "Tools to compile to WebAssembly (comma-separated; 'all'; 'none')"
-        required: false
-        default: "all"
+        required: true
+        default: ""
+      versions:
+        description: "Versions to compile (comma-separated)"
+        required: true
+        default: ""
 
 jobs:
   deploy:
@@ -56,7 +60,7 @@ jobs:
       # ------------------------------------------------------------------------
       - name: Compile to WebAssembly
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-        run: bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }} --env ${{ github.event.inputs.env }}
+        run: bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }} --env ${{ github.event.inputs.env }} --versions ${{ github.event.inputs.versions }}
 
       # ------------------------------------------------------------------------
       # Deploy to Cloudflare Workers
