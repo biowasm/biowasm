@@ -4,7 +4,7 @@ const CLI = await new Aioli(["cawlign/0.1.0"]);
 
 // Mount a ref genome from GitHub (this works because raw GitHub files are CORS-enabled)
 const mounts = await CLI.mount([
-    { name: "HIV1-pol-326.fa", url: "https://raw.githubusercontent.com/veg/cawlign/v0.1.0/test/HIV1-pol-326.fa" },
+    { name: "HIV1-pol-326.fa", url: "https://raw.githubusercontent.com/veg/cawlign/refs/tags/0.1.0/test/HIV1-pol-326.fa" },
 ]);
 
 // Align a sequence in test.fas against a reference genome
