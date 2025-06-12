@@ -26,7 +26,7 @@ jobs:
       # ------------------------------------------------------------------------
       # Setup
       # ------------------------------------------------------------------------
-      - name: Checkout biowasm repo
+      - name: Check out biowasm repo (${{ github.event.inputs.env }})
         uses: actions/checkout@v3
         with:
           ref: ${{ github.ref }}
@@ -38,7 +38,7 @@ jobs:
       # ------------------------------------------------------------------------
       # Compile
       # ------------------------------------------------------------------------
-      - name: Compile to WebAssembly
+      - name: Compile to WebAssembly (${{ github.event.inputs.env }})
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
         run: |
           apt-get update && apt-get install -yqq autoconf liblzma-dev
@@ -47,7 +47,7 @@ jobs:
       # ------------------------------------------------------------------------
       # Deploy to Cloudflare Workers
       # ------------------------------------------------------------------------
-      - name: Install newer Node.js version
+      - name: Deploy (${{ github.event.inputs.env }})
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
@@ -70,7 +70,7 @@ jobs:
       # ------------------------------------------------------------------------
       # Save changes to manifest (only after successful deploy!)
       # ------------------------------------------------------------------------
-      - name: Save changes to manifest.json
+      - name: Save changes to manifest.json (${{ github.event.inputs.env }})
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
