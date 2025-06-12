@@ -61,10 +61,15 @@ jobs:
             cd web/
             apt update && apt install -y jq
             npm install
+            curl https://get.volta.sh | bash
+            volta install node@22
             wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
-# curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-# #echo 'NVM_DIR="$HOME/.nvm" && . $NVM_DIR/nvm.sh &&  nvm install 22 && nvm use 22 && wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json'
-# #bash -c 'NVM_DIR="$HOME/.nvm" && . $NVM_DIR/nvm.sh &&  nvm install 22 && nvm use 22 && '
+
+# curl -s -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+# export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && \
+#   nvm install 22 && \
+#   nvm use 22 && \
+#   wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
 
       # ------------------------------------------------------------------------
       # Save changes to manifest (only after successful deploy!)
