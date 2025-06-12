@@ -76,10 +76,9 @@ jobs:
             cd web/
             node -v
             ls -lah "$HOME/.nvm/"
+            export PATH=/__w/_temp/versions/node/v22.16.0/bin:$PATH
             echo $PATH
             echo $USER
-            \. "$HOME/.nvm/nvm.sh"
-            nvm use 22
             node -v
             wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
 
