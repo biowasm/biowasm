@@ -61,9 +61,9 @@ jobs:
             cd web/
             apt update && apt install -y jq
             npm install
-            curl https://get.volta.sh | bash
-            volta install node@22
-            wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
+            curl https://get.volta.sh | bash && \
+              volta install node@22 && \
+              wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
 
 # curl -s -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 # export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && \
