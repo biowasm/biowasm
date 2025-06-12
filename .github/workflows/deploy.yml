@@ -51,25 +51,30 @@ jobs:
         if: ${{ !env.ACT }}
         uses: cloudflare/wrangler-action@v3.14.1
         env:
-          USER: root
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
           CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           environment: ${{ github.event.inputs.env }}
           preCommands: |
-            cd web/
-            apt update && apt install -y jq
-            npm install
-
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-            \. "$HOME/.nvm/nvm.sh"
-            nvm install 22
-            node -v # Should print "v22.16.0".
-            nvm current # Should print "v22.16.0".
-            npm -v # Should print "10.9.2".
             wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
-            
+
+# preCommands: |
+#   cd web/
+#   apt update && apt install -y jq
+#   npm install
+
+#   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+#   \. "$HOME/.nvm/nvm.sh"
+#   nvm install 22
+#   node -v # Should print "v22.16.0".
+#   nvm current # Should print "v22.16.0".
+#   npm -v # Should print "10.9.2".
+#   wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
+
+#
+# USER: root
+# 
 # curl https://get.volta.sh | bash
 # export VOLTA_HOME=$HOME/.volta && export PATH=$PATH:$VOLTA_HOME/bin
 # ls -lah $HOME
