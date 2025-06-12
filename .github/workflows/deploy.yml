@@ -14,7 +14,7 @@ on:
       versions:
         description: "Versions to compile (comma-separated)"
         required: true
-        default: "1.21"
+        default: "1.17"
 
 jobs:
   deploy:
@@ -44,31 +44,31 @@ jobs:
           apt-get update && apt-get install -yqq autoconf liblzma-dev
           bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }} --env ${{ github.event.inputs.env }} --versions ${{ github.event.inputs.versions }}
 
-      # # ------------------------------------------------------------------------
-      # # Deploy to Cloudflare Workers
-      # # ------------------------------------------------------------------------
-      # - name: Deploy biowasm.com/v3/ (${{ github.event.inputs.env }})
-      #   if: ${{ !env.ACT }}
-      #   uses: cloudflare/wrangler-action@2.0.0
-      #   env:
-      #     USER: root
-      #     CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-      #     CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-      #   with:
-      #     apiToken: ${{ secrets.CF_API_TOKEN }}
-      #     environment: ${{ github.event.inputs.env }}
-      #     preCommands: |
-      #       cd web/
-      #       apt update && apt install -y jq
-      #       npm install
-      #       wrangler kv:bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
+      # ------------------------------------------------------------------------
+      # Deploy to Cloudflare Workers
+      # ------------------------------------------------------------------------
+      - name: Deploy biowasm.com/v3/ (${{ github.event.inputs.env }})
+        if: ${{ !env.ACT }}
+        uses: cloudflare/wrangler-action@2.0.0
+        env:
+          USER: root
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          environment: ${{ github.event.inputs.env }}
+          preCommands: |
+            cd web/
+            apt update && apt install -y jq
+            npm install
+            wrangler kv:bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
 
-      # # ------------------------------------------------------------------------
-      # # Save changes to manifest (only after successful deploy!)
-      # # ------------------------------------------------------------------------
-      # - name: Save changes to manifest.json
-      #   if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-      #   uses: stefanzweifel/git-auto-commit-action@v4
-      #   with:
-      #     commit_message: Update Biowasm manifest
-      #     file_pattern: biowasm.manifest${{ github.event.inputs.env == 'stg' && '.stg' || '' }}.json
+      # ------------------------------------------------------------------------
+      # Save changes to manifest (only after successful deploy!)
+      # ------------------------------------------------------------------------
+      - name: Save changes to manifest.json
+        if: ${{ github.event.inputs.tools_to_compile != 'none' }}
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update Biowasm manifest
+          file_pattern: biowasm.manifest${{ github.event.inputs.env == 'stg' && '.stg' || '' }}.json
