@@ -18,7 +18,7 @@ LDFLAGS="$LDFLAGS_LZMA"
 make clean
 autoheader
 autoconf
-emconfigure ./configure --disable-lzma CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
+emconfigure ./configure CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
 
 # Build htslib tools
 TOOLS=("tabix" "htsfile" "bgzip")
