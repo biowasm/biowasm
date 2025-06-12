@@ -8,7 +8,7 @@ LZMA_VERSION="5.2.5"
 curl -LO "https://tukaani.org/xz/xz-${LZMA_VERSION}.tar.gz"
 tar -xvf xz-${LZMA_VERSION}.tar.gz
 cd xz-${LZMA_VERSION}
-emconfigure ./configure --disable-shared --disable-threads --host=emscripten
+emconfigure ./configure --disable-shared --disable-threads --host=wasm32-unknown-emscripten
 emmake make -j4 CFLAGS="-Oz -fPIC -s USE_PTHREADS=0 -s EXPORT_ALL=1 -s ASSERTIONS=1"
 cd -
 
