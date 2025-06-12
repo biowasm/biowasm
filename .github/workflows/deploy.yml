@@ -53,6 +53,11 @@ jobs:
           node -v # Should print "v22.16.0".
           nvm current # Should print "v22.16.0".
           npm -v # Should print "10.9.2".
+          ls -lah "$HOME/.nvm/"
+          which node
+          echo $PATH
+          echo $USER
+          echo "------"
 
 
       # ------------------------------------------------------------------------
@@ -70,6 +75,9 @@ jobs:
           preCommands: |
             cd web/
             node -v
+            ls -lah "$HOME/.nvm/"
+            echo $PATH
+            echo $USER
             \. "$HOME/.nvm/nvm.sh"
             nvm use 22
             node -v
