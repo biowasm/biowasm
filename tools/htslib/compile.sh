@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Dependencies
-sudo apt-get install -y zlib1g-dev libbz2-dev libcurl4-gnutls-dev libssl-dev autoconf
+sudo apt-get install -yqq zlib1g-dev libbz2-dev libcurl4-gnutls-dev libssl-dev autoconf
 
 # Compile LZMA to WebAssembly
 LZMA_VERSION="5.6.3"
 curl -LO "https://tukaani.org/xz/xz-${LZMA_VERSION}.tar.gz"
-tar -xvf xz-${LZMA_VERSION}.tar.gz
+tar -xf xz-${LZMA_VERSION}.tar.gz
 cd xz-${LZMA_VERSION}
 emconfigure ./configure --disable-shared --disable-threads
 emmake make -j4 CFLAGS="-Oz -fPIC -s USE_PTHREADS=0 -s EXPORT_ALL=1 -s ASSERTIONS=1"

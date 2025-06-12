@@ -1,10 +1,5 @@
 name: Deploy biowasm v3
 
-env:
-  EM_VERSION: 2.0.25
-  EM_CACHE_FOLDER: "emsdk-cache"
-  CYPRESS_CACHE_FOLDER: "cypress"
-
 on:
   workflow_dispatch:
     inputs:
@@ -14,38 +9,27 @@ on:
         default: "stg"
       tools_to_compile:
         description: "Tools to compile to WebAssembly (comma-separated; 'all'; 'none')"
-        required: false
-        default: "all"
+        required: true
+        default: "seqtk"
+      versions:
+        description: "Versions to compile (comma-separated)"
+        required: true
+        default: "1.4"
 
 jobs:
   deploy:
-    # FIXME: Ubuntu 20 comes with autoconf 2.69. But htslib <1.12 needs autoconf
-    # < 2.70, otherwise get errors about missing configure files (it also gives
-    # errors when installing 2.69 on ubuntu-latest).
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: Deploy biowasm v3 (${{ github.event.inputs.env }})
+    container:
+      image: emscripten/emsdk:2.0.25
     steps:
       # ------------------------------------------------------------------------
       # Setup
       # ------------------------------------------------------------------------
-      - name: Checkout biowasm repo
+      - name: Check out biowasm repo (${{ github.event.inputs.env }})
         uses: actions/checkout@v3
         with:
           ref: ${{ github.ref }}
-
-      - name: Setup cache
-        id: cache-system-libraries
-        uses: actions/cache@v3
-        with:
-          path: ${{env.EM_CACHE_FOLDER}}
-          key: ${{env.EM_VERSION}}-${{ runner.os }}
-
-      - name: Download Emscripten
-        if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-        uses: mymindstorm/setup-emsdk@v11
-        with:
-          version: ${{env.EM_VERSION}}
-          actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
 
       - name: Test Emscripten
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
@@ -54,33 +38,39 @@ jobs:
       # ------------------------------------------------------------------------
       # Compile
       # ------------------------------------------------------------------------
-      - name: Compile to WebAssembly
+      - name: Compile to WebAssembly (${{ github.event.inputs.env }})
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-        run: bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }} --env ${{ github.event.inputs.env }}
+        run: |
+          apt-get update && apt-get install -yqq autoconf liblzma-dev
+          bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }} --env ${{ github.event.inputs.env }} --versions ${{ github.event.inputs.versions }}
 
       # ------------------------------------------------------------------------
       # Deploy to Cloudflare Workers
       # ------------------------------------------------------------------------
-      - name: Deploy biowasm.com/v3/ (${{ github.event.inputs.env }})
-        if: ${{ !env.ACT }}
-        uses: cloudflare/wrangler-action@2.0.0
+      - name: Deploy (${{ github.event.inputs.env }})
+        if: ${{ github.event.inputs.tools_to_compile != 'none' }}
         env:
-          USER: root
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
           CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          environment: ${{ github.event.inputs.env }}
-          preCommands: |
-            cd web/
-            apt update && apt install -y jq
-            npm install
-            wrangler kv:bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: |
+          apt-get install -y jq
+
+          # Install Node.js
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+          \. "$HOME/.nvm/nvm.sh"
+          nvm install 22
+
+          # Deploy
+          cd web/
+          npm install
+          npx wrangler kv:bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
+          npx wrangler publish --env=${{ github.event.inputs.env }}
 
       # ------------------------------------------------------------------------
       # Save changes to manifest (only after successful deploy!)
       # ------------------------------------------------------------------------
-      - name: Save changes to manifest.json
+      - name: Save changes to manifest.json (${{ github.event.inputs.env }})
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
