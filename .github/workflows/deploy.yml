@@ -49,27 +49,38 @@ jobs:
       # ------------------------------------------------------------------------
       - name: Install newer Node.js version
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-        run: |
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-          \. "$HOME/.nvm/nvm.sh"
-          nvm install 22
-          which node
-
-      - name: Deploy biowasm.com/v3/ (${{ github.event.inputs.env }})
-        if: ${{ !env.ACT }}
-        uses: cloudflare/wrangler-action@v3.14.1
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
           CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          environment: ${{ github.event.inputs.env }}
-          preCommands: |
-            cd web/
-            node -v
-            cp /__w/_temp/versions/node/v22.16.0/bin/node $(which node)
-            pwd
-            cd web/ && wrangler kv bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: |
+          # Install Node.js
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+          source "$HOME/.nvm/nvm.sh"
+          nvm install 22
+
+          # Deploy
+          cd web/
+          npm install wrangler
+          wrangler kv bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
+
+          wrangler publish --env=${{ github.event.inputs.env }}
+
+      # - name: Deploy biowasm.com/v3/ (${{ github.event.inputs.env }})
+      #   if: ${{ !env.ACT }}
+      #   uses: cloudflare/wrangler-action@v3.14.1
+      #   env:
+      #     CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+      #     CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+      #   with:
+      #     apiToken: ${{ secrets.CF_API_TOKEN }}
+      #     environment: ${{ github.event.inputs.env }}
+      #     preCommands: |
+      #       cd web/
+      #       node -v
+      #       cp /__w/_temp/versions/node/v22.16.0/bin/node $(which node)
+      #       pwd
+      #       cd web/ && wrangler kv bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
 
 # preCommands: |
 #   cd web/
