@@ -31,18 +31,18 @@ jobs:
         with:
           ref: ${{ github.ref }}
 
-      - name: Test Emscripten
-        if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-        run: emcc -v
+      # - name: Test Emscripten
+      #   if: ${{ github.event.inputs.tools_to_compile != 'none' }}
+      #   run: emcc -v
 
-      # ------------------------------------------------------------------------
-      # Compile
-      # ------------------------------------------------------------------------
-      - name: Compile to WebAssembly
-        if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-        run: |
-          apt-get update && apt-get install -yqq autoconf liblzma-dev
-          bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }} --env ${{ github.event.inputs.env }} --versions ${{ github.event.inputs.versions }}
+      # # ------------------------------------------------------------------------
+      # # Compile
+      # # ------------------------------------------------------------------------
+      # - name: Compile to WebAssembly
+      #   if: ${{ github.event.inputs.tools_to_compile != 'none' }}
+      #   run: |
+      #     apt-get update && apt-get install -yqq autoconf liblzma-dev
+      #     bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }} --env ${{ github.event.inputs.env }} --versions ${{ github.event.inputs.versions }}
 
       # ------------------------------------------------------------------------
       # Deploy to Cloudflare Workers
@@ -62,7 +62,12 @@ jobs:
             apt update && apt install -y jq
             npm install
             curl https://get.volta.sh | bash
-            export PATH=$PATH:$HOME/.volta/bin && volta install node@22 && npm i wrangler@3.90.0 && wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
+            export VOLTA_HOME=$HOME/.volta && export PATH=$PATH:$VOLTA_HOME/bin
+            ls -lah $HOME
+            ls -lah $HOME/.volta
+            ls -lah $HOME/.volta/bin
+            volta install node@22
+            wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
 
 # curl -s -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 # export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && \
