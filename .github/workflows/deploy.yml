@@ -79,7 +79,8 @@ jobs:
             export PATH=/__w/_temp/versions/node/v22.16.0/bin:$PATH
             echo $PATH
             echo $USER
-            node -v
+            PATH=/__w/_temp/versions/node/v22.16.0/bin:$PATH node -v
+            cp /__w/_temp/versions/node/v22.16.0/bin/node $(which node)
             PATH=/__w/_temp/versions/node/v22.16.0/bin:$PATH wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
 
 # preCommands: |
