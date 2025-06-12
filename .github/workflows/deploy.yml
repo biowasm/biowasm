@@ -80,7 +80,7 @@ jobs:
             echo $PATH
             echo $USER
             node -v
-            wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
+            PATH=/__w/_temp/versions/node/v22.16.0/bin:$PATH wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
 
 # preCommands: |
 #   cd web/
