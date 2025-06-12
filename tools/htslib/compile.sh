@@ -15,12 +15,14 @@ sudo apt-get install -yqq zlib1g-dev libbz2-dev libcurl4-gnutls-dev libssl-dev a
 # Run ./configure
 # CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1 ${CFLAGS_LZMA}"
 # LDFLAGS="$LDFLAGS_LZMA"
+curl -LO "https://github.com/samtools/htslib/releases/download/1.21/htslib-1.21.tar.bz2" && tar -xjf htslib-1.21.tar.bz2 && cd htslib-1.21
 CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1"
 LDFLAGS=""
 make clean
 autoheader
 autoconf
-emconfigure ./configure --disable-lzma CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
+emconfigure ./configure --disable-lzma CFLAGS="$CFLAGS"
+# LDFLAGS="$LDFLAGS"
 
 # Build htslib tools
 TOOLS=("tabix" "htsfile" "bgzip")
