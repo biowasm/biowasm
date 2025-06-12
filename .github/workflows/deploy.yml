@@ -61,10 +61,9 @@ jobs:
 
           # Deploy
           cd web/
-          npm install wrangler
-          wrangler kv bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
-
-          wrangler publish --env=${{ github.event.inputs.env }}
+          npm install
+          npx wrangler kv bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
+          npx wrangler publish --env=${{ github.event.inputs.env }}
 
       # - name: Deploy biowasm.com/v3/ (${{ github.event.inputs.env }})
       #   if: ${{ !env.ACT }}
