@@ -70,6 +70,9 @@ jobs:
           preCommands: |
             cd web/
             node -v
+            \. "$HOME/.nvm/nvm.sh"
+            nvm use 22
+            node -v
             wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
 
 # preCommands: |
