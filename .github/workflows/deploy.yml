@@ -33,12 +33,12 @@ jobs:
         with:
           ref: ${{ github.ref }}
 
-      - name: Setup cache
-        id: cache-system-libraries
-        uses: actions/cache@v4
-        with:
-          path: ${{env.EM_CACHE_FOLDER}}
-          key: ${{env.EM_VERSION}}-${{ runner.os }}
+      # - name: Setup cache
+      #   id: cache-system-libraries
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ${{env.EM_CACHE_FOLDER}}
+      #     key: ${{env.EM_VERSION}}-${{ runner.os }}
 
       - name: Download Emscripten
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
