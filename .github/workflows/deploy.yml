@@ -44,25 +44,17 @@ jobs:
       #     apt-get update && apt-get install -yqq autoconf liblzma-dev
       #     bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }} --env ${{ github.event.inputs.env }} --versions ${{ github.event.inputs.versions }}
 
-      - name: Install Node.js
+      # ------------------------------------------------------------------------
+      # Deploy to Cloudflare Workers
+      # ------------------------------------------------------------------------
+      - name: Install newer Node.js version
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
         run: |
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
           \. "$HOME/.nvm/nvm.sh"
           nvm install 22
-          node -v # Should print "v22.16.0".
-          nvm current # Should print "v22.16.0".
-          npm -v # Should print "10.9.2".
-          ls -lah "$HOME/.nvm/"
           which node
-          echo $PATH
-          echo $USER
-          echo "------"
 
-
-      # ------------------------------------------------------------------------
-      # Deploy to Cloudflare Workers
-      # ------------------------------------------------------------------------
       - name: Deploy biowasm.com/v3/ (${{ github.event.inputs.env }})
         if: ${{ !env.ACT }}
         uses: cloudflare/wrangler-action@v3.14.1
@@ -75,13 +67,9 @@ jobs:
           preCommands: |
             cd web/
             node -v
-            ls -lah "$HOME/.nvm/"
-            export PATH=/__w/_temp/versions/node/v22.16.0/bin:$PATH
-            echo $PATH
-            echo $USER
-            PATH=/__w/_temp/versions/node/v22.16.0/bin:$PATH node -v
             cp /__w/_temp/versions/node/v22.16.0/bin/node $(which node)
-            wrangler kv bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
+            pwd
+            cd web/ && wrangler kv bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
 
 # preCommands: |
 #   cd web/
