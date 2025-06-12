@@ -46,12 +46,12 @@ jobs:
       #     path: ${{env.EM_CACHE_FOLDER}}
       #     key: ${{env.EM_VERSION}}-${{ runner.os }}
 
-      - name: Download Emscripten
-        if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-        uses: mymindstorm/setup-emsdk@v11
-        with:
-          version: ${{env.EM_VERSION}}
-          # actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
+      # - name: Download Emscripten
+      #   if: ${{ github.event.inputs.tools_to_compile != 'none' }}
+      #   uses: mymindstorm/setup-emsdk@v11
+      #   with:
+      #     version: ${{env.EM_VERSION}}
+      #     # actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
 
       - name: Test Emscripten
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
