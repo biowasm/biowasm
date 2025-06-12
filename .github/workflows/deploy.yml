@@ -63,56 +63,9 @@ jobs:
 
           # Deploy
           cd web/
-          ls -lah
-          ls -lah ../build
           npm install
           npx wrangler kv:bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
           npx wrangler publish --env=${{ github.event.inputs.env }}
-
-      # - name: Deploy biowasm.com/v3/ (${{ github.event.inputs.env }})
-      #   if: ${{ !env.ACT }}
-      #   uses: cloudflare/wrangler-action@v3.14.1
-      #   env:
-      #     CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-      #     CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-      #   with:
-      #     apiToken: ${{ secrets.CF_API_TOKEN }}
-      #     environment: ${{ github.event.inputs.env }}
-      #     preCommands: |
-      #       cd web/
-      #       node -v
-      #       cp /__w/_temp/versions/node/v22.16.0/bin/node $(which node)
-      #       pwd
-      #       cd web/ && wrangler kv bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
-
-# preCommands: |
-#   cd web/
-#   apt update && apt install -y jq
-#   npm install
-
-#   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-#   \. "$HOME/.nvm/nvm.sh"
-#   nvm install 22
-#   node -v # Should print "v22.16.0".
-#   nvm current # Should print "v22.16.0".
-#   npm -v # Should print "10.9.2".
-#   wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
-
-#
-# USER: root
-# 
-# curl https://get.volta.sh | bash
-# export VOLTA_HOME=$HOME/.volta && export PATH=$PATH:$VOLTA_HOME/bin
-# ls -lah $HOME
-# ls -lah $HOME/.volta
-# ls -lah $HOME/.volta/bin
-# $HOME/.volta/bin/volta install node@22
-# --------
-# curl -s -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-# export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && \
-#   nvm install 22 && \
-#   nvm use 22 && \
-#   wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
 
       # ------------------------------------------------------------------------
       # Save changes to manifest (only after successful deploy!)
