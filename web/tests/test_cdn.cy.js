@@ -47,6 +47,7 @@ const EXPECTED_OUTPUTS = {
 		`r003	16	ref	29	30	6H5M	*	0	0	TAGGC	*\nr001	83	ref	37	30	9M	=	7	-39	CAGCGCCAT	*`, // output of samtools view
 		`r003	4	*	0	0	*	*	0	0	AGCTAA	*` // output of samtools reset
 	],
+	"tools/samtools/examples/1.21.html": [`TTTATAAAACA`],
 	"tools/sed/examples/v4.8.html": [
 		`@read1\nACGTAC----AGCAG\n+\nJJJJJJJJJJJJJJJ\n@read2\nACGATCATACCAGCA\n+\nJJJJJJJJJJJJJJJ`,
 		`>read1\nACGTACGACTAGCAG\n>read2\nACGATCATACCAGCA`
