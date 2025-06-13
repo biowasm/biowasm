@@ -1,0 +1,38 @@
+diff --git a/Makefile b/Makefile
+index ef9b5a9a..00607b9a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -522,16 +522,16 @@ htscodecs/htscodecs/rANS_static32x16pr_avx512.o htscodecs/htscodecs/rANS_static3
+ htscodecs/htscodecs/rANS_static32x16pr_sse4.o htscodecs/htscodecs/rANS_static32x16pr_sse4.pico: TARGET_CFLAGS = $(HTS_CFLAGS_SSE4)
+ 
+ annot-tsv: annot-tsv.o libhts.a
+-	$(CC) $(LDFLAGS) -o $@ annot-tsv.o libhts.a $(LIBS) -lpthread
++	$(CC) $(LDFLAGS) -o ../build/$@.js annot-tsv.o libhts.a $(LIBS) -lpthread
+ 
+ bgzip: bgzip.o libhts.a
+-	$(CC) $(LDFLAGS) -o $@ bgzip.o libhts.a $(LIBS) -lpthread
++	$(CC) $(LDFLAGS) -o ../build/$@.js bgzip.o libhts.a $(LIBS) -lpthread
+ 
+ htsfile: htsfile.o libhts.a
+-	$(CC) $(LDFLAGS) -o $@ htsfile.o libhts.a $(LIBS) -lpthread
++	$(CC) $(LDFLAGS) -o ../build/$@.js htsfile.o libhts.a $(LIBS) -lpthread
+ 
+ tabix: tabix.o libhts.a
+-	$(CC) $(LDFLAGS) -o $@ tabix.o libhts.a $(LIBS) -lpthread
++	$(CC) $(LDFLAGS) -o ../build/$@.js tabix.o libhts.a $(LIBS) -lpthread
+ 
+ annot-tsv.o: annot-tsv.c config.h $(htslib_hts_h) $(htslib_hts_defs_h) $(htslib_khash_str2int_h) $(htslib_kstring_h) $(htslib_kseq_h) $(htslib_bgzf_h) $(htslib_regidx_h) $(textutils_internal_h)
+ bgzip.o: bgzip.c config.h $(htslib_bgzf_h) $(htslib_hts_h) $(htslib_hfile_h)
+diff --git a/version.sh b/version.sh
+index f35234c2..6393e406 100755
+--- a/version.sh
++++ b/version.sh
+@@ -31,7 +31,7 @@ srcdir=${0%/version.sh}
+ if [ -e $srcdir/.git ]
+ then
+     # If we ever get to 10.x this will need to be more liberal
+-    v=`cd $srcdir && git describe --always --match '[0-9].[0-9]*' --dirty`
++    v=`cd $srcdir && git describe --always --match '[0-9].[0-9]*'`
+     case $v in
+         [0-9]*.[0-9]*) VERSION="$v" ;;
+         [0-9a-f][0-9a-f]*) VERSION="$VERSION-1-g$v" ;;

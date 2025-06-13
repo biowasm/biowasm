@@ -1,0 +1,28 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli([{
+    tool: "samtools",
+    version: "1.21",
+    urlPrefix: "http://localhost:80/biowasm/build/samtools/1.21",
+}]);
+
+// Show reads from toy.sam. Try replacing "-f 16" with "-f 0".
+const file = "/samtools/examples/toy.sam";
+const output = await CLI.exec(`samtools view -f 16 ${file}`);
+
+// Test out new command in v1.21
+const file2 = "/samtools/examples/toy.fa";
+const output2 = await CLI.exec(`samtools faidx ${file2} -o /tmp/_.gz ref2:5-15`);
+const output2b = await CLI.exec(`samtools view /tmp/_.gz`);
+
+document.getElementById("output").innerHTML = output;
+document.getElementById("output2").innerHTML = output2;
+document.getElementById("output2b").innerHTML = output2b;
+</script>
+
+<h4>Output of <code>samtools view</code>:</h4>
+<pre id="output">Loading...</pre>
+
+<h4>Output of <code>samtools faidx -o _.-gz; samtools view _.gz</code>:</h4>
+<pre id="output2">Loading...</pre>
+<pre id="output2b">Loading...</pre>
