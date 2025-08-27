@@ -16,7 +16,7 @@
 		"@sveltejs/kit": "^1.30.4",
 		"cypress": "^10.6.0",
 		"svelte": "^3.58.0",
-		"vite": "^4.5.5",
+		"vite": "^4.5.14",
 		"wrangler": "^3.19.0"
 	},
 	"type": "module",
