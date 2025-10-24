@@ -65,6 +65,10 @@ import CONFIG from "@/biowasm.json";
 						<td>Runs <code>minimap2</code> and <code>ViralConsensus</code> for viral molecular epidemiology analysis</td>
 					</tr>
 					<tr>
+						<td><a class="fw-bold" href="https://pinellolab.github.io/CRISPRLungo/">CRISPRLungo</a></td>
+						<td>Runs `minimap2` as part of a long-read CRISPR analysis pipeline</td>
+					</tr>
+					<tr>
 						<td><a class="fw-bold" href="https://datagrok.ai">Datagrok</a></td>
 						<td>Runs <code>kalign</code> in the browser for multiple-sequence alignment analysis</td>
 					</tr>
