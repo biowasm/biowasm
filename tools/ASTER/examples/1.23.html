@@ -1,0 +1,25 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli([
+    { tool: "ASTER", version: "1.23", program: "astral" },
+    { tool: "ASTER", version: "1.23", program: "astral-pro" },
+    { tool: "ASTER", version: "1.23", program: "caster-site" },
+    { tool: "ASTER", version: "1.23", program: "caster-pair" },
+    { tool: "ASTER", version: "1.23", program: "wastral" },
+]);
+
+// astral, astral-pro and wastral: estimating species tree given a set of gene trees
+const output1 = await CLI.exec(`astral -a /ASTER/example/multitree_genename.map /ASTER/example/multitree_genename.nw`);
+
+// caster-site, caster-pair: estimating species tree from sequence alignment
+const output2 = await CLI.exec(`caster-site -i /ASTER/example/genetrees.tre_1.fas`);
+
+document.getElementById("output1").innerHTML = output1;
+document.getElementById("output2").innerHTML = output2;
+</script>
+
+<h4>Output of <code>astral </code>:</h4>
+<pre id="output1">Loading...</pre>
+
+<h4>Output of <code>caster-site</code>:</h4>
+<pre id="output2">Loading...</pre>
