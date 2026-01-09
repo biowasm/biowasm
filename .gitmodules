@@ -2,6 +2,10 @@
 	path = tools/aioli/src
 	url = https://github.com/biowasm/aioli.git
 
+[submodule "tools/ASTER/src"]
+	path = tools/ASTER/src
+	url = https://github.com/chaoszhang/ASTER.git
+
 [submodule "tools/bcftools/src"]
 	path = tools/bcftools/src
 	url = https://github.com/samtools/bcftools.git
@@ -137,6 +141,3 @@
 [submodule "tools/wgsim/src"]
 	path = tools/wgsim/src
 	url = https://github.com/lh3/wgsim.git
-[submodule "tools/ASTER/src"]
-	path = tools/ASTER/src
-	url = https://github.com/chaoszhang/ASTER.git

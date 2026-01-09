@@ -5,7 +5,7 @@
 +	echo "*** Installation complete! ***"
 +
 +CXX=em++
-+CXXFLAGS=-std=c++17
++CXXFLAGS=-std=c++17 -O3
 +LDFLAGS=
 +EXEEXT=.js
 +
