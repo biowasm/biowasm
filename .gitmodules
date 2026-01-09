@@ -2,6 +2,10 @@
 	path = tools/aioli/src
 	url = https://github.com/biowasm/aioli.git
 
+[submodule "tools/ASTER/src"]
+	path = tools/ASTER/src
+	url = https://github.com/chaoszhang/ASTER.git
+
 [submodule "tools/bcftools/src"]
 	path = tools/bcftools/src
 	url = https://github.com/samtools/bcftools.git

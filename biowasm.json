@@ -26,6 +26,18 @@
 			]
 		},
 		{
+			"name": "ASTER",
+			"programs": ["astral", "astral-pro", "wastral", "caster-site", "caster-pair"],
+			"description": "Accurate Species Tree EstimatoR",
+			"files": ["js", "wasm", "data"],
+			"versions": [
+				{
+					"version": "1.23",
+					"branch": "v1.23"
+				}
+			]
+		},
+		{
 			"name": "base",
 			"programs": ["base"],
 			"listed": false,

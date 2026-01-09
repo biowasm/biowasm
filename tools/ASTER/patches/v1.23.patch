@@ -1,0 +1,31 @@
+--- a/Makefile.emcc
++++ b/Makefile.emcc
+@@ -0,0 +1,28 @@
++all: dir astral astral-pro wastral caster-site caster-pair
++	echo "*** Installation complete! ***"
++
++CXX=em++
++CXXFLAGS=-std=c++17 -O3
++LDFLAGS=
++EXEEXT=.js
++
++astral: dir
++	$(CXX) $(CXXFLAGS) $(LDFLAGS) src/$@.cpp -o bin/$@$(EXEEXT)
++
++astral-pro: dir
++	$(CXX) $(CXXFLAGS) $(LDFLAGS) src/$@.cpp -o bin/$@$(EXEEXT)
++
++wastral: dir
++	$(CXX) $(CXXFLAGS) $(LDFLAGS) src/astral-hybrid.cpp -o bin/wastral$(EXEEXT)
++
++caster-site: dir
++	$(CXX) $(CXXFLAGS) $(LDFLAGS) src/$@.cpp -o bin/$@$(EXEEXT)
++
++caster-pair: dir
++	$(CXX) $(CXXFLAGS) $(LDFLAGS) src/$@.cpp -o bin/$@$(EXEEXT)
++
++dir:
++	mkdir -p bin/
++
++clean:
++	rm bin/*
