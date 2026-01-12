@@ -17,6 +17,7 @@ const EXPECTED_OUTPUTS = {
 		`\t"summary": {\n\t\t"before_filtering": {\n\t\t\t"total_reads":50,\n\t\t\t"total_bases":7400,\n\t\t\t"q20_bases":7308,\n\t\t\t"q30_bases":7169,\n\t\t\t"q20_rate":0.987568,\n\t\t\t"q30_rate":0.968784,\n\t\t\t"read1_mean_length":148,\n\t\t\t"gc_content":0.409459\n\t\t},\n\t\t"after_filtering": {\n\t\t\t"total_reads":50,\n\t\t\t"total_bases":7400,\n\t\t\t"q20_bases":7308,\n\t\t\t"q30_bases":7169,\n\t\t\t"q20_rate":0.987568,\n\t\t\t"q30_rate":0.968784,\n\t\t\t"read1_mean_length":148,\n\t\t\t"gc_content":0.409459\n\t\t}\n\t}`
 	],
 	"tools/fasttree/examples/main.html": [`(1k99_A:1.455604057,2lef_A:0.867678506,(1aab_:2.021714810,1j46_A:0.342407321)0.877:0.650876783);`],
+	"tools/lastz/examples/v1.04.52.html": [`#name1\tstart1\tend1\tname2\tstart2\tend2\tstrand2\tscore\ncat\t4929\t5024\tpig2\t17498\t17593\t+\t3348\ncat\t183\t312\tpig2\t4038\t4167\t-\t3850\ncat\t13977\t14124\tpig2\t7670\t7817\t-\t4685\ncat\t15217\t15331\tpig2\t8900\t9014\t-\t3800\ncat\t15958\t16096\tpig2\t9637\t9775\t-\t4325\ncat\t17500\t17595\tpig2\t11107\t11202\t-\t4046\ncat\t8412\t8539\tpig2\t16242\t16369\t-\t3909\ncat\t11219\t11394\tpig2\t20194\t20369\t-\t4800\n`],
 	"tools/mummer4/examples/v4.0.0rc1.html": [`>B_anthracis_Mslice 137795 312600 863`],
 	"tools/muscle/examples/5.1.0.html": [`>2lef_\nA-------MHIKKPLNAFMLYMKEMRANVVAESTL--KESAAINQILGRRWHALSREEQAKYYELARKERQLHMQLYPGW\nSARDNYGKKKKRKREK`],
 	"tools/muscle/examples/main.html": [`>2lef_\n-------AMHIKKPLNAFMLYMKEMRANVVAES-TLK-ESAAINQILGRRWHALSREEQA\nKYYELARKERQLHMQLYPGWSARDNYGKKKKRKREK`],

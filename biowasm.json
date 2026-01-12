@@ -286,6 +286,18 @@
 			]
 		},
 		{
+			"name": "lastz",
+			"programs": ["lastz", "lastz_D"],
+			"description": "Pairwise DNA sequence aligner",
+			"files": ["js", "wasm", "data"],
+			"versions": [
+				{
+					"version": "1.04.52",
+					"branch": "1.04.52"
+				}
+			]
+		},
+		{
 			"name": "libarchive",
 			"programs": ["bsdunzip"],
 			"description": "Unzip .zip files",
