@@ -519,6 +519,17 @@
 					"branch": "a12da33"
 				}
 			]
+		},
+		{
+			"name": "lastz",
+			"programs": ["lastz"],
+			"description": "Pairwise DNA sequence aligner",
+			"versions": [
+				{
+					"version": "1.04.53",
+					"branch": "master"
+				}
+			]
 		}
 	]
 }

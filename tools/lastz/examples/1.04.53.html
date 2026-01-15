@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LASTZ - Pairwise DNA Sequence Aligner</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+        h1 { color: #333; }
+        .form-group { margin: 1rem 0; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+        input[type="file"], input[type="text"] { width: 100%; padding: 0.5rem; }
+        button { padding: 0.75rem 1.5rem; background: #007bff; color: white; border: none; cursor: pointer; font-size: 1rem; }
+        button:hover { background: #0056b3; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        #output, #logs { background: #f5f5f5; border: 1px solid #ddd; padding: 1rem; margin-top: 1rem; white-space: pre-wrap; font-family: monospace; max-height: 400px; overflow-y: auto; }
+        .info { background: #e7f3ff; padding: 1rem; margin: 1rem 0; border-left: 4px solid #007bff; }
+    </style>
+</head>
+<body>
+    <h1>LASTZ in Browser</h1>
+    <p>Pairwise DNA sequence aligner running entirely in your browser using WebAssembly.</p>
+
+    <div class="info">
+        <strong>About LASTZ:</strong> LASTZ is a tool for (1) aligning two DNA sequences, and (2) inferring appropriate scoring parameters automatically. 
+        LASTZ is designed to preprocess one sequence (the "target") and then align several "query" sequences to it.
+    </div>
+
+    <div class="form-group">
+        <label for="target">Target Sequence (FASTA)</label>
+        <input type="file" id="target" accept=".fasta,.fa,.fna" required>
+    </div>
+
+    <div class="form-group">
+        <label for="query">Query Sequence (FASTA)</label>
+        <input type="file" id="query" accept=".fasta,.fa,.fna" required>
+    </div>
+
+    <div class="form-group">
+        <label for="args">Additional Arguments</label>
+        <input type="text" id="args" placeholder="e.g. --format=maf --gapped" value="--format=maf">
+        <small>Common formats: maf, lav, axt, general. Use --help for all options.</small>
+    </div>
+
+    <button id="run-btn" disabled>Run LASTZ</button>
+
+    <h2>Logs</h2>
+    <div id="logs">Initializing LASTZ...</div>
+
+    <h2>Output</h2>
+    <div id="output">Results will appear here after running LASTZ...</div>
+
+    <script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+    <script type="module">
+        const runBtn = document.getElementById('run-btn');
+        const logs = document.getElementById('logs');
+        const output = document.getElementById('output');
+        let CLI;
+
+        function log(msg) {
+            logs.textContent += msg + '\n';
+            logs.scrollTop = logs.scrollHeight;
+            console.log(msg);
+        }
+
+        log('Initializing Aioli and LASTZ...');
+        
+        try {
+            CLI = await new Aioli("lastz/1.04.53");
+
+            log('LASTZ loaded successfully!');
+            log('Ready to align DNA sequences.');
+            runBtn.disabled = false;
+        } catch (err) {
+            log(`Initialization error: ${err.message}`);
+            console.error('Full error:', err);
+        }
+
+        runBtn.addEventListener('click', async () => {
+            const targetFile = document.getElementById('target').files[0];
+            const queryFile = document.getElementById('query').files[0];
+            const args = document.getElementById('args').value;
+
+            if (!targetFile || !queryFile) {
+                alert('Please select both target and query files.');
+                return;
+            }
+
+            runBtn.disabled = true;
+            logs.textContent = '';
+            output.textContent = 'Running LASTZ...';
+
+            try {
+                log(`Mounting ${targetFile.name}...`);
+                await CLI.mount([targetFile]);
+                
+                log(`Mounting ${queryFile.name}...`);
+                await CLI.mount([queryFile]);
+
+                const cmd = `lastz ${targetFile.name} ${queryFile.name} ${args}`;
+                log(`Running: ${cmd}`);
+                log('');
+
+                const result = await CLI.exec(cmd);
+                
+                if (result.stdout) {
+                    output.textContent = result.stdout;
+                    log('Alignment completed successfully!');
+                } else {
+                    output.textContent = 'No alignment output (this may be normal depending on parameters)';
+                    log('Done.');
+                }
+
+            } catch (err) {
+                log(`Error: ${err.message}`);
+                output.textContent = `Error: ${err.message}`;
+                console.error(err);
+            } finally {
+                runBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
