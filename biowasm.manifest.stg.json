@@ -156,6 +156,8 @@
   "kentutils/437/bigWigInfo.wasm": "kentutils/437/bigWigInfo.wasm:5a6033d01538a385c33eafe839dbd16d",
   "kentutils/437/bigWigToWig.js": "kentutils/437/bigWigToWig.js:cafe6883095d3430d2cdd4540fe497bb",
   "kentutils/437/bigWigToWig.wasm": "kentutils/437/bigWigToWig.wasm:13c0f832aa769fc7f4d61e52b999ad52",
+  "lastz/1.04.53/lastz.js": "lastz/1.04.53/lastz.js:c00f17ad6da6172279852c67967fd8f1",
+  "lastz/1.04.53/lastz.wasm": "lastz/1.04.53/lastz.wasm:6e0cb22e2f60f9a14f1d1633058ed679",
   "libarchive/3.7.2/bsdunzip.js": "libarchive/3.7.2/bsdunzip.js:b42335b5019277bffbdba15eb510d924",
   "libarchive/3.7.2/bsdunzip.wasm": "libarchive/3.7.2/bsdunzip.wasm:f4fd462919362d05e8c0b1babc35f421",
   "lsd2/2.3/lsd2.data": "lsd2/2.3/lsd2.data:965041e3e15ba539979045b36dca4be7",

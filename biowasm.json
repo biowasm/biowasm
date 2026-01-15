@@ -526,7 +526,7 @@
 			"description": "Pairwise DNA sequence aligner",
 			"versions": [
 				{
-					"version": "1.04.53",
+					"version": "1.04.52",
 					"branch": "master"
 				}
 			]
