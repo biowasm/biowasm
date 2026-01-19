@@ -1,0 +1,96 @@
+diff --git a/algo/core/proba.cpp b/algo/core/proba.cpp
+index 3b8c31b6b1..2b7a9b045f 100644
+--- a/algo/core/proba.cpp
++++ b/algo/core/proba.cpp
+@@ -50,7 +50,7 @@ double ProbaPrecomputer::probabilityPreviousIteration(int iteration, int length,
+   proba_with = getProbaWith(index_load, iteration-1); // Otherwise when probability are too low they are stored as 0 and we are f*****
+   proba_without *= (1 - index_load);
+   Cnk *= iteration*1. / (length-iteration+1);
+-  if (std::isinf(Cnk))
++  if (isinf(Cnk))
+     Cnk = std::numeric_limits<long double>::max();
+   return proba;
+ }
+diff --git a/algo/Makefile b/algo/Makefile
+index 07a34f6a7e..2576740465 100644
+--- a/algo/Makefile
++++ b/algo/Makefile
+@@ -1,4 +1,5 @@
+ CXX?=g++
++EMCXX?=em++
+ 
+ ifeq (${COVERAGE},1)
+ 	COVERAGE_OPTION=--coverage
+@@ -13,6 +14,9 @@ override CXXFLAGS += $(COVERAGE_OPTION) $(DEBUG)
+ ifeq ($(LDFLAGS),)
+   LDFLAGS := $(COVERAGE_OPTION)
+ endif
++ifeq ($(EM_FLAGS),)
++  EM_FLAGS := -s USE_ZLIB=1 -s INVOKE_RUN=0 -s FORCE_FILESYSTEM=1 -s EXPORTED_RUNTIME_METHODS=["callMain","FS","PROXYFS","WORKERFS"] -s MODULARIZE=1 -s ENVIRONMENT="web,worker" -s ALLOW_MEMORY_GROWTH=1 -lworkerfs.js -lproxyfs.js -sNO_DISABLE_EXCEPTION_CATCHING
++endif
+ COV_OUTFILE?=lcov.out
+ BASE_PATH=$(dir $(abspath .))
+ 
+@@ -52,6 +56,7 @@ CGIDIR=../tools/
+ TOOLDIR=tools/
+ 
+ VIDJIL=$(BINDIR)$(EXEC)
++VIDJIL_JS=$(VIDJIL).js
+ ALIGN_CGI=$(CGIDIR)align.cgi
+ SIMILARITY_CGI=$(CGIDIR)similarity.cgi
+ SIMILARITY_TOOL=$(TOOLDIR)similarity
+@@ -60,16 +65,19 @@ CREATE_VERSION_GIT_H := $(shell test -x ./create-git-version-h.sh && ./create-gi
+ 
+ TEE = python3 ../tools/tee.py -v
+ 
+-.PHONY: all core lib clean forcedep gcovr_reports
++.PHONY: all core lib clean forcedep gcovr_reports wasm
+ 
+ all: $(VIDJIL) $(ALIGN_CGI) $(SIMILARITY_CGI) $(SIMILARITY_TOOL)
+ 	$(MAKE) -C $(TOOLDIR)
+ 
+ base: $(VIDJIL)
+ 
++wasm: $(VIDJIL_JS)
++
+ static:
+ 	$(MAKE) all LDFLAGS="-static -static-libstdc++"
+ 
++
+ ###
+ 
+ paranoid: clean
+@@ -125,6 +133,10 @@ $(VIDJIL): $(BINDIR)%: $(MAIN).o $(LIBCORE)
+ 	$(MAKE) -C lib
+ 	$(CXX) -o $@ $^ $(LDFLAGS) $(LDLIBS)
+ 
++$(VIDJIL_JS):
++	$(MAKE) DEBUG="$(EM_FLAGS)" $(VIDJIL)
++	$(EMCXX) -o $@  --preload-file ../germline@germline $(MAIN).o $(LIBCORE) $(EM_FLAGS) $(LDLIBS)
++
+ ###
+ # Subdirectories
+ ###
+@@ -139,7 +151,7 @@ clean:
+ 	$(MAKE) -C core $@
+ 	$(MAKE) -C lib $@
+ 	rm -f *.o cgi/*.o
+-	cd $(BINDIR) ; rm -f $(EXEC)
++	cd $(BINDIR) ; rm -f $(EXEC) $(EXEC).js $(EXEC).wasm $(EXEC).data
+ 	$(MAKE) -C tests $@
+ 
+ cleancoverage: clean
+diff --git a/algo/core/kmeraffect.h b/algo/core/kmeraffect.h
+index 6f08b30c68..bf28158beb 100644
+--- a/algo/core/kmeraffect.h
++++ b/algo/core/kmeraffect.h
+@@ -1,6 +1,9 @@
+ #ifndef KMER_AFFECT_H
+ #define KMER_AFFECT_H
+ 
++#if __EMSCRIPTEN__
++typedef unsigned int uint;
++#endif
+ #include <string>
+ #include <iostream>
+ 

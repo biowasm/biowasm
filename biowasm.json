@@ -473,6 +473,17 @@
 			]
 		},
 		{
+			"name": "vidjil-algo",
+			"programs": ["vidjil-algo"],
+			"description": "High-Throughput Analysis of V(D)J Immune Repertoire",
+			"versions": [
+				{
+					"version": "2025.12",
+					"branch": "release-2025.12"
+				}
+			]
+		},
+		{
 			"name": "ViralConsensus",
 			"programs": ["viral_consensus"],
 			"description": "Call viral consensus genomes from read alignments",
