@@ -1,0 +1,13 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["lastz/1.04.52"], {
+	printInterleaved: false
+});
+
+const output = await CLI.exec("lastz /lastz/pseudocat.fa /lastz/pseudopig2.fa --format=segments");
+
+document.getElementById("output").innerHTML = output.stdout;
+</script>
+
+<h4>Output of <code>lastz</code>:</h4>
+<pre id="output">Loading...</pre>

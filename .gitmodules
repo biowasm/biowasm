@@ -78,6 +78,10 @@
 	path = tools/kentutils/src
 	url = https://github.com/ucscGenomeBrowser/kent.git
 
+[submodule "tools/lastz/src"]
+	path = tools/lastz/src
+	url = https://github.com/lastz/lastz.git
+
 [submodule "tools/libarchive/src"]
 	path = tools/libarchive/src
 	url = https://github.com/libarchive/libarchive.git
