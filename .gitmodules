@@ -134,6 +134,10 @@
 	path = tools/tree/src
 	url = https://gitlab.com/OldManProgrammer/unix-tree.git
 
+[submodule "tools/vidjil/src"]
+	path = tools/vidjil-algo/src
+	url = https://gitlab.inria.fr/vidjil/vidjil.git
+
 [submodule "tools/ViralConsensus/src"]
 	path = tools/ViralConsensus/src
 	url = https://github.com/niemasd/ViralConsensus.git
@@ -141,6 +145,3 @@
 [submodule "tools/wgsim/src"]
 	path = tools/wgsim/src
 	url = https://github.com/lh3/wgsim.git
-[submodule "tools/vidjil/src"]
-	path = tools/vidjil-algo/src
-	url = https://gitlab.inria.fr/vidjil/vidjil.git
