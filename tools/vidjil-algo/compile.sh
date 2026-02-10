@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-EM_FLAGS="$EM_FLAGS --preload-file ../demo/Demo-X5.fa@demo.fa"
+EM_FLAGS="$EM_FLAGS --preload-file ../demo/Demo-X5.fa@/vidjil-algo/demo.fa"
 
 make clean
 make -C algo clean
