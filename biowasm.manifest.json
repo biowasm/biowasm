@@ -219,6 +219,9 @@
   "tn93/1.0.9/tn93.wasm": "tn93/1.0.9/tn93.wasm:c0aa093651f7275cbcc0afa5b3179042",
   "tree/2.0.4/tree.js": "tree/2.0.4/tree.js:3fe6db36d5046eb45e88062602b69a70",
   "tree/2.0.4/tree.wasm": "tree/2.0.4/tree.wasm:d3e4cff81c178489e5ed354689488051",
+  "vidjil-algo/2025.12/vidjil-algo.data": "vidjil-algo/2025.12/vidjil-algo.data:1008caeef1df6be5a7448390aabbdb21",
+  "vidjil-algo/2025.12/vidjil-algo.js": "vidjil-algo/2025.12/vidjil-algo.js:89729ce3a17a4170c0f6f7a4764a6a25",
+  "vidjil-algo/2025.12/vidjil-algo.wasm": "vidjil-algo/2025.12/vidjil-algo.wasm:5e6e71976a45d11f384369d13fece53e",
   "wgsim/2011.10.17/wgsim.js": "wgsim/2011.10.17/wgsim.js:160ed04faa193026f4b861dcfdbda0cf",
   "wgsim/2011.10.17/wgsim.wasm": "wgsim/2011.10.17/wgsim.wasm:2b9bc9ca3462cc1d3f35859e400a17f1"
 }
