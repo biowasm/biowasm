@@ -1,0 +1,16 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["vidjil-algo/2025.12"]);
+let output = await CLI.exec(`vidjil-algo -r 1 -g /germline/homo-sapiens.g /vidjil-algo/demo.fa`);
+if (output.match(/main output file/)) {
+	const output_file = output.match(/(.\/out\/.*?\.vidjil)/)[0];
+	const vidjil_file = output_file.substr(7);
+	const urlVidjil = await CLI.download(output_file);
+	document.getElementById('download').innerHTML = `Download <a href="${urlVidjil}" download="${vidjil_file}">.vidjil</a>`   ;
+}
+output = output.split('\n').filter(x => (x.startsWith('####') || x.startsWith('  ==>'))).join('\n')
+document.getElementById('output').innerHTML = output;
+</script>
+
+<p id="download"></p>
+<pre id="output">Loading...</pre> 
