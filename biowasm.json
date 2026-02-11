@@ -476,6 +476,7 @@
 			"name": "vidjil-algo",
 			"programs": ["vidjil-algo"],
 			"description": "High-Throughput Analysis of V(D)J Immune Repertoire",
+			"files": ["js", "wasm", "data"],
 			"versions": [
 				{
 					"version": "2025.12",
