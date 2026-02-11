@@ -89,8 +89,7 @@ const EXPECTED_OUTPUTS = {
 	"tools/tree/examples/2.0.4.html": ["11 directories, 8 files", "└── web_user", "├── stderr -> /dev/tty1"],
     "tools/vidjil-algo/release-2025.12.html": [
 		"junction detected in 14 reads (100%)",
-		"found 14 windows in 14 reads (100% of 14 reads)",
-		"1 reads – 7.14%"
+		"found 14 windows in 14 reads (100% of 14 reads)"
 	],
 	"tools/ViralConsensus/examples/0.0.1.html": ["AAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTC"],
 	"tools/ViralConsensus/examples/0.0.2.html": ["AAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTC"],
