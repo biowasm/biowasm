@@ -87,7 +87,7 @@ const EXPECTED_OUTPUTS = {
 		`ID1,ID2,Distance\nB_FR_83_HXB2_ACC_K03455_5,B_US_83_RF_ACC_M17451,0.045156\nB_FR_83_HXB2_ACC_K03455_5,B_US_86_JRFL_ACC_U63632,0.0296218\nB_FR_83_HXB2_ACC_K03455_5,B_US_90_WEAU160_ACC_U21135,0.0327566\nB_US_83_RF_ACC_M17451,B_US_86_JRFL_ACC_U63632,0.048328\nB_US_86_JRFL_ACC_U63632,B_US_90_WEAU160_ACC_U21135,0.0408994\nD_CD_83_ELI_ACC_K03454_7,D_CD_83_NDK_ACC_M27323,0.0287246\nD_CD_83_NDK_ACC_M27323,D_CD_84_84ZR085_ACC_U88822,0.0491974`
 	],
 	"tools/tree/examples/2.0.4.html": ["11 directories, 8 files", "└── web_user", "├── stderr -> /dev/tty1"],
-    "tools/vidjil-algo/release-2025.12.html": [
+    "tools/vidjil-algo/examples/release-2025.12.html": [
 		"junction detected in 14 reads (100%)",
 		"found 14 windows in 14 reads (100% of 14 reads)"
 	],
