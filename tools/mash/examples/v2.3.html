@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mash WASM Demo</title>
+    <style>
+        body { font-family: sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; }
+        pre { background: #f4f4f4; padding: 1em; overflow-x: auto; white-space: pre-wrap; }
+        button { padding: 0.5em 1em; cursor: pointer; font-size: 1em; }
+        #status { color: #666; font-style: italic; }
+        .error { color: red; }
+        .step { margin: 1.5em 0; padding: 1em; border: 1px solid #ddd; border-radius: 6px; }
+        .step h3 { margin-top: 0; }
+        code { background: #eee; padding: 0.15em 0.4em; border-radius: 3px; }
+        input[type="file"] { margin: 0.5em 0; }
+    </style>
+</head>
+<body>
+    <h2>Mash v2.3 — WebAssembly Demo</h2>
+    <p>Estimate genome distances entirely in the browser using <a href="https://github.com/marbl/Mash">Mash</a> compiled to WebAssembly.</p>
+    <p id="status">Loading Mash WASM module...</p>
+
+    <div id="app" style="display:none;">
+
+        <div class="step">
+            <h3>Step 1: Load FASTA files</h3>
+            <p>Select two or more genome FASTA files (<code>.fna</code>, <code>.fa</code>, <code>.fasta</code>):</p>
+            <input type="file" id="fileInput" multiple accept=".fna,.fa,.fasta,.gz">
+            <p id="fileList"></p>
+            <p><em>Or click "Run Demo" below to use built-in example sequences.</em></p>
+        </div>
+
+        <div class="step">
+            <h3>Step 2: Sketch &amp; compute distances</h3>
+            <p>Sketches each genome, then computes pairwise Mash distances.</p>
+            <button id="btnRun" onclick="runSketchDist(false)">Run with uploaded files</button>
+            <button id="btnDemo" onclick="runSketchDist(true)">Run Demo</button>
+            <button onclick="runVersion()">mash --version</button>
+        </div>
+
+        <h3>Output:</h3>
+        <pre id="output">Select files and click Run, or click Run Demo.</pre>
+    </div>
+
+    <script src="../build/mash.js"></script>
+    <script>
+        const mashFactory = Module;
+        const outputEl = document.getElementById('output');
+        const statusEl = document.getElementById('status');
+        const appEl = document.getElementById('app');
+        const fileInput = document.getElementById('fileInput');
+        const fileListEl = document.getElementById('fileList');
+
+        let uploadedFiles = [];
+
+        if (typeof mashFactory === 'function') {
+            statusEl.textContent = 'Mash module ready.';
+            appEl.style.display = 'block';
+        } else {
+            statusEl.textContent = 'Error: Could not load Mash module.';
+            statusEl.className = 'error';
+        }
+
+        fileInput.addEventListener('change', async (e) => {
+            uploadedFiles = [];
+            for (const file of e.target.files) {
+                const data = new Uint8Array(await file.arrayBuffer());
+                uploadedFiles.push({ name: file.name, data });
+            }
+            fileListEl.textContent = uploadedFiles.length
+                ? `Loaded: ${uploadedFiles.map(f => f.name).join(', ')}`
+                : '';
+        });
+
+        async function createMash() {
+            let stdout = '';
+            let stderr = '';
+            const m = await mashFactory({
+                print: (text) => { stdout += text + '\n'; },
+                printErr: (text) => { stderr += text + '\n'; },
+                noInitialRun: true,
+            });
+            return {
+                module: m,
+                run(args) {
+                    stdout = '';
+                    stderr = '';
+                    try { m.callMain(args); } catch(e) {}
+                    return { stdout, stderr };
+                },
+                writeFile(path, data) {
+                    try { m.FS.mkdirTree(path.substring(0, path.lastIndexOf('/'))); } catch(e) {}
+                    m.FS.writeFile(path, data);
+                },
+            };
+        }
+
+        async function runVersion() {
+            outputEl.textContent = 'Running mash --version...';
+            const mash = await createMash();
+            const r = mash.run(['--version']);
+            outputEl.textContent = 'Mash version: ' + (r.stdout.trim() || r.stderr.trim());
+        }
+
+        async function runSketchDist(demo) {
+            let files;
+            if (demo) {
+                // Generate 3 demo genomes with varying similarity
+                const base = 'ATCGATCGATCGATCG'.repeat(500);
+                const baseArr = base.split('');
+                // genome2: ~20% diverged
+                const g2 = [...baseArr];
+                for (let i = 0; i < g2.length; i += 5) g2[i] = 'G';
+                // genome3: ~40% diverged
+                const g3 = [...baseArr];
+                for (let i = 0; i < g3.length; i += 3) g3[i] = 'T';
+
+                const enc = (s) => new TextEncoder().encode(s);
+                files = [
+                    { name: 'genome1.fa', data: enc('>genome1 E.coli-like\n' + base + '\n') },
+                    { name: 'genome2.fa', data: enc('>genome2 similar\n' + g2.join('') + '\n') },
+                    { name: 'genome3.fa', data: enc('>genome3 diverged\n' + g3.join('') + '\n') },
+                ];
+            } else {
+                files = uploadedFiles;
+            }
+
+            if (files.length < 2) {
+                outputEl.textContent = 'Please select at least 2 FASTA files (or click Run Demo).';
+                return;
+            }
+
+            outputEl.textContent = 'Working...\n';
+            let output = '';
+
+            try {
+                const mash = await createMash();
+                const paths = [];
+
+                // Write files to virtual filesystem
+                for (const f of files) {
+                    const path = '/data/' + f.name;
+                    mash.writeFile(path, f.data);
+                    paths.push(path);
+                }
+
+                // Step 1: Sketch each genome
+                output += '=== mash sketch ===\n';
+                for (const p of paths) {
+                    const r = mash.run(['sketch', p, '-o', p + '.msh']);
+                    output += (r.stderr || r.stdout);
+                }
+                output += '\n';
+
+                // Step 2: Pairwise distances
+                output += '=== mash dist (pairwise) ===\n';
+                output += 'Reference\tQuery\tDistance\tP-value\tShared-hashes\n';
+                for (let i = 0; i < paths.length; i++) {
+                    for (let j = i + 1; j < paths.length; j++) {
+                        const r = mash.run(['dist', paths[i] + '.msh', paths[j]]);
+                        output += r.stdout;
+                    }
+                }
+                output += '\n';
+
+                // Step 3: Triangle matrix if 3+ genomes
+                if (paths.length >= 3) {
+                    // Sketch all into combined file
+                    mash.run(['sketch', '-o', '/data/all', ...paths]);
+                    const r = mash.run(['triangle', '/data/all.msh']);
+                    output += '=== mash triangle ===\n';
+                    output += r.stdout;
+                }
+
+                outputEl.textContent = output;
+            } catch (e) {
+                outputEl.textContent = output + '\nError: ' + e.message;
+            }
+        }
+    </script>
+</body>
+</html>
