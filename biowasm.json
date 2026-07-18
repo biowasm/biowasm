@@ -152,10 +152,15 @@
 			"name": "fasttree",
 			"programs": ["fasttree"],
 			"description": "Build phylogenetic trees from multiple sequence alignments",
+			"files": ["mjs", "wasm"],
 			"versions": [
 				{
 					"version": "2.1.11",
 					"branch": "main"
+				},
+				{
+					"version": "2.2.0",
+					"branch": "v2.2.0"
 				}
 			]
 		},

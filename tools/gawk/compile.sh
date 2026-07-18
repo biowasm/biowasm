@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# gawk ships pre-generated autotools files. `git checkout` skews their mtimes so the build
+# thinks they're stale and re-runs automake, which then reports a version mismatch. Touch the
+# generated files so they're newer than their sources and regeneration is skipped.
+touch aclocal.m4 configure config.h.in
+find . -name "Makefile.in" -exec touch {} +
+
 # Disable NLS to avoid memory out of bounds error (https://github.com/emscripten-core/emscripten/issues/11621#issuecomment-691807912)
 emconfigure ./configure \
 	--disable-nls \

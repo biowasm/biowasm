@@ -85,8 +85,11 @@ def compile(tool, versions=[], level=0):
 		print(f"No valid versions found in biowasm.json for {tool}. Make sure versions don't start with 'v'.")
 		exit(1)
 
-	# Cleanup to avoid "Your local changes to the following files would be overwritten by checkout"
-	exec(f"cd {tool_git_path} && git stash && cd -")
+	# Cleanup to avoid "Your local changes to the following files would be overwritten by checkout".
+	# Guard: only `git stash` if tool_git_path is its OWN git repo (an initialized submodule).
+	# For a plain directory (e.g. fasttree's embedded source), an unguarded `git stash` would
+	# escape UP to the parent biowasm repo and stash the user's uncommitted working changes.
+	exec(f'cd {tool_git_path} && if [ "$(git rev-parse --show-toplevel 2>/dev/null)" = "$(pwd -P)" ]; then git stash; else echo "Skipping git stash: not an initialized submodule"; fi; cd - >/dev/null')
 	# Init repo
 	exec(f"git submodule update --init --recursive {tool_git_path} && git submodule status {tool_git_path}")
 
