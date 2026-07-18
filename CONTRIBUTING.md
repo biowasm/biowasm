@@ -2,19 +2,19 @@
 
 ## Development Setup
 
-Tools listed in biowasm were compiled to WebAssembly using `Emscripten 2.0.25`. Here is how to set up your dev environment:
+Tools listed in biowasm were compiled to WebAssembly using `Emscripten 6.0.3`. Here is how to set up your dev environment:
 
 ```bash
 # Fetch Emscripten docker image
-docker build -t biowasm-dev -f Dockerfile-dev .
+docker build -t biowasm-v4 -f Dockerfile-dev .
 
 # Create the container and mount ~/wasm to /src in the container
 docker run \
     -it -d \
     -p 80:80 \
-    --name wasm \
-    --volume ~/wasm:/src \
-    biowasm-dev
+    --name biowasm-v4 \
+    --volume /Users/robert/Documents/dev/:/src \
+    biowasm-v4
 ```
 
 This creates a simple CORS enabled development server serving the local `~/wasm` directory, 
@@ -86,3 +86,8 @@ $ gh run list --limit 200 --repo biowasm/biowasm --json databaseId  -q '.[].data
     "repos/$(gh repo view --json nameWithOwner -q .nameWithOwner)/actions/runs/ID" \
     -X DELETE
 ```
+
+
+# To get a tool's repo
+cd biowasm/tools/bla/src/
+git submodule update --init .

@@ -27,6 +27,18 @@ cd $DIR_TOOL
 mkdir -p build/
 cd src/
 
+# Safety guard: the commands below (git reset --hard / git clean -xdf) are destructive.
+# If src/ is not itself an initialized git repo (e.g. an uninitialized submodule), git
+# walks UP to the parent biowasm repo and these commands would wipe the whole working
+# tree. Refuse to continue unless src/ is its own git toplevel.
+SRC_TOPLEVEL=$(git rev-parse --show-toplevel 2>/dev/null)
+if [[ "$SRC_TOPLEVEL" != "$(pwd -P)" ]]; then
+	echo "❌ ERROR: $(pwd -P) is not an initialized submodule (git toplevel is '$SRC_TOPLEVEL')."
+	echo "   Refusing to run 'git reset --hard' here — it would reset the parent biowasm repo."
+	echo "   Fix: git submodule update --init --recursive tools/$TOOL/src"
+	exit 1
+fi
+
 # Go to branch/tag of interest (clean up previous iterations)
 log "Resetting code changes..."
 git reset --hard --recurse-submodules
