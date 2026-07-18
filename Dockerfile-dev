@@ -1,6 +1,9 @@
 FROM emscripten/emsdk:6.0.3 AS wasm-builder-emscripten6
 
-RUN apt-get update && apt-get install -y autoconf liblzma-dev
+RUN apt-get update && apt-get install -y \
+    autoconf automake libtool pkg-config \
+    liblzma-dev libbz2-dev libpng-dev zlib1g-dev \
+    rsync wget
 
 COPY ./bin/test_server.py /usr/src/
 

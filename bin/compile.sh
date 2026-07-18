@@ -39,6 +39,19 @@ if [[ "$SRC_TOPLEVEL" != "$(pwd -P)" ]]; then
 	exit 1
 fi
 
+# Remember where the submodule was so we can restore it after a successful build
+# (so the parent repo shows no submodule changes to commit). Detached tags are the
+# common case (rev-parse), but keep the branch name if we're on one.
+ORIG_REF=$(git symbolic-ref -q --short HEAD || git rev-parse HEAD)
+
+# Safety: if the submodule has pre-existing uncommitted changes, stash them (with
+# untracked) instead of silently discarding them in the reset below. Recover with
+# `git -C <src> stash list`. Rarely triggers — compile.py checks out clean first.
+if [[ -n "$(git status --porcelain)" ]]; then
+	git stash push --include-untracked -m "biowasm: pre-compile $(date +%s)" >/dev/null 2>&1 \
+		&& log "Stashed pre-existing changes (recover with 'git stash list' in the submodule)."
+fi
+
 # Go to branch/tag of interest (clean up previous iterations)
 log "Resetting code changes..."
 git reset --hard --recurse-submodules
@@ -63,6 +76,7 @@ log "Compiling..."
 # Expose the branch/tag to compile.sh so tools can handle per-version quirks inline
 export BRANCH
 ../compile.sh
+COMPILE_RC=$?
 
 # Finalize glue code (there can be more than one program per tool, e.g. coreutils has many utilities).
 log "Finalizing glue code..."
@@ -73,3 +87,21 @@ do
 	cat "$glueCode" >> "${glueCode}.tmp"
 	mv "${glueCode}.tmp" "$glueCode"
 done
+
+
+# ------------------------------------------------------------------------------
+# Restore the submodule to its original clean state (on success)
+# ------------------------------------------------------------------------------
+# The build outputs already live in ../build/ (outside src/), so we can safely
+# return the submodule to $ORIG_REF with a clean working tree — leaving the parent
+# repo with no submodule changes to commit. Everything discarded here (the applied
+# patch, downloaded sources, object files) is regenerated on the next build. Only
+# runs on a successful compile, so a failed build's state is kept for debugging.
+if [[ "${COMPILE_RC:-1}" -eq 0 ]] && compgen -G "../build/*" > /dev/null 2>&1; then
+	log "Restoring submodule to '$ORIG_REF' (clean)..."
+	git checkout --force --recurse-submodules "$ORIG_REF" > /dev/null 2>&1 || log "warning: could not restore to '$ORIG_REF'"
+	git reset --hard --recurse-submodules > /dev/null 2>&1
+	git clean -xdf > /dev/null 2>&1
+else
+	log "Skipping submodule restore (compile rc=${COMPILE_RC:-?}); leaving state for debugging."
+fi
