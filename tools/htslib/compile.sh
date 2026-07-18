@@ -16,9 +16,15 @@ cd -
 CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1 ${CFLAGS_LZMA}"
 LDFLAGS="$LDFLAGS_LZMA"
 make clean
-autoheader
-autoconf
-emconfigure ./configure CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
+# Use autoreconf -i so config.guess/config.sub aux files are installed (autoheader/autoconf no longer provides them).
+# Use --disable-libcurl because libcurl isn't usable in wasm and would otherwise try (and fail) to compile hfile_libcurl.c.
+autoreconf -i
+
+# Always pass an explicit --host (the build machine's own triple). Newer htslib
+# auto-detects it via AC_CANONICAL_HOST, but 1.10's configure.ac otherwise defaults
+# host_alias to "unknown-$(uname -s)" (e.g. "unknown-Linux"), which fails config.sub.
+# Passing --host is harmless for the newer versions and fixes 1.10.
+emconfigure ./configure --disable-libcurl --host="$(gcc -dumpmachine)" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
 
 # Build htslib tools
 TOOLS=("tabix" "htsfile" "bgzip")

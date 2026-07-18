@@ -60,6 +60,8 @@ fi
 # ------------------------------------------------------------------------------
 
 log "Compiling..."
+# Expose the branch/tag to compile.sh so tools can handle per-version quirks inline
+export BRANCH
 ../compile.sh
 
 # Finalize glue code (there can be more than one program per tool, e.g. coreutils has many utilities).

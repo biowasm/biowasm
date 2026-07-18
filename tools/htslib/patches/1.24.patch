@@ -1,9 +1,13 @@
 diff --git a/Makefile b/Makefile
-index 3e95a0be..eb312c36 100644
+index 95c58501..b2914828 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -497,13 +497,13 @@ htscodecs/htscodecs/rANS_static32x16pr_avx512.o htscodecs/htscodecs/rANS_static3
+@@ -566,16 +566,16 @@ htscodecs/htscodecs/rANS_static32x16pr_avx512.o htscodecs/htscodecs/rANS_static3
  htscodecs/htscodecs/rANS_static32x16pr_sse4.o htscodecs/htscodecs/rANS_static32x16pr_sse4.pico: TARGET_CFLAGS = $(HTS_CFLAGS_SSE4)
+ 
+ annot-tsv: annot-tsv.o libhts.a
+-	$(CC) $(LDFLAGS) -o $@ annot-tsv.o libhts.a $(LIBS) -lpthread
++	$(CC) $(LDFLAGS) -o ../build/$@.mjs annot-tsv.o libhts.a $(LIBS) -lpthread
  
  bgzip: bgzip.o libhts.a
 -	$(CC) $(LDFLAGS) -o $@ bgzip.o libhts.a $(LIBS) -lpthread
@@ -17,10 +21,10 @@ index 3e95a0be..eb312c36 100644
 -	$(CC) $(LDFLAGS) -o $@ tabix.o libhts.a $(LIBS) -lpthread
 +	$(CC) $(LDFLAGS) -o ../build/$@.mjs tabix.o libhts.a $(LIBS) -lpthread
  
- bgzip.o: bgzip.c config.h $(htslib_bgzf_h) $(htslib_hts_h) $(htslib_hfile_h)
- htsfile.o: htsfile.c config.h $(htslib_hfile_h) $(htslib_hts_h) $(htslib_sam_h) $(htslib_vcf_h)
+ ref_cache/ref-cache: $(REF_CACHE_OBJS)
+ 	$(CC) $(LDFLAGS) $(REF_CACHE_EXTRA_LD_FLAGS) -o $@ $(REF_CACHE_OBJS) -lcurl
 diff --git a/version.sh b/version.sh
-index 65d1ccae..92a40479 100755
+index 31362813..243c05f8 100755
 --- a/version.sh
 +++ b/version.sh
 @@ -31,7 +31,7 @@ srcdir=${0%/version.sh}

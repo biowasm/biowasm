@@ -1,8 +1,8 @@
 diff --git a/Makefile b/Makefile
-index 01d8e02..6e99b20 100644
+index c7acbf9..af46a84 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -124,7 +124,7 @@ version.h:
+@@ -132,7 +132,7 @@ version.h:
  	echo '#define SAMTOOLS_CC "$(CC)"' >> $@
  	echo '#define SAMTOOLS_CPPFLAGS "$(CPPFLAGS)"' >> $@
  	echo '#define SAMTOOLS_CFLAGS "$(CFLAGS)"' >> $@
@@ -11,7 +11,7 @@ index 01d8e02..6e99b20 100644
  	echo '#define SAMTOOLS_HTSDIR "$(HTSDIR)"' >> $@
  	echo '#define SAMTOOLS_LIBS "$(LIBS)"' >> $@
  	echo '#define SAMTOOLS_CURSES_LIB "$(CURSES_LIB)"' >> $@
-@@ -142,7 +142,7 @@ LIBST_OBJS = sam_opts.o sam_utils.o bedidx.o bam.o
+@@ -150,7 +150,7 @@ LIBST_OBJS = sam_opts.o sam_utils.o bedidx.o bam.o
  
  
  samtools: $(AOBJS) $(LZ4OBJS) libst.a $(HTSLIB)
@@ -21,10 +21,10 @@ index 01d8e02..6e99b20 100644
  # For building samtools and its test suite only: NOT to be installed.
  libst.a: $(LIBST_OBJS)
 diff --git a/bam_sort.c b/bam_sort.c
-index 875e29c..3d6cb8c 100644
+index 64e643f..148ddfe 100644
 --- a/bam_sort.c
 +++ b/bam_sort.c
-@@ -2622,10 +2622,9 @@ static int sort_blocks(size_t k, bam1_tag *buf, const sam_hdr_t *h,
+@@ -3181,10 +3181,9 @@ static int sort_blocks(size_t k, bam1_tag *buf, const sam_hdr_t *h,
          in_mem[i].from = pos;
          in_mem[i].to = pos + w[i].buf_len;
          pos += w[i].buf_len; rest -= w[i].buf_len;
@@ -37,11 +37,11 @@ index 875e29c..3d6cb8c 100644
              errno = w[i].error;
              print_error_errno("sort", "failed to sort block %d", i);
 diff --git a/version.sh b/version.sh
-index 1ac9413..15a0d2b 100755
+index 10e4cb7..cb10c75 100755
 --- a/version.sh
 +++ b/version.sh
-@@ -30,7 +30,7 @@ VERSION=1.17
- if [ -e .git ]
+@@ -30,7 +30,7 @@ VERSION=1.24
+ if [ -e .git -a "x`which git`" != "x" ]
  then
      # If we ever get to 10.x this will need to be more liberal
 -    VERSION=`git describe --match '[0-9].[0-9]*' --dirty --always`

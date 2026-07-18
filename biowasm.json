@@ -209,6 +209,7 @@
 			"name": "htslib",
 			"programs": ["tabix", "htsfile", "bgzip"],
 			"description": "Bioinformatics file format utilities: tabix, htsfile, and bgzip",
+			"files": ["mjs", "wasm"],
 			"versions": [
 				{
 					"version": "1.10",
@@ -221,6 +222,10 @@
 				{
 					"version": "1.21",
 					"branch": "1.21"
+				},
+				{
+					"version": "1.24",
+					"branch": "1.24"
 				}
 			]
 		},
@@ -386,7 +391,7 @@
 			"name": "samtools",
 			"programs": ["samtools"],
 			"description": "Parse .sam / .bam read alignment files",
-			"files": ["js", "wasm", "data"],
+			"files": ["mjs", "wasm", "data"],
 			"versions": [
 				{
 					"version": "1.10",
@@ -402,6 +407,11 @@
 					"version": "1.21",
 					"branch": "1.21",
 					"dependencies": [{ "name": "htslib", "version": "1.21" }]
+				},
+				{
+					"version": "1.24",
+					"branch": "1.24",
+					"dependencies": [{ "name": "htslib", "version": "1.24" }]
 				}
 			]
 		},
@@ -431,6 +441,7 @@
 			"name": "seqtk",
 			"programs": ["seqtk"],
 			"description": "Parse and wrangle .fasta / .fastq files",
+			"files": ["mjs", "wasm"],
 			"versions": [
 				{
 					"version": "1.2",
@@ -443,6 +454,10 @@
 				{
 					"version": "1.4",
 					"branch": "v1.4"
+				},
+				{
+					"version": "1.5",
+					"branch": "v1.5"
 				}
 			]
 		},
