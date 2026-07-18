@@ -1,4 +1,4 @@
-FROM emscripten/emsdk:2.0.25 as wasm-builder
+FROM emscripten/emsdk:6.0.3 AS wasm-builder-emscripten6
 
 RUN apt-get update && apt-get install -y autoconf liblzma-dev
 
