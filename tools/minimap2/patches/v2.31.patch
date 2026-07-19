@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 4118616..889a516 100644
+index 6d48e6f..5f1e077 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -1,5 +1,5 @@
@@ -8,8 +8,8 @@ index 4118616..889a516 100644
 +CPPFLAGS=	-DHAVE_KALLOC -s USE_ZLIB=1
  INCLUDES=
  OBJS=		kthread.o kalloc.o misc.o bseq.o sketch.o sdust.o options.o index.o \
- 			lchain.o align.o hit.o seed.o map.o format.o pe.o esterr.o splitidx.o \
-@@ -44,8 +44,8 @@ all:$(PROG)
+ 			lchain.o align.o hit.o seed.o jump.o map.o format.o pe.o esterr.o splitidx.o \
+@@ -48,8 +48,8 @@ all:$(PROG)
  
  extra:all $(PROG_EXTRA)
  
@@ -20,7 +20,7 @@ index 4118616..889a516 100644
  
  minimap2-lite:example.o libminimap2.a
  		$(CC) $(CFLAGS) $< -o $@ -L. -lminimap2 $(LIBS)
-@@ -64,25 +64,25 @@ ksw2_ll_sse.o:ksw2_ll_sse.c ksw2.h kalloc.h
+@@ -68,25 +68,25 @@ ksw2_ll_sse.o:ksw2_ll_sse.c ksw2.h kalloc.h
  endif
  
  ksw2_extz2_sse41.o:ksw2_extz2_sse.c ksw2.h kalloc.h
@@ -29,7 +29,7 @@ index 4118616..889a516 100644
  
  ksw2_extz2_sse2.o:ksw2_extz2_sse.c ksw2.h kalloc.h
 -		$(CC) -c $(CFLAGS) -msse2 -mno-sse4.1 $(CPPFLAGS) -DKSW_CPU_DISPATCH -DKSW_SSE2_ONLY $(INCLUDES) $< -o $@
-+		$(CC) -c $(CFLAGS) -msse2 -mno-sse4.1 $(CPPFLAGS) -DKSW_SSE2_ONLY $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -msse2 $(CPPFLAGS) -DKSW_SSE2_ONLY $(INCLUDES) $< -o $@
  
  ksw2_extd2_sse41.o:ksw2_extd2_sse.c ksw2.h kalloc.h
 -		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) -DKSW_CPU_DISPATCH $(INCLUDES) $< -o $@
@@ -37,7 +37,7 @@ index 4118616..889a516 100644
  
  ksw2_extd2_sse2.o:ksw2_extd2_sse.c ksw2.h kalloc.h
 -		$(CC) -c $(CFLAGS) -msse2 -mno-sse4.1 $(CPPFLAGS) -DKSW_CPU_DISPATCH -DKSW_SSE2_ONLY $(INCLUDES) $< -o $@
-+		$(CC) -c $(CFLAGS) -msse2 -mno-sse4.1 $(CPPFLAGS) -DKSW_SSE2_ONLY $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -msse2 $(CPPFLAGS) -DKSW_SSE2_ONLY $(INCLUDES) $< -o $@
  
  ksw2_exts2_sse41.o:ksw2_exts2_sse.c ksw2.h kalloc.h
 -		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) -DKSW_CPU_DISPATCH $(INCLUDES) $< -o $@
@@ -45,7 +45,7 @@ index 4118616..889a516 100644
  
  ksw2_exts2_sse2.o:ksw2_exts2_sse.c ksw2.h kalloc.h
 -		$(CC) -c $(CFLAGS) -msse2 -mno-sse4.1 $(CPPFLAGS) -DKSW_CPU_DISPATCH -DKSW_SSE2_ONLY $(INCLUDES) $< -o $@
-+		$(CC) -c $(CFLAGS) -msse2 -mno-sse4.1 $(CPPFLAGS) -DKSW_SSE2_ONLY $(INCLUDES) $< -o $@
++		$(CC) -c $(CFLAGS) -msse2 $(CPPFLAGS) -DKSW_SSE2_ONLY $(INCLUDES) $< -o $@
  
  ksw2_dispatch.o:ksw2_dispatch.c ksw2.h
 -		$(CC) -c $(CFLAGS) -msse4.1 $(CPPFLAGS) -DKSW_CPU_DISPATCH $(INCLUDES) $< -o $@
@@ -54,16 +54,19 @@ index 4118616..889a516 100644
  # NEON-specific targets on ARM
  
 diff --git a/Makefile.simde b/Makefile.simde
-index ae7ff4a..9b012ac 100644
+index ae7ff4a..17ff42a 100644
 --- a/Makefile.simde
 +++ b/Makefile.simde
-@@ -1,5 +1,5 @@
+@@ -1,7 +1,7 @@
  CFLAGS=		-g -Wall -O2 -Wc++-compat #-Wextra
 -CPPFLAGS=	-DHAVE_KALLOC -DUSE_SIMDE -DSIMDE_ENABLE_NATIVE_ALIASES
 +CPPFLAGS=	-DHAVE_KALLOC -DUSE_SIMDE -DSIMDE_ENABLE_NATIVE_ALIASES -s USE_ZLIB=1
  INCLUDES=	-Ilib/simde
- OBJS=		kthread.o kalloc.o misc.o bseq.o sketch.o sdust.o options.o index.o lchain.o align.o hit.o map.o format.o pe.o seed.o esterr.o splitidx.o \
+-OBJS=		kthread.o kalloc.o misc.o bseq.o sketch.o sdust.o options.o index.o lchain.o align.o hit.o map.o format.o pe.o seed.o esterr.o splitidx.o \
++OBJS=		kthread.o kalloc.o misc.o bseq.o sketch.o sdust.o options.o index.o lchain.o align.o hit.o map.o format.o pe.o seed.o jump.o esterr.o splitidx.o \
  			ksw2_extz2_simde.o ksw2_extd2_simde.o ksw2_exts2_simde.o ksw2_ll_simde.o
+ PROG=		minimap2
+ PROG_EXTRA=	sdust minimap2-lite
 @@ -36,8 +36,8 @@ all:$(PROG)
  
  extra:all $(PROG_EXTRA)
@@ -97,21 +100,21 @@ index ae7ff4a..9b012ac 100644
  # other non-file targets
  
 diff --git a/index.c b/index.c
-index 0d8a2ae..c8559b3 100644
+index 9685006..1abea24 100644
 --- a/index.c
 +++ b/index.c
-@@ -117,8 +117,8 @@ void mm_idx_stat(const mm_idx_t *mi)
+@@ -129,8 +129,8 @@ void mm_idx_stat(const mm_idx_t *mi)
  				if (kh_key(h, k)&1) ++n1;
  			}
  	}
--	fprintf(stderr, "[M::%s::%.3f*%.2f] distinct minimizers: %d (%.2f%% are singletons); average occurrences: %.3lf; average spacing: %.3lf; total length: %ld\n",
--			__func__, realtime() - mm_realtime0, cputime() / (realtime() - mm_realtime0), n, 100.0*n1/n, (double)sum / n, (double)len / sum, (long)len);
-+	fprintf(stderr, "[M::%s::%.3f] distinct minimizers: %d (%.2f%% are singletons); average occurrences: %.3lf; average spacing: %.3lf; total length: %ld\n",
-+			__func__, realtime() - mm_realtime0, n, 100.0*n1/n, (double)sum / n, (double)len / sum, (long)len);
+-	fprintf(stderr, "[M::%s::%.3f*%.2f] distinct minimizers: %ld (%.2f%% are singletons); average occurrences: %.3lf; average spacing: %.3lf; total length: %ld\n",
+-			__func__, realtime() - mm_realtime0, cputime() / (realtime() - mm_realtime0), (long)n, 100.0*n1/n, (double)sum / n, (double)len / sum, (long)len);
++	fprintf(stderr, "[M::%s::%.3f] distinct minimizers: %ld (%.2f%% are singletons); average occurrences: %.3lf; average spacing: %.3lf; total length: %ld\n",
++			__func__, realtime() - mm_realtime0, (long)n, 100.0*n1/n, (double)sum / n, (double)len / sum, (long)len);
  }
  
  int mm_idx_index_name(mm_idx_t *mi)
-@@ -385,11 +385,11 @@ mm_idx_t *mm_idx_gen(mm_bseq_file_t *fp, int w, int k, int b, int flag, int mini
+@@ -398,11 +398,11 @@ mm_idx_t *mm_idx_gen(mm_bseq_file_t *fp, int w, int k, int b, int flag, int mini
  
  	kt_pipeline(n_threads < 3? n_threads : 3, worker_pipeline, &pl, 3);
  	if (mm_verbose >= 3)
@@ -198,32 +201,30 @@ index ffdf940..51384d0 100644
  
  	pthread_mutex_destroy(&aux.mutex);
 diff --git a/main.c b/main.c
-index 3c62576..884ffbe 100644
+index 3db0ade..42bf0e5 100644
 --- a/main.c
 +++ b/main.c
-@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
+@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
  	ketopt_t o = KETOPT_INIT;
  	mm_mapopt_t opt;
  	mm_idxopt_t ipt;
 -	int i, c, n_threads = 3, n_parts, old_best_n = -1;
 +	int i, c, n_threads = 1, n_parts, old_best_n = -1;
- 	char *fnw = 0, *rg = 0, *junc_bed = 0, *s, *alt_list = 0;
+ 	float spsc_scale = 0.7f;
+ 	char *fnw = 0, *rg = 0, *fn_bed_junc = 0, *fn_bed_jump = 0, *fn_bed_pass1 = 0, *fn_spsc = 0, *s, *alt_list = 0;
  	FILE *fp_help = stderr;
- 	mm_idx_reader_t *idx_rdr;
-@@ -294,6 +294,12 @@ int main(int argc, char *argv[])
- 			if (*s == ',') opt.e2 = strtol(s + 1, &s, 10);
- 		}
+@@ -422,6 +422,10 @@ int main(int argc, char *argv[])
+ 		fprintf(stderr, "[ERROR] incorrect input: in the sr mode, please specify no more than two query files.\n");
+ 		return 1;
  	}
-+
-+	if(n_threads > 1) {
++	if (n_threads > 1) {
 +		fprintf(stderr, "[ERROR]\033[1;31m Multithreading not supported in this environment.\033[0m\n");
 +		return 1;
 +	}
-+
- 	if ((opt.flag & MM_F_SPLICE) && (opt.flag & MM_F_FRAG_MODE)) {
- 		fprintf(stderr, "[ERROR]\033[1;31m --splice and --frag should not be specified at the same time.\033[0m\n");
- 		return 1;
-@@ -404,8 +410,8 @@ int main(int argc, char *argv[])
+ 	idx_rdr = mm_idx_reader_open(argv[o.ind], &ipt, fnw);
+ 	if (idx_rdr == 0) {
+ 		fprintf(stderr, "[ERROR] failed to open file '%s': %s\n", argv[o.ind], strerror(errno));
+@@ -460,8 +464,8 @@ int main(int argc, char *argv[])
  			}
  		}
  		if (mm_verbose >= 3)
@@ -233,8 +234,8 @@ index 3c62576..884ffbe 100644
 +					__func__, realtime() - mm_realtime0, mi->n_seq);
  		if (argc != o.ind + 1) mm_mapopt_update(&opt, mi);
  		if (mm_verbose >= 3) mm_idx_stat(mi);
- 		if (junc_bed) mm_idx_bed_read(mi, junc_bed, 1);
-@@ -445,7 +451,7 @@ int main(int argc, char *argv[])
+ 		if (fn_bed_junc) {
+@@ -520,7 +524,7 @@ int main(int argc, char *argv[])
  		fprintf(stderr, "[M::%s] CMD:", __func__);
  		for (i = 0; i < argc; ++i)
  			fprintf(stderr, " %s", argv[i]);
@@ -244,10 +245,10 @@ index 3c62576..884ffbe 100644
  	return 0;
  }
 diff --git a/map.c b/map.c
-index 9c4ad64..a13706a 100644
+index 54f78a4..226a2aa 100644
 --- a/map.c
 +++ b/map.c
-@@ -608,7 +608,7 @@ static void *worker_pipeline(void *shared, int step, void *in)
+@@ -636,7 +636,7 @@ static void *worker_pipeline(void *shared, int step, void *in)
  		free(s->reg); free(s->n_reg); free(s->seq); // seg_off, n_seg, rep_len and frag_gap were allocated with reg; no memory leak here
  		km_destroy(km);
  		if (mm_verbose >= 3)
@@ -257,12 +258,12 @@ index 9c4ad64..a13706a 100644
  	}
      return 0;
 diff --git a/options.c b/options.c
-index 97347be..31fc8b4 100644
+index b67cd06..65f7a8d 100644
 --- a/options.c
 +++ b/options.c
-@@ -72,7 +72,7 @@ void mm_mapopt_update(mm_mapopt_t *opt, const mm_idx_t *mi)
- 			opt->mid_occ = opt->max_mid_occ;
+@@ -79,7 +79,7 @@ void mm_mapopt_update(mm_mapopt_t *opt, const mm_idx_t *mi)
  	}
+ 	if (opt->bw_long < opt->bw) opt->bw_long = opt->bw;
  	if (mm_verbose >= 3)
 -		fprintf(stderr, "[M::%s::%.3f*%.2f] mid_occ = %d\n", __func__, realtime() - mm_realtime0, cputime() / (realtime() - mm_realtime0), opt->mid_occ);
 +		fprintf(stderr, "[M::%s::%.3f] mid_occ = %d\n", __func__, realtime() - mm_realtime0, opt->mid_occ);

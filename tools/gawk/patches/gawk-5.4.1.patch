@@ -1,11 +1,11 @@
 diff --git a/main.c b/main.c
-index 4f239dfc..60fed9c9 100644
+index d8f7750d1..4933f6755 100644
 --- a/main.c
 +++ b/main.c
-@@ -261,11 +261,6 @@ main(int argc, char **argv)
- #endif
+@@ -254,11 +254,6 @@ main(int argc, char **argv)
  	set_locale_stuff();
  
+ 	(void) signal(SIGSEGV, catchsig);
 -	(void) signal(SIGFPE, catchsig);
 -#ifdef SIGBUS
 -	(void) signal(SIGBUS, catchsig);

@@ -59,7 +59,7 @@ def get_file_contents(path):
 	if path.endswith(".wasm") or path.endswith(".data"):
 		with open(path, "rb") as f:
 			return base64.b64encode(f.read()).decode("utf-8"), True
-	elif path.endswith(".js"):
+	elif path.endswith(".js") or path.endswith(".mjs"):
 		with open(path, "r") as f:
 			return f.read(), False
 	else:

@@ -1,8 +1,8 @@
 diff --git a/Makefile b/Makefile
-index b59428a..76ef022 100644
+index 8ce191c2..f5cf4930 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -111,7 +111,7 @@ PACKAGE_VERSION = 1.10
+@@ -117,7 +117,7 @@ PACKAGE_VERSION = 1.24
  # $(shell), :=, etc are GNU Make-specific.  If you don't have GNU Make,
  # comment out this conditional.
  ifneq "$(wildcard .git)" ""
@@ -11,33 +11,20 @@ index b59428a..76ef022 100644
  DOC_VERSION :=  $(shell git describe --always)+
  DOC_DATE := $(shell date +'%Y-%m-%d %R %Z')
  
-@@ -207,7 +207,7 @@ test check: test-no-plugins
+@@ -229,7 +229,7 @@ test check: test-no-plugins
  endif  # PLUGINS_ENABLED
  
  bcftools: $(OBJS) $(HTSLIB)
--	$(CC) $(DYNAMIC_FLAGS) -pthread $(ALL_LDFLAGS) -o $@ $(OBJS) $(HTSLIB_LIB) -lm $(ALL_LIBS) $(GSL_LIBS) $(PERL_LIBS)
+-	$(CC) $(DYNAMIC_FLAGS) $(ALL_LDFLAGS) -o $@ $(OBJS) $(HTSLIB_LIB) -lm $(ALL_LIBS) $(GSL_LIBS) $(PERL_LIBS) -lpthread
 +	$(CC) $(DYNAMIC_FLAGS) $(ALL_LDFLAGS) -o ../build/$@.mjs $(OBJS) $(HTSLIB_LIB) -lm $(ALL_LIBS) $(GSL_LIBS) $(PERL_LIBS)
  
  plugins: $(PLUGINS)
  
-diff --git a/main.c b/main.c
-index 2e3e56d..f2bb02d 100644
---- a/main.c
-+++ b/main.c
-@@ -248,6 +248,8 @@ int _CRT_glob = 0;
- 
- int main(int argc, char *argv[])
- {
-+    int ret = 0; optind = 1; opterr = 1; optopt = 0;
-+
-     if (argc < 2) { usage(stderr); return 1; }
- 
-     if (strcmp(argv[1], "version") == 0 || strcmp(argv[1], "--version") == 0 || strcmp(argv[1], "-v") == 0) {
 diff --git a/version.sh b/version.sh
-index 8ccc300..dd047b6 100755
+index 72b2e5bc..fe48abed 100755
 --- a/version.sh
 +++ b/version.sh
-@@ -7,7 +7,7 @@ VERSION=1.10
+@@ -30,7 +30,7 @@ VERSION=1.24
  if [ -e .git ]
  then
      # If we ever get to 10.x this will need to be more liberal
