@@ -22,36 +22,36 @@ function log() {
 	echo -e "$BLUE> $1$OFF"
 }
 
-# Prepare build folder
+# Prepare build folder. Wipe it first so a failed build can't leave stale outputs behind
+# that compile.py would then copy and mistake for a successful (re)build of this version.
 cd $DIR_TOOL
+rm -rf build/
 mkdir -p build/
 cd src/
 
-# Safety guard: the commands below (git reset --hard / git clean -xdf) are destructive.
-# If src/ is not itself an initialized git repo (e.g. an uninitialized submodule), git
-# walks UP to the parent biowasm repo and these commands would wipe the whole working
-# tree. Refuse to continue unless src/ is its own git toplevel.
+# Safety guard: only operate if src/ is its own git toplevel. If src/ is not an initialized
+# git repo (e.g. an uninitialized submodule), git commands here would walk UP to the parent
+# biowasm repo and act on it instead. Refuse to continue in that case.
 SRC_TOPLEVEL=$(git rev-parse --show-toplevel 2>/dev/null)
 if [[ "$SRC_TOPLEVEL" != "$(pwd -P)" ]]; then
 	echo "❌ ERROR: $(pwd -P) is not an initialized submodule (git toplevel is '$SRC_TOPLEVEL')."
-	echo "   Refusing to run 'git reset --hard' here — it would reset the parent biowasm repo."
+	echo "   Refusing to run git commands here — they would act on the parent biowasm repo."
 	echo "   Fix: git submodule update --init --recursive tools/$TOOL/src"
 	exit 1
 fi
 
-# Safety: if the submodule has pre-existing uncommitted changes, stash them (with
-# untracked) instead of silently discarding them in the reset below. Recover with
-# `git -C <src> stash list`. Rarely triggers — compile.py checks out clean first.
+# Move any pre-existing changes out of the way so we can check out the target version.
+# We deliberately DO NOT use 'git reset --hard' or 'git clean -xdf' (with --recurse-submodules
+# or on an uninitialized submodule those have escaped to the parent repo and wiped the working
+# tree). Instead we stash (recoverable via 'git stash list' in the submodule) — never destroy.
 if [[ -n "$(git status --porcelain)" ]]; then
 	git stash push --include-untracked -m "biowasm: pre-compile $(date +%s)" >/dev/null 2>&1 \
 		&& log "Stashed pre-existing changes (recover with 'git stash list' in the submodule)."
 fi
 
-# Go to branch/tag of interest (clean up previous iterations)
-log "Resetting code changes..."
-git reset --hard --recurse-submodules
-git clean -xdf
-git checkout --recurse-submodules "$BRANCH"
+# Go to branch/tag of interest. The stash above already cleared the working tree.
+log "Checking out '$BRANCH'..."
+git checkout "$BRANCH"
 
 # Apply patches, if any
 patch_file=../patches/${BRANCH}.patch
@@ -82,6 +82,7 @@ do
 	mv "${glueCode}.tmp" "$glueCode"
 done
 
-# Note: restoring the submodule to a clean state (branch back + reset + clean) is done
-# once by compile.py after the WHOLE run — not here — so a dependency's build artifacts
-# (e.g. htslib's extracted xz/liblzma) survive for dependents built later in the same run.
+# Note: we intentionally do NOT restore the submodule to a clean state after building.
+# Doing so previously required 'git reset --hard' / 'git clean -xdf', which have escaped to
+# the parent repo and wiped changes. Submodules are left as-is; run 'git submodule update
+# --force <path>' manually if you want to discard build changes in a submodule.
