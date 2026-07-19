@@ -7,7 +7,7 @@ index 9d5dde25b9..4a7b1e3072 100644
  # to build on sundance: CC=gcc -mcpu=v9 -m64
  ifeq (${COPT},)
 -    COPT=-O -g
-+    COPT=-O2 -g -s USE_ZLIB=1  # zlibFace.c needs zlib.h
++    COPT=-O3 -g -s USE_ZLIB=1  # zlibFace.c needs zlib.h
  endif
  ifeq (${CFLAGS},)
      CFLAGS=

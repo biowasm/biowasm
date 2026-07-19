@@ -29,11 +29,15 @@
 			"name": "ASTER",
 			"programs": ["astral", "astral-pro", "wastral", "caster-site", "caster-pair"],
 			"description": "Accurate Species Tree EstimatoR",
-			"files": ["js", "wasm", "data"],
+			"files": ["mjs", "wasm", "data"],
 			"versions": [
 				{
 					"version": "1.23",
 					"branch": "v1.23"
+				},
+				{
+					"version": "1.25",
+					"branch": "v1.25"
 				}
 			]
 		},
@@ -53,12 +57,17 @@
 			"name": "bcftools",
 			"programs": ["bcftools"],
 			"description": "Parse .vcf / .bcf variant calling files",
-			"files": ["js", "wasm", "data"],
+			"files": ["mjs", "wasm", "data"],
 			"versions": [
 				{
 					"version": "1.10",
 					"branch": "1.10",
 					"dependencies": [{ "name": "htslib", "version": "1.10" }]
+				},
+				{
+					"version": "1.24",
+					"branch": "1.24",
+					"dependencies": [{ "name": "htslib", "version": "1.24" }]
 				}
 			]
 		},
@@ -66,7 +75,7 @@
 			"name": "bedtools",
 			"programs": ["bedtools"],
 			"description": "Parse .bed files and perform complex genome arithmetic",
-			"files": ["js", "wasm", "data"],
+			"files": ["mjs", "wasm", "data"],
 			"versions": [
 				{
 					"version": "2.29.2",
@@ -75,6 +84,10 @@
 				{
 					"version": "2.31.0",
 					"branch": "v2.31.0"
+				},
+				{
+					"version": "2.31.1",
+					"branch": "v2.31.1"
 				}
 			]
 		},
@@ -82,7 +95,7 @@
 			"name": "bhtsne",
 			"programs": ["bhtsne"],
 			"description": "Run the t-SNE dimensionality-reduction algorithm",
-			"files": ["js", "wasm", "data"],
+			"files": ["mjs", "wasm", "data"],
 			"versions": [
 				{
 					"version": "2016.08.22",
@@ -94,11 +107,15 @@
 			"name": "bowtie2",
 			"programs": ["bowtie2-align-s"],
 			"description": "Align sequencing reads (.fastq) files to a reference genome",
-			"files": ["js", "wasm", "data"],
+			"files": ["mjs", "wasm", "data"],
 			"versions": [
 				{
 					"version": "2.4.2",
 					"branch": "v2.4.2"
+				},
+				{
+					"version": "2.5.5",
+					"branch": "v2.5.5"
 				}
 			]
 		},
@@ -106,11 +123,15 @@
             "name": "cawlign",
             "programs": ["cawlign"],
             "description": "Align/map sequences in a FASTA file to a reference sequence in a codon-aware manner",
-            "files": ["js", "wasm", "data"],
+            "files": ["mjs", "wasm", "data"],
             "versions": [
                 {
                     "version": "0.1.0",
                     "branch": "v0.1.0"
+                },
+                {
+                    "version": "0.1.16",
+                    "branch": "0.1.16"
                 }
             ]
         },
@@ -122,6 +143,10 @@
 				{
 					"version": "8.32",
 					"branch": "v8.32"
+				},
+				{
+					"version": "9.11",
+					"branch": "v9.11"
 				}
 			]
 		},
@@ -129,11 +154,15 @@
 			"name": "fastp",
 			"programs": ["fastp"],
 			"description": "Evaluate data quality of .fastq files",
-			"files": ["js", "wasm", "data"],
+			"files": ["mjs", "wasm", "data"],
 			"versions": [
 				{
 					"version": "0.20.1",
 					"branch": "0.20.1"
+				},
+				{
+					"version": "1.3.6",
+					"branch": "v1.3.6"
 				}
 			]
 		},
@@ -145,6 +174,10 @@
 				{
 					"version": "4.9.0",
 					"branch": "v4.9.0"
+				},
+				{
+					"version": "4.11.0",
+					"branch": "v4.11.0"
 				}
 			]
 		},
@@ -172,6 +205,10 @@
 				{
 					"version": "5.1.0",
 					"branch": "gawk-5.1.0"
+				},
+				{
+					"version": "5.4.1",
+					"branch": "gawk-5.4.1"
 				}
 			]
 		},
@@ -179,11 +216,15 @@
 			"name": "gfatools",
 			"programs": ["gfatools"],
 			"description": "Tools for manipulating pangenome sequence graphs",
-			"files": ["js", "wasm", "data"],
+			"files": ["mjs", "wasm", "data"],
 			"versions": [
 				{
 					"version": "253",
 					"branch": "30ea19b"
+				},
+				{
+					"version": "0.5",
+					"branch": "v0.5"
 				}
 			]
 		},
@@ -191,11 +232,15 @@
 			"name": "gffread",
 			"programs": ["gffread"],
 			"description": "Parse and file .gff/.gtf files",
-			"files": ["js", "wasm", "data"],
+			"files": ["mjs", "wasm", "data"],
 			"versions": [
 				{
 					"version": "0.12.7",
 					"branch": "v0.12.7"
+				},
+				{
+					"version": "0.12.9",
+					"branch": "v0.12.9"
 				}
 			]
 		},
@@ -207,6 +252,10 @@
 				{
 					"version": "3.7",
 					"branch": "v3.7"
+				},
+				{
+					"version": "3.12",
+					"branch": "v3.12"
 				}
 			]
 		},
@@ -238,11 +287,15 @@
 			"name": "hyphy",
 			"programs": ["hyphy"],
 			"description": "Comparative sequence analysis using stochastic evolutionary models",
-			"files": ["js", "wasm", "data"],
+			"files": ["mjs", "wasm", "data"],
 			"versions": [
 				{
 					"version": "2.5.57",
 					"branch": "2.5.57"
+				},
+				{
+					"version": "2.5.101",
+					"branch": "2.5.101"
 				}
 			]
 		},
@@ -255,6 +308,11 @@
 					"version": "1.3.1",
 					"branch": "v1.3.1",
 					"dependencies": [{ "name": "htslib", "version": "1.10" }]
+				},
+				{
+					"version": "1.4.4",
+					"branch": "v1.4.4",
+					"dependencies": [{ "name": "htslib", "version": "1.24" }]
 				}
 			]
 		},
@@ -270,6 +328,10 @@
 				{
 					"version": "1.7",
 					"branch": "jq-1.7"
+				},
+				{
+					"version": "1.8.2",
+					"branch": "jq-1.8.2"
 				}
 			]
 		},
@@ -281,6 +343,10 @@
 				{
 					"version": "3.3.1",
 					"branch": "v3.3.1"
+				},
+				{
+					"version": "3.6.0",
+					"branch": "v3.6.0"
 				}
 			]
 		},
@@ -299,7 +365,7 @@
 			"name": "lastz",
 			"programs": ["lastz", "lastz_D"],
 			"description": "Pairwise DNA sequence aligner",
-			"files": ["js", "wasm", "data"],
+			"files": ["mjs", "wasm", "data"],
 			"versions": [
 				{
 					"version": "1.04.52",
@@ -315,6 +381,10 @@
 				{
 					"version": "3.7.2",
 					"branch": "v3.7.2"
+				},
+				{
+					"version": "3.8.8",
+					"branch": "v3.8.8"
 				}
 			]
 		},
@@ -322,11 +392,15 @@
 			"name": "lsd2",
 			"programs": ["lsd2"],
 			"description": "A phylogeny dating method",
-			"files": ["js", "wasm", "data"],
+			"files": ["mjs", "wasm", "data"],
 			"versions": [
 				{
 					"version": "2.3",
 					"branch": "v.2.3"
+				},
+				{
+					"version": "2.4.1",
+					"branch": "v.2.4.1"
 				}
 			]
 		},
@@ -338,6 +412,10 @@
 				{
 					"version": "7.520",
 					"branch": "v7.520"
+				},
+				{
+					"version": "7.526",
+					"branch": "v7.526"
 				}
 			]
 		},
@@ -345,11 +423,15 @@
 			"name": "minimap2",
 			"programs": ["minimap2", "minimap2-simd"],
 			"description": "Pairwise sequence alignment",
-			"files": ["js", "wasm", "data"],
+			"files": ["mjs", "wasm", "data"],
 			"versions": [
 				{
 					"version": "2.22",
 					"branch": "v2.22"
+				},
+				{
+					"version": "2.31",
+					"branch": "v2.31"
 				}
 			]
 		},
@@ -357,12 +439,17 @@
 			"name": "modbam2bed",
 			"programs": ["modbam2bed"],
 			"description": "Summarize .bam modified bases as .bed files with counts",
-			"files": ["js", "wasm", "data"],
+			"files": ["mjs", "wasm", "data"],
 			"versions": [
 				{
 					"version": "0.9.5",
 					"branch": "v0.9.5",
 					"dependencies": [{ "name": "htslib", "version": "1.17" }]
+				},
+				{
+					"version": "0.10.0",
+					"branch": "v0.10.0",
+					"dependencies": [{ "name": "htslib", "version": "1.24" }]
 				}
 			]
 		},
@@ -374,6 +461,10 @@
 				{
 					"version": "4.0.0rc1",
 					"branch": "v4.0.0rc1"
+				},
+				{
+					"version": "4.0.1",
+					"branch": "v4.0.1"
 				}
 			]
 		},
@@ -389,6 +480,10 @@
 				{
 					"version": "5.1.0",
 					"branch": "5.1.0"
+				},
+				{
+					"version": "5.3",
+					"branch": "v5.3"
 				}
 			]
 		},
@@ -474,6 +569,10 @@
 				{
 					"version": "1.2.4",
 					"branch": "ad452ea"
+				},
+				{
+					"version": "1.2.5",
+					"branch": "v1.2.5"
 				}
 			]
 		},
@@ -481,7 +580,7 @@
 			"name": "tn93",
 			"programs": ["tn93"],
 			"description": "Pairwise distance on FASTA files using Tamura Nei 93 distance",
-			"files": ["js", "wasm", "data"],
+			"files": ["mjs", "wasm", "data"],
 			"versions": [
 				{
 					"version": "1.0.9",
@@ -490,6 +589,10 @@
 				{
 					"version": "1.0.11",
 					"branch": "v.1.0.11"
+				},
+				{
+					"version": "1.0.16",
+					"branch": "v1.0.16"
 				}
 			]
 		},
@@ -501,6 +604,10 @@
 				{
 					"version": "2.0.4",
 					"branch": "2.0.4"
+				},
+				{
+					"version": "2.3.2",
+					"branch": "2.3.2"
 				}
 			]
 		},
@@ -508,11 +615,15 @@
 			"name": "vidjil-algo",
 			"programs": ["vidjil-algo"],
 			"description": "High-Throughput Analysis of V(D)J Immune Repertoire",
-			"files": ["js", "wasm", "data"],
+			"files": ["mjs", "wasm", "data"],
 			"versions": [
 				{
 					"version": "2025.12",
 					"branch": "release-2025.12"
+				},
+				{
+					"version": "2026.06",
+					"branch": "release-2026.06"
 				}
 			]
 		},
@@ -550,6 +661,11 @@
 					"version": "1.0.0",
 					"branch": "1.0.0",
 					"dependencies": [{ "name": "htslib", "version": "1.17" }]
+				},
+				{
+					"version": "1.0.4",
+					"branch": "1.0.4",
+					"dependencies": [{ "name": "htslib", "version": "1.24" }]
 				}
 			]
 		},

@@ -1,0 +1,25 @@
+diff --git a/configure.ac b/configure.ac
+index 38f19d8..7705af7 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -130,7 +130,7 @@ darwin* )
+ DEAD_STRIP="-Wl,-dead_strip"
+ ;;
+ *)
+-DEAD_STRIP="-Wl,--gc-sections -Wl,--as-needed"
++DEAD_STRIP="-Wl,--gc-sections"
+ ;;
+ esac
+ AC_SUBST(DEAD_STRIP)
+diff --git a/src/run_kalign.c b/src/run_kalign.c
+index 85e850a..ffeb563 100644
+--- a/src/run_kalign.c
++++ b/src/run_kalign.c
+@@ -175,6 +175,7 @@ int print_AVX_warning(void)
+ 
+ int main(int argc, char *argv[])
+ {
++        optind = 1;
+         int version = 0;
+         int c;
+         int showw = 0;

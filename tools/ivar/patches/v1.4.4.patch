@@ -1,0 +1,100 @@
+diff --git a/configure.ac b/configure.ac
+index c4eb867..ed56408 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -26,8 +26,8 @@ AC_ARG_WITH([hts],
+ # if optional parameter used, extend path flags for compliler and linker
+ if test $HTSPATHSET = 1 ; then
+     # extend the compiler and linker flags according to the path set
+-    AM_CXXFLAGS="$AM_CXXFLAGS -I$with_hts/include"
+-    AM_LDFLAGS="$AM_LDFLAGS -L$with_hts/lib"
++    AM_CXXFLAGS="$AM_CXXFLAGS -I$with_hts"
++    AM_LDFLAGS="$AM_LDFLAGS -L$with_hts"
+     AC_SUBST([LIBS])
+     AC_SUBST([AM_CXXFLAGS])
+     AC_SUBST([AM_LDFLAGS])
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 0b55a8d..4a06aa0 100755
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -1,6 +1,6 @@
+ LIBS = -lhts -lz -lpthread
+ 
+-CXXFLAGS = -v -g -std=c++11 -Wall -Wextra -Werror
++CXXFLAGS = -std=c++11 -Wall -Wextra -Werror
+ 
+ # this lists the binaries to produce, the (non-PHONY, binary) targets in
+ # the previous manual Makefile
+diff --git a/src/ivar.cpp b/src/ivar.cpp
+index 0ef226c..cdcede2 100755
+--- a/src/ivar.cpp
++++ b/src/ivar.cpp
+@@ -192,6 +192,20 @@ std::string get_filename_without_extension(std::string f, std::string ext){
+  */
+ 
+ int main(int argc, char* argv[]){
++  // Reset optind
++  optind = 1;
++  // Reset g_args to empty
++  g_args.gff = "";
++  g_args.ref = "";
++  g_args.text = "";
++  g_args.file_list = "";
++  g_args.bed = "";
++  g_args.bam = "";
++  g_args.primer_pair_file = "";
++  g_args.f1 = "";
++  g_args.prefix = "";
++  g_args.adp_path = "";
++
+   if(argc == 1){
+     print_usage();
+     return -1;
+@@ -323,6 +337,15 @@ int main(int argc, char* argv[]){
+     }
+     g_args.prefix = get_filename_without_extension(g_args.prefix,".tsv");
+     g_args.min_threshold = (g_args.min_threshold < 0 || g_args.min_threshold > 1) ? 0.03: g_args.min_threshold;
++
++    // Support having a file as the last argument instead of loading from stdin
++    // This is because biowasm doesn't (yet) support setting custom stdin
++    if (argv[optind] != NULL) {
++        std::ifstream file;
++        file.open(argv[optind]);
++        return call_variants_from_plup(file, g_args.prefix, g_args.min_qual, g_args.min_threshold, g_args.min_depth, g_args.ref, g_args.gff);
++    }
++
+     if(isatty(STDIN_FILENO)){
+       std::cout << "Please pipe mpileup into `ivar variants` command.\n\n";
+       print_variants_usage();
+@@ -375,11 +398,6 @@ int main(int argc, char* argv[]){
+       print_consensus_usage();
+       return -1;
+     }
+-    if(isatty(STDIN_FILENO)){
+-      std::cout << "Please pipe mpileup into `ivar consensus` command.\n\n";
+-      print_consensus_usage();
+-      return -1;
+-    }
+     g_args.prefix = get_filename_without_extension(g_args.prefix,".fa");
+     g_args.prefix = get_filename_without_extension(g_args.prefix,".fasta");
+     g_args.gap = (g_args.gap != 'N' && g_args.gap != '-') ? 'N' : g_args.gap; // Accept only N or -
+@@ -390,6 +408,19 @@ int main(int argc, char* argv[]){
+       std::cout << "Regions with depth less than minimum depth will not added to consensus" << std::endl;
+     else
+       std::cout << "Regions with depth less than minimum depth covered by: " << g_args.gap << std::endl;
++
++    // Support having a file as the last argument instead of loading from stdin
++    // This is because biowasm doesn't (yet) support setting custom stdin
++    if (argv[optind] != NULL) {
++        std::ifstream file;
++        file.open(argv[optind]);
++        return call_consensus_from_plup(file, g_args.seq_id, g_args.prefix, g_args.min_qual, g_args.min_threshold, g_args.min_depth, g_args.gap, g_args.keep_min_coverage);
++    }
++    if(isatty(STDIN_FILENO)){
++      std::cout << "Please pipe mpileup into `ivar consensus` command.\n\n";
++      print_consensus_usage();
++      return -1;
++    }
+     res = call_consensus_from_plup(std::cin, g_args.seq_id, g_args.prefix, g_args.min_qual, g_args.min_threshold, g_args.min_depth, g_args.gap, g_args.keep_min_coverage);
+   } else if (cmd.compare("removereads") == 0){
+     opt = getopt( argc, argv, removereads_opt_str);
