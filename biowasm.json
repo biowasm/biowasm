@@ -42,18 +42,6 @@
 			]
 		},
 		{
-			"name": "base",
-			"programs": ["base"],
-			"listed": false,
-			"description": "Module used by Aioli for the base filesystem (only needed if all other tools have reinit set to true)",
-			"versions": [
-				{
-					"version": "1.0.0",
-					"branch": "main"
-				}
-			]
-		},
-		{
 			"name": "bcftools",
 			"programs": ["bcftools"],
 			"description": "Parse .vcf / .bcf variant calling files",

@@ -1,8 +1,10 @@
 #!/bin/bash
 
-# Unzip sample data; we'll preload it with the module for convenience
-test -f ../data/brain8.snd || gunzip ../data/brain8.snd.gz
-test -f ../data/pollen2014.snd || gunzip ../data/pollen2014.snd.gz
+# Unzip sample data; we'll preload it with the module for convenience.
+# -k keeps the .gz so the tracked file is never deleted/recreated (a re-gzip would rewrite
+# the gzip mtime header and show a spurious diff even though the data is identical).
+gunzip -kf ../data/brain8.snd.gz
+gunzip -kf ../data/pollen2014.snd.gz
 
 # Compile
 FLAGS=$(cat <<EOF
@@ -21,7 +23,5 @@ emmake make \
     CFLAGS="-O3 -s USE_ZLIB=1 -w" \
     LIBS="-s USE_ZLIB=1 -lm $FLAGS"
 
-# Undo sample data unzipping
-cd -
-test -f data/brain8.snd.gz || gzip data/brain8.snd
-test -f data/pollen2014.snd.gz || gzip data/pollen2014.snd
+# Remove the extracted copies so the working tree stays clean (the .gz files were kept above).
+rm -f ../data/brain8.snd ../data/pollen2014.snd
