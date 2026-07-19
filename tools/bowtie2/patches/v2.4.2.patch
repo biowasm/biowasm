@@ -34,7 +34,7 @@ index 890cc3f0..aa6b9028 100644
 +		$(DEFS) -DBOWTIE2 $(NOASSERT_FLAGS) -w \
  		$(CPPFLAGS) \
 -		-o $@ $< \
-+		-o ../build/$@.js $< \
++		-o ../build/$@.mjs $< \
  		$(SHARED_CPPS) $(SEARCH_CPPS_MAIN) \
 -		$(LDFLAGS) $(LDLIBS)
 +		$(LDFLAGS) $(LDLIBS) $(WASM_FLAGS)

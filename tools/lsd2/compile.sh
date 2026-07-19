@@ -11,9 +11,9 @@ TO_BUILD=$(ls *.cpp | sed "s/.cpp/.o/")
 
 # Build .cpp files
 make clean  # repo contains precompiled .o
-emmake make $TO_BUILD CXX=em++ CXXFLAGS="-O2"
+emmake make $TO_BUILD CXX=em++ CXXFLAGS="-O3"
 
 # Build .js/.wasm
-em++ -o ../../build/lsd2.js $TO_BUILD $EM_FLAGS -O2 \
+em++ -o ../../build/lsd2.mjs $TO_BUILD $EM_FLAGS -O3 \
 	--preload-file tree.newick@/lsd2/tree.newick \
 	--preload-file tree.date@/lsd2/tree.date

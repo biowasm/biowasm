@@ -30,6 +30,6 @@ emconfigure ./configure --disable-libcurl --host="$(gcc -dumpmachine)" CFLAGS="$
 TOOLS=("tabix" "htsfile" "bgzip")
 for tool in ${TOOLS[@]}; do
     emmake make $tool CC=emcc AR=emar \
-        CFLAGS="-O2 $CFLAGS" \
-        LDFLAGS="$EM_FLAGS -O2 -s ERROR_ON_UNDEFINED_SYMBOLS=0 $LDFLAGS"
+        CFLAGS="-O3 $CFLAGS" \
+        LDFLAGS="$EM_FLAGS -O3 -s ERROR_ON_UNDEFINED_SYMBOLS=0 $LDFLAGS"
 done

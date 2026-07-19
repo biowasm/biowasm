@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # When update this list, need to update tools.json
-UTILS=$(echo src/{basename,cat,comm,cut,date,df,dirname,du,echo,env,fold,head,join,ls,md5sum,paste,seq,shuf,sort,tail,tee,tr,uniq,wc}.js)
+UTILS=$(echo src/{basename,cat,comm,cut,date,df,dirname,du,echo,env,fold,head,join,ls,md5sum,paste,seq,shuf,sort,tail,tee,tr,uniq,wc}.mjs)
 
 # Install dependencies
 sudo apt-get install -y autopoint gperf help2man gettext texinfo bison
@@ -20,7 +20,7 @@ emconfigure ./configure \
   FORCE_UNSAFE_CONFIGURE=1 \
   TIME_T_32_BIT_OK=yes \
   --host=wasm32 \
-  CFLAGS="-O2 $WNO"
+  CFLAGS="-O3 $WNO"
 
 # This program needs gcc and should not be compiled to WebAssembly
 sed -i 's|$(MAKE) src/make-prime-list$(EXEEXT)|gcc src/make-prime-list.c -o src/make-prime-list$(EXEEXT) -Ilib/|' Makefile
@@ -36,13 +36,13 @@ touch lib/parse-datetime.c
 # Make all commands and skip "man" errors
 emmake make all CC=emcc -k WERROR_CFLAGS=""
 emmake make $UTILS \
-  CC=emcc EXEEXT=.js \
-  CFLAGS="-O2 $EM_FLAGS $WNO" \
+  CC=emcc EXEEXT=.mjs \
+  CFLAGS="-O3 $EM_FLAGS $WNO" \
   -k WERROR_CFLAGS=""
 
 # Don't throw error for unsupported features
-sed -i 's/throw\("[a-z]*: TODO"\)/console.warn(\1)/g' src/*.js
+sed -i 's/throw\("[a-z]*: TODO"\)/console.warn(\1)/g' src/*.mjs
 
 # Move .js/.wasm files to build folder
 mv $UTILS ../build/
-mv ${UTILS//.js/.wasm} ../build/
+mv ${UTILS//.mjs/.wasm} ../build/

@@ -15,9 +15,9 @@ sed -i '152,156s/.*//' ./src/umd/nucmer_main.cc
 sed -i 's/th.join();/query_thread(aligner.get(), \&parser, \&output, \&args);/' ./src/umd/nucmer_main.cc
 
 # Compile nucmer
-emmake make nucmer.js \
-    EXEEXT=".js" \
-    CFLAGS="-O2 $EM_FLAGS" \
-    CXXFLAGS="-std=c++0x -O2 $EM_FLAGS"
+emmake make nucmer.mjs \
+    EXEEXT=".mjs" \
+    CFLAGS="-O3 $EM_FLAGS" \
+    CXXFLAGS="-std=c++0x -O3 $EM_FLAGS"
 
 mv nucmer.* ../../build

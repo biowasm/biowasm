@@ -12,5 +12,5 @@ sed -i 's/getprogname ()/"grep"/g' src/grep.c
 emconfigure ./configure --disable-nls
 
 # Run Makefile on each subfolder. Don't error on undefined _splice function that isn't used
-emmake make all CC=emcc -k WERROR_CFLAGS="" CFLAGS="$EM_FLAGS -O2 -s ERROR_ON_UNDEFINED_SYMBOLS=0" EXEEXT=.js
-mv src/grep.{js,wasm} ../build/
+emmake make all CC=emcc -k WERROR_CFLAGS="" CFLAGS="$EM_FLAGS -O3 -s ERROR_ON_UNDEFINED_SYMBOLS=0" EXEEXT=.mjs
+mv src/grep.{mjs,wasm} ../build/

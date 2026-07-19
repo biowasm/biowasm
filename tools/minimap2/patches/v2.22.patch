@@ -16,7 +16,7 @@ index 4118616..889a516 100644
 -minimap2:main.o libminimap2.a
 -		$(CC) $(CFLAGS) main.o -o $@ -L. -lminimap2 $(LIBS)
 +$(PROGRAM):main.o libminimap2.a
-+		$(CC) $(CFLAGS) main.o -o ../build/$@.js -L. -lminimap2 $(LIBS) $(WASM_FLAGS)
++		$(CC) $(CFLAGS) main.o -o ../build/$@.mjs -L. -lminimap2 $(LIBS) $(WASM_FLAGS)
  
  minimap2-lite:example.o libminimap2.a
  		$(CC) $(CFLAGS) $< -o $@ -L. -lminimap2 $(LIBS)
@@ -71,7 +71,7 @@ index ae7ff4a..9b012ac 100644
 -minimap2:main.o libminimap2.a
 -		$(CC) $(CFLAGS) main.o -o $@ -L. -lminimap2 $(LIBS)
 +$(PROGRAM):main.o libminimap2.a
-+		$(CC) $(CFLAGS) main.o -o ../build/$@.js -L. -lminimap2 $(LIBS) $(WASM_FLAGS)
++		$(CC) $(CFLAGS) main.o -o ../build/$@.mjs -L. -lminimap2 $(LIBS) $(WASM_FLAGS)
  
  minimap2-lite:example.o libminimap2.a
  		$(CC) $(CFLAGS) $< -o $@ -L. -lminimap2 $(LIBS)

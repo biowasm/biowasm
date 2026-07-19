@@ -11,8 +11,8 @@ EM_GNU_NANOSLEEP
 WNO="-Wno-incompatible-function-pointer-types -Wno-implicit-function-declaration -Wno-implicit-int -Wno-int-conversion"
 
 # Configure
-emconfigure ./configure --disable-nls CFLAGS="-O2 $WNO"
+emconfigure ./configure --disable-nls CFLAGS="-O3 $WNO"
 
 # Build
-emmake make all CC=emcc -k WERROR_CFLAGS="" CFLAGS="$EM_FLAGS -O2 -s ERROR_ON_UNDEFINED_SYMBOLS=0 $WNO" EXEEXT=.js
-mv sed/sed.{js,wasm} ../build/
+emmake make all CC=emcc -k WERROR_CFLAGS="" CFLAGS="$EM_FLAGS -O3 -s ERROR_ON_UNDEFINED_SYMBOLS=0 $WNO" EXEEXT=.mjs
+mv sed/sed.{mjs,wasm} ../build/

@@ -7,7 +7,7 @@ index 3f51e40..26bd75f 100644
  
  gfatools:main.o sys.o libgfa1.a
 -		$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
-+		$(CC) $(CFLAGS) $^ -o ../build/$@.js $(LIBS)
++		$(CC) $(CFLAGS) $^ -o ../build/$@.mjs $(LIBS)
  
  libgfa1.a:$(OBJS)
  		$(AR) -csr $@ $(OBJS)

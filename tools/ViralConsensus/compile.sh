@@ -8,7 +8,7 @@ if [[ "$is_less_than_version_0_0_4" == "true" ]]; then
 
     emmake make \
         CXX=em++ \
-        EXE=../build/viral_consensus.js \
+        EXE=../build/viral_consensus.mjs \
         HTSLIB_A=../../htslib/src/libhts.a \
         LIBS="-lz -lbz2 -llzma $LDFLAGS_LZMA" \
         CXXFLAGS="-std=c++11 -fpermissive $EM_FLAGS $CFLAGS_LZMA"
@@ -17,8 +17,8 @@ if [[ "$is_less_than_version_0_0_4" == "true" ]]; then
 else 
     emmake make \
         CXX=em++ \
-        EXE=../build/viral_consensus.js \
+        EXE=../build/viral_consensus.mjs \
         INCLUDE="-I../../htslib/src/" \
-        LIBS="-O2 -lhts -L../../htslib/src/ -lz -lbz2 -llzma $LDFLAGS_LZMA" \
+        LIBS="-O3 -lhts -L../../htslib/src/ -lz -lbz2 -llzma $LDFLAGS_LZMA" \
         CXXFLAGS="-Wall -pedantic -std=c++11 $EM_FLAGS -s ERROR_ON_UNDEFINED_SYMBOLS=0"
 fi

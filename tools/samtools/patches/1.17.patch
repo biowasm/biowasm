@@ -7,7 +7,7 @@ index 01d8e02..6e99b20 100644
  	echo '#define SAMTOOLS_CPPFLAGS "$(CPPFLAGS)"' >> $@
  	echo '#define SAMTOOLS_CFLAGS "$(CFLAGS)"' >> $@
 -	echo '#define SAMTOOLS_LDFLAGS "$(LDFLAGS)"' >> $@
-+	echo '#define SAMTOOLS_LDFLAGS "--preload-file examples/@/samtools/examples/ -s ERROR_ON_UNDEFINED_SYMBOLS=0 -O2"' >> $@
++	echo '#define SAMTOOLS_LDFLAGS "--preload-file examples/@/samtools/examples/ -s ERROR_ON_UNDEFINED_SYMBOLS=0 -O3"' >> $@
  	echo '#define SAMTOOLS_HTSDIR "$(HTSDIR)"' >> $@
  	echo '#define SAMTOOLS_LIBS "$(LIBS)"' >> $@
  	echo '#define SAMTOOLS_CURSES_LIB "$(CURSES_LIB)"' >> $@

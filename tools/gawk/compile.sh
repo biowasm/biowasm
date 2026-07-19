@@ -16,9 +16,9 @@ emconfigure ./configure \
 # Compile gawk to WebAssembly
 cd support && emmake make && cd ..
 emmake make \
-	EXEEXT=.js \
+	EXEEXT=.mjs \
 	LIBS="-s ERROR_ON_UNDEFINED_SYMBOLS=0 $EM_FLAGS" \
-	CFLAGS="-O2 -DNDEBUG" \
-	AM_CFLAGS="" gawk.js
+	CFLAGS="-O3 -DNDEBUG" \
+	AM_CFLAGS="" gawk.mjs
 
-mv gawk.{js,wasm} ../build/
+mv gawk.{mjs,wasm} ../build/

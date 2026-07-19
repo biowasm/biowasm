@@ -12,9 +12,9 @@ emconfigure ./configure --enable-static --disable-shared \
     --without-xml2 --without-nettle --without-lzo2 --without-cng  --without-lz4 --without-expat \
     CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1"
 
-emmake make bsdunzip.js \
-    EXEEXT=".js" \
-    CFLAGS="-O2 -s USE_ZLIB=1 -s USE_BZIP2=1 -ffunction-sections -fdata-sections -fvisibility=hidden -D__LIBARCHIVE_ENABLE_VISIBILITY" \
-    LDFLAGS="-O2 $EM_FLAGS"
+emmake make bsdunzip.mjs \
+    EXEEXT=".mjs" \
+    CFLAGS="-O3 -s USE_ZLIB=1 -s USE_BZIP2=1 -ffunction-sections -fdata-sections -fvisibility=hidden -D__LIBARCHIVE_ENABLE_VISIBILITY" \
+    LDFLAGS="-O3 $EM_FLAGS"
 
 mv bsdunzip.* ../../build/

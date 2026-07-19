@@ -16,7 +16,7 @@ index b59428a..76ef022 100644
  
  bcftools: $(OBJS) $(HTSLIB)
 -	$(CC) $(DYNAMIC_FLAGS) -pthread $(ALL_LDFLAGS) -o $@ $(OBJS) $(HTSLIB_LIB) -lm $(ALL_LIBS) $(GSL_LIBS) $(PERL_LIBS)
-+	$(CC) $(DYNAMIC_FLAGS) $(ALL_LDFLAGS) -o ../build/$@.js $(OBJS) $(HTSLIB_LIB) -lm $(ALL_LIBS) $(GSL_LIBS) $(PERL_LIBS)
++	$(CC) $(DYNAMIC_FLAGS) $(ALL_LDFLAGS) -o ../build/$@.mjs $(OBJS) $(HTSLIB_LIB) -lm $(ALL_LIBS) $(GSL_LIBS) $(PERL_LIBS)
  
  plugins: $(PLUGINS)
  

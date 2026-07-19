@@ -30,7 +30,7 @@ index df16673..16b0049 100644
  
  $(OS)/muscle : gitver.txt $(OS)/ $(OBJS)
 -	$(CXX) $(LDFLAGS) $(OBJS) -o $@
-+	$(CXX) $(LDFLAGS) $(OBJS) -o ../../build/muscle.js $(EM_FLAGS)
++	$(CXX) $(LDFLAGS) $(OBJS) -o ../../build/muscle.mjs $(EM_FLAGS)
  
  	# Warning: do not add -d option to strip, this is not portable
 -	strip $(OS)/muscle

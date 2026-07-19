@@ -8,7 +8,7 @@ make clean
 emmake make \
 	-f Makefile.simde \
 	PROGRAM="minimap2" \
-	CFLAGS="-O2 -Wno-pass-failed -Wno-return-type" \
+	CFLAGS="-O3 -Wno-pass-failed -Wno-return-type" \
 	WASM_FLAGS="$WASM_FLAGS" \
 	minimap2
 
@@ -18,6 +18,6 @@ make clean
 emmake make \
 	-f Makefile \
 	PROGRAM="minimap2-simd" \
-	CFLAGS="-O2 -Wno-return-type -Wno-unused-command-line-argument -msimd128" \
+	CFLAGS="-O3 -Wno-return-type -Wno-unused-command-line-argument -msimd128" \
 	WASM_FLAGS="$WASM_FLAGS" \
 	minimap2-simd

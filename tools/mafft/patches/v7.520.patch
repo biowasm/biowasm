@@ -60,7 +60,7 @@ index 9c2aa4d..0709725 100644
  
  tbfast : $(OBJTBFAST)
 -	$(CC) -o $@ $(OBJTBFAST) $(MYCFLAGS) $(LDFLAGS) $(LIBS)
-+	$(CC) -o ../../build/$@.js $(OBJTBFAST) $(MYCFLAGS) $(LDFLAGS) $(LIBS)
++	$(CC) -o ../../build/$@.mjs $(OBJTBFAST) $(MYCFLAGS) $(LDFLAGS) $(LIBS)
  
  nodepair : $(OBJNODPAIR)
  	$(CC) -o $@ $(OBJNODPAIR) $(MYCFLAGS) $(LDFLAGS) $(LIBS)
@@ -69,7 +69,7 @@ index 9c2aa4d..0709725 100644
  
  dvtditr : $(OBJDVTDITR)
 -	$(CC) -o $@ $(OBJDVTDITR) $(MYCFLAGS) $(LDFLAGS) $(LIBS)
-+	$(CC) -o ../../build/$@.js $(OBJDVTDITR) $(MYCFLAGS) $(LDFLAGS) $(LIBS)
++	$(CC) -o ../../build/$@.mjs $(OBJDVTDITR) $(MYCFLAGS) $(LDFLAGS) $(LIBS)
  
  mafft-profile : $(OBJGALN)
  	$(CC) -o $@ $(OBJGALN) $(MYCFLAGS) $(LDFLAGS) $(LIBS)

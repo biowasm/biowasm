@@ -21,6 +21,11 @@ COLOR_OFF = "\033[0m"
 CONFIG = {}
 MANIFEST = {}
 LEVEL = 0
+# Submodules touched this run, mapped to the ref they were on before we built (so we can
+# restore them once, after the WHOLE run — restoring per-tool would wipe a dependency's
+# build artifacts, e.g. htslib's extracted xz/liblzma, before its dependents can use them).
+SUBMODULES_TOUCHED = {}
+BUILD_FAILED = False
 
 
 def list():
@@ -37,6 +42,7 @@ def exec(cmd):
 	"""
 	Execute a Bash command or just print it on screen if dry run enabled
 	"""
+	global BUILD_FAILED
 	cmd_dry = f"{COLOR_GREEN}{'    ' * LEVEL}{cmd}{COLOR_OFF}"
 	print(cmd_dry)
 
@@ -47,6 +53,16 @@ def exec(cmd):
 				print(line, end='')
 		if p.returncode != 0:
 			print("Return code not 0: ", subprocess.CalledProcessError(p.returncode, p.args))
+			BUILD_FAILED = True
+
+
+def capture(cmd):
+	"""
+	Run a Bash command and return its stdout (stripped); empty string on dry run/failure.
+	"""
+	if args.dry_run:
+		return ""
+	return subprocess.run(cmd, shell=True, capture_output=True, text=True).stdout.strip()
 
 
 def get_file_contents(path):
@@ -75,7 +91,7 @@ def compile(tool, versions=[], level=0):
 
 	# Get tool info
 	tool_info = next(t for t in CONFIG["tools"] if t["name"] == tool)
-	files = tool_info["files"] if "files" in tool_info else ["js", "wasm"]
+	files = tool_info["files"] if "files" in tool_info else ["mjs", "wasm"]
 	programs = tool_info["programs"] if "programs" in tool_info else [tool]
 	versions = [v for v in tool_info["versions"] if v["version"] in versions] if versions else tool_info["versions"]
 	tool_git_path = f"tools/{tool}/src/"
@@ -93,6 +109,15 @@ def compile(tool, versions=[], level=0):
 	# Init repo
 	exec(f"git submodule update --init --recursive {tool_git_path} && git submodule status {tool_git_path}")
 
+	# Record the ref this submodule was on (post-init, i.e. the pinned gitlink commit) the
+	# first time we see it, so restore_submodules() can return it to a clean state after the
+	# WHOLE run. Guarded: only real, initialized submodules (their own git toplevel) — never
+	# a plain directory, which would let git escape up to the parent biowasm repo.
+	if tool_git_path not in SUBMODULES_TOUCHED:
+		ref = capture(f'cd {tool_git_path} && if [ "$(git rev-parse --show-toplevel 2>/dev/null)" = "$(pwd -P)" ]; then git symbolic-ref -q --short HEAD || git rev-parse HEAD; fi')
+		if ref:
+			SUBMODULES_TOUCHED[tool_git_path] = ref
+
 	# Compile each version and its dependencies
 	for version_info in versions:
 		version = version_info["version"]
@@ -109,6 +134,29 @@ def compile(tool, versions=[], level=0):
 			for file in files:
 				exec(f"cp tools/{tool}/build/{program}.{file} {dir_build}/")
 				exec(f"md5sum {dir_build}/{program}.{file} | sed 's|{DIR_BUILD}/||' >> {DIR_MANIFEST_TEMP}")
+
+
+def restore_submodules():
+	"""
+	Restore every submodule we touched back to its original clean state, once, after the
+	whole run — so the parent repo shows no submodule changes to commit. Skipped if any
+	command failed, leaving state for debugging. Each build's outputs already live in
+	build/ (outside src/), so discarding src/ changes here is safe; everything removed
+	(applied patches, downloaded sources, object files) is regenerated on the next build.
+	"""
+	if args.dry_run:
+		return
+	if BUILD_FAILED:
+		print("Skipping submodule restore (a command failed this run); leaving state for debugging.")
+		return
+	for path, ref in SUBMODULES_TOUCHED.items():
+		print(f"{COLOR_GREEN}Restoring {path} to '{ref}' (clean)...{COLOR_OFF}")
+		# Guard again at restore time: only operate if src/ is its own git toplevel.
+		exec(f'cd {path} && if [ "$(git rev-parse --show-toplevel 2>/dev/null)" = "$(pwd -P)" ]; then '
+		     f'git checkout --force --recurse-submodules {ref} >/dev/null 2>&1; '
+		     f'git reset --hard --recurse-submodules >/dev/null 2>&1; '
+		     f'git clean -xdf >/dev/null 2>&1; '
+		     f'else echo "Refusing to restore {path}: not an initialized submodule"; fi')
 
 
 def generate_manifests():
@@ -183,5 +231,7 @@ if __name__ == "__main__":
 			compile(tool_name, args.versions.split(",") if args.versions is not None else [])
 		# Regenerate manifest files
 		generate_manifests()
+		# Restore every submodule we touched to a clean state (once, after the whole run)
+		restore_submodules()
 	else:
 		parser.print_usage()

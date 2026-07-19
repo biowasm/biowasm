@@ -2,5 +2,5 @@
 
 emcc seqtk.c \
     -o ../build/seqtk.mjs \
-    -O2 \
+    -O3 \
     $EM_FLAGS

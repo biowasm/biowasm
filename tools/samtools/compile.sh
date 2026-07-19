@@ -9,5 +9,5 @@ emconfigure ./configure --without-curses --with-htslib="../../htslib/src/" CFLAG
 
 # Build
 emmake make samtools CC=emcc AR=emar \
-    CFLAGS="-O2 -s USE_ZLIB=1 -s USE_BZIP2=1 $CFLAGS_LZMA" \
-    LDFLAGS="$EM_FLAGS --preload-file examples/@/samtools/examples/ -s ERROR_ON_UNDEFINED_SYMBOLS=0 -O2 $LDFLAGS_LZMA"
+    CFLAGS="-O3 -s USE_ZLIB=1 -s USE_BZIP2=1 $CFLAGS_LZMA" \
+    LDFLAGS="$EM_FLAGS --preload-file examples/@/samtools/examples/ -s ERROR_ON_UNDEFINED_SYMBOLS=0 -O3 $LDFLAGS_LZMA"

@@ -13,11 +13,11 @@ for TOOL in ${TOOLS[@]};
 do
   cd $TOOL
 
-  emcc -O2 -o $TOOL.o -c $TOOL.c \
+  emcc -O3 -o $TOOL.o -c $TOOL.c \
     -std=c99 -I../../inc -I../../htslib \
     -D_LARGEFILE_SOURCE -D_GNU_SOURCE -DMACHTYPE_${ARCH}
 
-  emcc -O2 -o ../../../../build/$TOOL.js $TOOL.o \
+  emcc -O3 -o ../../../../build/$TOOL.mjs $TOOL.o \
     ../../lib/${ARCH}/jkweb.a ../../htslib/libhts.a -lm \
     -s ERROR_ON_UNDEFINED_SYMBOLS=0 $EM_FLAGS
 

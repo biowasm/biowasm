@@ -7,7 +7,7 @@
 +CXX=em++
 +CXXFLAGS=-std=c++17 -O3
 +LDFLAGS=
-+EXEEXT=.js
++EXEEXT=.mjs
 +
 +astral: dir
 +	$(CXX) $(CXXFLAGS) $(LDFLAGS) src/$@.cpp -o bin/$@$(EXEEXT)

@@ -25,7 +25,7 @@ index a8304e6..b02a5eb 100644
 -		-lm -lz -llzma -lbz2 -lpthread -lcurl -lcrypto $(EXTRA_LIBS) \
 -		-o $(@)
 +		-lm -lz -lbz2 $(EXTRA_LIBS) \
-+		-o ../build/$(@).js
++		-o ../build/$(@).mjs
  
  .PHONY: clean
  clean: clean_obj clean_htslib

@@ -25,7 +25,7 @@ index 6bc3cb98..bf26cb87 100644
  $(BIN_DIR)/bedtools: autoversion $(BUILT_OBJECTS) $(HTSDIR)/libhts.a | $(BIN_DIR)
  	@echo "- Building main bedtools binary."
 -	$(CCPREFIX) $(CC_WRAPPER) $(CXX) $(ALL_LDFLAGS) -o $(BIN_DIR)/bedtools $(BUILT_OBJECTS) $(HTSDIR)/libhts.a $(ALL_LIBS)
-+	$(CCPREFIX) $(CC_WRAPPER) $(CXX) $(ALL_LDFLAGS) -o $(BIN_DIR)/bedtools.js $(BUILT_OBJECTS) $(HTSDIR)/libhts.a $(ALL_LIBS)
++	$(CCPREFIX) $(CC_WRAPPER) $(CXX) $(ALL_LDFLAGS) -o $(BIN_DIR)/bedtools.mjs $(BUILT_OBJECTS) $(HTSDIR)/libhts.a $(ALL_LIBS)
  	@echo "done."
  
  $(BIN_DIR)/bedtools.static: autoversion $(BUILT_OBJECTS) $(HTSDIR)/libhts.a | $(BIN_DIR)

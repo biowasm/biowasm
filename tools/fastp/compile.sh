@@ -8,6 +8,6 @@
 # As a result, fastp will crash if you run it on a .fastq.gz file.
 cp ../data/NA12878.fastq.gz testdata/
 emmake make \
-    TARGET="../build/fastp.js" \
+    TARGET="../build/fastp.mjs" \
     CXXFLAGS="-std=c++11 -O3 -DDYNAMIC_ZLIB -s USE_ZLIB=1" \
     LIBS="-s USE_ZLIB=1 $EM_FLAGS --preload-file testdata@/fastp/testdata"

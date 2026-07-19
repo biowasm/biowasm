@@ -10,5 +10,5 @@ emconfigure ./configure \
     --disable-maintainer-mode
 
 # Build
-emmake make EXEEXT=.js CFLAGS="-O2 $EM_FLAGS"
-mv jq.{js,wasm} ../build/
+emmake make EXEEXT=.mjs CFLAGS="-O3 $EM_FLAGS"
+mv jq.{mjs,wasm} ../build/

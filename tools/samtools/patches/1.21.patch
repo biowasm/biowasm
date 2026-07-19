@@ -7,7 +7,7 @@ index 671d838..168deed 100644
  	echo '#define SAMTOOLS_CPPFLAGS "$(CPPFLAGS)"' >> $@
  	echo '#define SAMTOOLS_CFLAGS "$(CFLAGS)"' >> $@
 -	echo '#define SAMTOOLS_LDFLAGS "$(LDFLAGS)"' >> $@
-+	echo '#define SAMTOOLS_LDFLAGS "--preload-file examples/@/samtools/examples/ -s ERROR_ON_UNDEFINED_SYMBOLS=0 -O2"' >> $@
++	echo '#define SAMTOOLS_LDFLAGS "--preload-file examples/@/samtools/examples/ -s ERROR_ON_UNDEFINED_SYMBOLS=0 -O3"' >> $@
  	echo '#define SAMTOOLS_HTSDIR "$(HTSDIR)"' >> $@
  	echo '#define SAMTOOLS_LIBS "$(LIBS)"' >> $@
  	echo '#define SAMTOOLS_CURSES_LIB "$(CURSES_LIB)"' >> $@
@@ -16,7 +16,7 @@ index 671d838..168deed 100644
  
  samtools: $(AOBJS) $(LZ4OBJS) libst.a $(HTSLIB)
 -	$(CC) $(ALL_LDFLAGS) -o $@ $(AOBJS) $(LZ4OBJS) libst.a $(HTSLIB_LIB) $(CURSES_LIB) -lm $(ALL_LIBS) -lpthread
-+	$(CC) $(ALL_LDFLAGS) -o ../build/$@.js $(AOBJS) $(LZ4OBJS) libst.a $(HTSLIB_LIB) $(CURSES_LIB) -lm $(ALL_LIBS) -lpthread
++	$(CC) $(ALL_LDFLAGS) -o ../build/$@.mjs $(AOBJS) $(LZ4OBJS) libst.a $(HTSLIB_LIB) $(CURSES_LIB) -lm $(ALL_LIBS) -lpthread
  
  # For building samtools and its test suite only: NOT to be installed.
  libst.a: $(LIBST_OBJS)

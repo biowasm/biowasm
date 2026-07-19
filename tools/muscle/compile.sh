@@ -16,7 +16,7 @@ else
     rm "muscle_src_3.8.1551.tar.gz"
     cd src-v3
     # Avoid error "sed: couldn't open temporary file ./sed.....: Permission denied"
-    sed -r -e 's/strip muscle/#strip muscle/' -e 's/ -o muscle / -o ..\/build\/muscle.js \$\(EM_FLAGS\) /' Makefile > Makefile.tmp
+    sed -r -e 's/strip muscle/#strip muscle/' -e 's/ -o muscle / -o ..\/build\/muscle.mjs \$\(EM_FLAGS\) /' Makefile > Makefile.tmp
     mv Makefile.tmp Makefile
     emmake make GPP=em++
     cd ../src

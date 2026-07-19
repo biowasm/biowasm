@@ -18,7 +18,7 @@ EOF
 
 emmake make \
     CC=emcc CXX=em++ \
-    CFLAGS="-O2 -s USE_ZLIB=1 -w" \
+    CFLAGS="-O3 -s USE_ZLIB=1 -w" \
     LIBS="-s USE_ZLIB=1 -lm $FLAGS"
 
 # Undo sample data unzipping
