@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 671d838..168deed 100644
+index 671d838..a574534 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -124,7 +124,7 @@ version.h:
@@ -42,19 +42,6 @@ index 2ff6f7e..79e95d1 100644
      free(w);
      free(tid);
  
-diff --git a/bamtk.c b/bamtk.c
-index 8c330bc..556f509 100644
---- a/bamtk.c
-+++ b/bamtk.c
-@@ -240,7 +240,7 @@ int main(int argc, char *argv[])
-         argc = 2;
-     }
- 
--    int ret = 0;
-+    int ret = 0; optind = 1; opterr = 1; optopt = 0;
-     if (strcmp(argv[1], "view") == 0)           ret = main_samview(argc-1, argv+1);
-     else if (strcmp(argv[1], "import") == 0)    ret = main_import(argc-1, argv+1);
-     else if (strcmp(argv[1], "mpileup") == 0)   ret = bam_mpileup(argc-1, argv+1);
 diff --git a/version.sh b/version.sh
 index 618a098..1ffa1bc 100755
 --- a/version.sh

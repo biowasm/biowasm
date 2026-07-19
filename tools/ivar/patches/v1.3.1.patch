@@ -29,23 +29,10 @@ diff --git a/src/ivar.cpp b/src/ivar.cpp
 index 0ef226c..cdcede2 100755
 --- a/src/ivar.cpp
 +++ b/src/ivar.cpp
-@@ -192,6 +192,20 @@ std::string get_filename_without_extension(std::string f, std::string ext){
+@@ -192,6 +192,7 @@ std::string get_filename_without_extension(std::string f, std::string ext){
   */
  
  int main(int argc, char* argv[]){
-+  // Reset optind
-+  optind = 1;
-+  // Reset g_args to empty
-+  g_args.gff = "";
-+  g_args.ref = "";
-+  g_args.text = "";
-+  g_args.file_list = "";
-+  g_args.bed = "";
-+  g_args.bam = "";
-+  g_args.primer_pair_file = "";
-+  g_args.f1 = "";
-+  g_args.prefix = "";
-+  g_args.adp_path = "";
 +
    if(argc == 1){
      print_usage();

@@ -24,7 +24,7 @@ diff --git a/main.c b/main.c
 index 04024be..b376f72 100644
 --- a/main.c
 +++ b/main.c
-@@ -2,18 +2,42 @@
+@@ -2,18 +2,41 @@
  #include <stdlib.h>
  #include <stdio.h>
  #include "t-sne.h"
@@ -58,7 +58,6 @@ index 04024be..b376f72 100644
  	char **row_names;
  
 -	while ((c = getopt(argc, argv, "s:p:e:d:")) >= 0) {
-+	optind = 0;
 +	while ((c = getopt(argc, argv, "s:p:e:d:n:r:")) >= 0) {
  		if (c == 's') seed = atoi(optarg);
  		else if (c == 'p') perplexity = atof(optarg);
