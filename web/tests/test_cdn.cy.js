@@ -6,6 +6,7 @@ const EXPECTED_OUTPUTS = {
 		`((3,((24,(((9,15)61.9:0.205371,14)61.9:0.0220792,5)61.9:0.0765202)61.9:0,(11,(((10,23)61.9:0,6)61.9:0.1272,((22,25)61.9:0.198788,((1,(18,(((((19,21)61.9:0,20)61.9:0.248507,2)61.9:0,17)61.9:0.0889822,(((13,12)61.9:0,7)61.9:0,4)61.9:0.0575676)0:0)61.9:0.0236743)61.9:0.0530922,(8,16)61.9:0.125792)61.9:0.0119149)61.9:0)61.9:0.0406863)61.9:0.00315117)61.9:0.00644764),0);`
 	],
 	"tools/bcftools/examples/1.10.html": [`1:3106154	CAAA	C\n1:3157410	GA	G\n1:3162006	GAA	G\n1:3184885	TAAAA	TA,T\n2:3199812	G	GTT,GT\n3:3212016	CTT	C,CT`],
+	"tools/bcftools/examples/1.24.html": [`1:3106154	CAAA	C\n1:3157410	GA	G\n1:3162006	GAA	G\n1:3184885	TAAAA	TA,T\n2:3199812	G	GTT,GT\n3:3212016	CTT	C,CT`],
 	"tools/bedtools/examples/v2.29.2.html": [`chr1	100	101	a2	2	-\nchr1	100	110	a2	2	-`],
 	"tools/bedtools/examples/v2.31.0.html": [`chr1	100	101	a2	2	-\nchr1	100	110	a2	2	-`, `chr1	1000	4	599	0.333333333	1.000000000	1.000000000	50	350	149.750000000`],
 	"tools/bhtsne/examples/1a62a5d.html": [`7:fetal_quiescent:SRR1975007	1.96387	-11.0987\n7:fetal_quiescent:SRR1975008	1.34456	-7.89475\n7:fetal_quiescent:SRR1975006	3.18859	-11.1611\n7:fetal_quiescent:SRR1975005	1.34451	-10.9631\n7:fetal_quiescent:SRR1975004	0.529135	-11.9284\n7:fetal_quiescent:SRR1975003	2.31551	-9.75737\n7:fetal_quiescent:SRR1975001	1.21204	-7.52661\n7:fetal_quiescent:SRR1975002	1.2628	-7.44581\n7:fetal_quiescent:SRR1974999	0.552494	-6.95961\n7:fetal_quiescent:SRR1975000	1.41867	-13.9248\n7:fetal_quiescent:SRR1974998	0.2619	-14.1252\n8:fetal_replicating:SRR1974997	1.05721	-4.03209\n7:fetal_quiescent:SRR1974995	1.21776	-10.9576\n7:fetal_quiescent:SRR1974996	1.9174	-13.9027\n7:fetal_quiescent:SRR1974994	2.84679	-11.6603\n7:fetal_quiescent:SRR1974993	-0.468203	-10.5416\n7:fetal_quiescent:SRR1974992	1.53824	-10.4137\n7:fetal_quiescent:SRR1974990	2.24825	-12.274\n8:fetal_replicating:SRR1974989	6.43247	-5.0738`],
@@ -17,8 +18,10 @@ const EXPECTED_OUTPUTS = {
 		`\t"summary": {\n\t\t"before_filtering": {\n\t\t\t"total_reads":50,\n\t\t\t"total_bases":7400,\n\t\t\t"q20_bases":7308,\n\t\t\t"q30_bases":7169,\n\t\t\t"q20_rate":0.987568,\n\t\t\t"q30_rate":0.968784,\n\t\t\t"read1_mean_length":148,\n\t\t\t"gc_content":0.409459\n\t\t},\n\t\t"after_filtering": {\n\t\t\t"total_reads":50,\n\t\t\t"total_bases":7400,\n\t\t\t"q20_bases":7308,\n\t\t\t"q30_bases":7169,\n\t\t\t"q20_rate":0.987568,\n\t\t\t"q30_rate":0.968784,\n\t\t\t"read1_mean_length":148,\n\t\t\t"gc_content":0.409459\n\t\t}\n\t}`
 	],
 	"tools/fasttree/examples/main.html": [`(1k99_A:1.455604057,2lef_A:0.867678506,(1aab_:2.021714810,1j46_A:0.342407321)0.877:0.650876783);`],
+	"tools/fasttree/examples/v2.2.0.html": [`(1k99_A:1.455604057,2lef_A:0.867678506,(1aab_:2.021714810,1j46_A:0.342407321)0.877:0.650876783);`],
 	"tools/lastz/examples/1.04.52.html": [`#name1\tstart1\tend1\tname2\tstart2\tend2\tstrand2\tscore\ncat\t4929\t5024\tpig2\t17498\t17593\t+\t3348\ncat\t183\t312\tpig2\t4038\t4167\t-\t3850\ncat\t13977\t14124\tpig2\t7670\t7817\t-\t4685\ncat\t15217\t15331\tpig2\t8900\t9014\t-\t3800\ncat\t15958\t16096\tpig2\t9637\t9775\t-\t4325\ncat\t17500\t17595\tpig2\t11107\t11202\t-\t4046\ncat\t8412\t8539\tpig2\t16242\t16369\t-\t3909\ncat\t11219\t11394\tpig2\t20194\t20369\t-\t4800`],
 	"tools/mummer4/examples/v4.0.0rc1.html": [`>B_anthracis_Mslice 137795 312600 863`],
+	"tools/mummer4/examples/v4.0.1.html": [`>B_anthracis_Mslice 137795 312600 863`],
 	"tools/muscle/examples/5.1.0.html": [`>2lef_\nA-------MHIKKPLNAFMLYMKEMRANVVAESTL--KESAAINQILGRRWHALSREEQAKYYELARKERQLHMQLYPGW\nSARDNYGKKKKRKREK`],
 	"tools/muscle/examples/main.html": [`>2lef_\n-------AMHIKKPLNAFMLYMKEMRANVVAES-TLK-ESAAINQILGRRWHALSREEQA\nKYYELARKERQLHMQLYPGWSARDNYGKKKKRKREK`],
 	"tools/findutils/examples/v4.9.0.html": [`./test1.txt`, `./test11.txt`],
@@ -41,6 +44,11 @@ const EXPECTED_OUTPUTS = {
 		`Usage: htsfile [-chHv] FILE...`,
 		`Usage:   bgzip [OPTIONS] [FILE] ...`
 	],
+	"tools/htslib/examples/1.24.html": [
+		`Usage:   tabix [OPTIONS] [FILE] [REGION [...]]`,
+		`Usage: htsfile [-chHv] FILE...`,
+		`Usage:   bgzip [OPTIONS] [FILE] ...`
+	],
 	"tools/hyphy/examples/2.5.57.html": [`HYPHY 2.5.57(MP) for Emscripten on wasm32`],
 	"tools/ivar/examples/v1.3.1.html": [`r001	163	ref	7	30	8M4I4M1D3M	=	37	39	TTAGATAAAGAGGATACTG	*	XX:B:S,12561,2,20,112\nr002	0	ref	9	30	1S2I6M1P1I1P1I4M2I	*	0	0	AAAAGATAAGGGATAAA	*\nr003	0	ref	9	30	5H6M	*	0	0	AGCTAA	*\nr004	0	ref	16	30	6M14N1I5M	*	0	0	ATAGCTCTCAGC	*\nr003	16	ref	29	30	6H5M	*	0	0	TAGGC	*\nr001	83	ref	37	30	9M	=	7	-39	CAGCGCCAT	*`],
 	"tools/jq/examples/jq-1.6.html": [`there`],
@@ -58,6 +66,7 @@ const EXPECTED_OUTPUTS = {
 		`r003	4	*	0	0	*	*	0	0	AGCTAA	*` // output of samtools reset
 	],
 	"tools/samtools/examples/1.21.html": [`TTTATAAAACA`],
+	"tools/samtools/examples/1.24.html": [`TTTATAAAACA`],
 	"tools/sed/examples/v4.8.html": [
 		`@read1\nACGTAC----AGCAG\n+\nJJJJJJJJJJJJJJJ\n@read2\nACGATCATACCAGCA\n+\nJJJJJJJJJJJJJJJ`,
 		`>read1\nACGTACGACTAGCAG\n>read2\nACGATCATACCAGCA`
@@ -70,6 +79,11 @@ const EXPECTED_OUTPUTS = {
 	"tools/seqtk/examples/v1.2.html": [`chr1	15	5	4	4	2	0	0	0	4	0	0	0\nchr2	15	6	5	2	2	0	0	0	2	0	0	0`],
 	"tools/seqtk/examples/v1.3.html": [`chr1	15	5	4	4	2	0	0	0	4	0	0	0\nchr2	15	6	5	2	2	0	0	0	2	0	0	0`],
 	"tools/seqtk/examples/v1.4.html": [
+		`chr1	15	5	4	4	2	0	0	0	4	0	0	0\nchr2	15	6	5	2	2	0	0	0	2	0	0	0`,
+		`2	30`,
+		`prefix.00001.fa`
+	],
+	"tools/seqtk/examples/v1.5.html": [
 		`chr1	15	5	4	4	2	0	0	0	4	0	0	0\nchr2	15	6	5	2	2	0	0	0	2	0	0	0`,
 		`2	30`,
 		`prefix.00001.fa`
@@ -97,6 +111,7 @@ const EXPECTED_OUTPUTS = {
 	"tools/ViralConsensus/examples/0.0.4.html": ["AAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTC"],
 	"tools/ViralConsensus/examples/0.0.5.html": ["AAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTC"],
 	"tools/ViralConsensus/examples/1.0.0.html": ["AAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTC"],
+	"tools/ViralConsensus/examples/1.0.4.html": ["AAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTC"],
 	"tools/wgsim/examples/a12da33.html": [`chr1_5_9_0:0:0_0:0:0_0/2\nACGAC\n+\n22222\n@chr1_9_13_0:0:0_0:0:0_1/2\nCTAGC\n+\n22222\n@chr1_6_10_0:0:0_0:0:0_2/2\nAGTCG\n+\n22222\n@chr2_8_12_1:0:0_0:0:0_0/2\nTGGTA\n+\n22222\n@chr2_4_8_0:0:0_0:0:0_1/2\nATCAT\n+\n22222\n@chr2_2_6_0:0:0_0:0:0_2/2\nGATCG\n+\n22222`],
 
 	// Test code examples from docs
