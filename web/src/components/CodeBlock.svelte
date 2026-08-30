@@ -18,10 +18,4 @@ const codeTrimmed = code.split("\n").map(d => d.replace("\t\t", "")).join("\n").
 const codeHighlighted = hljs.highlight(codeTrimmed, { language: lang }).value;
 </script>
 
-<pre>{@html codeHighlighted}</pre>
-
-<style>
-pre {
-	margin-left: 20px;
-}
-</style>
+<pre class="bg-light border rounded p-3">{@html codeHighlighted}</pre>

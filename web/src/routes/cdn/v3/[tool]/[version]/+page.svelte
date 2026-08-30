@@ -7,7 +7,7 @@ const codeSamples = import.meta.glob("@/tools/**/examples/*.html", { as: "raw", 
 
 <script>
 import * as ZipJS from "@zip.js/zip.js";
-import CodePen from "$components/CodePen.svelte";
+import Playground from "$components/Playground.svelte";
 
 export let data;
 let busyDownload = false;
@@ -50,9 +50,9 @@ async function downloadAsZip(program) {
 <!-- Sample Code (use `browser` check to skip SSR) -->
 {#if browser && code}
 	<h5 class="mt-4">Sample Code</h5>
-	<!-- Re-render CodePen component when change tool -->
+	<!-- Re-render Playground component when change tool -->
 	{#key tool}
-		<CodePen code={code} />
+		<Playground code={code} />
 	{/key}
 {/if}
 
