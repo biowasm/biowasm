@@ -68,11 +68,11 @@ fi
 # ------------------------------------------------------------------------------
 
 log "Compiling..."
-# Expose the branch/tag to compile.sh so tools can handle per-version quirks inline
+# Expose branch/tag to compile.sh so tools can handle per-version differences inline
 export BRANCH
 ../compile.sh
 
-# Finalize glue code (there can be more than one program per tool, e.g. coreutils has many utilities).
+# Finalize glue code (there can be more than one program per tool, e.g. coreutils has many utilities)
 log "Finalizing glue code..."
 for glueCode in $(ls ../build/*.mjs ../build/*.js 2>/dev/null);
 do
@@ -81,8 +81,3 @@ do
 	cat "$glueCode" >> "${glueCode}.tmp"
 	mv "${glueCode}.tmp" "$glueCode"
 done
-
-# Note: we intentionally do NOT restore the submodule to a clean state after building.
-# Doing so previously required 'git reset --hard' / 'git clean -xdf', which have escaped to
-# the parent repo and wiped changes. Submodules are left as-is; run 'git submodule update
-# --force <path>' manually if you want to discard build changes in a submodule.
