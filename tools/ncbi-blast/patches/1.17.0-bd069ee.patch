@@ -1,0 +1,106 @@
+--- a/scripts/projects/blast/project.lst
++++ b/scripts/projects/blast/project.lst
+@@ -100,6 +100,7 @@ app/dustmasker$
+ app/segmasker$
+ app/blastvdb
+ objtools/simple$
++-objects/genomecoll/gc_cli
+ -objects/.*/test
+ -objects/.*/demo
+ -objects/.*/unit_test
+--- a/src/algo/blast/format/vecscreen_run.cpp
++++ b/src/algo/blast/format/vecscreen_run.cpp
+@@ -476,7 +476,7 @@ CVecscreenRun::CFormatter::FormatResults(CNcbiOstream& out,
+                     jobj.insert("query_end", align.GetSeqStop(0)+1);
+                     jobj.insert("query_strand", (align.GetSeqStrand(0)==eNa_strand_plus?"+":"-"));
+                     jobj.insert("match_strength", match_type_strs[match_score]);
+-                    jobj.insert("drop_count", mi->drops.size());
++                    jobj.insert("drop_count", static_cast<Uint8>(mi->drops.size()));
+                     jobj.insert("subject_id", sid);
+                     jobj.insert("subject_title", stitle);
+                 
+--- a/src/build-system/Makefile.mk.in
++++ b/src/build-system/Makefile.mk.in
+@@ -385,7 +385,7 @@ ZSTD_LIB    =
+ CMPRS_INCLUDE = $(Z_INCLUDE) $(BZ2_INCLUDE) $(LZO_INCLUDE) $(ZSTD_INCLUDE)
+ CMPRS_LIBS    = $(Z_LIBS) $(BZ2_LIBS) $(LZO_LIBS) $(ZSTD_LIBS)
+ CMPRS_STATIC_LIBS = $(Z_LIBS) $(BZ2_LIBS) $(LZO_LIBS) $(ZSTD_STATIC_LIBS)
+-CMPRS_LIB     = $(Z_LIB) $(BZ2_LIB) $(ZSTD_LIB) zcf
++CMPRS_LIB     = $(Z_LIB) $(BZ2_LIB) $(ZSTD_LIB)
+ 
+ # Perl-Compatible Regular Expressions
+ # For historical reasons, the bundled (LIB) version contains the POSIX
+--- a/src/build-system/configure
++++ b/src/build-system/configure
+@@ -18159,9 +18159,12 @@ $as_echo "$as_me: using local zlib copy in $zlocal" >&6;}
+    # AC_DEFINE(USE_LOCAL_ZLIB, 1, [Define to 1 if using a local copy of zlib.])
+              WithPackages="$WithPackages${WithPackagesSep}Z"; WithPackagesSep=" "
+              WithPackages="$WithPackages${WithPackagesSep}LocalZ"; WithPackagesSep=" "
++
++$as_echo "#define HAVE_LIBZ 1" >>confdefs.h
++
+ fi
+ # Cloudflare fork, always present in practice
+-if test -d "$real_srcdir/include/util/compress/zlib_cloudflare"; then
++if test -d "$real_srcdir/include/util/compress/zlib_cloudflare"  &&  test "$host_os" != none; then
+ 
+ $as_echo "#define HAVE_LIBZCF 1" >>confdefs.h
+ 
+--- a/src/build-system/configure.ac
++++ b/src/build-system/configure.ac
+@@ -4849,9 +4849,11 @@ if test -z "$Z_LIBS"; then
+    # AC_DEFINE(USE_LOCAL_ZLIB, 1, [Define to 1 if using a local copy of zlib.])
+    NCBI_PACKAGE(Z)
+    NCBI_PACKAGE(LocalZ)
++   AC_DEFINE(HAVE_LIBZ, 1,
++      [Define to 1 if zlib is available.])
+ fi
+ # Cloudflare fork, always present in practice
+-if test -d "$real_srcdir/include/util/compress/zlib_cloudflare"; then
++if test -d "$real_srcdir/include/util/compress/zlib_cloudflare"  &&  test "$host_os" != none; then
+    AC_DEFINE(HAVE_LIBZCF, 1,
+       [Define to 1 if Cloudflare zlib is available (embedded).])
+ fi
+--- a/src/connect/ncbi_lbdns.c
++++ b/src/connect/ncbi_lbdns.c
+@@ -1269,7 +1269,7 @@ static int/*bool*/ s_Resolve(SERV_ITER iter)
+     const struct SLBDNS_Data* data = (const struct SLBDNS_Data*) iter->data;
+     struct sockaddr_in ns_save;
+     int ns_count, ns_retry, rv;
+-    u_long ns_options;
++    unsigned long ns_options;
+     res_state r;
+ 
+     assert(!data->n_cand  &&  !data->empty);
+--- a/src/util/compress/Makefile.in
++++ b/src/util/compress/Makefile.in
+@@ -1,6 +1,6 @@
+ # $Id$
+ 
+-SUB_PROJ = bzip2 zlib zlib_cloudflare api
++SUB_PROJ = bzip2 zlib api
+ PROJ_TAG = core
+ 
+ srcdir = @srcdir@
+--- a/src/util/compress/api/Makefile.compress.lib
++++ b/src/util/compress/api/Makefile.compress.lib
+@@ -7,7 +7,7 @@ LIB = xcompress
+ 
+ CPPFLAGS = $(ORIG_CPPFLAGS) $(CMPRS_INCLUDE)
+ 
+-DLL_LIB =  $(BZ2_LIB)  $(LZO_LIB)  $(Z_LIB)  $(ZSTD_LIB) zcf
++DLL_LIB =  $(BZ2_LIB)  $(LZO_LIB)  $(Z_LIB)  $(ZSTD_LIB)
+ LIBS    =  $(BZ2_LIBS) $(LZO_LIBS) $(Z_LIBS) $(ZSTD_LIBS) $(ORIG_LIBS)
+ 
+ WATCHERS = ivanov
+--- a/src/util/regexp/config.h
++++ b/src/util/regexp/config.h
+@@ -246,7 +246,7 @@ sure both macros are undefined; an emulation function will then be used. */
+ /* #undef SUPPORT_DIFF_FUZZ */
+ 
+ /* Define to any value to enable support for Just-In-Time compiling. */
+-#define SUPPORT_JIT 1
++/* #undef SUPPORT_JIT */
+ 
+ /* Define to any value to allow pcre2grep to be linked with libbz2, so that it
+    is able to handle .bz2 files. */
