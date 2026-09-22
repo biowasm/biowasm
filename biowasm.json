@@ -96,7 +96,7 @@
 		},
 		{
 			"name": "bowtie2",
-			"programs": ["bowtie2-align-s"],
+			"programs": ["bowtie2-align-s", "bowtie2-align-s-simd"],
 			"description": "Align sequencing reads (.fastq) files to a reference genome",
 			"files": ["js", "wasm", "data"],
 			"versions": [
