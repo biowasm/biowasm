@@ -34,6 +34,10 @@
 	path = tools/fastp/src
 	url = https://github.com/OpenGene/fastp.git
 
+[submodule "tools/fasttree/src"]
+	path = tools/fasttree/src
+	url = https://github.com/morgannprice/fasttree.git
+
 [submodule "tools/findutils/src"]
 	path = tools/findutils/src
 	url = git://git.savannah.gnu.org/findutils.git
