@@ -1,0 +1,30 @@
+--- a/old/FastTree-2.1.11.c
++++ b/old/FastTree-2.1.11.c
+@@ -8782,7 +8782,12 @@
+ 
+ void *mymalloc(size_t sz) {
+   if (sz == 0) return(NULL);
++#ifdef USE_SSE3
++  /* biowasm: Emscripten's malloc is 8-byte aligned, but the SSE path needs 16 */
++  void *new = aligned_alloc(16, (sz + 15) & ~(size_t)15);
++#else
+   void *new = malloc(sz);
++#endif
+   if (new == NULL) {
+     fprintf(stderr, "Out of memory\n");
+     exit(1);
+@@ -8822,7 +8827,14 @@
+     new = mymemdup(data, szNew);
+     myfree(data, szOld);
+   } else {
++#ifdef USE_SSE3
++    /* biowasm: realloc makes no 16-byte guarantee under Emscripten, so allocate
++       aligned and copy. Counters are left to the caller, as with realloc(). */
++    new = aligned_alloc(16, (szNew + 15) & ~(size_t)15);
++    if (new != NULL) { memcpy(new, data, szOld < szNew ? szOld : szNew); free(data); }
++#else
+     new = realloc(data,szNew);
++#endif
+     if (new == NULL) {
+       fprintf(stderr, "Out of memory\n");
+       exit(1);

@@ -154,7 +154,7 @@
 		},
 		{
 			"name": "fasttree",
-			"programs": ["fasttree"],
+			"programs": ["fasttree", "fasttree-simd"],
 			"description": "Build phylogenetic trees from multiple sequence alignments",
 			"versions": [
 				{
