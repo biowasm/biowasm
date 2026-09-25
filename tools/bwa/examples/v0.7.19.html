@@ -1,0 +1,12 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["bwa/0.7.19"]);
+
+// Index the reference, then align the reads against it
+await CLI.exec("bwa index /bwa/example.fa");
+const output = await CLI.exec("bwa mem /bwa/example.fa /bwa/reads.fq");
+document.getElementById("output").innerHTML = output.stdout;
+</script>
+
+<h4>Output of <code>bwa mem</code>:</h4>
+<pre id="output">Loading...</pre>

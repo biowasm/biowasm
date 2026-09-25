@@ -1,0 +1,80 @@
+--- a/Makefile
++++ b/Makefile
+@@ -34,7 +34,7 @@
+ 
+ all:$(PROG)
+ 
+-bwa:libbwa.a $(AOBJS) main.o
++$(PROG):libbwa.a $(AOBJS) main.o
+ 		$(CC) $(CFLAGS) $(LDFLAGS) $(AOBJS) main.o -o $@ -L. -lbwa $(LIBS)
+ 
+ bwamem-lite:libbwa.a example.o
+--- a/kthread.c
++++ b/kthread.c
+@@ -43,7 +43,7 @@
+ 	}
+ 	while ((i = steal_work(w->t)) >= 0)
+ 		w->t->func(w->t->data, i, w - w->t->w);
+-	pthread_exit(0);
++	/* biowasm: pthread_exit() does not return under Emscripten */
+ }
+ 
+ void kt_for(int n_threads, void (*func)(void*,long,int), void *data, long n)
+@@ -56,8 +56,9 @@
+ 	tid = (pthread_t*)alloca(n_threads * sizeof(pthread_t));
+ 	for (i = 0; i < n_threads; ++i)
+ 		t.w[i].t = &t, t.w[i].i = i;
+-	for (i = 0; i < n_threads; ++i) pthread_create(&tid[i], 0, ktf_worker, &t.w[i]);
+-	for (i = 0; i < n_threads; ++i) pthread_join(tid[i], 0);
++	/* biowasm: pthreads are unavailable, so run the workers inline */
++	for (i = 0; i < n_threads; ++i) ktf_worker(&t.w[i]);
++	(void)tid;
+ }
+ 
+ /*****************
+@@ -89,31 +90,12 @@
+ 	ktp_t *p = w->pl;
+ 	while (w->step < p->n_steps) {
+ 		// test whether we can kick off the job with this worker
+-		pthread_mutex_lock(&p->mutex);
+-		for (;;) {
+-			int i;
+-			// test whether another worker is doing the same step
+-			for (i = 0; i < p->n_workers; ++i) {
+-				if (w == &p->workers[i]) continue; // ignore itself
+-				if (p->workers[i].step <= w->step && p->workers[i].index < w->index)
+-					break;
+-			}
+-			if (i == p->n_workers) break; // no workers with smaller indices are doing w->step or the previous steps
+-			pthread_cond_wait(&p->cv, &p->mutex);
+-		}
+-		pthread_mutex_unlock(&p->mutex);
+-
+-		// working on w->step
++		/* biowasm: one inline worker, so no locking is needed and
++		   pthread_exit() must not be called (it does not return). */
+ 		w->data = p->func(p->shared, w->step, w->step? w->data : 0); // for the first step, input is NULL
+-
+-		// update step and let other workers know
+-		pthread_mutex_lock(&p->mutex);
+ 		w->step = w->step == p->n_steps - 1 || w->data? (w->step + 1) % p->n_steps : p->n_steps;
+ 		if (w->step == 0) w->index = p->index++;
+-		pthread_cond_broadcast(&p->cv);
+-		pthread_mutex_unlock(&p->mutex);
+ 	}
+-	pthread_exit(0);
+ }
+ 
+ void kt_pipeline(int n_threads, void *(*func)(void*, int, void*), void *shared_data, int n_steps)
+@@ -139,8 +121,9 @@
+ 	}
+ 
+ 	tid = (pthread_t*)alloca(n_threads * sizeof(pthread_t));
+-	for (i = 0; i < n_threads; ++i) pthread_create(&tid[i], 0, ktp_worker, &aux.workers[i]);
+-	for (i = 0; i < n_threads; ++i) pthread_join(tid[i], 0);
++	/* biowasm: drive the pipeline inline instead of spawning workers */
++	ktp_worker(&aux.workers[0]);
++	(void)tid;
+ 
+ 	pthread_mutex_destroy(&aux.mutex);
+ 	pthread_cond_destroy(&aux.cv);

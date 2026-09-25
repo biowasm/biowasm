@@ -1,0 +1,72 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1028,6 +1028,12 @@
+ ENDIF( )
+ 
+ ADD_EXECUTABLE( parasail_aligner apps/parasail_aligner.cpp contrib/getMemorySize.c $<TARGET_OBJECTS:sais> ${maybe_getopt} )
++# biowasm: let the output name be set at build time. Emscripten bakes the name of
++# the preloaded .data package into the glue code, so the SIMD and non-SIMD builds
++# have to be named when they are built, not renamed afterwards.
++IF( DEFINED PARASAIL_ALIGNER_NAME )
++    SET_TARGET_PROPERTIES( parasail_aligner PROPERTIES OUTPUT_NAME ${PARASAIL_ALIGNER_NAME} )
++ENDIF()
+ IF( OPENMP_FOUND )
+     SET_TARGET_PROPERTIES( parasail_aligner PROPERTIES COMPILE_FLAGS ${OpenMP_CXX_FLAGS} )
+     IF( NOT WIN32 )
+--- a/src/cpuid.c
++++ b/src/cpuid.c
+@@ -13,8 +13,27 @@
+ 
+ #include "parasail/cpuid.h"
+ 
+-#if defined(__arm__) || defined(__aarch64__) || defined(__powerpc__) || defined(__PPC__) || defined(__powerpc64__) || defined(__PPC64__)
++#if defined(__EMSCRIPTEN__)
+ 
++/* biowasm: WebAssembly has no CPUID. SSE2 lowers to wasm SIMD and is selected
++   at compile time, so report it from HAVE_SSE2 instead of probing the CPU. */
++int parasail_can_use_avx512vbmi() { return 0; }
++int parasail_can_use_avx512bw() { return 0; }
++int parasail_can_use_avx512f() { return 0; }
++int parasail_can_use_avx2() { return 0; }
++int parasail_can_use_sse41() { return 0; }
++int parasail_can_use_sse2() {
++#if HAVE_SSE2
++    return 1;
++#else
++    return 0;
++#endif
++}
++int parasail_can_use_altivec() { return 0; }
++int parasail_can_use_neon() { return 0; }
++
++#elif defined(__arm__) || defined(__aarch64__) || defined(__powerpc__) || defined(__PPC__) || defined(__powerpc64__) || defined(__PPC64__)
++
+ /* stubs for all non-x86_64 platforms */
+ int parasail_can_use_avx512vbmi() { return 0; }
+ int parasail_can_use_avx512bw() { return 0; }
+--- a/src/memory_sse.c
++++ b/src/memory_sse.c
+@@ -6,6 +6,8 @@
+  * Copyright (c) 2015 Battelle Memorial Institute.
+  */
+ #include "config.h"
++
++#include <stdlib.h>
+ 
+ #include <emmintrin.h>
+ 
+--- a/apps/parasail_aligner.cpp
++++ b/apps/parasail_aligner.cpp
+@@ -362,7 +362,11 @@
+     exit(status);
+ }
+ 
+-#ifdef HAVE_POLL
++#if defined(__EMSCRIPTEN__)
++/* biowasm: Emscripten reports stdin as always ready, which makes the aligner
++   believe a third input was piped in. Nothing is piped in here. */
++static int stdin_has_data() { return 0; }
++#elif defined(HAVE_POLL)
+ static int stdin_has_data() {
+     int timeout = 100; /* wait 100ms */
+     struct pollfd fd;

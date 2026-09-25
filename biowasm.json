@@ -106,6 +106,18 @@
 				}
 			]
 		},
+		{
+			"name": "bwa",
+			"programs": ["bwa", "bwa-simd"],
+			"description": "Align sequencing reads (.fastq) to a reference genome with BWA-MEM",
+			"files": ["js", "wasm", "data"],
+			"versions": [
+				{
+					"version": "0.7.19",
+					"branch": "v0.7.19"
+				}
+			]
+		},
         {
             "name": "cawlign",
             "programs": ["cawlign"],
@@ -383,6 +395,18 @@
 				{
 					"version": "5.1.0",
 					"branch": "5.1.0"
+				}
+			]
+		},
+		{
+			"name": "parasail",
+			"programs": ["parasail_aligner", "parasail_aligner-simd"],
+			"description": "Pairwise sequence alignment using SIMD Smith-Waterman, Needleman-Wunsch and semi-global algorithms",
+			"files": ["js", "wasm", "data"],
+			"versions": [
+				{
+					"version": "2.6.2",
+					"branch": "v2.6.2"
 				}
 			]
 		},

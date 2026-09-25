@@ -1,0 +1,12 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["parasail/2.6.2"]);
+
+// Align two proteins with striped Smith-Waterman
+await CLI.exec("parasail_aligner -a sw_striped_16 -x -f /parasail/P01111.fasta -q /parasail/P01008.fasta -g output.csv");
+const output = await CLI.cat("output.csv");
+document.getElementById("output").innerHTML = output.trim();
+</script>
+
+<h4>Output of <code>parasail_aligner</code>:</h4>
+<pre id="output">Loading...</pre>

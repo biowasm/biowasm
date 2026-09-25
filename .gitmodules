@@ -6,6 +6,10 @@
 	path = tools/ASTER/src
 	url = https://github.com/chaoszhang/ASTER.git
 
+[submodule "tools/bash/src"]
+	path = tools/bash/src
+	url = git://git.savannah.gnu.org/bash.git
+
 [submodule "tools/bcftools/src"]
 	path = tools/bcftools/src
 	url = https://github.com/samtools/bcftools.git
@@ -21,6 +25,10 @@
 [submodule "tools/bowtie2/src"]
 	path = tools/bowtie2/src
 	url = https://github.com/BenLangmead/bowtie2
+
+[submodule "tools/bwa/src"]
+	path = tools/bwa/src
+	url = https://github.com/lh3/bwa.git
 
 [submodule "tools/cawlign/src"]
 	path = tools/cawlign/src
@@ -113,6 +121,10 @@
 [submodule "tools/muscle/src"]
 	path = tools/muscle/src
 	url = https://github.com/rcedgar/muscle.git
+
+[submodule "tools/parasail/src"]
+	path = tools/parasail/src
+	url = https://github.com/jeffdaily/parasail.git
 
 [submodule "tools/samtools/src"]
 	path = tools/samtools/src
