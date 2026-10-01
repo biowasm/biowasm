@@ -58,7 +58,7 @@ import CONFIG from "@/biowasm.json";
 					</tr>
 					<tr>
 						<td><a class="fw-bold" href="https://bonito.epi2me.io">Nanopore</a></td>
-						<td>Runs <code>samtools</code> to generate <code>.bam</code> files after basecalling in the browser</td>
+						<td>In-browser basecaller, uses <code>minimap2</code> and <code>samtools</code> after basecalling</td>
 					</tr>
 					<tr>
 						<td><a class="fw-bold" href="https://niema-lab.github.io/ViralWasm">ViralWasm</a></td>
