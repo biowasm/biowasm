@@ -110,6 +110,10 @@
 	path = tools/muscle/src
 	url = https://github.com/rcedgar/muscle.git
 
+[submodule "tools/ncbi-blast/src"]
+	path = tools/ncbi-blast/src
+	url = https://github.com/ncbi/ncbi-cxx-toolkit-public.git
+
 [submodule "tools/samtools/src"]
 	path = tools/samtools/src
 	url = https://github.com/samtools/samtools.git
