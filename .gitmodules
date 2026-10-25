@@ -6,10 +6,6 @@
 	path = tools/ASTER/src
 	url = https://github.com/chaoszhang/ASTER.git
 
-[submodule "tools/bash/src"]
-	path = tools/bash/src
-	url = git://git.savannah.gnu.org/bash.git
-
 [submodule "tools/bcftools/src"]
 	path = tools/bcftools/src
 	url = https://github.com/samtools/bcftools.git
