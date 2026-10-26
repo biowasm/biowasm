@@ -1,9 +1,10 @@
 <script>
+import { browser } from "$app/environment";
 import { page } from "$app/stores";
 import { Styles, Container, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from "sveltestrap";
 import CONFIG from "@/biowasm.json";
 
-let isOpen = false;
+let isOpen = browser && window.innerWidth >= 768;
 $: path = $page.url.pathname.split("/")[1];
 </script>
 

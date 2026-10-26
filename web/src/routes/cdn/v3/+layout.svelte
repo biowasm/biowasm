@@ -10,6 +10,8 @@ $: title = `Packages${!tool ? "" : ": " + tool}${!version ? "" : " / " + version
 $: if(browser) getDownloadStats(tool, version);
 let nbDownloads = null;
 
+$: hasSimd = (CONFIG.tools.find(t => t.name === tool)?.programs || []).some(p => p.endsWith("-simd"));
+
 async function getDownloadStats(tool, version) {
 	if(!tool || !version)
 		return;
@@ -39,6 +41,12 @@ async function getDownloadStats(tool, version) {
 					{tool}
 				{:else}
 					<a href="{CONFIG.url}/{tool}">{tool}</a>
+				{/if}
+
+				{#if hasSimd}
+					<span class="text-small align-middle">
+						<Badge pill color="success opacity-75" class="ms-1 fw-normal" title="Ships a SIMD-accelerated build, used automatically where supported">simd</Badge>
+					</span>
 				{/if}
 			</BreadcrumbItem>
 		{/if}
