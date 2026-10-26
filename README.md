@@ -19,7 +19,7 @@ A repository of genomics tools, compiled from C/C++ to WebAssembly so they can r
 | [sandbox.bio](https://sandbox.bio) | Runs command-line tools in the browser to power interactive tutorials |
 | [42basepairs](https://42basepairs.com) | Runs `samtools`, `bedtools`, `bcftools` and other tools to preview genomic files |
 | [CZ ID](https://czid.org/) ([repo](https://github.com/chanzuckerberg/czid-web)) | Runs `htsfile` and `seqtk` to identify data issues before file upload |
-| [Nanopore](https://bonito.epi2me.io) | Runs `samtools` to generate `.bam` files after basecalling in the browser |
+| [Nanopore](https://bonito.epi2me.io) | In-browser basecaller, uses `minimap2` and `samtools` after basecalling |
 | [ViralWasm](https://niema-lab.github.io/ViralWasm/) ([repo](https://github.com/Niema-Lab/ViralWasm)) | Runs `minimap2` and `ViralConsensus` for viral molecular epidemiology analysis |
 | [CRISPRLungo](https://pinellolab.github.io/CRISPRLungo/) ([repo](https://github.com/pinellolab/CRISPRLungo)) | Runs `minimap2` as part of a long-read CRISPR analysis pipeline |
 | [Datagrok](https://datagrok.ai) ([repo](https://github.com/datagrok-ai/public)) | Runs `kalign` in the browser for multiple-sequence alignment analysis |
