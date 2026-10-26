@@ -79,7 +79,7 @@ function sortBy(col) {
 				<td class="text-primary fw-bold">
 					{t.name}
 					{#if hasSimd(t)}
-						<Badge pill color="success opacity-50" class="ms-1 fw-normal" title="Ships a SIMD-accelerated build, used automatically where supported">SIMD</Badge>
+						<Badge pill color="success opacity-75" class="ms-1 fw-normal" title="Ships a SIMD-accelerated build, used automatically where supported">simd</Badge>
 					{/if}
 				</td>
 				<td>{t.description}</td>

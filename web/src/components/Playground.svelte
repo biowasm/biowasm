@@ -1,4 +1,5 @@
 <script>
+import { onMount } from "svelte";
 import { Icon } from "sveltestrap";
 import hljs from "highlight.js/lib/core";
 import xml from "highlight.js/lib/languages/xml";
@@ -24,12 +25,25 @@ let source = codeTrimmed;                          // what's in the editor
 let srcdoc = autorun ? STYLE + codeTrimmed : "";   // what the iframe is running
 let editor, highlighted;
 
+let runKeyLabel = "Ctrl+Enter";
+onMount(() => {
+	if(/Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent))
+		runKeyLabel = "\u2318+Enter";
+});
+
 $: codeHighlighted = hljs.highlight(source, { language: lang }).value;
 
 // Blank srcdoc first so re-running resets the iframe's state
 function run() {
 	srcdoc = "";
 	setTimeout(() => (srcdoc = STYLE + source), 0);
+}
+
+function handleKeydown(evt) {
+	if((evt.metaKey || evt.ctrlKey) && evt.key === "Enter") {
+		evt.preventDefault();
+		run();
+	}
 }
 
 // Keep the highlighted layer aligned with the textarea while scrolling
@@ -41,7 +55,7 @@ function syncScroll() {
 
 <div class="border rounded overflow-hidden mb-3">
 	<div class="d-flex align-items-center justify-content-between bg-light border-bottom px-2 py-1">
-		<span class="small text-muted">Edit the code and click Run</span>
+		<span class="small text-muted">Edit the code and click Run ({runKeyLabel})</span>
 		<button class="btn btn-sm btn-outline-primary py-0" on:click={run}>Run <Icon name="play-fill" /></button>
 	</div>
 
@@ -53,6 +67,7 @@ function syncScroll() {
 				bind:this={editor}
 				bind:value={source}
 				on:scroll={syncScroll}
+				on:keydown={handleKeydown}
 				spellcheck="false"
 				aria-label="Code editor"
 			></textarea>
