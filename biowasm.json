@@ -222,6 +222,18 @@
 			]
 		},
 		{
+			"name": "hmmer",
+			"programs": ["hmmsearch", "hmmsearch-simd", "hmmscan", "hmmscan-simd", "hmmbuild", "hmmbuild-simd", "hmmpress", "hmmpress-simd", "phmmer", "phmmer-simd", "nhmmer", "nhmmer-simd", "hmmalign", "hmmalign-simd"],
+			"description": "Search sequence databases for homologs using profile hidden Markov models",
+			"files": ["js", "wasm", "data"],
+			"versions": [
+				{
+					"version": "3.4",
+					"branch": "hmmer-3.4"
+				}
+			]
+		},
+		{
 			"name": "htslib",
 			"programs": ["tabix", "htsfile", "bgzip"],
 			"description": "Bioinformatics file format utilities: tabix, htsfile, and bgzip",

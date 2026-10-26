@@ -62,6 +62,18 @@
 	path = tools/grep/src
 	url = git://git.savannah.gnu.org/grep.git
 
+[submodule "tools/hmmer/easel"]
+	path = tools/hmmer/easel
+	url = https://github.com/EddyRivasLab/easel.git
+
+[submodule "tools/hmmer/simde"]
+	path = tools/hmmer/simde
+	url = https://github.com/simd-everywhere/simde.git
+
+[submodule "tools/hmmer/src"]
+	path = tools/hmmer/src
+	url = https://github.com/EddyRivasLab/hmmer.git
+
 [submodule "tools/htslib/src"]
 	path = tools/htslib/src
 	url = https://github.com/samtools/htslib.git

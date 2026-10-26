@@ -27,6 +27,7 @@ const EXPECTED_OUTPUTS = {
 	"tools/gfatools/examples/30ea19b.html": [`MTh4001	+	MTh4502	+	0M	SR:i:0	L1:i:501	L2:i:5003`],
 	"tools/gffread/examples/v0.12.7.html": [`##gff-version 3\n# gffread v0.12.7\n# gffread /gffread/annotation.gff\nNT_187562.1	BestRefSeq	mRNA	411	68627	.	+	.	ID=rna157470;geneID=gene55473;gene_name=MGAM\nNT_187562.1	BestRefSeq	exon	411	495	.	+	.	Parent=rna157470\nNT_187562.1	BestRefSeq	exon	1995	2051	.	+	.	Parent=rna157470`],
 	"tools/grep/examples/v3.7.html": [`good\ngreat`],
+	"tools/hmmer/examples/hmmer-3.4.html": [`1.9e-67  217.7   0.1    2.1e-67  217.5   0.1    1.0  1  HBB_MANSP`],
 	"tools/htslib/examples/1.10.html": [
 		`Usage:   tabix [OPTIONS] [FILE] [REGION [...]]`,
 		`Usage: htsfile [-chHv] FILE...`,
