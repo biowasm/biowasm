@@ -22,6 +22,10 @@
 	path = tools/bowtie2/src
 	url = https://github.com/BenLangmead/bowtie2
 
+[submodule "tools/bwa/src"]
+	path = tools/bwa/src
+	url = https://github.com/lh3/bwa.git
+
 [submodule "tools/cawlign/src"]
 	path = tools/cawlign/src
 	url = https://github.com/veg/cawlign.git
@@ -33,6 +37,10 @@
 [submodule "tools/fastp/src"]
 	path = tools/fastp/src
 	url = https://github.com/OpenGene/fastp.git
+
+[submodule "tools/fasttree/src"]
+	path = tools/fasttree/src
+	url = https://github.com/morgannprice/fasttree.git
 
 [submodule "tools/findutils/src"]
 	path = tools/findutils/src
@@ -53,6 +61,18 @@
 [submodule "tools/grep/src"]
 	path = tools/grep/src
 	url = git://git.savannah.gnu.org/grep.git
+
+[submodule "tools/hmmer/easel"]
+	path = tools/hmmer/easel
+	url = https://github.com/EddyRivasLab/easel.git
+
+[submodule "tools/hmmer/simde"]
+	path = tools/hmmer/simde
+	url = https://github.com/simd-everywhere/simde.git
+
+[submodule "tools/hmmer/src"]
+	path = tools/hmmer/src
+	url = https://github.com/EddyRivasLab/hmmer.git
 
 [submodule "tools/htslib/src"]
 	path = tools/htslib/src

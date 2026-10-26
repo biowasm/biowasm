@@ -1,0 +1,17 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["hmmer/hmmbuild/3.4", "hmmer/hmmsearch/3.4"], {
+  printInterleaved: false
+});
+
+// Build a profile HMM from an alignment of 4 globins
+await CLI.exec("hmmbuild globins4.hmm /hmmer/globins4.sto");
+
+// Search globin sequences with it
+const output = await CLI.exec("hmmsearch globins4.hmm /hmmer/globins45.fa");
+
+document.getElementById("output").innerHTML = output.stdout;
+</script>
+
+<h4>Output of <code>hmmsearch</code> on sample data:</h4>
+<pre id="output">Loading...</pre>

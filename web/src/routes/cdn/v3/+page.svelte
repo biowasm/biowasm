@@ -1,7 +1,7 @@
 <script context="module">
 import { onMount } from "svelte";
 import { goto } from "$app/navigation";
-import { Table } from "sveltestrap";
+import { Badge, Table } from "sveltestrap";
 import { getToolURL } from "$lib/utils";
 </script>
 
@@ -34,6 +34,12 @@ onMount(async () => {
 });
 
 // Utilities
+// A tool ships SIMD if it publishes a "-simd" variant of one of its programs.
+// Aioli picks that variant automatically when the browser supports it.
+function hasSimd(tool) {
+	return (tool.programs || []).some(p => p.endsWith("-simd"));
+}
+
 function getNbDownloads(tool) {
 	let sum = 0;
 	const statsPerVersion = stats?.[tool.name];
@@ -70,7 +76,12 @@ function sortBy(col) {
 				else
 					goto(toolURL);
 			}}>
-				<td class="text-primary fw-bold">{t.name}</td>
+				<td class="text-primary fw-bold">
+					{t.name}
+					{#if hasSimd(t)}
+						<Badge pill color="success opacity-75" class="ms-1 fw-normal" title="Ships a SIMD-accelerated build, used automatically where supported">simd</Badge>
+					{/if}
+				</td>
 				<td>{t.description}</td>
 				<td>{t.versions.at(-1).version}</td>
 				{#key stats}
