@@ -1,5 +1,10 @@
 #!/bin/bash
 
+set -e
+
+echo "Initializing Easel and SIMDe submodules..."
+git -C ../../.. submodule update --init --recursive tools/hmmer/easel tools/hmmer/simde
+
 # HMMER keeps Easel in a separate repo, and its build expects to find it at
 # ./easel. Both are biowasm submodules (tools/hmmer/src and tools/hmmer/easel);
 # copy Easel in so that `git clean -xdf` in src/ removes it again next time.
@@ -31,7 +36,7 @@ PROGRAMS="hmmsearch hmmbuild phmmer hmmalign"
 
 function build() {
 	local suffix=$1; shift
-	make clean > /dev/null 2>&1
+	make clean > /dev/null 2>&1 || true
 	# ac_cv_func_popen=no: configure's probe finds popen, but Emscripten has no
 	# working implementation, so HAVE_POPEN leaves hmmalign aborting on startup.
 	# The only thing it costs is reading gzipped input, which needs /bin/sh anyway.
