@@ -36,7 +36,7 @@ emmake make \
 	CC=emcc \
 	AR=emar \
 	PROG=../build/bwa-simd.js \
-	CFLAGS="-Wall -Wno-unused-function -O3 -msse2 -msimd128" \
+	CFLAGS="-s USE_ZLIB=1 -Wall -Wno-unused-function -O3 -msse2 -msimd128" \
 	DFLAGS="-DHAVE_PTHREAD" \
 	LIBS="-lm -s USE_ZLIB=1 $WASM_FLAGS -msimd128"
 
@@ -47,6 +47,6 @@ emmake make \
 	CC=emcc \
 	AR=emar \
 	PROG=../build/bwa.js \
-	CFLAGS="-Wall -Wno-unused-function -O3" \
+	CFLAGS="-s USE_ZLIB=1 -Wall -Wno-unused-function -O3" \
 	DFLAGS="-DHAVE_PTHREAD" \
 	LIBS="-lm -s USE_ZLIB=1 $WASM_FLAGS"
