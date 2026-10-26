@@ -411,18 +411,6 @@
 			]
 		},
 		{
-			"name": "parasail",
-			"programs": ["parasail_aligner", "parasail_aligner-simd"],
-			"description": "Pairwise sequence alignment using SIMD Smith-Waterman, Needleman-Wunsch and semi-global algorithms",
-			"files": ["js", "wasm", "data"],
-			"versions": [
-				{
-					"version": "2.6.2",
-					"branch": "v2.6.2"
-				}
-			]
-		},
-		{
 			"name": "samtools",
 			"programs": ["samtools"],
 			"description": "Parse .sam / .bam read alignment files",

@@ -130,10 +130,6 @@
 	path = tools/muscle/src
 	url = https://github.com/rcedgar/muscle.git
 
-[submodule "tools/parasail/src"]
-	path = tools/parasail/src
-	url = https://github.com/jeffdaily/parasail.git
-
 [submodule "tools/samtools/src"]
 	path = tools/samtools/src
 	url = https://github.com/samtools/samtools.git
