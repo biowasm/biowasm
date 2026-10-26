@@ -22,12 +22,12 @@ echo "#include <simde/x86/sse2.h>" > shim/emmintrin.h
 echo "#include <simde/x86/sse3.h>" > shim/pmmintrin.h
 DIR_SHIM=$(pwd)/shim
 
-# Small subset of the tutorial data, so each module doesn't carry 744K of it
+# Sample data
 mkdir -p test
-cp tutorial/globins4.hmm tutorial/globins4.sto tutorial/globins45.fa tutorial/HBB_HUMAN test/
+cp tutorial/globins4.sto tutorial/globins45.fa test/
 
-# Not included: hmmpgmd (a daemon), hmmsim, MPI tools
-PROGRAMS="hmmsearch hmmscan hmmbuild hmmpress phmmer nhmmer hmmalign"
+# Only included the main ones
+PROGRAMS="hmmsearch hmmbuild phmmer hmmalign"
 
 function build() {
 	local suffix=$1; shift

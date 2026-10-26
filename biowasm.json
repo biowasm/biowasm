@@ -223,7 +223,7 @@
 		},
 		{
 			"name": "hmmer",
-			"programs": ["hmmsearch", "hmmsearch-simd", "hmmscan", "hmmscan-simd", "hmmbuild", "hmmbuild-simd", "hmmpress", "hmmpress-simd", "phmmer", "phmmer-simd", "nhmmer", "nhmmer-simd", "hmmalign", "hmmalign-simd"],
+			"programs": ["hmmsearch", "hmmsearch-simd", "hmmbuild", "hmmbuild-simd", "phmmer", "phmmer-simd", "hmmalign", "hmmalign-simd"],
 			"description": "Search sequence databases for homologs using profile hidden Markov models",
 			"files": ["js", "wasm", "data"],
 			"versions": [
