@@ -2,7 +2,7 @@
 
 # Extra compilation flags
 EXTRA_FLAGS=$(cat <<EOF
-    -02
+    -O2
     -s TOTAL_STACK=2097152
     -s EXIT_RUNTIME=0
     -s EXPORTED_RUNTIME_METHODS=['callMain','FS','PROXYFS','WORKERFS','UTF8ToString','getValue','AsciiToString']
