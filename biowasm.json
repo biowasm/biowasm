@@ -3,6 +3,7 @@
 	"tools": [
 		{
 			"name": "aioli",
+			"url": "https://github.com/biowasm/aioli.git",
 			"programs": ["aioli"],
 			"description": "JavaScript library for running biowasm tools",
 			"files": ["js"],
@@ -35,6 +36,7 @@
 		},
 		{
 			"name": "ASTER",
+			"url": "https://github.com/chaoszhang/ASTER.git",
 			"programs": ["astral", "astral-pro", "wastral", "caster-site", "caster-pair"],
 			"description": "Accurate Species Tree EstimatoR",
 			"files": ["js", "wasm", "data"],
@@ -59,6 +61,7 @@
 		},
 		{
 			"name": "bcftools",
+			"url": "https://github.com/samtools/bcftools.git",
 			"programs": ["bcftools"],
 			"description": "Parse .vcf / .bcf variant calling files",
 			"files": ["js", "wasm", "data"],
@@ -72,6 +75,7 @@
 		},
 		{
 			"name": "bedtools",
+			"url": "https://github.com/arq5x/bedtools2.git",
 			"programs": ["bedtools"],
 			"description": "Parse .bed files and perform complex genome arithmetic",
 			"files": ["js", "wasm", "data"],
@@ -88,18 +92,20 @@
 		},
 		{
 			"name": "bhtsne",
+			"url": "https://github.com/lh3/bhtsne.git",
 			"programs": ["bhtsne"],
 			"description": "Run the t-SNE dimensionality-reduction algorithm",
 			"files": ["js", "wasm", "data"],
 			"versions": [
 				{
 					"version": "2016.08.22",
-					"branch": "1a62a5d"
+					"branch": "1a62a5d3842944d832837b5522143cf892908f53"
 				}
 			]
 		},
 		{
 			"name": "bowtie2",
+			"url": "https://github.com/BenLangmead/bowtie2",
 			"programs": ["bowtie2-align-s", "bowtie2-align-s-simd"],
 			"description": "Align sequencing reads (.fastq) files to a reference genome",
 			"files": ["js", "wasm", "data"],
@@ -112,6 +118,7 @@
 		},
 		{
 			"name": "bwa",
+			"url": "https://github.com/lh3/bwa.git",
 			"programs": ["bwa", "bwa-simd"],
 			"description": "Align sequencing reads (.fastq) to a reference genome with BWA-MEM",
 			"files": ["js", "wasm", "data"],
@@ -124,18 +131,20 @@
 		},
         {
             "name": "cawlign",
+            "url": "https://github.com/veg/cawlign.git",
             "programs": ["cawlign"],
             "description": "Align/map sequences in a FASTA file to a reference sequence in a codon-aware manner",
             "files": ["js", "wasm", "data"],
             "versions": [
                 {
                     "version": "0.1.0",
-                    "branch": "v0.1.0"
+                    "branch": "0.1.0"
                 }
             ]
         },
 		{
 			"name": "coreutils",
+			"url": "https://github.com/coreutils/coreutils.git",
 			"programs": ["basename", "cat", "comm", "cut", "date", "df", "dirname", "du", "echo", "env", "fold", "head", "join", "ls", "md5sum", "paste", "seq", "shuf", "sort", "tail", "tee", "tr", "uniq", "wc"],
 			"description": "Bash utilities such as head, tail, ls, sort, uniq, etc.",
 			"versions": [
@@ -147,18 +156,20 @@
 		},
 		{
 			"name": "fastp",
+			"url": "https://github.com/OpenGene/fastp.git",
 			"programs": ["fastp"],
 			"description": "Evaluate data quality of .fastq files",
 			"files": ["js", "wasm", "data"],
 			"versions": [
 				{
 					"version": "0.20.1",
-					"branch": "0.20.1"
+					"branch": "v0.20.1"
 				}
 			]
 		},
 		{
 			"name": "findutils",
+			"url": "git://git.savannah.gnu.org/findutils.git",
 			"programs": ["find"],
 			"description": "Search for files in a folder",
 			"versions": [
@@ -170,6 +181,7 @@
 		},
 		{
 			"name": "fasttree",
+			"url": "https://github.com/morgannprice/fasttree.git",
 			"programs": ["fasttree"],
 			"description": "Build phylogenetic trees from multiple sequence alignments",
 			"versions": [
@@ -181,6 +193,7 @@
 		},
 		{
 			"name": "gawk",
+			"url": "git://git.savannah.gnu.org/gawk.git",
 			"programs": ["gawk"],
 			"description": "Manipulate data files with patterns of interest",
 			"versions": [
@@ -192,18 +205,21 @@
 		},
 		{
 			"name": "gfatools",
+			"url": "https://github.com/lh3/gfatools.git",
 			"programs": ["gfatools"],
 			"description": "Tools for manipulating pangenome sequence graphs",
 			"files": ["js", "wasm", "data"],
 			"versions": [
 				{
 					"version": "253",
-					"branch": "30ea19b"
+					"branch": "30ea19b3d513e7bf77b2e8d9a185b88f17eb2a2b"
 				}
 			]
 		},
 		{
 			"name": "gffread",
+			"url": "https://github.com/gpertea/gffread.git",
+			"sources": [{ "path": "gclib", "url": "https://github.com/gpertea/gclib.git", "branch": "v0.12.8" }],
 			"programs": ["gffread"],
 			"description": "Parse and file .gff/.gtf files",
 			"files": ["js", "wasm", "data"],
@@ -216,6 +232,7 @@
 		},
 		{
 			"name": "grep",
+			"url": "git://git.savannah.gnu.org/grep.git",
 			"programs": ["grep"],
 			"description": "Search and filter files",
 			"versions": [
@@ -227,6 +244,8 @@
 		},
 		{
 			"name": "hmmer",
+			"url": "https://github.com/EddyRivasLab/hmmer.git",
+			"sources": [{ "path": "easel", "url": "https://github.com/EddyRivasLab/easel.git", "branch": "Bio-Easel-0.18" }, { "path": "simde", "url": "https://github.com/simd-everywhere/simde.git", "branch": "v0.8.2" }],
 			"programs": ["hmmsearch", "hmmsearch-simd", "hmmbuild", "hmmbuild-simd", "phmmer", "phmmer-simd", "hmmalign", "hmmalign-simd"],
 			"description": "Search sequence databases for homologs using profile hidden Markov models",
 			"files": ["js", "wasm", "data"],
@@ -239,6 +258,7 @@
 		},
 		{
 			"name": "htslib",
+			"url": "https://github.com/samtools/htslib.git",
 			"programs": ["tabix", "htsfile", "bgzip"],
 			"description": "Bioinformatics file format utilities: tabix, htsfile, and bgzip",
 			"versions": [
@@ -258,6 +278,7 @@
 		},
 		{
 			"name": "hyphy",
+			"url": "https://github.com/veg/hyphy.git",
 			"programs": ["hyphy"],
 			"description": "Comparative sequence analysis using stochastic evolutionary models",
 			"files": ["js", "wasm", "data"],
@@ -270,6 +291,7 @@
 		},
 		{
 			"name": "ivar",
+			"url": "https://github.com/andersen-lab/ivar.git",
 			"programs": ["ivar"],
 			"description": "Tools for viral amplicon-based sequencing",
 			"versions": [
@@ -282,6 +304,7 @@
 		},
 		{
 			"name": "jq",
+			"url": "https://github.com/stedolan/jq.git",
 			"programs": ["jq"],
 			"description": "Filter and wrangle JSON strings",
 			"versions": [
@@ -297,6 +320,7 @@
 		},
 		{
 			"name": "kalign",
+			"url": "https://github.com/TimoLassmann/kalign.git",
 			"programs": ["kalign"],
 			"description": "Multiple sequence alignment",
 			"versions": [
@@ -308,6 +332,7 @@
 		},
 		{
 			"name": "kentutils",
+			"url": "https://github.com/ucscGenomeBrowser/kent.git",
 			"programs": ["bigBedToBed", "bigBedInfo", "bigWigToWig", "bigWigInfo"],
 			"description": "File conversion utilities",
 			"versions": [
@@ -319,6 +344,7 @@
 		},
 		{
 			"name": "lastz",
+			"url": "https://github.com/lastz/lastz.git",
 			"programs": ["lastz", "lastz_D"],
 			"description": "Pairwise DNA sequence aligner",
 			"files": ["js", "wasm", "data"],
@@ -331,6 +357,7 @@
 		},
 		{
 			"name": "libarchive",
+			"url": "https://github.com/libarchive/libarchive.git",
 			"programs": ["bsdunzip"],
 			"description": "Unzip .zip files",
 			"versions": [
@@ -342,6 +369,7 @@
 		},
 		{
 			"name": "lsd2",
+			"url": "https://github.com/tothuhien/lsd2.git",
 			"programs": ["lsd2"],
 			"description": "A phylogeny dating method",
 			"files": ["js", "wasm", "data"],
@@ -354,6 +382,7 @@
 		},
 		{
 			"name": "mafft",
+			"url": "https://gitlab.com/sysimm/mafft.git",
 			"programs": ["tbfast", "dvtditr"],
 			"description": "Multiple sequence alignment for amino acid or nucleotide sequences",
 			"versions": [
@@ -365,6 +394,7 @@
 		},
 		{
 			"name": "minimap2",
+			"url": "https://github.com/lh3/minimap2.git",
 			"programs": ["minimap2", "minimap2-simd"],
 			"description": "Pairwise sequence alignment",
 			"files": ["js", "wasm", "data"],
@@ -377,6 +407,7 @@
 		},
 		{
 			"name": "modbam2bed",
+			"url": "https://github.com/epi2me-labs/modbam2bed.git",
 			"programs": ["modbam2bed"],
 			"description": "Summarize .bam modified bases as .bed files with counts",
 			"files": ["js", "wasm", "data"],
@@ -390,6 +421,7 @@
 		},
 		{
 			"name": "mummer4",
+			"url": "https://github.com/mummer4/mummer.git",
 			"programs": ["nucmer"],
 			"description": "Rapidly align entire genomes",
 			"versions": [
@@ -401,6 +433,7 @@
 		},
 		{
 			"name": "muscle",
+			"url": "https://github.com/rcedgar/muscle.git",
 			"programs": ["muscle"],
 			"description": "Multiple alignments of biological sequences",
 			"versions": [
@@ -416,6 +449,7 @@
 		},
 		{
 			"name": "samtools",
+			"url": "https://github.com/samtools/samtools.git",
 			"programs": ["samtools"],
 			"description": "Parse .sam / .bam read alignment files",
 			"files": ["js", "wasm", "data"],
@@ -439,6 +473,7 @@
 		},
 		{
 			"name": "sed",
+			"url": "git://git.savannah.gnu.org/sed.git",
 			"programs": ["sed"],
 			"description": "Find and replace utilities",
 			"versions": [
@@ -450,17 +485,19 @@
 		},
 		{
 			"name": "seq-align",
+			"url": "https://github.com/noporpoise/seq-align.git",
 			"programs": ["lcs", "needleman_wunsch", "smith_waterman"],
 			"description": "Align sequences using Smith-Waterman/Needleman-Wunsch",
 			"versions": [
 				{
 					"version": "2017.10.18",
-					"branch": "dc41988"
+					"branch": "dc419887c246e6da4f21847cbd6c48edab446e14"
 				}
 			]
 		},
 		{
 			"name": "seqtk",
+			"url": "https://github.com/lh3/seqtk.git",
 			"programs": ["seqtk"],
 			"description": "Parse and wrangle .fasta / .fastq files",
 			"versions": [
@@ -480,17 +517,19 @@
 		},
 		{
 			"name": "ssw",
+			"url": "https://github.com/mengyao/Complete-Striped-Smith-Waterman-Library.git",
 			"programs": ["ssw", "ssw-simd"],
 			"description": "A SIMD implementation of the Smith-Waterman algorithm",
 			"versions": [
 				{
 					"version": "1.2.4",
-					"branch": "ad452ea"
+					"branch": "ad452ea8b3fff0d8abe085d2ccb20e866260721c"
 				}
 			]
 		},
 		{
 			"name": "tn93",
+			"url": "https://github.com/veg/tn93.git",
 			"programs": ["tn93"],
 			"description": "Pairwise distance on FASTA files using Tamura Nei 93 distance",
 			"files": ["js", "wasm", "data"],
@@ -507,6 +546,7 @@
 		},
 		{
 			"name": "tree",
+			"url": "https://gitlab.com/OldManProgrammer/unix-tree.git",
 			"programs": ["tree"],
 			"description": "List folder contents in a tree format",
 			"versions": [
@@ -518,6 +558,7 @@
 		},
 		{
 			"name": "vidjil-algo",
+			"url": "https://gitlab.inria.fr/vidjil/vidjil.git",
 			"programs": ["vidjil-algo"],
 			"description": "High-Throughput Analysis of V(D)J Immune Repertoire",
 			"files": ["js", "wasm", "data"],
@@ -530,6 +571,7 @@
 		},
 		{
 			"name": "ViralConsensus",
+			"url": "https://github.com/niemasd/ViralConsensus.git",
 			"programs": ["viral_consensus"],
 			"description": "Call viral consensus genomes from read alignments",
 			"versions": [
@@ -567,12 +609,13 @@
 		},
 		{
 			"name": "wgsim",
+			"url": "https://github.com/lh3/wgsim.git",
 			"programs": ["wgsim"],
 			"description": "Simulate short reads from a reference genome",
 			"versions": [
 				{
 					"version": "2011.10.17",
-					"branch": "a12da33"
+					"branch": "a12da3375ff3b51a5594d4b6fa35591173ecc229"
 				}
 			]
 		}

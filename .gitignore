@@ -9,3 +9,9 @@ tools/muscle/src-v3/
 .idea/
 tool-ranking/
 .wrangler/
+
+# Tool sources are cloned on demand by bin/fetch.sh
+tools/*/src/
+tools/gffread/gclib/
+tools/hmmer/easel/
+tools/hmmer/simde/

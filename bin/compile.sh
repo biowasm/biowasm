@@ -27,12 +27,6 @@ cd $DIR_TOOL
 mkdir -p build/
 cd src/
 
-# Go to branch/tag of interest (clean up previous iterations)
-log "Resetting code changes..."
-git reset --hard --recurse-submodules
-git clean -xdf
-git checkout --recurse-submodules "$BRANCH"
-
 # Apply patches, if any
 patch_file=../patches/${BRANCH}.patch
 if [[ -f "$patch_file" ]]; then
