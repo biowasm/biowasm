@@ -219,6 +219,7 @@
 		{
 			"name": "gffread",
 			"url": "https://github.com/gpertea/gffread.git",
+			"sources": [{ "path": "gclib", "url": "https://github.com/gpertea/gclib.git", "branch": "v0.12.8" }],
 			"programs": ["gffread"],
 			"description": "Parse and file .gff/.gtf files",
 			"files": ["js", "wasm", "data"],

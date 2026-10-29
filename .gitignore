@@ -12,5 +12,6 @@ tool-ranking/
 
 # Tool sources are cloned on demand by bin/fetch.sh
 tools/*/src/
+tools/gffread/gclib/
 tools/hmmer/easel/
 tools/hmmer/simde/
