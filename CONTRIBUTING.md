@@ -37,25 +37,31 @@ ls tools/seqtk/build
 
 ## Add a new tool to biowasm
 
-First, add the tool as a git module:
+Add a new tool to biowasm.json (we no longer use `.gitmodules` because it doesn't scale and we typically compile one or a few tools at a time):
+
+```json
+{
+	"name": "minimap2",
+	"url": "https://github.com/lh3/minimap2.git",
+	"programs": ["minimap2"],
+	"description": "Sequence alignment program",
+	"versions": [
+		{ "version": "2.22", "branch": "v2.22" }
+	]
+}
+```
+
+Then fetch the source and scaffold the build:
 
 ```bash
 TOOL=minimap2
 BRANCH=v2.22
 REPO=https://github.com/lh3/minimap2.git
 
-# Fetch codebase
-mkdir -p tools/$TOOL
-git submodule add $REPO tools/$TOOL/src
+mkdir -p tools/$TOOL/examples
 
-# Get specific version of the tool
-cd tools/$TOOL/src
-git checkout $BRANCH
-git submodule update --init --recursive
-cd -
-
-# Stage changes for git
-git add tools/$TOOL/src .gitmodules
+# Clone the tool at that tag (same thing bin/compile.py does before each build)
+bin/fetch.sh tools/$TOOL/src $REPO $BRANCH
 
 # Then create a compile.sh script that compiles the tool to WebAssembly
 echo "# TODO" > tools/$TOOL/compile.sh
@@ -68,7 +74,7 @@ echo "#TODO" > tools/$TOOL/examples/$BRANCH.html
 You should also modify/create the following files:
 
 ```bash
-biowasm.json         Add the new tool here so it gets deployed to the CDN
+biowasm.json         Add the new tool here (with its clone `url`) so it gets deployed to the CDN
 
 tools/<tool>/
     compile.sh       Script that will run to compile the tool to WebAssembly (use `$EM_FLAGS` for common flags)
@@ -80,8 +86,10 @@ tools/<tool>/
 
 ## Clean up repos
 
+Tool sources are disposable - `bin/fetch.sh` re-clones whatever the next build needs:
+
 ```bash
-git submodule foreach --recursive 'git reset --hard && git clean -xdf'
+rm -rf tools/*/src tools/hmmer/easel tools/hmmer/simde
 ```
 
 ## Clean up GitHub Actions
