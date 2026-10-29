@@ -126,9 +126,8 @@ before(() => Cypress.automation("remote:debugger:protocol", {
 
 // Should error if we create a new .html example file but don't test it
 it("All code examples are being tested", () => {
-	cy.exec("ls ../tools/*/examples/*.html src/examples/*.html").then(result => {
-		const tests = result.stdout.split("\n");
-		expect(tests.length).to.equal(Object.keys(EXPECTED_OUTPUTS).length);
+	cy.task("listExamples").then(examples => {
+		expect(examples.sort()).to.deep.equal(Object.keys(EXPECTED_OUTPUTS).sort());
 	});
 });
 
@@ -178,5 +177,5 @@ function validateHTML(file, env="prd") {
 		cy.get("body").contains(check);
 
 	if(env === "stg")
-		cy.exec(`rm ../${file}`);
+		cy.task("deleteFile", file);
 }
