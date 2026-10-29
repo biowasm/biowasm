@@ -1,6 +1,6 @@
 <script>
 import { browser } from "$app/environment";
-import { Alert, ListGroup, ListGroupItem } from "sveltestrap";
+import { Alert, ListGroup, ListGroupItem } from "@sveltestrap/sveltestrap";
 import CONFIG from "@/biowasm.json";
 import Playground from "$components/Playground.svelte";
 import CodeBlock from "$components/CodeBlock.svelte";
@@ -13,7 +13,7 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 </script>
 
 <svelte:head>
-	<title>Documentation</title>
+	<title>Documentation | Biowasm</title>
 </svelte:head>
 
 <h4>Documentation</h4>

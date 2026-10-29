@@ -1,7 +1,7 @@
 <script context="module">
 import { onMount } from "svelte";
 import { goto } from "$app/navigation";
-import { Badge, Table } from "sveltestrap";
+import { Badge, Table } from "@sveltestrap/sveltestrap";
 import { getToolURL } from "$lib/utils";
 </script>
 

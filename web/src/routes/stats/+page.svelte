@@ -8,7 +8,7 @@ export let data = { series: [] };
 </script>
 
 <svelte:head>
-	<title>Stats</title>
+	<title>Stats | Biowasm</title>
 </svelte:head>
 
 <h4>Stats</h4>

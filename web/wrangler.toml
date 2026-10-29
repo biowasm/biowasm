@@ -1,8 +1,10 @@
 # Worker Config
 workers_dev = true
-compatibility_date = "2022-06-26"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
 main = "./.cloudflare/worker.mjs"
-site.bucket = "./.cloudflare/public"
+assets.directory = "./.cloudflare/public"
+assets.binding = "ASSETS"
 build.command = "npm run build"
 
 # Crons
