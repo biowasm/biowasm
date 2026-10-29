@@ -12,8 +12,30 @@ import Playground from "$components/Playground.svelte";
 export let data;
 let busyDownload = false;
 
+// Use stg CDN on staging and localhost
+const isStg = browser && (location.hostname.startsWith("stg.") || location.hostname === "localhost");
+
 $: ({ tool, version, usedBy } = data);
 $: code = codeSamples[`../tools/${tool.name}/examples/${version.branch}.html`];
+$: codeSample = isStg && code ? withStgEnv(code) : code;
+
+// Add `env: "stg"` to the Aioli config, whether or not the sample already passes options
+function withStgEnv(code) {
+	const start = code.indexOf("new Aioli([");
+	if(start === -1)
+		return code;
+
+	// The tools array holds no nested arrays, so the next "]" closes it
+	const end = code.indexOf("]", start + "new Aioli([".length);
+	if(end === -1)
+		return code;
+
+	const rest = code.slice(end + 1);
+	const options = rest.match(/^\s*,\s*\{/);
+	if(options)
+		return code.slice(0, end + 1) + options[0] + ` env: "stg",` + rest.slice(options[0].length);
+	return code.slice(0, end + 1) + `, { env: "stg" }` + rest;
+}
 
 // Download program files as a .zip file
 async function downloadAsZip(program) {
@@ -48,11 +70,11 @@ async function downloadAsZip(program) {
 </p>
 
 <!-- Sample Code (use `browser` check to skip SSR) -->
-{#if browser && code}
+{#if browser && codeSample}
 	<h5 class="mt-4">Sample Code</h5>
 	<!-- Re-render Playground component when change tool -->
 	{#key tool}
-		<Playground code={code} />
+		<Playground code={codeSample} />
 	{/key}
 {/if}
 
