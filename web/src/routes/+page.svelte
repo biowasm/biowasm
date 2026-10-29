@@ -11,8 +11,8 @@ import CONFIG from "@/biowasm.json";
 <!-- Jumbotron -->
 <div class="p-5 mb-4 bg-light rounded-3">
 	<div class="container-fluid py-5">
-		<h1 class="display-6 fw-bold col-md-8">Run bioinformatics tools in the browser</h1>
-		<p class="fs-4 col-md-8">Use bioinformatics command-line tools in your web apps with just a few lines of code. Powered by WebAssembly.</p>
+		<h1 class="display-6 fw-bold col-md-8">Run bioinformatics tools in your browser</h1>
+		<p class="fs-4 col-md-8">Use command-line tools in your web apps with just a few lines of code. Powered by WebAssembly.</p>
 		<a href="/documentation" class="btn btn-primary btn-lg" type="button">
 			Get Started <Icon name="arrow-right" />
 		</a>
