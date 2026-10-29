@@ -47,14 +47,16 @@ jobs:
       # ------------------------------------------------------------------------
       # Deploy to Cloudflare Workers
       # ------------------------------------------------------------------------
+      # Runs even when tools_to_compile is "none", so the website can be deployed on its own
       - name: Deploy (${{ github.event.inputs.env }})
-        if: ${{ github.event.inputs.tools_to_compile != 'none' }}
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
           CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
         run: |
-          apt-get install -y jq
+          # The compile step above is skipped when tools_to_compile is "none", so don't
+          # rely on the `apt-get update` it runs
+          apt-get update && apt-get install -y jq
 
           # Install Node.js
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
@@ -64,7 +66,10 @@ jobs:
           # Deploy
           cd web/
           npm install
-          npx wrangler kv bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
+          # Only upload tool files to KV if we compiled some; otherwise build/ doesn't exist
+          if [ "${{ github.event.inputs.tools_to_compile }}" != "none" ]; then
+            npx wrangler kv bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
+          fi
           npx wrangler deploy --env=${{ github.event.inputs.env }}
 
       # ------------------------------------------------------------------------
