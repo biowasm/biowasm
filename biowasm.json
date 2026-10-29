@@ -99,7 +99,7 @@
 			"versions": [
 				{
 					"version": "2016.08.22",
-					"branch": "1a62a5d"
+					"branch": "1a62a5d3842944d832837b5522143cf892908f53"
 				}
 			]
 		},
@@ -212,7 +212,7 @@
 			"versions": [
 				{
 					"version": "253",
-					"branch": "30ea19b"
+					"branch": "30ea19b3d513e7bf77b2e8d9a185b88f17eb2a2b"
 				}
 			]
 		},
@@ -491,7 +491,7 @@
 			"versions": [
 				{
 					"version": "2017.10.18",
-					"branch": "dc41988"
+					"branch": "dc419887c246e6da4f21847cbd6c48edab446e14"
 				}
 			]
 		},
@@ -523,7 +523,7 @@
 			"versions": [
 				{
 					"version": "1.2.4",
-					"branch": "ad452ea"
+					"branch": "ad452ea8b3fff0d8abe085d2ccb20e866260721c"
 				}
 			]
 		},
@@ -615,7 +615,7 @@
 			"versions": [
 				{
 					"version": "2011.10.17",
-					"branch": "a12da33"
+					"branch": "a12da3375ff3b51a5594d4b6fa35591173ecc229"
 				}
 			]
 		}

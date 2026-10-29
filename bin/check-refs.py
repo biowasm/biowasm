@@ -2,7 +2,7 @@
 """
 Check that every branch/tag in biowasm.json actually exists in the tool's repo.
 """
-import json, subprocess, sys
+import json, subprocess, sys, tempfile
 
 import os, re
 
@@ -18,10 +18,21 @@ def exists(url, ref, local=None):
             r = subprocess.run(["git", "-C", local, "cat-file", "-e", f"{ref}^{{commit}}"],
                                capture_output=True)
             return "ok" if r.returncode == 0 else "missing"
-        # Can't check an abbreviated SHA remotely: ls-remote only lists refs, and a
-        # shallow fetch needs the full 40 characters
+        # ls-remote only lists refs, but a full SHA can be fetched directly
+        if len(ref) == 40:
+            return "ok" if fetchable(url, ref) else "missing"
         return "sha"
     return "missing"
+
+
+def fetchable(url, sha):
+    """Ask the server for just that one commit, which proves it still exists."""
+    with tempfile.TemporaryDirectory() as tmp:
+        subprocess.run(["git", "init", "-q", tmp], capture_output=True)
+        subprocess.run(["git", "-C", tmp, "remote", "add", "origin", url], capture_output=True)
+        r = subprocess.run(["git", "-C", tmp, "fetch", "-q", "--depth", "1", "origin", sha],
+                           capture_output=True, timeout=120)
+        return r.returncode == 0
 
 bad = 0
 unverified = []
