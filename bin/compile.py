@@ -78,17 +78,15 @@ def compile(tool, versions=[], level=0):
 	files = tool_info["files"] if "files" in tool_info else ["js", "wasm"]
 	programs = tool_info["programs"] if "programs" in tool_info else [tool]
 	versions = [v for v in tool_info["versions"] if v["version"] in versions] if versions else tool_info["versions"]
-	tool_git_path = f"tools/{tool}/src/"
+	# No URL means the source is in this repo already, like "base"
+	tool_url = tool_info.get("url")
+	# Repos cloned next to src/, e.g. HMMER needs Easel and SIMDe
+	tool_sources = tool_info.get("sources", [])
 
 	# Validate
 	if len(versions) == 0:
 		print(f"No valid versions found in biowasm.json for {tool}. Make sure versions don't start with 'v'.")
 		exit(1)
-
-	# Cleanup to avoid "Your local changes to the following files would be overwritten by checkout"
-	exec(f"cd {tool_git_path} && git stash && cd -")
-	# Init repo
-	exec(f"git submodule update --init --recursive {tool_git_path} && git submodule status {tool_git_path}")
 
 	# Compile each version and its dependencies
 	for version_info in versions:
@@ -101,6 +99,13 @@ def compile(tool, versions=[], level=0):
 
 		dir_build = f"{DIR_BUILD}/{tool}/{version}"
 		exec(f"mkdir -p {dir_build}")
+
+		# Grab the source at this version's tag
+		if tool_url:
+			exec(f"bin/fetch.sh tools/{tool}/src {tool_url} {branch}")
+		for source in tool_sources:
+			exec(f"bin/fetch.sh tools/{tool}/{source['path']} {source['url']} {source['branch']}")
+
 		exec(f"bin/compile.sh tools/{tool} {branch}")
 		for program in programs:
 			for file in files:

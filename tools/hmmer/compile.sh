@@ -2,12 +2,7 @@
 
 set -e
 
-echo "Initializing Easel and SIMDe submodules..."
-git -C ../../.. submodule update --init --recursive tools/hmmer/easel tools/hmmer/simde
-
-# HMMER keeps Easel in a separate repo, and its build expects to find it at
-# ./easel. Both are biowasm submodules (tools/hmmer/src and tools/hmmer/easel);
-# copy Easel in so that `git clean -xdf` in src/ removes it again next time.
+# HMMER's build expects Easel at ./easel, so copy it in from the repo next door
 echo "Staging Easel..."
 rm -rf easel
 cp -r ../easel easel
