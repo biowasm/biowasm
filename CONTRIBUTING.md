@@ -78,6 +78,12 @@ tools/<tool>/
         <tag>.html   Example HTML code for running the tool; will be listed on biowasm.com (optional)
 ```
 
+## Clean up repos
+
+```bash
+git submodule foreach --recursive 'git reset --hard && git clean -xdf'
+```
+
 ## Clean up GitHub Actions
 
 ```bash
