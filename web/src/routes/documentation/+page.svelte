@@ -13,7 +13,7 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 </script>
 
 <svelte:head>
-	<title>Documentation</title>
+	<title>Documentation | Biowasm</title>
 </svelte:head>
 
 <h4>Documentation</h4>

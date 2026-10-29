@@ -22,7 +22,7 @@ async function getDownloadStats(tool, version) {
 </script>
 
 <svelte:head>
-	<title>{title}</title>
+	<title>{title} | Biowasm</title>
 </svelte:head>
 
 <h4>
