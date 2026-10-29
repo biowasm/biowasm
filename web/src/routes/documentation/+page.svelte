@@ -1,6 +1,6 @@
 <script>
 import { browser } from "$app/environment";
-import { Alert, ListGroup, ListGroupItem } from "sveltestrap";
+import { Alert, ListGroup, ListGroupItem } from "@sveltestrap/sveltestrap";
 import CONFIG from "@/biowasm.json";
 import Playground from "$components/Playground.svelte";
 import CodeBlock from "$components/CodeBlock.svelte";

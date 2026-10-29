@@ -1,5 +1,5 @@
 <script>
-import { Icon, Table } from "sveltestrap";
+import { Icon, Table } from "@sveltestrap/sveltestrap";
 import LinkPackage from "$components/LinkPackage.svelte";
 import CONFIG from "@/biowasm.json";
 </script>

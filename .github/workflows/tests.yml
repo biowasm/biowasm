@@ -17,6 +17,11 @@ jobs:
         with:
           ref: ${{ github.ref }}
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
       - name: Run tests
         run: |
           cd web/

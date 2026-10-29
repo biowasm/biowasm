@@ -64,8 +64,8 @@ jobs:
           # Deploy
           cd web/
           npm install
-          npx wrangler kv:bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
-          npx wrangler publish --env=${{ github.event.inputs.env }}
+          npx wrangler kv bulk put --binding=CDN --env=${{ github.event.inputs.env }} ../build/cf_kv_upload.json
+          npx wrangler deploy --env=${{ github.event.inputs.env }}
 
       # ------------------------------------------------------------------------
       # Save changes to manifest (only after successful deploy!)

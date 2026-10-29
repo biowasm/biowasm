@@ -1,7 +1,7 @@
 <script>
 import { browser } from "$app/environment";
 import { page } from "$app/stores";
-import { Badge, Breadcrumb, BreadcrumbItem } from "sveltestrap";
+import { Badge, Breadcrumb, BreadcrumbItem } from "@sveltestrap/sveltestrap";
 import CONFIG from "@/biowasm.json";
 
 // Parse tool and version info from URL path

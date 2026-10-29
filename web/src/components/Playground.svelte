@@ -1,6 +1,6 @@
 <script>
 import { onMount } from "svelte";
-import { Icon } from "sveltestrap";
+import { Icon } from "@sveltestrap/sveltestrap";
 import hljs from "highlight.js/lib/core";
 import xml from "highlight.js/lib/languages/xml";
 import javascript from "highlight.js/lib/languages/javascript";
