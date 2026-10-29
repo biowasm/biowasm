@@ -1,6 +1,7 @@
 <script>
 import { browser } from "$app/environment";
-import { Alert, ListGroup, ListGroupItem } from "@sveltestrap/sveltestrap";
+import { page } from "$app/stores";
+import { Alert, Icon } from "@sveltestrap/sveltestrap";
 import CONFIG from "@/biowasm.json";
 import Playground from "$components/Playground.svelte";
 import CodeBlock from "$components/CodeBlock.svelte";
@@ -10,27 +11,57 @@ import codeSimple from "$examples/simple.html?raw";
 import codeUserFiles from "$examples/files-local.html?raw";
 import codeRemoteFiles from "$examples/files-remote.html?raw";
 import codeMultipleTools from "$examples/multiple-tools.html?raw";
+
+// Sidebar navigation: these are anchors into the sections below
+const NAV = [
+	{ href: "#introduction", label: "Introduction", icon: "book" },
+	{ href: "#examples", label: "Code Examples", icon: "code-slash", children: [
+		{ href: "#simple-example", label: "A simple example" },
+		{ href: "#local-files", label: "Process local user files" },
+		{ href: "#remote-files", label: "Process remote user files" },
+		{ href: "#multiple-tools", label: "Run multiple tools" }
+	] },
+	{ href: "#aioli", label: "API documentation", icon: "braces", children: [
+		{ href: "#aioli-init", label: "Initialization" },
+		{ href: "#aioli-api", label: "Utility functions" }
+	] },
+	{ href: "#no-cdn", label: "Biowasm without a CDN", icon: "cloud-slash", children: [
+		{ href: "#no-cdn-install", label: "Install the Aioli package" },
+		{ href: "#no-cdn-assets", label: "Download Biowasm assets" },
+		{ href: "#no-cdn-setup", label: "Set up Aioli" }
+	] }
+];
+
+// Highlight the section we're in; the top of the page counts as the first one
+$: activeHash = $page.url.hash || NAV[0].href;
 </script>
 
 <svelte:head>
 	<title>Documentation | Biowasm</title>
 </svelte:head>
 
-<h4>Documentation</h4>
+<div class="docs-layout mb-5">
+	<aside class="docs-nav">
+		<div class="docs-nav-inner">
+			<div class="docs-nav-title text-uppercase text-muted">Documentation</div>
+			<nav>
+				{#each NAV as item (item.href)}
+					<a href={item.href} class="docs-nav-link" class:active={activeHash === item.href}>
+						<Icon name={item.icon} />
+						<span>{item.label}</span>
+					</a>
 
-<div class="col-xl-8">
-	<!-- ================================================================================ -->
-	<!-- Table of Contents -->
-	<!-- ================================================================================ -->
-	<ListGroup flush class="small">
-		<ListGroupItem></ListGroupItem>
-		<ListGroupItem tag="a" href="#introduction">Introduction</ListGroupItem>
-		<ListGroupItem tag="a" href="#examples">Code Examples</ListGroupItem>
-		<ListGroupItem tag="a" href="#aioli">API documentation</ListGroupItem>
-		<ListGroupItem tag="a" href="#no-cdn">Biowasm without a CDN</ListGroupItem>
-		<ListGroupItem></ListGroupItem>
-	</ListGroup>
+					{#each item.children || [] as child (child.href)}
+						<a href={child.href} class="docs-nav-link docs-nav-sublink" class:active={activeHash === child.href}>
+							<span>{child.label}</span>
+						</a>
+					{/each}
+				{/each}
+			</nav>
+		</div>
+	</aside>
 
+	<main class="docs-main">
 	<!-- ================================================================================ -->
 	<!-- Introduction -->
 	<!-- ================================================================================ -->
@@ -39,7 +70,6 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		The biowasm project compiles popular C/C++ genomics tools to <a href="https://developer.mozilla.org/en-US/docs/WebAssembly" target="_blank">WebAssembly</a> so they can run in a web browser. Biowasm includes a JavaScript library called <strong>Aioli</strong> that helps you run these tools with very little setup, as we'll see below.
 	</p>
 
-	<br />
 
 	<!-- ================================================================================ -->
 	<!-- Code examples -->
@@ -91,7 +121,6 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		<Playground code={codeMultipleTools} /><br />
 	{/if}
 
-	<br />
 
 	<!-- ================================================================================ -->
 	<!-- Aioli API -->
@@ -202,7 +231,6 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		await CLI.exec("cat");  // Will return Hello World
 	`} />
 
-	<br />
 
 	<!-- No CDN -->
 	<h4 id="no-cdn">Biowasm without the CDN</h4>
@@ -210,7 +238,7 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		The examples above use the biowasm CDN, which is where the WebAssembly assets for the genomics tools are hosted for free. Most tools that use biowasm rely on the CDN, but if you would like to store your assets alongside your app, here's how to do so:
 	</p>
 
-	<h6>Step 1: Install the Aioli package</h6>
+	<h6 id="no-cdn-install">Step 1: Install the Aioli package</h6>
 	<p>
 		Instead of importing Aioli using
 	</p>
@@ -230,7 +258,7 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		import Aioli from "@biowasm/aioli";
 	`} />
 
-	<h6>Step 2: Download Biowasm assets</h6>
+	<h6 id="no-cdn-assets">Step 2: Download Biowasm assets</h6>
 	<p>
 		Note that even if you import Aioli locally with <code>npm</code>, the WebAssembly modules will still be downloaded from the biowasm CDN unless you download those assets locally as well.
 	</p>
@@ -238,15 +266,128 @@ import codeMultipleTools from "$examples/multiple-tools.html?raw";
 		To do so, navigate to the <a href={CONFIG.url}>Packages page</a> and download the files for each tool of interest.
 	</p>
 
-	<h6>Step 3: Set up Aioli</h6>
+	<h6 id="no-cdn-setup">Step 3: Set up Aioli</h6>
 	<p>
 		Once your assets are downloaded, you need to let Aioli know the relative URL path where it can find those assets from your server. Use the config parameter <code>urlPrefix</code> as shown in the <a href="#aioli-init-advanced:~:text=urlPrefix%3A%20%22./assets/%22%2C">Initialization</a> section above.
 	</p>
 
-	<br /><br /><br />
+	</main>
 </div>
 
 <style>
+.docs-layout {
+	display: flex;
+	gap: 2.5rem;
+	max-width: 1120px;
+	align-items: flex-start;
+}
+
+.docs-nav {
+	flex: 0 0 260px;
+	width: 260px;
+	/* Span the full row, otherwise the sticky child has no room to travel */
+	align-self: stretch;
+}
+
+.docs-nav-inner {
+	position: sticky;
+	top: 1.5rem;
+	max-height: calc(100vh - 3rem);
+	overflow-y: auto;
+}
+
+.docs-nav-title {
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	margin-bottom: 0.75rem;
+	padding-left: 0.75rem;
+}
+
+.docs-nav-link {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 0.45rem 0.75rem;
+	border-radius: 6px;
+	color: var(--bs-body-color);
+	text-decoration: none;
+	font-size: 0.95rem;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.docs-nav-sublink {
+	/* 0.75rem padding + 1em icon + 0.6rem gap, so text lines up with the headings */
+	padding-left: 2.3rem;
+	padding-top: 0.3rem;
+	padding-bottom: 0.3rem;
+	font-size: 0.875rem;
+	font-weight: 400;
+	color: var(--bs-secondary-color);
+}
+
+.docs-nav-link:hover {
+	background: var(--bs-tertiary-bg);
+	color: var(--bs-primary-text-emphasis);
+}
+
+.docs-nav-link.active {
+	color: var(--bs-primary-text-emphasis);
+	background: var(--bs-primary-bg-subtle);
+	font-weight: 600;
+}
+
+.docs-main {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+/* Stack the sidebar on top on narrow screens */
+@media (max-width: 767.98px) {
+	.docs-layout {
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.docs-nav {
+		flex-basis: auto;
+		width: 100%;
+	}
+
+	.docs-nav-inner {
+		position: static;
+	}
+
+	.docs-nav nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem;
+	}
+
+	/* Top-level sections only, so the stacked nav stays short */
+	.docs-nav-sublink {
+		display: none;
+	}
+}
+
+/* The navbar scrolls away, so the sticky sidebar shifts up by its height the moment it
+   pins. Animating the jump to an anchor makes that glide instead of snapping. */
+:global(html) {
+	scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	:global(html) {
+		scroll-behavior: auto;
+	}
+}
+
+/* Stop anchored sections flush against the viewport edge, matching the sidebar's offset */
+h4, h5, h6 {
+	scroll-margin-top: 1.5rem;
+}
+
 h4:not(:first-child) {
 	margin-top: 40px;
 }
