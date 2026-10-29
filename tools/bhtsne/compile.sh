@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# Unzip sample data; we'll preload it with the module for convenience
-test -f ../data/brain8.snd || gunzip ../data/brain8.snd.gz
-test -f ../data/pollen2014.snd || gunzip ../data/pollen2014.snd.gz
+gunzip -c ../data/brain8.snd.gz > ../data/brain8.snd
+gunzip -c ../data/pollen2014.snd.gz > ../data/pollen2014.snd
 
 # Compile
 FLAGS=$(cat <<EOF
@@ -21,7 +20,6 @@ emmake make \
     CFLAGS="-O2 -s USE_ZLIB=1 -w" \
     LIBS="-s USE_ZLIB=1 -lm $FLAGS"
 
-# Undo sample data unzipping
+# Drop the decompressed copies
 cd -
-test -f data/brain8.snd.gz || gzip data/brain8.snd
-test -f data/pollen2014.snd.gz || gzip data/pollen2014.snd
+rm -f data/brain8.snd data/pollen2014.snd

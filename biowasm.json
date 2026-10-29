@@ -138,7 +138,7 @@
             "versions": [
                 {
                     "version": "0.1.0",
-                    "branch": "v0.1.0"
+                    "branch": "0.1.0"
                 }
             ]
         },
@@ -163,7 +163,7 @@
 			"versions": [
 				{
 					"version": "0.20.1",
-					"branch": "0.20.1"
+					"branch": "v0.20.1"
 				}
 			]
 		},

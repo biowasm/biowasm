@@ -45,8 +45,10 @@ def exec(cmd):
 		with subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, universal_newlines=True) as p:
 			for line in p.stdout:
 				print(line, end='')
+		# Stop here: carrying on would build whatever source happens to be checked out
 		if p.returncode != 0:
 			print("Return code not 0: ", subprocess.CalledProcessError(p.returncode, p.args))
+			exit(1)
 
 
 def get_file_contents(path):
