@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install dependencies
-sudo apt-get install -y pkg-config autopoint gperf help2man gettext texinfo bison
+sudo apt-get install -y pkg-config autopoint gperf help2man gettext texinfo bison rsync
 
 # Configure
 ./bootstrap

@@ -8,6 +8,7 @@ EM_FLAGS=$(cat <<EOF
 	-s MODULARIZE=1
 	-s ENVIRONMENT=web,worker
 	-s ALLOW_MEMORY_GROWTH=1
+	-s STACK_SIZE=5MB
 	-lworkerfs.js -lproxyfs.js
 EOF
 )
