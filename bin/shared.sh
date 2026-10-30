@@ -6,12 +6,23 @@ EM_FLAGS=$(cat <<EOF
 	-s FORCE_FILESYSTEM=1
 	-s EXPORTED_RUNTIME_METHODS=["callMain","FS","PROXYFS","WORKERFS"]
 	-s MODULARIZE=1
-	-s ENVIRONMENT="web,worker"
+	-s ENVIRONMENT=web,worker
 	-s ALLOW_MEMORY_GROWTH=1
 	-lworkerfs.js -lproxyfs.js
 EOF
 )
 EM_FLAGS=$(echo $EM_FLAGS)  # Remove whitespace
+
+# Clang 15/16 otherwise treats these warnings into errors (Emscripten appends EMCC_CFLAGS to every emcc call)
+EMCC_CFLAGS=$(cat <<EOF
+	-Wno-error=implicit-function-declaration
+	-Wno-error=incompatible-function-pointer-types
+	-Wno-error=int-conversion
+	-Wno-error=unused-but-set-variable
+	-Wno-error=unterminated-string-initialization
+EOF
+)
+EMCC_CFLAGS=$(echo $EMCC_CFLAGS)  # Remove whitespace
 
 # Function to remove Nanosleep requirements for GNU tools (Nanosleep not supported in Emscripten)
 function EM_GNU_NANOSLEEP() {
@@ -40,5 +51,5 @@ CFLAGS_LZMA="-I${DIR_LZMA}/api -I${DIR_LZMA}/api/lzma"
 LDFLAGS_LZMA="-L${DIR_LZMA}/.libs"
 
 # Export vars and functions
-export EM_FLAGS CFLAGS_LZMA LDFLAGS_LZMA;
+export EM_FLAGS EMCC_CFLAGS CFLAGS_LZMA LDFLAGS_LZMA;
 export -f EM_GNU_NANOSLEEP EM_GNU_STRCASESTR_LINEAR;
