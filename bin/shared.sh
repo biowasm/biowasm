@@ -24,8 +24,8 @@ EOF
 )
 EMCC_CFLAGS=$(echo $EMCC_CFLAGS)  # Remove whitespace
 
-# Every ./configure reads this file, the way emcc reads EMCC_CFLAGS (see bin/config.site)
-CONFIG_SITE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/config.site"
+# Without this, autoconf guesses the build machine's triplet and configures for it instead
+EM_CONFIGURE_FLAGS="--host=wasm32-unknown-emscripten"
 
 # Emscripten ships libopenmp, so find_package(OpenMP) succeeds and pulls in the pthreads libc
 EM_CMAKE_FLAGS="-DCMAKE_DISABLE_FIND_PACKAGE_OpenMP=ON -DOPENMP_FOUND=FALSE"
@@ -57,5 +57,5 @@ CFLAGS_LZMA="-I${DIR_LZMA}/api -I${DIR_LZMA}/api/lzma"
 LDFLAGS_LZMA="-L${DIR_LZMA}/.libs"
 
 # Export vars and functions
-export EM_FLAGS EMCC_CFLAGS CONFIG_SITE EM_CMAKE_FLAGS CFLAGS_LZMA LDFLAGS_LZMA;
+export EM_FLAGS EMCC_CFLAGS EM_CONFIGURE_FLAGS EM_CMAKE_FLAGS CFLAGS_LZMA LDFLAGS_LZMA;
 export -f EM_GNU_NANOSLEEP EM_GNU_STRCASESTR_LINEAR;

@@ -131,42 +131,71 @@ it("All code examples are being tested", () => {
 	});
 });
 
+// Which CDN each environment serves tools from. "local" uses Cypress's own file server,
+// which already exposes the repo root, so build/ is reachable at the same origin as the example.
+const ENVIRONMENTS = {
+	prd: { origin: "https://biowasm.com", scripts: /^https:\/\/biowasm\.com\/cdn\/v3\/.*\.js/ },
+	stg: { origin: "https://stg.biowasm.com", scripts: /^https:\/\/stg\.biowasm\.com\/cdn\/v3\/.*\.js/ },
+	local: { origin: "/build", scripts: /\/build\/.*\.js/ }
+};
+
+// Run against prd and stg unless asked otherwise, e.g. `cypress run --expose envs=local`
+const ENVS = (Cypress.expose("envs") || "prd,stg").split(",");
+
+// Clean up here rather than at the end of a test, so a failing test doesn't leave its copy behind
+let tempFile = null;
+afterEach(() => {
+	if(tempFile !== null)
+		cy.task("deleteFile", tempFile);
+	tempFile = null;
+});
+
 // Dynamically create a test for each expected output
 Object.keys(EXPECTED_OUTPUTS).forEach(file => {
-	// Test on prd CDN
-	it(`Validate ${file} - prd`, () => {
-		validateHTML(file, "prd");
-	});
+	ENVS.forEach(env => {
+		it(`Validate ${file} - ${env}`, () => {
+			// The examples are written against prd, so they can be tested as they are
+			if(env === "prd")
+				return validateHTML(file, env);
 
-	// Test on stg CDN
-	it(`Validate ${file} - stg`, () => {
-		const fileStg = file.replace(".html", ".stg.html");
-		cy.readFile(`../${file}`).then(code => {
-			// Convert prd to stg
-			code = code.replace("https://biowasm.com", "https://stg.biowasm.com");
-			// Replace format `new Aioli([...], { settings: 123 })` --> `new Aioli([...], { settings: 123, env: "stg" })`
-			// Replace format `new Aioli([...])` --> `new Aioli([...], { env: "stg" })`
-			code = code.replace(/new Aioli\(\[([\S\s]*?)\],.*\{([\S\s]*?)}\);/gm, `new Aioli([$1], { $2, env: "stg" });`);
-			code = code.replace(/new Aioli\(\[([\S\s]*?)\]\);/gm, `new Aioli([$1], { env: "stg" });`);
-			cy.writeFile(`../${fileStg}`, code).then(() => {
-				validateHTML(fileStg, "stg");
+			// Other environments need a rewritten copy of the example; afterEach deletes it
+			tempFile = file.replace(".html", `.${env}.html`);
+			cy.readFile(`../${file}`).then(code => {
+				cy.writeFile(`../${tempFile}`, rewrite(code, env)).then(() => {
+					validateHTML(tempFile, env);
+				});
 			});
 		});
 	});
 });
 
+// Point an example at a non-prd CDN
+function rewrite(code, env) {
+	// Aioli knows about stg itself, but for local it needs the URL spelled out. location.origin
+	// keeps it absolute, which matters because Aioli loads tools from inside a blob worker.
+	const options = env === "stg" ? `env: "stg"` : `urlCDN: location.origin + "/build"`;
+	const aioliJS = env === "stg" ? "https://stg.biowasm.com/cdn/v3/aioli.js" : `/build/aioli/${Cypress.expose("aioliLatest")}/aioli.js`;
+
+	code = code.replace("https://biowasm.com/cdn/v3/aioli.js", aioliJS);
+	// `new Aioli([...], { settings: 123 })` --> `new Aioli([...], { settings: 123, <options> })`
+	code = code.replace(/new Aioli\(\[([\S\s]*?)\],.*\{([\S\s]*?)}\);/gm, `new Aioli([$1], { $2, ${options} });`);
+	// `new Aioli([...])` --> `new Aioli([...], { <options> })`
+	code = code.replace(/new Aioli\(\[([\S\s]*?)\]\);/gm, `new Aioli([$1], { ${options} });`);
+	return code;
+}
+
 function validateHTML(file, env="prd") {
-	const config = EXPECTED_OUTPUTS[file.replace(`.${env}`, "")];  // stg & prd expected outputs are the same
+	const config = EXPECTED_OUTPUTS[file.replace(`.${env}`, "")];  // every environment has the same expected output
 	const checks = config.checks || config;
 
 	// Make sure we're hitting the right CDN
-	const cdnURL = `https://${env === "stg" ? "stg." : ""}biowasm.com`;
-	cy.intercept({ url: /^https:\/\/(stg\.)?biowasm\.com\/cdn\/v3\/.*.js/ }).as("biowasmAPI");
+	const cdnURL = ENVIRONMENTS[env].origin;
+	cy.intercept({ url: ENVIRONMENTS[env].scripts }).as("biowasmAPI");
 
 	// Visit file and wait for network requests to CDN (1 for aioli.js, 1 for tool.js)
 	cy.visit(file);
 	for(let i = 0; i < 2; i++)
-		cy.wait("@biowasmAPI").then(xhr => expect(xhr.request.url.startsWith(cdnURL)).to.be.true);
+		cy.wait("@biowasmAPI").then(xhr => expect(xhr.request.url).to.contain(cdnURL));
 
 	// If tests require UI clicking
 	if("ui" in config)
@@ -175,7 +204,4 @@ function validateHTML(file, env="prd") {
 	// Validate tool outputs
 	for(let check of checks)
 		cy.get("body").contains(check);
-
-	if(env === "stg")
-		cy.task("deleteFile", file);
 }

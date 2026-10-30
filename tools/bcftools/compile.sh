@@ -2,7 +2,7 @@
 
 # Configure
 autoreconf -i
-emconfigure ./configure --with-htslib="../../htslib/src/" CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1"
+emconfigure ./configure $EM_CONFIGURE_FLAGS --with-htslib="../../htslib/src/" CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1"
 
 # Compile to WebAssembly
 emmake make bcftools CC=emcc AR=emar \
