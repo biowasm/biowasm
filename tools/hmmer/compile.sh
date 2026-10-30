@@ -9,6 +9,10 @@ cp -r ../easel easel
 rm -rf easel/.git
 patch -s -p1 -d easel -i ../../patches/easel-0.49.patch
 
+# These macros write the x86 MXCSR register, which wasm doesn't have, so the configure
+# test compiles but the symbol never links and the program aborts the first time it runs.
+sed -i 's/AC_DEFINE(\[HAVE_FLUSH_ZERO_MODE\], 1, \[[^]]*\])/:/; s/AC_DEFINE(\[HAVE_DENORMALS_ZERO_MODE\], 1, \[[^]]*\])/:/' configure.ac easel/configure.ac
+
 # Run autoconf to create "configure"
 echo "Running autoconf..."
 autoconf

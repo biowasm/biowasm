@@ -46,3 +46,17 @@ index f34f179..06f9ca0 100644
          args.read_group, args.tag_name, args.tag_value,
          args.threshold, args.mod_base, args.combine,
          args.hts_maxcnt, args.min_mapQ);
+diff --git a/src/counts.c b/src/counts.c
+index fc6315d..6fbe0e8 100644
+--- a/src/counts.c
++++ b/src/counts.c
+@@ -226,7 +226,8 @@ void inline print_record(
+     float meth = tot == 0 ? nanf("") : (100.0f * md) / tot;
+     // column 5: "Score from 0-1000. Capped number of reads"
+     // lets go with proportion of (mod or canon):(mod or canon or filtered)
+-    size_t score = depth == 0 ? nanf("") : (1000 * tot) / depth;
++    // replace nanf() with 0, otherwise nanf() is undefined and the compiler drops this line and causes errors at runtime
++    size_t score = depth == 0 ? 0 : (1000 * tot) / depth;
+ 
+     // TODO: don't print when nan?
+     fprintf(fout,
