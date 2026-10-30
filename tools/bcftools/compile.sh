@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Configure
-autoheader
-autoconf
+autoreconf -i
 emconfigure ./configure --with-htslib="../../htslib/src/" CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1"
 
 # Compile to WebAssembly

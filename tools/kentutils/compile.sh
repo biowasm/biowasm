@@ -1,3 +1,9 @@
+# The link step below looks for lib/x86_64, so build the libs there regardless of host arch
+export MACHTYPE=x86_64
+
+# Install dependencies
+sudo apt-get install -y libpng-dev libmysqlclient-dev
+
 # Compile libraries kentutils depends on (jkweb.a, jkOwnLib.a, paralib.a, embedded htslib)
 cd src/
 emmake make topLibs

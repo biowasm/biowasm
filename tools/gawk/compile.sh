@@ -1,6 +1,9 @@
 #!/bin/bash
 
 # Disable NLS to avoid memory out of bounds error (https://github.com/emscripten-core/emscripten/issues/11621#issuecomment-691807912)
+# Regenerate with the automake we actually have, not the one gawk shipped with
+autoreconf -fi
+
 emconfigure ./configure \
 	--disable-nls \
 	--disable-extensions \

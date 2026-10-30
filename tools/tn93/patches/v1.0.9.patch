@@ -1,0 +1,15 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index ecb1f70..524ec9c 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -12,8 +12,8 @@ set(CMAKE_CONFIGURATION_TYPES Release)
+ # SET VERSION FROM FILE
+ file (STRINGS "VERSION.txt" VERSION_NUMBER)
+ add_definitions (-DVERSION_NUMBER=\"${VERSION_NUMBER}\")
+-add_compile_options (-O3 -std=c++14 -march=native -funroll-loops )
+-add_link_options(-O3 -std=c++14 -march=native -funroll-loops)
++add_compile_options (-O3 -std=c++14 -funroll-loops )
++add_link_options(-O3 -std=c++14 -funroll-loops)
+ 
+ include_directories(
+     src/

@@ -4,7 +4,7 @@
 UTILS=$(echo src/{basename,cat,comm,cut,date,df,dirname,du,echo,env,fold,head,join,ls,md5sum,paste,seq,shuf,sort,tail,tee,tr,uniq,wc}.js)
 
 # Install dependencies
-sudo apt-get install -y autopoint gperf help2man gettext texinfo bison
+sudo apt-get install -y autopoint gperf help2man gettext texinfo bison rsync
 ./bootstrap
 EM_GNU_NANOSLEEP
 

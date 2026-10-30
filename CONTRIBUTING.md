@@ -2,7 +2,7 @@
 
 ## Development Setup
 
-Tools listed in biowasm were compiled to WebAssembly using `Emscripten 2.0.25`. Here is how to set up your dev environment:
+Tools listed in biowasm were compiled to WebAssembly using `Emscripten 6.0.13`. Here is how to set up your dev environment:
 
 ```bash
 # Fetch Emscripten docker image
