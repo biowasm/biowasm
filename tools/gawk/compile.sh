@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Install dependencies: autoreconf needs autopoint for gettext, and bison to rebuild awkgram.c
+sudo apt-get install -y autopoint bison
+
 # Disable NLS to avoid memory out of bounds error (https://github.com/emscripten-core/emscripten/issues/11621#issuecomment-691807912)
 # Regenerate with the automake we actually have, not the one gawk shipped with
 autoreconf -fi
