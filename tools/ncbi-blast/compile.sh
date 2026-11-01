@@ -5,11 +5,11 @@ shopt -s globstar nullglob
 BUILD_FLAGS="-fwasm-exceptions -s USE_SQLITE3=1 -O3"
 
 # configure and build native datatool binaries
-./configure --with-projects=scripts/projects/datatool/project.lst --with-build-root=native
+./configure --without-caution --with-projects=scripts/projects/datatool/project.lst --with-build-root=native
 make -C native/build all_p
 
 # configure wasm build
-emconfigure ./configure AR="emar cr" \
+EMCC_CFLAGS="$EMCC_CFLAGS -s USE_SQLITE3=1" emconfigure ./configure AR="emar cr" \
   --with-static \
   --without-debug \
   --without-mt \
@@ -42,6 +42,7 @@ emconfigure ./configure AR="emar cr" \
   --without-xerces \
   --without-xalan \
   --without-strip \
+  --without-caution \
   --host=wasm32-unknown-none \
   --with-projects=scripts/projects/blast/project.lst \
   --with-build-root=wasm
