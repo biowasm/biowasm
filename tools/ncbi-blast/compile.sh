@@ -46,7 +46,7 @@ emconfigure ./configure AR="emar cr" \
   --with-projects=scripts/projects/blast/project.lst \
   --with-build-root=wasm
 
-NCBI_DATATOOL_PATH="$(realpath native/bin)" make -C wasm/build CFLAGS="$BUILD_FLAGS" CXXFLAGS="$BUILD_FLAGS" LDFLAGS="$EM_FLAGS $BUILD_FLAGS -sERROR_ON_UNDEFINED_SYMBOLS=0 -sSTACK_SIZE=1048576" all_p
+NCBI_DATATOOL_PATH="$(realpath native/bin)" make -C wasm/build CFLAGS="$BUILD_FLAGS" CXXFLAGS="$BUILD_FLAGS" LDFLAGS="$EM_FLAGS $BUILD_FLAGS -sERROR_ON_UNDEFINED_SYMBOLS=0" all_p
 
 for f in wasm/build/app/**/*.wasm; do
     mv ${f%.wasm} ../build/$(basename $f .wasm).js

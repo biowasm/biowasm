@@ -449,12 +449,13 @@
 		},
 		{
 			"name": "ncbi-blast",
+			"url": "https://github.com/ncbi/ncbi-cxx-toolkit-public.git",
 			"programs": ["blast_formatter", "blast_usage_report", "blastdb_aliastool", "blastdb_convert", "blastdb_path", "blastdbcheck", "blastdbcmd", "blastdbcp", "blastn", "blastp", "blastx", "clusterdbcmd", "convert2blastmask", "deltablast", "dustmasker", "makeblastdb", "makeclusterdb", "makeprofiledb", "psiblast", "rpsblast", "rpstblastn", "seedtop", "segmasker", "tblastn", "tblastx", "windowmasker"],
 			"description": "Basic local alignment search tool",
 			"versions": [
 				{
-					"version": "1.17.0-bd069ee",
-					"branch": "1.17.0-bd069ee"
+					"version": "2.17.0",
+					"branch": "release/29.2.0"
 				}
 			]
 		},
