@@ -27,9 +27,14 @@ jobs:
       # Setup
       # ------------------------------------------------------------------------
       - name: Check out biowasm repo (${{ github.event.inputs.env }})
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
+
+      # The container runs as root but the checkout is owned by the runner user, so git
+      # refuses to touch it. Without this the manifest commit below silently does nothing
+      - name: Mark the checkout as safe
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: Test Emscripten
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
@@ -43,6 +48,12 @@ jobs:
         run: |
           apt-get update && apt-get install -yqq autoconf liblzma-dev
           bin/compile.py --tools ${{ github.event.inputs.tools_to_compile }} --env ${{ github.event.inputs.env }} --versions ${{ github.event.inputs.versions }}
+
+      # Turns build/ into the manifest and the `wrangler kv bulk put` payloads. Separate from
+      # compile.py because the manifest records what is live in KV, which the deploy decides
+      - name: Generate manifest and KV payloads (${{ github.event.inputs.env }})
+        if: ${{ github.event.inputs.tools_to_compile != 'none' }}
+        run: bin/manifest.py --env ${{ github.event.inputs.env }}
 
       # ------------------------------------------------------------------------
       # Deploy to Cloudflare Workers
@@ -81,7 +92,7 @@ jobs:
       # ------------------------------------------------------------------------
       - name: Save changes to manifest.json (${{ github.event.inputs.env }})
         if: ${{ github.event.inputs.tools_to_compile != 'none' }}
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Update Biowasm manifest
           file_pattern: biowasm.manifest${{ github.event.inputs.env == 'stg' && '.stg' || '' }}.json
