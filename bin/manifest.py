@@ -14,7 +14,9 @@ DIR_ROOT = Path(__file__).parent / "../"
 DIR_BUILD = (DIR_ROOT / "build").resolve()
 DIR_MANIFEST = (DIR_ROOT / "biowasm.manifest.json").resolve()
 # Byte sizes for the website to show. Kept out of the manifest because that one is handed
-# straight to getAssetFromKV, which expects a flat path -> key map and nothing else
+# straight to getAssetFromKV, which expects a flat path -> key map and nothing else. Not split
+# by environment, unlike the manifest: a file's size comes from the build, and a per-env file
+# would start out empty and blank the size of every tool that run didn't recompile
 DIR_SIZES = (DIR_ROOT / "biowasm.sizes.json").resolve()
 DIR_MANIFEST_TEMP = (DIR_BUILD / "manifest.tmp").resolve()
 DIR_CF_UPLOAD = (DIR_BUILD / "cf_kv_upload").resolve()  # suffixed with ".<n>.json"
@@ -113,7 +115,6 @@ if __name__ == "__main__":
 
 	if args.env == "stg":
 		DIR_MANIFEST = Path(str(DIR_MANIFEST).replace('.json', '.stg.json'))
-		DIR_SIZES = Path(str(DIR_SIZES).replace('.json', '.stg.json'))
 		DIR_MANIFEST_TEMP = Path(str(DIR_MANIFEST_TEMP).replace('.tmp', '.stg.tmp'))
 
 	# Without it there are no hashes to fold in, which would silently deploy an unchanged manifest
