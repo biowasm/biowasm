@@ -12,8 +12,11 @@ DIR_ROOT = Path(__file__).parent / "../"
 DIR_BUILD = (DIR_ROOT / "build").resolve()
 DIR_MANIFEST = (DIR_ROOT / "biowasm.manifest.json").resolve()
 DIR_MANIFEST_TEMP = (DIR_BUILD / "manifest.tmp").resolve()
-DIR_CF_UPLOAD = (DIR_BUILD / "cf_kv_upload.json").resolve()
+DIR_CF_UPLOAD = (DIR_BUILD / "cf_kv_upload").resolve()  # suffixed with ".<n>.json"
 DIR_CONFIG = (DIR_ROOT / "biowasm.json").resolve()
+# Cloudflare rejects bulk KV requests over 100MB, and `wrangler kv bulk put` only splits
+# on key count, so split on size here instead
+CF_UPLOAD_MAX_BYTES = 80 * 1000 * 1000
 COLOR_GREEN = "\033[1;33m"
 COLOR_OFF = "\033[0m"
 
@@ -115,6 +118,16 @@ def compile(tool, versions=[], level=0):
 				exec(f"md5sum {dir_build}/{program}.{file} | sed 's|{DIR_BUILD}/||' >> {DIR_MANIFEST_TEMP}")
 
 
+def write_cf_upload(keyvalues, n):
+	"""
+	Write one batch of key/value pairs for `wrangler kv bulk put`
+	"""
+	path = f"{DIR_CF_UPLOAD}.{n}.json"
+	print(f"Writing {len(keyvalues)} KVs to {path}...")
+	with open(path, "w", encoding="utf-8") as f:
+		json.dump(keyvalues, f, ensure_ascii=False)
+
+
 def generate_manifests():
 	"""
 	Regenerate manifest files
@@ -144,8 +157,19 @@ def generate_manifests():
 				})
 
 	# Save manifest JSON files
-	with open(DIR_CF_UPLOAD, "w", encoding="utf-8") as f:
-		json.dump(to_upload, f, ensure_ascii=False)
+	for path in DIR_BUILD.glob("cf_kv_upload.*.json"):
+		path.unlink()
+	chunk, chunk_bytes, n = [], 0, 0
+	for kv in to_upload:
+		kv_bytes = len(kv["key"]) + len(kv["value"])
+		if chunk and chunk_bytes + kv_bytes > CF_UPLOAD_MAX_BYTES:
+			n += 1
+			write_cf_upload(chunk, n)
+			chunk, chunk_bytes = [], 0
+		chunk.append(kv)
+		chunk_bytes += kv_bytes
+	if chunk:
+		write_cf_upload(chunk, n + 1)
 	with open(DIR_MANIFEST, "w", encoding="utf-8") as f:
 		json.dump(MANIFEST, f, ensure_ascii=False, sort_keys=True, indent=2)
 	exec(f"rm {DIR_MANIFEST_TEMP}")

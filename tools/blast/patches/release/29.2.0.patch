@@ -1,0 +1,206 @@
+diff --git a/include/corelib/ncbifile.hpp b/include/corelib/ncbifile.hpp
+index 4982e9b0dc..bd5d9237bb 100644
+--- a/include/corelib/ncbifile.hpp
++++ b/include/corelib/ncbifile.hpp
+@@ -2638,6 +2638,8 @@ private:
+     TOffsetType   m_OffsetReal;  ///< Corrected starting offset of the
+                            ///< mapped area from beginning of file.
+     size_t  m_LengthReal;  ///< Corrected length of the mapped area.
++    bool    m_Emulated;    ///< True if mmap() failed and the region was read
++                           ///< into a heap buffer instead (see ncbifile.cpp).
+ 
+     // Friend classes
+     friend class CMemoryFile;
+diff --git a/scripts/projects/blast/project.lst b/scripts/projects/blast/project.lst
+index 9392983c6a..44fd4b8b97 100644
+--- a/scripts/projects/blast/project.lst
++++ b/scripts/projects/blast/project.lst
+@@ -100,6 +100,7 @@ app/dustmasker$
+ app/segmasker$
+ app/blastvdb
+ objtools/simple$
++-objects/genomecoll/gc_cli
+ -objects/.*/test
+ -objects/.*/demo
+ -objects/.*/unit_test
+diff --git a/src/algo/blast/format/vecscreen_run.cpp b/src/algo/blast/format/vecscreen_run.cpp
+index 1a8296eeaf..206222aa4d 100644
+--- a/src/algo/blast/format/vecscreen_run.cpp
++++ b/src/algo/blast/format/vecscreen_run.cpp
+@@ -476,7 +476,7 @@ CVecscreenRun::CFormatter::FormatResults(CNcbiOstream& out,
+                     jobj.insert("query_end", align.GetSeqStop(0)+1);
+                     jobj.insert("query_strand", (align.GetSeqStrand(0)==eNa_strand_plus?"+":"-"));
+                     jobj.insert("match_strength", match_type_strs[match_score]);
+-                    jobj.insert("drop_count", mi->drops.size());
++                    jobj.insert("drop_count", static_cast<Uint8>(mi->drops.size()));
+                     jobj.insert("subject_id", sid);
+                     jobj.insert("subject_title", stitle);
+                 
+diff --git a/src/build-system/Makefile.mk.in b/src/build-system/Makefile.mk.in
+index 43fc1376bc..1f9ab3129b 100644
+--- a/src/build-system/Makefile.mk.in
++++ b/src/build-system/Makefile.mk.in
+@@ -385,7 +385,7 @@ ZSTD_LIB    =
+ CMPRS_INCLUDE = $(Z_INCLUDE) $(BZ2_INCLUDE) $(LZO_INCLUDE) $(ZSTD_INCLUDE)
+ CMPRS_LIBS    = $(Z_LIBS) $(BZ2_LIBS) $(LZO_LIBS) $(ZSTD_LIBS)
+ CMPRS_STATIC_LIBS = $(Z_LIBS) $(BZ2_LIBS) $(LZO_LIBS) $(ZSTD_STATIC_LIBS)
+-CMPRS_LIB     = $(Z_LIB) $(BZ2_LIB) $(ZSTD_LIB) zcf
++CMPRS_LIB     = $(Z_LIB) $(BZ2_LIB) $(ZSTD_LIB)
+ 
+ # Perl-Compatible Regular Expressions
+ # For historical reasons, the bundled (LIB) version contains the POSIX
+diff --git a/src/build-system/configure b/src/build-system/configure
+index 237353c1be..79b2f796c6 100755
+--- a/src/build-system/configure
++++ b/src/build-system/configure
+@@ -18159,9 +18159,12 @@ $as_echo "$as_me: using local zlib copy in $zlocal" >&6;}
+    # AC_DEFINE(USE_LOCAL_ZLIB, 1, [Define to 1 if using a local copy of zlib.])
+              WithPackages="$WithPackages${WithPackagesSep}Z"; WithPackagesSep=" "
+              WithPackages="$WithPackages${WithPackagesSep}LocalZ"; WithPackagesSep=" "
++
++$as_echo "#define HAVE_LIBZ 1" >>confdefs.h
++
+ fi
+ # Cloudflare fork, always present in practice
+-if test -d "$real_srcdir/include/util/compress/zlib_cloudflare"; then
++if test -d "$real_srcdir/include/util/compress/zlib_cloudflare"  &&  test "$host_os" != none; then
+ 
+ $as_echo "#define HAVE_LIBZCF 1" >>confdefs.h
+ 
+diff --git a/src/build-system/configure.ac b/src/build-system/configure.ac
+index ff8d32df89..fe18d7971a 100644
+--- a/src/build-system/configure.ac
++++ b/src/build-system/configure.ac
+@@ -4849,9 +4849,11 @@ if test -z "$Z_LIBS"; then
+    # AC_DEFINE(USE_LOCAL_ZLIB, 1, [Define to 1 if using a local copy of zlib.])
+    NCBI_PACKAGE(Z)
+    NCBI_PACKAGE(LocalZ)
++   AC_DEFINE(HAVE_LIBZ, 1,
++      [Define to 1 if zlib is available.])
+ fi
+ # Cloudflare fork, always present in practice
+-if test -d "$real_srcdir/include/util/compress/zlib_cloudflare"; then
++if test -d "$real_srcdir/include/util/compress/zlib_cloudflare"  &&  test "$host_os" != none; then
+    AC_DEFINE(HAVE_LIBZCF, 1,
+       [Define to 1 if Cloudflare zlib is available (embedded).])
+ fi
+diff --git a/src/connect/ncbi_lbdns.c b/src/connect/ncbi_lbdns.c
+index 02ea11f466..cb174c8248 100644
+--- a/src/connect/ncbi_lbdns.c
++++ b/src/connect/ncbi_lbdns.c
+@@ -1269,7 +1269,7 @@ static int/*bool*/ s_Resolve(SERV_ITER iter)
+     const struct SLBDNS_Data* data = (const struct SLBDNS_Data*) iter->data;
+     struct sockaddr_in ns_save;
+     int ns_count, ns_retry, rv;
+-    u_long ns_options;
++    unsigned long ns_options;
+     res_state r;
+ 
+     assert(!data->n_cand  &&  !data->empty);
+diff --git a/src/corelib/ncbifile.cpp b/src/corelib/ncbifile.cpp
+index f99bf1cb18..e77092e690 100644
+--- a/src/corelib/ncbifile.cpp
++++ b/src/corelib/ncbifile.cpp
+@@ -5603,7 +5603,8 @@ CMemoryFileSegment::CMemoryFileSegment(SMemoryFileHandle& handle,
+                                        TOffsetType        offset,
+                                        size_t             length)
+     : m_DataPtr(0), m_Offset(offset), m_Length(length),
+-      m_DataPtrReal(0), m_OffsetReal(offset), m_LengthReal(length)
++      m_DataPtrReal(0), m_OffsetReal(offset), m_LengthReal(length),
++      m_Emulated(false)
+ {
+     if ( m_Offset < 0 ) {
+         NCBI_THROW(CFileException, eMemoryMap,
+@@ -5644,6 +5645,30 @@ CMemoryFileSegment::CMemoryFileSegment(SMemoryFileHandle& handle,
+     if ( m_DataPtrReal == MAP_FAILED ) {
+         m_DataPtrReal = 0;
+         errmsg = NcbiSys_strerror(errno);
++#  ifdef __EMSCRIPTEN__
++        // Emscripten has no mmap for files on PROXYFS, so a database that lives on
++        // another module's filesystem cannot be mapped. Read the region into the heap
++        // instead; that is indistinguishable for a read-only mapping. Shared writable
++        // mappings would need write-back on flush, so leave those as a failure.
++        if ( !((attrs.map_protect & PROT_WRITE) &&
++               (attrs.map_access & MAP_SHARED)) ) {
++            void* buf = malloc(m_LengthReal);
++            if ( buf ) {
++                ssize_t n = pread(handle.hMap, buf, m_LengthReal,
++                                  (off_t) m_OffsetReal);
++                if ( n >= 0 ) {
++                    if ( (size_t) n < m_LengthReal ) {
++                        memset((char*) buf + n, 0, m_LengthReal - (size_t) n);
++                    }
++                    m_DataPtrReal = buf;
++                    m_Emulated = true;
++                    errmsg.clear();
++                } else {
++                    free(buf);
++                }
++            }
++        }
++#  endif
+     }
+ #endif
+     if ( !m_DataPtrReal ) {
+@@ -5678,6 +5703,9 @@ bool CMemoryFileSegment::Flush(void) const
+         return false;
+     }
+ #elif defined(NCBI_OS_UNIX)
++    if ( m_Emulated ) {
++        return true;
++    }
+     status = (msync((char*)m_DataPtrReal, m_LengthReal, MS_SYNC) == 0);
+     if ( !status ) {
+         LOG_ERROR_ERRNO(87, "CMemoryFileSegment::Flush(): Cannot flush memory segment");
+@@ -5703,6 +5731,13 @@ bool CMemoryFileSegment::Unmap(void)
+         return false;
+     }
+ #elif defined(NCBI_OS_UNIX)
++    if ( m_Emulated ) {
++        free(m_DataPtrReal);
++        m_DataPtrReal = 0;
++        m_Emulated = false;
++        m_DataPtr = 0;
++        return true;
++    }
+     status = (munmap((char*)m_DataPtrReal, (size_t) m_LengthReal) == 0);
+     if (!status) {
+         LOG_ERROR_ERRNO(88, "CMemoryFileSegment::Unmap(): Cannot unmap memory segment");
+diff --git a/src/util/compress/Makefile.in b/src/util/compress/Makefile.in
+index 210c741632..c088a10b0c 100644
+--- a/src/util/compress/Makefile.in
++++ b/src/util/compress/Makefile.in
+@@ -1,6 +1,6 @@
+ # $Id$
+ 
+-SUB_PROJ = bzip2 zlib zlib_cloudflare api
++SUB_PROJ = bzip2 zlib api
+ PROJ_TAG = core
+ 
+ srcdir = @srcdir@
+diff --git a/src/util/compress/api/Makefile.compress.lib b/src/util/compress/api/Makefile.compress.lib
+index 74d5b8ac86..2f5cc127d8 100644
+--- a/src/util/compress/api/Makefile.compress.lib
++++ b/src/util/compress/api/Makefile.compress.lib
+@@ -7,7 +7,7 @@ LIB = xcompress
+ 
+ CPPFLAGS = $(ORIG_CPPFLAGS) $(CMPRS_INCLUDE)
+ 
+-DLL_LIB =  $(BZ2_LIB)  $(LZO_LIB)  $(Z_LIB)  $(ZSTD_LIB) zcf
++DLL_LIB =  $(BZ2_LIB)  $(LZO_LIB)  $(Z_LIB)  $(ZSTD_LIB)
+ LIBS    =  $(BZ2_LIBS) $(LZO_LIBS) $(Z_LIBS) $(ZSTD_LIBS) $(ORIG_LIBS)
+ 
+ WATCHERS = ivanov
+diff --git a/src/util/regexp/config.h b/src/util/regexp/config.h
+index e1ce7d4856..df93df2797 100644
+--- a/src/util/regexp/config.h
++++ b/src/util/regexp/config.h
+@@ -246,7 +246,7 @@ sure both macros are undefined; an emulation function will then be used. */
+ /* #undef SUPPORT_DIFF_FUZZ */
+ 
+ /* Define to any value to enable support for Just-In-Time compiling. */
+-#define SUPPORT_JIT 1
++/* #undef SUPPORT_JIT */
+ 
+ /* Define to any value to allow pcre2grep to be linked with libbz2, so that it
+    is able to handle .bz2 files. */
