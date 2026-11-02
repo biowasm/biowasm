@@ -2,7 +2,7 @@
 import { browser } from "$app/environment";
 import { Badge, Icon, ListGroup, ListGroupItem, Tooltip } from "@sveltestrap/sveltestrap";
 import { getToolURL } from "$lib/utils";
-const codeSamples = import.meta.glob("@/tools/**/examples/*.html", { query: "?raw", import: "default", eager: true });  // Import code samples dynamically!
+const codeSamples = import.meta.glob("@/tools/**/examples/**/*.html", { query: "?raw", import: "default", eager: true });  // Import code samples dynamically!
 </script>
 
 <script>
