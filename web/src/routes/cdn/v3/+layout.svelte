@@ -12,6 +12,9 @@ let nbDownloads = null;
 
 $: hasSimd = (CONFIG.tools.find(t => t.name === tool)?.programs || []).some(p => p.endsWith("-simd"));
 
+// Count for the index page; same set the table lists
+const nbPackages = CONFIG.tools.filter(t => t.listed !== false).length;
+
 $: repo = getRepo(tool, version);
 
 // Where to browse the source this version was built from. Each host spells its "browse a
@@ -53,6 +56,7 @@ async function getDownloadStats(tool, version) {
 		<BreadcrumbItem>
 			{#if tool == null}
 				Packages
+				<small class="fs-6 fw-normal text-muted ms-2">{nbPackages} packages</small>
 			{:else}
 				<a href="{CONFIG.url}">Packages</a>
 			{/if}

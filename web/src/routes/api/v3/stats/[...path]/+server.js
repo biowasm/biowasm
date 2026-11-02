@@ -1,5 +1,8 @@
 import { json } from "@sveltejs/kit";
+import { dev } from "$app/environment";
 import CONFIG from "@/biowasm.json";
+
+const STG = "https://stg.biowasm.com";
 
 // GET /api/v3/stats
 // GET /api/v3/stats/:tool
@@ -43,14 +46,17 @@ export async function GET({ request, platform, params }) {
 		}
 	}
 
-	// Get stats from KV (faster than querying all Durable Objects)
-	let stats = platform === undefined ? getMockStats() : await platform.env.CDN.get("STATS", { type: "json" });
+	// Get stats from KV (faster than querying all Durable Objects). Note that `platform` is
+	// defined even in `vite dev` (adapter-cloudflare emulates it), but with no KV bindings,
+	// so the local path has to key off `dev` rather than off `platform`
+	let stats = (dev ? await getLocalStats() : await platform.env.CDN.get("STATS", { type: "json" })) || {};
 
-	// Subset stats based on URL parameters
+	// Subset stats based on URL parameters. A tool that is in biowasm.json but has no
+	// downloads yet isn't in STATS at all, so don't assume it's there
 	if(toolName !== null)
-		stats = { [toolName]: stats[toolName] };
+		stats = { [toolName]: stats[toolName] || {} };
 	if(versionName !== null)
-		stats[toolName] = { [versionName]: stats[toolName][versionName] };
+		stats[toolName] = { [versionName]: stats[toolName][versionName] || {} };
 
 	return json({ stats });
 }
@@ -63,6 +69,20 @@ function error(params) {
 	}, {
 		status: 404,
 	});
+}
+
+// Real stats for local development, borrowed from stg so the numbers on the page are
+// plausible instead of random or all-zero. Falls back to mock data when stg is unreachable
+async function getLocalStats() {
+	try {
+		const response = await fetch(`${STG}/api/v3/stats`);
+		if(!response.ok)
+			throw new Error(`stg returned ${response.status}`);
+		return (await response.json()).stats;
+	} catch (error) {
+		console.warn(`Could not reach ${STG}, falling back to mock stats:`, error.message);
+		return getMockStats();
+	}
 }
 
 // Generate mock stats for local development

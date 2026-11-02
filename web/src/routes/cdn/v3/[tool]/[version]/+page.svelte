@@ -1,7 +1,7 @@
 <script context="module">
 import { browser } from "$app/environment";
 import { Badge, Icon, ListGroup, ListGroupItem, Tooltip } from "@sveltestrap/sveltestrap";
-import { getToolURL } from "$lib/utils";
+import { getToolURL, getFileSize, formatSize } from "$lib/utils";
 const codeSamples = import.meta.glob("@/tools/**/examples/**/*.html", { query: "?raw", import: "default", eager: true });  // Import code samples dynamically!
 </script>
 
@@ -35,6 +35,14 @@ function withStgEnv(code) {
 	if(options)
 		return code.slice(0, end + 1) + options[0] + ` env: "stg",` + rest.slice(options[0].length);
 	return code.slice(0, end + 1) + `, { env: "stg" }` + rest;
+}
+
+// What this program costs to download in total
+function programSize(program) {
+	let sum = 0;
+	for(const extension of tool.files || ["js", "wasm"])
+		sum += getFileSize(tool.name, version.version, `${program}.${extension}`) || 0;
+	return sum;
 }
 
 // Download program files as a .zip file
@@ -115,6 +123,8 @@ async function downloadAsZip(program) {
 	<h6 class="mt-3">
 		{program}
 		
+		<small class="text-muted fw-normal">{formatSize(programSize(program))}</small>
+
 		<!-- Button to download all files for this program -->
 		<span on:click={() => downloadAsZip(program)} on:keypress={() => downloadAsZip(program)}>
 			<Badge class="ms-2" color={busyDownload ? "secondary" : "primary"} style="cursor: {busyDownload ? "default" : "pointer"}">
@@ -125,7 +135,11 @@ async function downloadAsZip(program) {
 	</h6>
 	<ListGroup>
 		{#each tool.files || ["js", "wasm"] as extension}
-			<ListGroupItem tag="a" href={getToolURL(tool.name, version.version, `${program}.${extension}`)} action>{program}.{extension}</ListGroupItem>
+			<ListGroupItem tag="a" href={getToolURL(tool.name, version.version, `${program}.${extension}`)} action
+				class="d-flex justify-content-between align-items-center">
+				<span>{program}.{extension}</span>
+				<small class="text-muted">{formatSize(getFileSize(tool.name, version.version, `${program}.${extension}`))}</small>
+			</ListGroupItem>
 		{/each}
 	</ListGroup>
 {/each}

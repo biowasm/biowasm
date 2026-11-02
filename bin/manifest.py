@@ -3,6 +3,7 @@
 # build/ folder that compile.py generated. Kept separate from compile.py because the manifest
 # records what is live in KV, which is only true once the deploy succeeds.
 
+import os
 import json
 import base64
 import argparse
@@ -12,6 +13,9 @@ from pathlib import Path
 DIR_ROOT = Path(__file__).parent / "../"
 DIR_BUILD = (DIR_ROOT / "build").resolve()
 DIR_MANIFEST = (DIR_ROOT / "biowasm.manifest.json").resolve()
+# Byte sizes for the website to show. Kept out of the manifest because that one is handed
+# straight to getAssetFromKV, which expects a flat path -> key map and nothing else
+DIR_SIZES = (DIR_ROOT / "biowasm.sizes.json").resolve()
 DIR_MANIFEST_TEMP = (DIR_BUILD / "manifest.tmp").resolve()
 DIR_CF_UPLOAD = (DIR_BUILD / "cf_kv_upload").resolve()  # suffixed with ".<n>.json"
 # Cloudflare rejects bulk KV requests over 100MB, and `wrangler kv bulk put` only splits
@@ -20,6 +24,7 @@ CF_UPLOAD_MAX_BYTES = 80 * 1000 * 1000
 
 # Global state
 MANIFEST = {}
+SIZES = {}
 
 
 def get_file_contents(path):
@@ -61,6 +66,8 @@ def generate_manifests():
 	# Update the MANIFEST where needed
 	to_upload = []
 	for path, hash in hashes.items():
+		SIZES[path] = os.path.getsize(DIR_BUILD / path)
+
 		# Prepare the KV pair for Cloudflare Workers KV
 		kv_key = f"{path}:{hash}"
 		kv_value, kv_base64 = get_file_contents(str(DIR_BUILD / path))
@@ -91,6 +98,8 @@ def generate_manifests():
 		write_cf_upload(chunk, n + 1)
 	with open(DIR_MANIFEST, "w", encoding="utf-8") as f:
 		json.dump(MANIFEST, f, ensure_ascii=False, sort_keys=True, indent=2)
+	with open(DIR_SIZES, "w", encoding="utf-8") as f:
+		json.dump(SIZES, f, ensure_ascii=False, sort_keys=True, indent=2)
 	DIR_MANIFEST_TEMP.unlink()
 
 
@@ -104,6 +113,7 @@ if __name__ == "__main__":
 
 	if args.env == "stg":
 		DIR_MANIFEST = Path(str(DIR_MANIFEST).replace('.json', '.stg.json'))
+		DIR_SIZES = Path(str(DIR_SIZES).replace('.json', '.stg.json'))
 		DIR_MANIFEST_TEMP = Path(str(DIR_MANIFEST_TEMP).replace('.tmp', '.stg.tmp'))
 
 	# Without it there are no hashes to fold in, which would silently deploy an unchanged manifest
@@ -113,5 +123,9 @@ if __name__ == "__main__":
 
 	with open(DIR_MANIFEST) as f:
 		MANIFEST = json.load(f)
+	# Sizes of tools that weren't recompiled this run have to survive it
+	if DIR_SIZES.is_file():
+		with open(DIR_SIZES) as f:
+			SIZES = json.load(f)
 
 	generate_manifests()
