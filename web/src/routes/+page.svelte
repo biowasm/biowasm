@@ -1,6 +1,7 @@
 <script>
 import { Icon, Table } from "@sveltestrap/sveltestrap";
 import LinkPackage from "$components/LinkPackage.svelte";
+import AlignmentDemo from "$components/AlignmentDemo.svelte";
 import CONFIG from "@/biowasm.json";
 </script>
 
@@ -9,13 +10,18 @@ import CONFIG from "@/biowasm.json";
 </svelte:head>
 
 <!-- Jumbotron -->
-<div class="p-5 mb-4 bg-light rounded-3">
-	<div class="container-fluid py-5">
-		<h1 class="display-6 fw-bold col-md-8">Run bioinformatics tools in your browser</h1>
-		<p class="fs-4 col-md-8">Use command-line tools in your web apps with just a few lines of code. Powered by WebAssembly.</p>
-		<a href="/documentation" class="btn btn-primary btn-lg" type="button">
-			Get Started <Icon name="arrow-right" />
-		</a>
+<div class="px-3 px-md-5 py-4 mb-4 bg-light rounded-3">
+	<div class="container-fluid row align-items-center gx-0 gx-lg-5 gy-4">
+		<div class="col-lg-6">
+			<h1 class="display-6 fw-bold">Run bioinformatics tools in your browser</h1>
+			<p class="fs-4">Use command-line tools in your web apps with just a few lines of code. Powered by WebAssembly.</p>
+			<a href="/documentation" class="btn btn-primary btn-lg" type="button">
+				Get Started <Icon name="arrow-right" />
+			</a>
+		</div>
+		<div class="col-lg-6">
+			<AlignmentDemo />
+		</div>
 	</div>
 </div>
 
