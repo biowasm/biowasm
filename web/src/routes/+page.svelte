@@ -3,6 +3,13 @@ import { Icon, Table } from "@sveltestrap/sveltestrap";
 import LinkPackage from "$components/LinkPackage.svelte";
 import AlignmentDemo from "$components/AlignmentDemo.svelte";
 import CONFIG from "@/biowasm.json";
+
+const WHY = [
+	{ icon: "piggy-bank", title: "Reduce cloud costs", text: "Run computations in each user's browser; no cloud infra to manage, and costs don't grow with usage." },
+	{ icon: "shield-lock", title: "Data privacy", text: "Files are analyzed on the user's device and never uploaded, which is essential for clinical usage." },
+	{ icon: "lightning-charge", title: "Better UX", text: "For small interactive analyses, results come back faster, with no uploads or job queues to wait for." },
+	{ icon: "mortarboard", title: "Teaching & offline use", text: "No environment to set up, and tools keep working even with intermittent Internet connection." }
+];
 </script>
 
 <svelte:head>
@@ -10,18 +17,36 @@ import CONFIG from "@/biowasm.json";
 </svelte:head>
 
 <!-- Jumbotron -->
-<div class="px-3 px-md-5 py-4 mb-4 bg-light rounded-3">
-	<div class="container-fluid row align-items-center gx-0 gx-lg-5 gy-4">
-		<div class="col-lg-6">
-			<h1 class="display-6 fw-bold">Run bioinformatics tools in your browser</h1>
-			<p class="fs-4">Use command-line tools in your web apps with just a few lines of code. Powered by WebAssembly.</p>
-			<a href="/documentation" class="btn btn-primary btn-lg" type="button">
+<div class="px-3 px-md-5 px-lg-4 py-4 mb-4 bg-light rounded-3">
+	<div class="row align-items-center gx-0 gx-lg-4 gy-4">
+		<div class="col-lg-5">
+			<h1 class="fs-2 fw-bold">Run bioinformatics tools in your browser</h1>
+			<p class="fs-5">Use command-line tools in your web apps with just a few lines of code. Powered by WebAssembly.</p>
+			<a href="/documentation" class="btn btn-primary" type="button">
 				Get Started <Icon name="arrow-right" />
 			</a>
 		</div>
-		<div class="col-lg-6">
+		<div class="col-lg-7">
 			<AlignmentDemo />
 		</div>
+	</div>
+</div>
+
+<!-- Why the browser -->
+<div class="px-3 px-md-5 pb-4 mb-4">
+	<h2 class="fs-4 fw-bold mb-4">Why run bioinformatics tools in the browser?</h2>
+	<div class="row g-4">
+		{#each WHY as reason}
+			<div class="col-md-6 col-lg-3">
+				<div class="d-flex align-items-center mb-2">
+					<span class="why-icon d-inline-flex align-items-center justify-content-center rounded-3 me-2">
+						<Icon name={reason.icon} />
+					</span>
+					<h3 class="fs-6 fw-semibold mb-0">{reason.title}</h3>
+				</div>
+				<p class="text-muted mb-0">{reason.text}</p>
+			</div>
+		{/each}
 	</div>
 </div>
 
@@ -29,7 +54,7 @@ import CONFIG from "@/biowasm.json";
 <div class="row align-items-md-stretch">
 	<div class="col-md-4">
 		<div class="h-100 p-5 text-bg-light rounded-3">
-			<h2 class="fw-bold">Supported Tools</h2>
+			<h2 class="fs-4 fw-bold">Supported Tools</h2>
 			<p>
 				Biowasm supports many C/C++ bioinformatics tools (<LinkPackage tool="samtools" />, <LinkPackage tool="bedtools" />, <LinkPackage tool="bcftools" />, <LinkPackage tool="bowtie2" />, <LinkPackage tool="minimap2" />, <LinkPackage tool="fastp" />, <LinkPackage tool="wgsim" />, etc.)
 				and general data wrangling utilities (<LinkPackage tool="jq" />, <LinkPackage tool="gawk" />, <LinkPackage tool="grep" />, <LinkPackage tool="sed" />, etc.)
@@ -41,7 +66,7 @@ import CONFIG from "@/biowasm.json";
 	</div>
 	<div class="col-md-8">
 		<div class="h-100 p-5 rounded-3">
-			<h2 class="fw-bold">Who Uses Biowasm?</h2>
+			<h2 class="fs-4 fw-bold">Who Uses Biowasm?</h2>
 			<Table>
 				<thead>
 					<tr>
@@ -95,3 +120,12 @@ import CONFIG from "@/biowasm.json";
 		</div>
 	</div>
 </div>
+
+<style>
+.why-icon {
+	width: 2rem;
+	height: 2rem;
+	color: var(--bs-primary);
+	background: var(--bs-primary-bg-subtle);
+}
+</style>

@@ -6,7 +6,6 @@ import CodeBlock from "$components/CodeBlock.svelte";
 
 const TOOL = "minimap2/2.22";
 const REFERENCE = "/minimap2/MT-human.fa";
-const REFERENCE_LENGTH = 16569;
 // Smaller minimizers than the sr preset's -k21 -w11, which can't seed 60bp reads that carry an edit
 const READ_LENGTH = 60;
 const FLAGS = "-ax sr -k11 -w5";
@@ -40,7 +39,9 @@ const sam = await CLI.exec(\`minimap2 ${FLAGS} ${REFERENCE} \${reads}\`);
 let reads = READS;
 let status = "loading";  // loading, ready, running, error
 let error = "";
-let alignments = [];
+let sam = "";
+let samLines = [];  // [{ key, fields: [{ text, changed }] }]
+let nbAligned = 0;
 let elapsed = null;
 let showCode = false;
 let copied = false;
@@ -55,9 +56,9 @@ onMount(async () => {
 	try {
 		await loadScript("https://biowasm.com/cdn/v3/aioli.js");
 		CLI = await new Aioli([TOOL], { printInterleaved: false });
-		await run();
 		const fasta = await CLI.fs.readFile(REFERENCE, { encoding: "utf8" });
 		genome = fasta.split("\n").filter(line => !line.startsWith(">")).join("").toUpperCase();
+		status = "ready";
 	} catch (e) {
 		status = "error";
 		error = e.message || String(e);
@@ -76,9 +77,10 @@ async function run() {
 		const start = performance.now();
 		const output = await CLI.exec(`minimap2 ${FLAGS} ${REFERENCE} ${path}`);
 		elapsed = performance.now() - start;
-		alignments = parseSAM(output.stdout);
-		if(alignments.length === 0)
+		sam = output.stdout.split("\n").filter(line => !line.startsWith("@PG")).join("\n").trim();
+		if(!sam.split("\n").some(line => !line.startsWith("@")))
 			throw new Error("No reads found. Paste them in FASTA format: a >name line, then the sequence.");
+		samLines = diffSAM(samLines, sam, ++nbAligned);
 		status = "ready";
 	} catch (e) {
 		status = "error";
@@ -87,21 +89,6 @@ async function run() {
 		clearTimeout(timer);
 		slow = false;
 	}
-}
-
-function parseSAM(sam) {
-	return sam.split("\n").filter(line => line && !line.startsWith("@")).map(line => {
-		const [name, flag, , pos, , cigar, , , , seq] = line.split("\t");
-		return {
-			name,
-			flag: +flag,
-			mapped: !(flag & 4),
-			strand: flag & 16 ? "-" : "+",
-			pos: +pos,
-			cigar,
-			length: seq.length
-		};
-	}).filter(a => !(a.flag & 256) && !(a.flag & 2048));
 }
 
 // Cut new reads from random spots in the genome, keeping edits mid-read so minimap2 can anchor them
@@ -143,6 +130,19 @@ async function copyCode() {
 	setTimeout(() => (copied = false), 1500);
 }
 
+// Flag each field that differs from the same read's line in the previous run
+function diffSAM(previous, sam, run) {
+	const before = Object.fromEntries(previous.map(line => [line.fields[0].text, line.fields.map(f => f.text)]));
+	return sam.split("\n").map((line, i) => {
+		const fields = line.split("\t");
+		const old = before[fields[0]];
+		return {
+			key: `${run}-${i}`,
+			fields: fields.map((text, j) => ({ text, changed: old !== undefined && old[j] !== text }))
+		};
+	});
+}
+
 function loadScript(src) {
 	if(window.Aioli)
 		return Promise.resolve();
@@ -162,7 +162,6 @@ function handleKeydown(evt) {
 	}
 }
 
-$: mapped = alignments.filter(a => a.mapped);
 </script>
 
 <div class="card shadow-sm">
@@ -175,8 +174,8 @@ $: mapped = alignments.filter(a => a.mapped);
 			{/if}
 		</span>
 		<div class="d-flex gap-1 flex-shrink-0 ms-2">
-			<button class="btn btn-sm btn-outline-secondary py-0" on:click={shuffle} disabled={!genome || slow} title="New random reads" aria-label="New random reads">
-				<Icon name="shuffle" />
+			<button class="btn btn-sm btn-outline-secondary py-0 text-nowrap" on:click={shuffle} disabled={!genome || slow} title="New random reads">
+				<Icon name="shuffle" /> Shuffle
 			</button>
 			<button class="btn btn-sm btn-primary py-0 text-nowrap" on:click={run} disabled={status === "loading" || slow}>
 				{#if status === "loading" || slow}
@@ -189,39 +188,29 @@ $: mapped = alignments.filter(a => a.mapped);
 	</div>
 
 	<div class="card-body p-0">
-		<label class="small text-muted px-3 pt-2 mb-1 d-block" for="demo-reads">
-			Reads to align to the human mitochondrial genome (edit them!)
-		</label>
-		<textarea
-			id="demo-reads"
-			class="reads form-control border-0 rounded-0 px-3"
-			rows="5"
-			spellcheck="false"
-			bind:value={reads}
-			on:keydown={handleKeydown}
-		></textarea>
-
-		<div class="border-top px-3 py-2">
-			<svg class="w-100 d-block" viewBox="0 0 1000 28" preserveAspectRatio="none" aria-label="Read positions along the genome">
-				<rect x="0" y="12" width="1000" height="4" rx="2" class="genome" />
-				{#each mapped as a}
-					<rect
-						x={(a.pos / REFERENCE_LENGTH) * 1000}
-						y="6"
-						width={Math.max(6, (a.length / REFERENCE_LENGTH) * 1000)}
-						height="16"
-						rx="2"
-						class="read"
-					>
-						<title>{a.name}: {a.pos.toLocaleString()} ({a.strand}) {a.cigar}</title>
-					</rect>
-				{/each}
-			</svg>
-			<div class="d-flex justify-content-between small text-muted"><span>1</span><span>{REFERENCE_LENGTH.toLocaleString()} bp</span></div>
+		<div class="d-flex flex-column flex-sm-row">
+			<div class="pane d-flex flex-column">
+				<label class="small text-muted px-3 pt-2 mb-1" for="demo-reads">Reads (edit them!)</label>
+				<textarea
+					id="demo-reads"
+					class="reads form-control border-0 rounded-0 px-3 flex-grow-1"
+					spellcheck="false"
+					bind:value={reads}
+					on:keydown={handleKeydown}
+				></textarea>
+			</div>
+			<div class="pane output d-flex flex-column">
+				<span class="small text-muted px-3 pt-2 mb-1">SAM output (vs. human mtDNA)</span>
+				{#if sam}
+					<pre class="sam flex-grow-1 m-0 px-3 pb-2">{#each samLines as line (line.key)}{#each line.fields as field, j}{j ? "\t" : ""}<span class:changed={field.changed}>{field.text}</span>{/each}{"\n"}{/each}</pre>
+				{:else}
+					<div class="flex-grow-1 small text-muted fst-italic px-3">Click Align to run minimap2</div>
+				{/if}
+			</div>
 		</div>
 
 		{#if status === "error"}
-			<div class="text-danger small px-3 pb-2">{error}</div>
+			<div class="text-danger small border-top px-3 py-2">{error}</div>
 		{/if}
 	</div>
 
@@ -249,7 +238,7 @@ $: mapped = alignments.filter(a => a.mapped);
 .reads {
 	font-family: var(--bs-font-monospace);
 	font-size: 12px;
-	resize: vertical;
+	resize: none;
 	/* Wrap rather than scroll on narrow screens */
 	white-space: pre-wrap;
 	word-break: break-all;
@@ -262,22 +251,43 @@ $: mapped = alignments.filter(a => a.mapped);
 	}
 }
 
+.pane {
+	flex: 1 1 0;
+	min-width: 0;
+	height: 160px;
+}
+
+.output {
+	border-top: var(--bs-border-width) solid var(--bs-border-color);
+}
+
+@media (min-width: 576px) {
+	.output {
+		border-top: 0;
+		border-left: var(--bs-border-width) solid var(--bs-border-color);
+	}
+}
+
+/* Long SAM lines scroll sideways instead of wrapping, so columns stay readable */
+/* Fades out, and the keyed #each restarts it on every run */
+.changed {
+	border-radius: 2px;
+	animation: flash 2.5s ease-out;
+}
+
+@keyframes flash {
+	from { background: rgba(255, 193, 7, 0.6); }
+	to { background: transparent; }
+}
+
+.sam {
+	font-size: 12px;
+	overflow: auto;
+	white-space: pre;
+}
+
 .reads:focus {
 	box-shadow: none;
-}
-
-.genome {
-	fill: var(--bs-gray-300);
-}
-
-.read {
-	fill: var(--bs-primary);
-	opacity: 0.75;
-	transition: x 0.3s;
-}
-
-.read:hover {
-	opacity: 1;
 }
 
 .copy {
