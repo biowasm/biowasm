@@ -405,6 +405,18 @@
 			]
 		},
 		{
+			"name": "mash",
+			"url": "https://github.com/marbl/Mash.git",
+			"programs": ["mash"],
+			"description": "Fast genome and metagenome distance estimation using MinHash",
+			"versions": [
+				{
+					"version": "2.3",
+					"branch": "v2.3"
+				}
+			]
+		},
+		{
 			"name": "minimap2",
 			"url": "https://github.com/lh3/minimap2.git",
 			"programs": ["minimap2", "minimap2-simd"],
