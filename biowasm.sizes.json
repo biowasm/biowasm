@@ -55,7 +55,7 @@
   "blast/2.17.0/tblastx.js": 104792,
   "blast/2.17.0/tblastx.wasm": 12676290,
   "bowtie2/2.4.2/bowtie2-align-s-simd.data": 139163,
-  "bowtie2/2.4.2/bowtie2-align-s-simd.js": 202995,
+  "bowtie2/2.4.2/bowtie2-align-s-simd.js": 122373,
   "bowtie2/2.4.2/bowtie2-align-s-simd.wasm": 1127549,
   "bowtie2/2.4.2/bowtie2-align-s.data": 139163,
   "bowtie2/2.4.2/bowtie2-align-s.js": 122343,
