@@ -1,6 +1,6 @@
 FROM emscripten/emsdk:6.0.13 as wasm-builder
 
-RUN apt-get update && apt-get install -y autoconf liblzma-dev capnproto libcapnp-dev
+RUN apt-get update && apt-get install -y autoconf liblzma-dev
 
 COPY ./bin/test_server.py /usr/src/
 

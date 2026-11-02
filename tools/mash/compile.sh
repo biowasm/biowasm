@@ -23,6 +23,12 @@ if [ ! -f "$CAPNP_DIR/lib/libcapnp.a" ]; then
 
     mkdir -p "$CAPNP_DIR/lib" "$CAPNP_DIR/include"
 
+    # apt ships Cap'n Proto 1.0, whose generated code won't compile against these 0.7.0
+    # headers, so build the schema compiler from this same tarball
+    mkdir -p "$CAPNP_DIR/bin"
+    ( cd "$CAPNP_SRC" && ./configure --disable-shared >/dev/null && make -j4 capnp capnpc-c++ && cp capnp capnpc-c++ "$CAPNP_DIR/bin/" && make clean >/dev/null )
+    export PATH="$CAPNP_DIR/bin:$PATH"
+
     cd "$CAPNP_SRC/src"
 
     # Fix arenaSpace size for wasm32 (ReaderArena is larger than arenaSpace on 32-bit)

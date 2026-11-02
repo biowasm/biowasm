@@ -40,7 +40,7 @@ index 4685936..5e05ac1 100644
  #include <string>
  #include <vector>
 diff --git a/src/mash/Sketch.cpp b/src/mash/Sketch.cpp
-index a15d769..597c7a6 100644
+index a15d769..91fa42c 100644
 --- a/src/mash/Sketch.cpp
 +++ b/src/mash/Sketch.cpp
 @@ -21,7 +21,10 @@
@@ -54,15 +54,14 @@ index a15d769..597c7a6 100644
  #include <math.h>
  #include <list>
  #include <string.h>
-@@ -270,25 +273,34 @@ uint64_t Sketch::initParametersFromCapnp(const char * file)
+@@ -270,16 +273,25 @@ uint64_t Sketch::initParametersFromCapnp(const char * file)
          exit(1);
      }
      
 -    void * data = mmap(NULL, fileInfo.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
--    
--    if (data == MAP_FAILED)
 +    void * data = malloc(fileInfo.st_size);
-+
+     
+-    if (data == MAP_FAILED)
 +    if (data == NULL)
      {
          uint64_t fileSize = fileInfo.st_size;
@@ -82,56 +81,22 @@ index a15d769..597c7a6 100644
 +    }
 +
      capnp::ReaderOptions readerOptions;
--    
-+
+     
      readerOptions.traversalLimitInWords = 1000000000000;
-     readerOptions.nestingLimit = 1000000;
--    
-+
-     //capnp::StreamFdMessageReader * message = new capnp::StreamFdMessageReader(fd, readerOptions);
-     capnp::FlatArrayMessageReader * message = new capnp::FlatArrayMessageReader(kj::ArrayPtr<const capnp::word>(reinterpret_cast<const capnp::word *>(data), fileInfo.st_size / sizeof(capnp::word)), readerOptions);
-     capnp::MinHash::Reader reader = message->getRoot<capnp::MinHash>();
--    
-+
-     parameters.kmerSize = reader.getKmerSize();
-     parameters.error = reader.getError();
-     parameters.minHashesPerWindow = reader.getMinHashesPerWindow();
-@@ -300,9 +312,9 @@ uint64_t Sketch::initParametersFromCapnp(const char * file)
-     capnp::MinHash::ReferenceList::Reader referenceListReader = reader.getReferenceList().getReferences().size() ? reader.getReferenceList() : reader.getReferenceListOld();
-     capnp::List<capnp::MinHash::ReferenceList::Reference>::Reader referencesReader = referenceListReader.getReferences();
-     uint64_t referenceCount = referencesReader.size();
--    
-+
-    	parameters.seed = reader.getHashSeed();
--    
-+
-     if ( reader.hasAlphabet() )
-     {
-     	setAlphabetFromString(parameters, reader.getAlphabet().cStr());
-@@ -312,13 +324,15 @@ uint64_t Sketch::initParametersFromCapnp(const char * file)
-     	setAlphabetFromString(parameters, alphabetNucleotide);
-     }
- 	close(fd);
--	
-+
- 	try
- 	{
+@@ -318,6 +330,8 @@ uint64_t Sketch::initParametersFromCapnp(const char * file)
  		delete message;
  	}
  	catch (exception e) {}
--	
 +
 +	free(data);
-+
+ 	
  	return referenceCount;
  }
- 
-@@ -916,16 +930,33 @@ Sketch::SketchOutput * loadCapnp(Sketch::SketchInput * input)
+@@ -916,7 +930,24 @@ Sketch::SketchOutput * loadCapnp(Sketch::SketchInput * input)
  	Sketch::SketchOutput * output = new Sketch::SketchOutput();
  	vector<Sketch::Reference> & references = output->references;
  	
 -    void * data = mmap(NULL, fileInfo.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
--    
 +    void * data = malloc(fileInfo.st_size);
 +
 +    if (data == NULL)
@@ -150,21 +115,9 @@ index a15d769..597c7a6 100644
 +        delete output;
 +        return 0;
 +    }
-+
-     capnp::ReaderOptions readerOptions;
--    
-+
-     readerOptions.traversalLimitInWords = 1000000000000;
-     readerOptions.nestingLimit = 1000000;
--    
-+
-     capnp::FlatArrayMessageReader * message = new capnp::FlatArrayMessageReader(kj::ArrayPtr<const capnp::word>(reinterpret_cast<const capnp::word *>(data), fileInfo.st_size / sizeof(capnp::word)), readerOptions);
-     capnp::MinHash::Reader reader = message->getRoot<capnp::MinHash>();
--    
-+
-     capnp::MinHash::ReferenceList::Reader referenceListReader = reader.getReferenceList().getReferences().size() ? reader.getReferenceList() : reader.getReferenceListOld();
      
-     capnp::List<capnp::MinHash::ReferenceList::Reference>::Reader referencesReader = referenceListReader.getReferences();
+     capnp::ReaderOptions readerOptions;
+     
 @@ -1054,7 +1085,7 @@ Sketch::SketchOutput * loadCapnp(Sketch::SketchInput * input)
      cout << endl;
      */
@@ -175,10 +128,10 @@ index a15d769..597c7a6 100644
      delete message;
      
 diff --git a/src/mash/ThreadPool.h b/src/mash/ThreadPool.h
-index 6584762..28e1760 100644
+index 6584762..35e9322 100644
 --- a/src/mash/ThreadPool.h
 +++ b/src/mash/ThreadPool.h
-@@ -4,63 +4,56 @@
+@@ -4,10 +4,11 @@
  //
  // See the LICENSE.txt file included with this software for license information.
  
@@ -191,10 +144,10 @@ index 6584762..28e1760 100644
  #include <queue>
  
  template <class TypeInput, class TypeOutput>
- class ThreadPool
+@@ -15,52 +16,44 @@ class ThreadPool
  {
  public:
--    
+     
 -    ThreadPool(TypeOutput * (* functionNew)(TypeInput *), unsigned int threadCountNew);
 -    ~ThreadPool();
 -    
@@ -203,14 +156,12 @@ index 6584762..28e1760 100644
 -    bool running() const;
 -    void runWhenThreadAvailable(TypeInput * input); // thread deletes input when finished
 -    void runWhenThreadAvailable(TypeInput * input, TypeOutput * (* functionNew)(TypeInput *)); // thread deletes input when finished
--    
++    ThreadPool(TypeOutput * (* functionNew)(TypeInput *), unsigned int threadCountNew)
++        : function(functionNew) {}
+     
 -private:
 -    
 -    struct OutputQueueNode
-+
-+    ThreadPool(TypeOutput * (* functionNew)(TypeInput *), unsigned int threadCountNew)
-+        : function(functionNew) {}
-+
 +    ~ThreadPool() {}
 +
 +    bool outputAvailable() const { return !outputQueue.empty(); }
@@ -229,10 +180,35 @@ index 6584762..28e1760 100644
 -    unsigned int threadCount;
 -    
 -    pthread_t * threads;
--    
++        if (outputQueue.empty())
++        {
++            return 0;
++        }
++        TypeOutput * output = outputQueue.front();
++        outputQueue.pop();
++        return output;
++    }
++
++    bool running() const { return !outputQueue.empty(); }
++
++    void runWhenThreadAvailable(TypeInput * input)
++    {
++        TypeOutput * output = function(input);
++        outputQueue.push(output);
++        delete input;
++    }
++
++    void runWhenThreadAvailable(TypeInput * input, TypeOutput * (* functionNew)(TypeInput *))
++    {
++        TypeOutput * output = functionNew(input);
++        outputQueue.push(output);
++        delete input;
++    }
+     
 -    static void * thread(void *);
--    
--    TypeOutput * (* function)(TypeInput *);
++private:
+     
+     TypeOutput * (* function)(TypeInput *);
 -    TypeInput * inputCurrent;
 -    OutputQueueNode * outputQueueNodeCurrent;
 -    
@@ -247,39 +223,12 @@ index 6584762..28e1760 100644
 -    
 -    bool finished;
 -    friend void * thread(void *);
--};
-+        if (outputQueue.empty())
-+        {
-+            return 0;
-+        }
-+        TypeOutput * output = outputQueue.front();
-+        outputQueue.pop();
-+        return output;
-+    }
- 
-+    bool running() const { return !outputQueue.empty(); }
- 
--#include "ThreadPool.hxx"
-+    void runWhenThreadAvailable(TypeInput * input)
-+    {
-+        TypeOutput * output = function(input);
-+        outputQueue.push(output);
-+        delete input;
-+    }
-+
-+    void runWhenThreadAvailable(TypeInput * input, TypeOutput * (* functionNew)(TypeInput *))
-+    {
-+        TypeOutput * output = functionNew(input);
-+        outputQueue.push(output);
-+        delete input;
-+    }
-+
-+private:
-+
-+    TypeOutput * (* function)(TypeInput *);
 +    std::queue<TypeOutput *> outputQueue;
-+};
+ };
  
+-
+-#include "ThreadPool.hxx"
+-
  #endif
 diff --git a/src/mash/memcpyLink.h b/src/mash/memcpyLink.h
 index 00be5f5..4498a6d 100644
