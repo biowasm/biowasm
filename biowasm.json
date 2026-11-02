@@ -180,18 +180,6 @@
 			]
 		},
 		{
-			"name": "findutils",
-			"url": "git://git.savannah.gnu.org/findutils.git",
-			"programs": ["find"],
-			"description": "Search for files in a folder",
-			"versions": [
-				{
-					"version": "4.9.0",
-					"branch": "v4.9.0"
-				}
-			]
-		},
-		{
 			"name": "fasttree",
 			"url": "https://github.com/morgannprice/fasttree.git",
 			"programs": ["fasttree"],
@@ -200,6 +188,18 @@
 				{
 					"version": "2.1.11",
 					"branch": "main"
+				}
+			]
+		},
+		{
+			"name": "findutils",
+			"url": "git://git.savannah.gnu.org/findutils.git",
+			"programs": ["find"],
+			"description": "Search for files in a folder",
+			"versions": [
+				{
+					"version": "4.9.0",
+					"branch": "v4.9.0"
 				}
 			]
 		},
