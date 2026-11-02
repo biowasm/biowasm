@@ -17,8 +17,27 @@ jobs:
         with:
           ref: ${{ github.ref }}
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
       - name: Run tests
         run: |
           cd web/
           npm install
           npm run test
+
+  refs:
+    runs-on: ubuntu-latest
+    name: Tool refs
+    steps:
+      - name: Checkout biowasm repo
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      # Catches a tag that was renamed or deleted upstream, which would otherwise only
+      # show up as a tool quietly built from the wrong source
+      - name: Check every ref in biowasm.json still exists
+        run: python3 bin/check-refs.py

@@ -1,0 +1,128 @@
+--- a/easel.c
++++ b/easel.c
+@@ -40,6 +40,19 @@
+ #include "easel.h"
+ #include <syslog.h>
+ 
++/* biowasm: Easel decides whether it is running as a daemon -- and so whether to
++ * send errors to syslog instead of stderr -- by testing getppid() == 1. Under
++ * Emscripten getppid() always returns 1, so every error and exception went to
++ * vsyslog(); musl's syslog opens a unix socket, which aborts the module. That
++ * turned any reportable error into a crash with no message. There are no
++ * daemons in a browser, so always take the "print it" branch.
++ */
++#ifdef __EMSCRIPTEN__
++#define esl_is_daemon() (0)
++#else
++#define esl_is_daemon() (getppid() == 1)
++#endif
++
+ /*****************************************************************
+  * 1. Exception and fatal error handling.
+  *****************************************************************/
+@@ -72,7 +85,7 @@
+       /* Check whether we are running as a daemon so we can do the
+        * right thing about logging instead of printing errors 
+        */
+-      if (getppid() != 1)
++      if (! esl_is_daemon())
+ 	{ // we aren't running as a daemon, so print the error normally
+ 	  va_start(ap, format);
+ 	  if (errbuf) vsnprintf(errbuf, eslERRBUFSIZE, format, ap);
+@@ -149,7 +162,7 @@
+   else 
+     {
+       /* Check whether we are running as a daemon so we can do the right thing about logging instead of printing errors */
+-      if (getppid() != 1)
++      if (! esl_is_daemon())
+ 	{ // we're not running as a daemon, so print the error normally
+ 	  fprintf(stderr, "Fatal exception (source file %s, line %d):\n", sourcefile, sourceline);
+ 	  va_start(argp, format);
+@@ -307,7 +320,7 @@
+   int mpiflag;
+ #endif
+   /* Check whether we are running as a daemon so we can do the right thing about logging instead of printing errors */
+-  if (getppid() != 1)
++  if (! esl_is_daemon())
+     { // we're not running as a daemon, so print the error normally
+       va_start(argp, format);
+       vfprintf(stderr, format, argp);
+--- a/esl_buffer.c
++++ b/esl_buffer.c
+@@ -335,6 +335,16 @@
+ 
+   if (filename && ! esl_FileExists(filename)) 
+     ESL_XFAIL(eslENOTFOUND, bf->errmsg, "couldn't read file %s", filename);
++
++#ifdef __EMSCRIPTEN__
++  /* biowasm: reading through a pipe needs popen() and a /bin/sh to run the
++   * command in, neither of which Emscripten provides -- the popen() stub
++   * aborts the whole module. Fail here instead, so the caller reports it.
++   * In practice this is how a .gz file reaches us: decompress it first.
++   */
++  ESL_XFAIL(eslENOTFOUND, bf->errmsg, "can't read %s through a pipe in WebAssembly (gzipped input must be decompressed first)",
++	    filename ? filename : cmdfmt);
++#endif
+ 
+   if (filename) { if ((status = esl_sprintf(&cmd, cmdfmt, filename)) != eslOK) goto ERROR; }
+   else          { if ((status = esl_strdup(cmdfmt, -1, &cmd))        != eslOK) goto ERROR; }
+--- a/esl_cpu.c
++++ b/esl_cpu.c
+@@ -65,6 +65,9 @@
+ int
+ esl_cpu_has_sse(void)
+ {
++#if defined(__EMSCRIPTEN__)
++  return TRUE;   /* biowasm: SSE path is compiled in unconditionally */
++#endif
+ #ifdef eslENABLE_SSE
+   static int sse_support = -1;
+   if (sse_support < 0)
+@@ -208,9 +211,14 @@
+   uint32_t edx = 0;
+ #if defined( __i386__ ) && defined ( __PIC__ )   /* in case of PIC under 32-bit EBX cannot be clobbered */
+   __asm__ ( "movl %%ebx, %%edi \n\t cpuid \n\t xchgl %%ebx, %%edi" : "=D" (ebx), "+a" (eax), "+c" (ecx), "=d" (edx) );
++#else
++#if defined(__EMSCRIPTEN__)
++  /* biowasm: no CPUID under WebAssembly; vector support is decided at compile time */
++  (void) eax; (void) ecx;
+ #else
+   __asm__ ( "cpuid" : "+b" (ebx), "+a" (eax), "+c" (ecx), "=d" (edx) );
+ #endif
++#endif
+   abcd[0] = eax; abcd[1] = ebx; abcd[2] = ecx; abcd[3] = edx;
+ #endif // ! _MSC_VER
+ }     
+--- a/esl_sse.c
++++ b/esl_sse.c
+@@ -37,7 +37,7 @@
+ #include <math.h>
+ #include <float.h>
+ 
+-#include <x86intrin.h>
++#include <emmintrin.h>
+ 
+ #include "easel.h"
+ #include "esl_sse.h"
+--- a/esl_sse.h
++++ b/esl_sse.h
+@@ -22,7 +22,7 @@
+ #include "easel.h"
+ 
+ #include <stdio.h>
+-#include <x86intrin.h>	
++#include <emmintrin.h>	
+ 
+ 
+ /*****************************************************************
+--- a/m4/esl_sse.m4
++++ b/m4/esl_sse.m4
+@@ -50,7 +50,7 @@
+ 
+     AC_LINK_IFELSE(
+       [AC_LANG_SOURCE([[
+-#include <x86intrin.h>
++#include <emmintrin.h>
+ #include <stdint.h>
+ int stub_sse(void) {
+ __m128i v1 = _mm_set1_epi32(42);

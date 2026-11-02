@@ -6,12 +6,30 @@ EM_FLAGS=$(cat <<EOF
 	-s FORCE_FILESYSTEM=1
 	-s EXPORTED_RUNTIME_METHODS=["callMain","FS","PROXYFS","WORKERFS"]
 	-s MODULARIZE=1
-	-s ENVIRONMENT="web,worker"
+	-s ENVIRONMENT=web,worker
 	-s ALLOW_MEMORY_GROWTH=1
+	-s STACK_SIZE=5MB
 	-lworkerfs.js -lproxyfs.js
 EOF
 )
 EM_FLAGS=$(echo $EM_FLAGS)  # Remove whitespace
+
+# Clang 15/16 otherwise treats these warnings into errors (Emscripten appends EMCC_CFLAGS to every emcc call)
+EMCC_CFLAGS=$(cat <<EOF
+	-Wno-error=implicit-function-declaration
+	-Wno-error=incompatible-function-pointer-types
+	-Wno-error=int-conversion
+	-Wno-error=unused-but-set-variable
+	-Wno-error=unterminated-string-initialization
+EOF
+)
+EMCC_CFLAGS=$(echo $EMCC_CFLAGS)  # Remove whitespace
+
+# Without this, autoconf guesses the build machine's triplet and configures for it instead
+EM_CONFIGURE_FLAGS="--host=wasm32-unknown-emscripten"
+
+# Emscripten ships libopenmp, so find_package(OpenMP) succeeds and pulls in the pthreads libc
+EM_CMAKE_FLAGS="-DCMAKE_DISABLE_FIND_PACKAGE_OpenMP=ON -DOPENMP_FOUND=FALSE"
 
 # Function to remove Nanosleep requirements for GNU tools (Nanosleep not supported in Emscripten)
 function EM_GNU_NANOSLEEP() {
@@ -40,5 +58,5 @@ CFLAGS_LZMA="-I${DIR_LZMA}/api -I${DIR_LZMA}/api/lzma"
 LDFLAGS_LZMA="-L${DIR_LZMA}/.libs"
 
 # Export vars and functions
-export EM_FLAGS CFLAGS_LZMA LDFLAGS_LZMA;
+export EM_FLAGS EMCC_CFLAGS EM_CONFIGURE_FLAGS EM_CMAKE_FLAGS CFLAGS_LZMA LDFLAGS_LZMA;
 export -f EM_GNU_NANOSLEEP EM_GNU_STRCASESTR_LINEAR;

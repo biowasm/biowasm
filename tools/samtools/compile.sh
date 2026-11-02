@@ -3,9 +3,8 @@
 make clean
 
 # Use autoheader/autoconf to generate config.h.in and configure
-autoheader
-autoconf -Wno-syntax
-emconfigure ./configure --without-curses --with-htslib="../../htslib/src/" CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1"
+autoreconf -i -Wno-syntax
+emconfigure ./configure $EM_CONFIGURE_FLAGS --without-curses --with-htslib="../../htslib/src/" CFLAGS="-s USE_ZLIB=1 -s USE_BZIP2=1"
 
 # Build
 emmake make samtools CC=emcc AR=emar \

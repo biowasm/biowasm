@@ -4,7 +4,7 @@
 UTILS=$(echo src/{basename,cat,comm,cut,date,df,dirname,du,echo,env,fold,head,join,ls,md5sum,paste,seq,shuf,sort,tail,tee,tr,uniq,wc}.js)
 
 # Install dependencies
-sudo apt-get install -y autopoint gperf help2man gettext texinfo bison
+sudo apt-get install -y autopoint gperf help2man gettext texinfo bison rsync
 ./bootstrap
 EM_GNU_NANOSLEEP
 
@@ -18,6 +18,9 @@ emconfigure ./configure \
 
 # This program needs gcc and should not be compiled to WebAssembly
 sed -i 's|$(MAKE) src/make-prime-list$(EXEEXT)|gcc src/make-prime-list.c -o src/make-prime-list$(EXEEXT) -Ilib/|' Makefile
+
+# Bison 3.8's generated parser #includes a header that gnulib's rule deletes, so keep it in lib/
+sed -i 's|&& rm -f parse-datetime.tab.c parse-datetime.tab.h|\&\& mv parse-datetime.tab.h $(top_srcdir)/lib/ \&\& rm -f parse-datetime.tab.c|' Makefile
 
 # Make all commands and skip "man" errors
 emmake make all CC=emcc -k WERROR_CFLAGS=""

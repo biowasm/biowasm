@@ -3,7 +3,6 @@
 # Cleanup previous builds if any
 rm bin/*
 make clean
-git submodule foreach 'git stash'
 
 # Replace -lz with -s USE_ZLIB=1
 find . -name 'Makefile' -exec sed -i 's/-lz/-s USE_ZLIB=1/g' {} \;

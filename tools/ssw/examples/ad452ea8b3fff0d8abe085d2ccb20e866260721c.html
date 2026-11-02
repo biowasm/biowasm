@@ -4,15 +4,15 @@ const CLI = await new Aioli(["ssw/1.2.4"], {
 	printInterleaved: false
 });
 
-// Create mock reference & query fasta files
+// ref.fa contains the query + the query with mismatches
 await CLI.mount([
 	{
 		name: "ref.fa",
-		data: ">chr1\nACTACGACTACGACTACGACGCGCGATTCGCGCGCCGATATACGACTACGACTA\n"
+		data: ">chr1\nACGTACGTACGTACGTGGCCTTAAGGCCTTAATTTTTTTTTTGGGGGGGGGGACGTACGTACGTACGTGGCCTTCAGGCCTAAA\n"
 	},
 	{
 		name: "query.fa",
-		data: ">read1\nTACGACTACG\n"
+		data: ">read1\nACGTACGTACGTACGTGGCCTTAAGGCCTTAA\n"
 	}
 ]);
 

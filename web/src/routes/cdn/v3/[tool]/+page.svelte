@@ -1,5 +1,5 @@
 <script context="module">
-import { ListGroup, ListGroupItem } from "sveltestrap";
+import { ListGroup, ListGroupItem } from "@sveltestrap/sveltestrap";
 import { getToolURL } from "$lib/utils";
 </script>
 
