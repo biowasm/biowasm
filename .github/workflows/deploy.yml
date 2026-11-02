@@ -70,7 +70,8 @@ jobs:
           if [ "${{ github.event.inputs.tools_to_compile }}" != "none" ]; then
             for batch in ../build/cf_kv_upload.*.json; do
               [ -e "$batch" ] || continue
-              npx wrangler kv bulk put --binding=CDN --env=${{ github.event.inputs.env }} "$batch"
+              # Without --remote, wrangler v4 writes to a local store and still exits 0
+              npx wrangler kv bulk put --remote --binding=CDN --env=${{ github.event.inputs.env }} "$batch"
             done
           fi
           npx wrangler deploy --env=${{ github.event.inputs.env }}
