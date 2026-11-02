@@ -104,6 +104,18 @@
 			]
 		},
 		{
+			"name": "blast",
+			"url": "https://github.com/ncbi/ncbi-cxx-toolkit-public.git",
+			"programs": ["blastn", "blastp", "blastx", "tblastn", "tblastx", "makeblastdb", "blastdbcmd", "blast_formatter"],
+			"description": "Basic local alignment search tool",
+			"versions": [
+				{
+					"version": "2.17.0",
+					"branch": "release/29.2.0"
+				}
+			]
+		},
+		{
 			"name": "bowtie2",
 			"url": "https://github.com/BenLangmead/bowtie2",
 			"programs": ["bowtie2-align-s", "bowtie2-align-s-simd"],
@@ -444,18 +456,6 @@
 				{
 					"version": "5.1.0",
 					"branch": "5.1.0"
-				}
-			]
-		},
-		{
-			"name": "blast",
-			"url": "https://github.com/ncbi/ncbi-cxx-toolkit-public.git",
-			"programs": ["blastn", "blastp", "blastx", "tblastn", "tblastx", "makeblastdb", "blastdbcmd", "blast_formatter"],
-			"description": "Basic local alignment search tool",
-			"versions": [
-				{
-					"version": "2.17.0",
-					"branch": "release/29.2.0"
 				}
 			]
 		},

@@ -1,0 +1,22 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli([
+	"blast/blastp/2.17.0",
+	"blast/makeblastdb/2.17.0"
+]);
+
+await CLI.mount([
+	{ name: "query.faa", data: ">query\nMKTAYIAKQRQISFVKSHFSRQLEERLGLIEVQAPILSRVGDGTQDNLSGAEKAVQVKVKALPDAQFEVVHSLAKWKRQTLGQHDFSAGEGLYTHMKALRPDEDRLSPLHSVYVDQWDWERVMGDGERQFSTLKSTVEAIWAGIKATEAAV\n" },
+	{ name: "subject.faa", data: ">subj1\nMKTAYIAKQRQISFVKSHFSRQLEERLGLIEVQAPILSRVGDGTQDNLSGAEKAVQVKVKALPDAQFEVVHSLAKWKRQTLGQHDFSAGEGLYTHMKALRPDEDRLSPLHSVYVDQWDWERVMGDGERQFSTLKSTVEAIWAGIKATEAAV\n>subj2\nMSKQAFLEQLGVTSFVKSHFSRQLEERLGLIEVQAPILSRVGDGTQDNLSGAEKAVQVKVKALPDAQFEVVHSLAKWKRQTLGQHDFSAGEGLYTHMKALRPDEDRLSPLHSVYVDQWDWERVMGDGERQFSTLKSTVEAIWAGIKATEAAA\n" }
+]);
+
+// BLASTDB v5 needs LMDB, which cannot open its memory-mapped environment in WebAssembly,
+// so build a v4 database instead
+await CLI.exec("makeblastdb -in subject.faa -dbtype prot -out db -blastdb_version 4");
+const output = await CLI.exec("blastp -query query.faa -db db -outfmt 6");
+
+document.getElementById("output").innerHTML = output;
+</script>
+
+<h4>Output of <code>blastp -query query.faa -db db -outfmt 6</code>:</h4>
+<pre id="output">Loading...</pre>

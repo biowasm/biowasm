@@ -6,7 +6,7 @@ BUILD_FLAGS="-fwasm-exceptions -s USE_SQLITE3=1 -O3"
 
 # configure and build native datatool binaries
 ./configure --without-caution --with-projects=scripts/projects/datatool/project.lst --with-build-root=native
-make -C native/build all_p
+make -j4 -C native/build all_p
 
 # configure wasm build
 EMCC_CFLAGS="$EMCC_CFLAGS -s USE_SQLITE3=1" emconfigure ./configure AR="emar cr" \
@@ -47,7 +47,7 @@ EMCC_CFLAGS="$EMCC_CFLAGS -s USE_SQLITE3=1" emconfigure ./configure AR="emar cr"
   --with-projects=scripts/projects/blast/project.lst \
   --with-build-root=wasm
 
-NCBI_DATATOOL_PATH="$(realpath native/bin)" make -C wasm/build CFLAGS="$BUILD_FLAGS" CXXFLAGS="$BUILD_FLAGS" LDFLAGS="$EM_FLAGS $BUILD_FLAGS -sERROR_ON_UNDEFINED_SYMBOLS=0" all_p
+NCBI_DATATOOL_PATH="$(realpath native/bin)" make -j4 -C wasm/build CFLAGS="$BUILD_FLAGS" CXXFLAGS="$BUILD_FLAGS" LDFLAGS="$EM_FLAGS $BUILD_FLAGS -sERROR_ON_UNDEFINED_SYMBOLS=0" all_p
 
 for f in wasm/build/app/**/*.wasm; do
     mv ${f%.wasm} ../build/$(basename $f .wasm).js
