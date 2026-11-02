@@ -7,11 +7,13 @@ DIR=${1?$usage}
 URL=${2?$usage}
 REF=${3?$usage}
 
-# Blobless clones are much smaller, but not every host supports them
+# Some GNU repos have submodules that point to https instead of git, which seems to be more flaky.
+# Submodules wait until after checkout, since the default branch can pin different ones than the tag.
+REWRITE="-c url.git://git.sv.gnu.org/.insteadOf=https://git.sv.gnu.org/git/"
+
 if [[ ! -e "$DIR/.git" ]]; then
 	rm -rf "$DIR"
-	git clone --filter=blob:none --recurse-submodules "$URL" "$DIR" ||
-		git clone --recurse-submodules "$URL" "$DIR"
+	git clone "$URL" "$DIR"
 fi
 
 # Without its own .git, the commands below would act on the biowasm repo instead
@@ -24,4 +26,4 @@ fi
 git -C "$DIR" fetch --tags --force origin
 git -C "$DIR" checkout --force "$REF"
 git -C "$DIR" clean -xdff
-git -C "$DIR" submodule update --init --recursive
+git -C "$DIR" $REWRITE submodule update --init --recursive --force

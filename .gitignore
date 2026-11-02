@@ -15,3 +15,7 @@ tools/*/src/
 tools/gffread/gclib/
 tools/hmmer/easel/
 tools/hmmer/simde/
+
+# Copies of the examples that the tests rewrite to point at stg or at build/
+*.stg.html
+*.local.html

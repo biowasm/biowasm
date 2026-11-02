@@ -13,6 +13,6 @@ EOF
 EXTRA_FLAGS=$(echo $EXTRA_FLAGS)  # Remove whitespace
 
 # Compile hyphy
-emcmake cmake -DCMAKE_EXE_LINKER_FLAGS="$EM_FLAGS $EXTRA_FLAGS"
+emcmake cmake $EM_CMAKE_FLAGS -DCMAKE_CXX_FLAGS="-include alloca.h -include stdlib.h -include string.h" -DCMAKE_EXE_LINKER_FLAGS="$EM_FLAGS $EXTRA_FLAGS"
 emmake make hyphy
 mv hyphy.{js,wasm,data} ../build/

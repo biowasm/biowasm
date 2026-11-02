@@ -10,6 +10,6 @@ emconfigure ./configure \
 emmake make \
     EXEEXT=.js \
     CFLAGS="-O2 -s USE_ZLIB=1 -s USE_BZIP2=1 $CFLAGS_LZMA" \
-    LDFLAGS="$EM_FLAGS -s ERROR_ON_UNDEFINED_SYMBOLS=0 -O2 $LDFLAGS_LZMA"
+    LDFLAGS="$EM_FLAGS -s ERROR_ON_UNDEFINED_SYMBOLS=0 -Wno-error=js-compiler -O2 $LDFLAGS_LZMA"
 
 mv src/ivar.{js,wasm} ../build/

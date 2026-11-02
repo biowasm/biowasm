@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy biowasm v3 (${{ github.event.inputs.env }})
     container:
-      image: emscripten/emsdk:2.0.25
+      image: emscripten/emsdk:6.0.13
     steps:
       # ------------------------------------------------------------------------
       # Setup
