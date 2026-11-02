@@ -218,6 +218,8 @@
   "mafft/7.520/dvtditr.wasm": "mafft/7.520/dvtditr.wasm:3a4562dc4a62e842197ac92a5a16b8bc",
   "mafft/7.520/tbfast.js": "mafft/7.520/tbfast.js:fccf2782a5d4885e525e7e0d5a86a1bb",
   "mafft/7.520/tbfast.wasm": "mafft/7.520/tbfast.wasm:0f6fe0f7453438b943606f047a3cd61c",
+  "mash/2.3/mash.js": "mash/2.3/mash.js:39cff7a2367dcdcdc5d31c3e14c4a58c",
+  "mash/2.3/mash.wasm": "mash/2.3/mash.wasm:a1928f7549c320dc1e6c855fbe007e33",
   "minimap2/2.22/minimap2-simd.data": "minimap2/2.22/minimap2-simd.data:317c730aee5ee9e8ac4676e85e386b4b",
   "minimap2/2.22/minimap2-simd.js": "minimap2/2.22/minimap2-simd.js:1c9cc3c7c163425dca3e644df9200202",
   "minimap2/2.22/minimap2-simd.wasm": "minimap2/2.22/minimap2-simd.wasm:09ff2bf067f689ebdb10291ea0072db0",
