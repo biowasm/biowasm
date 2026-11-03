@@ -4,7 +4,8 @@
 
 usage="Do not call compile.sh directly; see README"
 DIR_TOOL=${1?$usage}
-BRANCH=${2?$usage}
+# Exported so a tool's compile.sh can build versions differently
+export BRANCH=${2?$usage}
 TOOL=$(basename $DIR_TOOL)
 
 
