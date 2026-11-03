@@ -45,12 +45,14 @@ const USERS = [
 		<div class="col-lg-5">
 			<h1 class="fs-2 fw-bold mb-3">Run bioinformatics tools in your browser</h1>
 			<p class="fs-5 mb-4">Use command-line tools in your web apps with just a few lines of code. Powered by WebAssembly.</p>
-			<a href="/documentation" class="btn btn-primary" type="button">
-				Get Started <Icon name="arrow-right" />
-			</a>
-			<a href={CONFIG.url} class="btn btn-outline-primary ms-2" type="button">
-				Browse packages ({NB_PACKAGES}) <Icon name="arrow-right" />
-			</a>
+			<div class="d-flex flex-wrap gap-2">
+				<a href="/documentation" class="btn btn-primary" type="button">
+					Get Started <Icon name="arrow-right" />
+				</a>
+				<a href={CONFIG.url} class="btn btn-outline-primary" type="button">
+					Browse packages ({NB_PACKAGES}) <Icon name="arrow-right" />
+				</a>
+			</div>
 		</div>
 		<div class="col-lg-7">
 			<AlignmentDemo />

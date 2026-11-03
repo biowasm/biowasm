@@ -165,7 +165,7 @@ function handleKeydown(evt) {
 </script>
 
 <div class="card shadow-sm">
-	<div class="card-header d-flex align-items-center justify-content-between bg-white">
+	<div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2 bg-white">
 		<span class="small fw-semibold text-nowrap">
 			<Icon name="lightning-charge-fill" class="text-warning" />
 			<span class="d-none d-sm-inline">Live demo:</span><span class="d-sm-none">Demo:</span> <code>minimap2</code> <span class="d-none d-sm-inline">in your browser</span>
@@ -173,16 +173,12 @@ function handleKeydown(evt) {
 				<span class="badge text-bg-success fw-normal ms-1" title="Your browser supports WebAssembly SIMD, so this runs the vectorized build of minimap2">SIMD</span>
 			{/if}
 		</span>
-		<div class="d-flex gap-1 flex-shrink-0 ms-2">
+		<div class="d-flex gap-1 flex-shrink-0">
 			<button class="btn btn-sm btn-outline-secondary py-0 text-nowrap" on:click={shuffle} disabled={!genome || slow} title="New random reads">
-				<Icon name="shuffle" /> Shuffle
+				<span class="d-none d-sm-inline me-1">Shuffle</span><Icon name="shuffle" />
 			</button>
 			<button class="btn btn-sm btn-primary py-0 text-nowrap" on:click={run} disabled={status === "loading" || slow}>
-				{#if status === "loading" || slow}
-					<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-				{:else}
-					Align <Icon name="play-fill" />
-				{/if}
+				Align <Icon name="play-fill" />
 			</button>
 		</div>
 	</div>
