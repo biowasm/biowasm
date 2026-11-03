@@ -27,7 +27,8 @@ export default defineConfig({
 						const dir = path.join(tools, tool, "examples");
 						if(!fs.existsSync(dir))
 							continue;
-						for(const f of fs.readdirSync(dir))
+						// Recursive since branch names can contain slashes, e.g. blast's "release/29.2.0"
+						for(const f of fs.readdirSync(dir, { recursive: true }))
 							if(f.endsWith(".html") && !/\.(stg|local)\.html$/.test(f))
 								examples.push(`tools/${tool}/examples/${f}`);
 					}

@@ -1,7 +1,9 @@
 import CONFIG from "@/biowasm.json";
 
-export async function load() {
+// `data` holds the download totals from +page.server.js
+export async function load({ data }) {
 	return {
+		...data,
 		tools: CONFIG.tools
 	};
 }

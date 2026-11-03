@@ -1,5 +1,4 @@
 <script context="module">
-import { onMount } from "svelte";
 import { goto } from "$app/navigation";
 import { page } from "$app/stores";
 import { Badge, Input, Table } from "@sveltestrap/sveltestrap";
@@ -7,12 +6,11 @@ import { getToolURL, getFileSize, formatSize } from "$lib/utils";
 </script>
 
 <script>
-export let data = { tools: [] };
+export let data = { tools: [], downloads: {} };
 
 // State
 let sortColumn = "downloads";
 let sortDirection = "desc";
-let stats = null;
 
 // Search and category live in the URL so a filtered view can be linked to
 $: query = $page.url.searchParams.get("q") || "";
@@ -21,14 +19,13 @@ $: category = $page.url.searchParams.get("category") || "";
 $: listed = data.tools.filter(d => d.listed !== false);
 $: categories = [...new Set(listed.flatMap(t => t.categories || []))].sort();
 
-// Sort tools
-// `stats` is in here on purpose: it arrives after mount, and without it the default
-// sort by downloads would run against the zeroes we start with and never rerun
+// Sort tools. Download totals come from the server load, so the default sort by downloads
+// is already right on first render instead of reshuffling once stats arrive
 $: tools = listed.filter(t => matchesCategory(t, category)).filter(t => matchesQuery(t, query)).sort((a, b) => {
 	let diff = 0;
 
 	if(sortColumn === "downloads") {
-		diff = getNbDownloads(a, stats) - getNbDownloads(b, stats);
+		diff = getNbDownloads(a) - getNbDownloads(b);
 	} else if(sortColumn === "size") {
 		diff = (getSize(a) || 0) - (getSize(b) || 0);
 	} else {
@@ -36,11 +33,6 @@ $: tools = listed.filter(t => matchesCategory(t, category)).filter(t => matchesQ
 	}
 
 	return diff * (sortDirection === "asc" ? 1 : -1);
-});
-
-// Load stats on load
-onMount(async () => {
-	stats = (await (await fetch("/api/v3/stats")).json()).stats;
 });
 
 // Utilities
@@ -91,12 +83,8 @@ function setParam(key, value) {
 	goto(url, { replaceState: true, keepFocus: true, noScroll: true });
 }
 
-function getNbDownloads(tool, stats) {
-	let sum = 0;
-	const statsPerVersion = stats?.[tool.name];
-	for(let version in statsPerVersion)
-		sum += statsPerVersion[version]?.total || 0;
-	return sum;
+function getNbDownloads(tool) {
+	return data.downloads?.[tool.name] || 0;
 }
 
 function sortBy(col) {
@@ -165,7 +153,7 @@ function sortBy(col) {
 				<td>{t.description}</td>
 				<td>{t.versions.at(-1).version}</td>
 				<td class="text-muted" title={programs.length > 1 ? "Download size of one program" : ""}>{formatSize(getSize(t))}</td>
-				<td>{getNbDownloads(t, stats).toLocaleString()}</td>
+				<td>{getNbDownloads(t).toLocaleString()}</td>
 			</tr>
 		{/each}
 	</tbody>

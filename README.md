@@ -18,7 +18,7 @@ A repository of genomics tools, compiled from C/C++ to WebAssembly so they can r
 |-|-|
 | [sandbox.bio](https://sandbox.bio) | Runs command-line tools in the browser to power interactive tutorials |
 | [42basepairs](https://42basepairs.com) | Runs `samtools`, `bedtools`, `bcftools` and other tools to preview genomic files |
-| [CZ ID](https://czid.org/) ([repo](https://github.com/chanzuckerberg/czid-web)) | Runs `htsfile` and `seqtk` to identify data issues before file upload |
+| [SeqtoID](https://seqtoid.org/) ([repo](https://github.com/IT-Academic-Research-Services/seqtoid-web)) | Runs `htsfile` and `seqtk` to identify data issues before file upload |
 | [Nanopore](https://bonito.epi2me.io) | In-browser basecaller, uses `minimap2` and `samtools` after basecalling |
 | [ViralWasm](https://niema-lab.github.io/ViralWasm/) ([repo](https://github.com/Niema-Lab/ViralWasm)) | Runs `minimap2` and `ViralConsensus` for viral molecular epidemiology analysis |
 | [CRISPRLungo](https://pinellolab.github.io/CRISPRLungo/) ([repo](https://github.com/pinellolab/CRISPRLungo)) | Runs `minimap2` as part of a long-read CRISPR analysis pipeline |
@@ -26,6 +26,12 @@ A repository of genomics tools, compiled from C/C++ to WebAssembly so they can r
 | [bedqc](https://quinlan-lab.github.io/bedqc) ([repo](https://github.com/quinlan-lab/bedqc)) | Runs `bedtools` in the browser to validate BED files |
 | [Ribbon](https://genomeribbon.com) ([repo](https://github.com/MariaNattestad/Ribbon)) | Runs `samtools` in the browser to parse, estimate coverage and subsample BAM files |
 | [fastq.bio](https://www.fastq.bio) ([repo](https://github.com/robertaboukhalil/fastq.bio)) | Runs `fastp` in the browser to evaluate sequencing data quality |
+| [GBIF](https://www.gbif.org/occurrence/search?view=dashboard&nucleotideSequence.sequence=TTATATTTTATATTCGGAATTTGGGCAGGAATAATTGGGACATCATTAAGATTATTAATTCGAGCTGAATTAGGAAACCCAGGATCTCTAATTGGGGATGATCAAATTTATAACTCAATTGTAACAGCTCATGCTTTTATTATAATTTTCTTTATAGTAATACCTATTATAATTGGAG&nucleotideSequence.similarity=%5B%2298%22%2C%2299%22%5D) ([repo](https://github.com/gbif/gbif-web)) | Runs `kalign` to align sequences for its sequence phylogeny dashboard charts |
+| [Datamonkey](https://v3.datamonkey.org) ([repo](https://github.com/veg/datamonkey3)) | Runs `hyphy` in the browser for molecular evolution analysis |
+| [json4u](https://json4u.com) ([repo](https://github.com/loggerhead/json4u)) | Runs `jq` in the browser to power its JSON query feature |
+| [Sequence Manipulation Suite](https://paulstothard.github.io/sequence-manipulation-suite/) ([repo](https://github.com/paulstothard/sequence-manipulation-suite)) | Runs `minimap2`, `muscle`, `samtools` and other tools in the browser alongside its classic sequence analysis utilities |
+| [Wasm4Learn](https://ifb-elixirfr.github.io/Wasm4Learn/) ([repo](https://github.com/IFB-ElixirFr/Wasm4Learn-content)) | Runs `gawk`, `grep` and `sed` in the browser for bioinformatics teaching |
+| [Diana](https://diana.cpg.org.au) ([repo](https://github.com/Wytamma/diana)) | Runs `samtools`, `bgzip` and `tabix` in the browser to index genomes and annotations for TraDIS analysis |
 
 ## How it works
 
