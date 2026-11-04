@@ -3,10 +3,11 @@ import { goto } from "$app/navigation";
 import { page } from "$app/stores";
 import { Badge, Input, Table } from "@sveltestrap/sveltestrap";
 import { getToolURL, getFileSize, formatSize } from "$lib/utils";
+import Sparkline from "$components/Sparkline.svelte";
 </script>
 
 <script>
-export let data = { tools: [], downloads: {} };
+export let data = { tools: [], downloads: {}, weekly: {} };
 
 // State
 let sortColumn = "downloads";
@@ -127,7 +128,7 @@ function sortBy(col) {
 			<th>Description</th>
 			<th width="10%">Latest</th>
 			<th width="10%" on:click={() => sortBy("size")}>Size</th>
-			<th width="10%" on:click={() => sortBy("downloads")}>Downloads</th>
+			<th width="18%" on:click={() => sortBy("downloads")}>Downloads</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -153,7 +154,16 @@ function sortBy(col) {
 				<td>{t.description}</td>
 				<td>{t.versions.at(-1).version}</td>
 				<td class="text-muted" title={programs.length > 1 ? "Download size of one program" : ""}>{formatSize(getSize(t))}</td>
-				<td>{getNbDownloads(t).toLocaleString()}</td>
+				<td>
+					<div class="d-flex align-items-center justify-content-between gap-2">
+						{getNbDownloads(t).toLocaleString()}
+						{#if data.weekly?.[t.name]}
+							<span class="d-none d-md-block" title="Weekly downloads over the last year">
+								<Sparkline values={data.weekly[t.name]} width={80} />
+							</span>
+						{/if}
+					</div>
+				</td>
 			</tr>
 		{/each}
 	</tbody>

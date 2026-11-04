@@ -24,13 +24,10 @@ $: path = $page.url.pathname.split("/")[1];
 				<NavLink href="/" active={path === ""}>Home</NavLink>
 			</NavItem>
 			<NavItem>
-				<NavLink href="/documentation" active={path === "documentation"}>Documentation</NavLink>
-			</NavItem>
-			<NavItem>
 				<NavLink href={CONFIG.url} active={path === "cdn"}>Packages</NavLink>
 			</NavItem>
 			<NavItem>
-				<NavLink href="/stats" active={path === "stats"}>Stats</NavLink>
+				<NavLink href="/documentation" active={path === "documentation"}>Documentation</NavLink>
 			</NavItem>
 			<NavItem>
 				<NavLink href="https://github.com/biowasm/biowasm">GitHub</NavLink>

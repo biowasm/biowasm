@@ -1,15 +1,13 @@
 <script>
-import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
 import { page } from "$app/stores";
 import { Badge, Breadcrumb, BreadcrumbItem, Button, Icon } from "@sveltestrap/sveltestrap";
 import CONFIG from "@/biowasm.json";
 
-// Parse tool and version info from URL path
-$: [tool, version] = $page.url.pathname.split("/").slice(3);
+export let data;
+
+$: ({ tool, version } = $page.params);
 $: title = `Packages${!tool ? "" : ": " + tool}${!version ? "" : " / " + version}`;
-$: if(browser) getDownloadStats(tool, version);
-let nbDownloads = null;
 
 // Newest first, for the version picker
 $: versions = [...(CONFIG.tools.find(t => t.name === tool)?.versions || [])].reverse().map(v => v.version);
@@ -39,14 +37,6 @@ function getRepo(tool, version) {
 	if(hostname === "git.savannah.gnu.org")
 		return { href: `https://git.savannah.gnu.org/cgit/${base.split("/").pop()}.git/tree/?h=${branch}`, icon: "git", host: "Savannah" };
 	return { href: base, icon: "git", host: hostname };
-}
-
-async function getDownloadStats(tool, version) {
-	if(!tool || !version)
-		return;
-
-	const data = await (await fetch(`/api/v3/stats/${tool}/${version}`)).json();
-	nbDownloads = data?.stats?.[tool]?.[version].total || 0;
 }
 </script>
 
@@ -96,10 +86,10 @@ async function getDownloadStats(tool, version) {
 				{/if}
 
 				<!-- Show stats -->
-				{#if tool && version && nbDownloads !== null}
+				{#if data.nbDownloads !== null}
 					<span class="text-small align-middle">
 						<Badge pill color="secondary" class="ms-1">
-							{nbDownloads.toLocaleString()} downloads
+							{data.nbDownloads.toLocaleString()} downloads
 						</Badge>
 					</span>
 				{/if}
