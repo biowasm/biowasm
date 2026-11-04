@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use biowasm, please cite it as below."
+title: "biowasm: bioinformatics tools compiled to WebAssembly"
+abstract: "A repository of bioinformatics tools, compiled from C/C++ to WebAssembly so they can run in a web browser."
+type: software
+authors:
+  - family-names: Aboukhalil
+    given-names: Robert
+repository-code: "https://github.com/biowasm/biowasm"
+url: "https://biowasm.com"
+license: MIT
+date-released: 2018-10-08
+keywords:
+  - WebAssembly
+  - genomics
+  - bioinformatics
+  - web browser
