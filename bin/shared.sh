@@ -14,6 +14,9 @@ EOF
 )
 EM_FLAGS=$(echo $EM_FLAGS)  # Remove whitespace
 
+# Add to the non-SIMD build of a tool that also ships a <program>-simd build; see bin/simd.js
+EM_FLAGS_SIMD="--extern-post-js $(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/simd.js"
+
 # Clang 15/16 otherwise treats these warnings into errors (Emscripten appends EMCC_CFLAGS to every emcc call)
 EMCC_CFLAGS=$(cat <<EOF
 	-Wno-error=implicit-function-declaration
@@ -58,5 +61,5 @@ CFLAGS_LZMA="-I${DIR_LZMA}/api -I${DIR_LZMA}/api/lzma"
 LDFLAGS_LZMA="-L${DIR_LZMA}/.libs"
 
 # Export vars and functions
-export EM_FLAGS EMCC_CFLAGS EM_CONFIGURE_FLAGS EM_CMAKE_FLAGS CFLAGS_LZMA LDFLAGS_LZMA;
+export EM_FLAGS EM_FLAGS_SIMD EMCC_CFLAGS EM_CONFIGURE_FLAGS EM_CMAKE_FLAGS CFLAGS_LZMA LDFLAGS_LZMA;
 export -f EM_GNU_NANOSLEEP EM_GNU_STRCASESTR_LINEAR;
