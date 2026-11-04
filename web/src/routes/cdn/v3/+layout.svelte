@@ -1,5 +1,6 @@
 <script>
 import { browser } from "$app/environment";
+import { goto } from "$app/navigation";
 import { page } from "$app/stores";
 import { Badge, Breadcrumb, BreadcrumbItem, Button, Icon } from "@sveltestrap/sveltestrap";
 import CONFIG from "@/biowasm.json";
@@ -9,6 +10,9 @@ $: [tool, version] = $page.url.pathname.split("/").slice(3);
 $: title = `Packages${!tool ? "" : ": " + tool}${!version ? "" : " / " + version}`;
 $: if(browser) getDownloadStats(tool, version);
 let nbDownloads = null;
+
+// Newest first, for the version picker
+$: versions = [...(CONFIG.tools.find(t => t.name === tool)?.versions || [])].reverse().map(v => v.version);
 
 $: hasSimd = (CONFIG.tools.find(t => t.name === tool)?.programs || []).some(p => p.endsWith("-simd"));
 
@@ -80,7 +84,16 @@ async function getDownloadStats(tool, version) {
 
 		{#if version}
 			<BreadcrumbItem>
-				{version}
+				{#if versions.length > 1}
+					<select class="form-select form-select-sm d-inline-block w-auto align-middle" aria-label="Version"
+						value={version} on:change={evt => goto(`${CONFIG.url}/${tool}/${evt.target.value}`)}>
+						{#each versions as v, i}
+							<option value={v}>{v}{i === 0 ? " (latest)" : ""}</option>
+						{/each}
+					</select>
+				{:else}
+					{version}
+				{/if}
 
 				<!-- Show stats -->
 				{#if tool && version && nbDownloads !== null}
