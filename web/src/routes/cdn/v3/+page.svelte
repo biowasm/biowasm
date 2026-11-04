@@ -132,7 +132,7 @@ function sortBy(col) {
 	</thead>
 	<tbody>
 		{#each tools as t}
-			{@const toolURL = t.versions.length === 1 ? getToolURL(t.name, t.versions.at(-1).version) : getToolURL(t.name)}
+			{@const toolURL = getToolURL(t.name, t.versions.at(-1).version)}
 			{@const programs = getPrograms(t)}
 			<tr on:click={evt => {
 				// Support Cmd+Click on table row

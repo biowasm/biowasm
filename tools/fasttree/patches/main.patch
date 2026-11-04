@@ -1,0 +1,24 @@
+diff --git a/old/FastTree-2.1.11.c b/old/FastTree-2.1.11.c
+index 997b5a7..a6c58a8 100644
+--- a/old/FastTree-2.1.11.c
++++ b/old/FastTree-2.1.11.c
+@@ -8782,7 +8782,8 @@ double pnorm(double x)
+ 
+ void *mymalloc(size_t sz) {
+   if (sz == 0) return(NULL);
+-  void *new = malloc(sz);
++  void *new = NULL;
++  if (posix_memalign(&new, 16, sz) != 0) new = NULL;
+   if (new == NULL) {
+     fprintf(stderr, "Out of memory\n");
+     exit(1);
+@@ -8822,7 +8823,8 @@ void *myrealloc(void *data, size_t szOld, size_t szNew, bool bCopy) {
+     new = mymemdup(data, szNew);
+     myfree(data, szOld);
+   } else {
+-    new = realloc(data,szNew);
++    if (posix_memalign(&new, 16, szNew) != 0) new = NULL;
++    if (new != NULL) { memcpy(new, data, szOld < szNew ? szOld : szNew); free(data); }
+     if (new == NULL) {
+       fprintf(stderr, "Out of memory\n");
+       exit(1);

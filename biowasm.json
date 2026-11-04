@@ -193,13 +193,17 @@
 		{
 			"name": "fasttree",
 			"url": "https://github.com/morgannprice/fasttree.git",
-			"programs": ["fasttree"],
+			"programs": ["fasttree", "fasttree-simd"],
 			"description": "Build phylogenetic trees from multiple sequence alignments",
 			"categories": ["phylogenetics"],
 			"versions": [
 				{
 					"version": "2.1.11",
 					"branch": "main"
+				},
+				{
+					"version": "2.2.0",
+					"branch": "v2.2.0"
 				}
 			]
 		},
