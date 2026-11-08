@@ -121,13 +121,13 @@ function sortBy(col) {
 	</p>
 {/if}
 
-<Table hover>
+<Table hover responsive>
 	<thead>
 		<tr>
 			<th width="20%" on:click={() => sortBy("name")}>Name</th>
 			<th>Description</th>
-			<th width="10%">Latest</th>
-			<th width="10%" on:click={() => sortBy("size")}>Size</th>
+			<th width="10%" class="d-none d-md-table-cell">Latest</th>
+			<th width="10%" class="d-none d-md-table-cell" on:click={() => sortBy("size")}>Size</th>
 			<th width="18%" on:click={() => sortBy("downloads")}>Downloads</th>
 		</tr>
 	</thead>
@@ -152,8 +152,8 @@ function sortBy(col) {
 					{/if}
 				</td>
 				<td>{t.description}</td>
-				<td>{t.versions.at(-1).version}</td>
-				<td class="text-muted" title={programs.length > 1 ? "Download size of one program" : ""}>{formatSize(getSize(t))}</td>
+				<td class="d-none d-md-table-cell">{t.versions.at(-1).version}</td>
+				<td class="text-muted text-nowrap d-none d-md-table-cell" title={programs.length > 1 ? "Download size of one program" : ""}>{formatSize(getSize(t))}</td>
 				<td>
 					<div class="d-flex align-items-center justify-content-between gap-2">
 						{getNbDownloads(t).toLocaleString()}
