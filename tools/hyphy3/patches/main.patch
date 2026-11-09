@@ -1,0 +1,66 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 0595541..59c548e 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -113,7 +113,10 @@ if(EMSCRIPTEN)
+     message(STATUS "Configuring HyPhy 3 WALRUS for WebAssembly (Emscripten SIMD128)")
+     set(HYPHY3_BUILD_TESTS OFF CACHE BOOL "Disable tests under Emscripten" FORCE)
+     set(HYPHY3_PCH OFF CACHE BOOL "Disable PCH under Emscripten" FORCE)
+-    target_compile_options(hyphy3_core INTERFACE -msimd128 -fexceptions)
++    target_compile_options(hyphy3_core INTERFACE -fexceptions)
++    if(HYPHY3_SIMD)
++        target_compile_options(hyphy3_core INTERFACE -msimd128)
++    endif()
+ endif()
+ 
+ # HTML results viewer (viz/fel-viewer), embedded into the binaries at build time so hyphy3 can
+@@ -354,6 +357,9 @@ add_executable(hyphy3
+ )
+ target_compile_definitions(hyphy3 PRIVATE HYPHY3_COMBINED_DRIVER)
+ target_link_libraries(hyphy3 PRIVATE hyphy3_report)
++if(HYPHY3_SIMD)
++    set_target_properties(hyphy3 PROPERTIES OUTPUT_NAME hyphy3-simd)
++endif()
+ 
+ # Standalone CLI Applications
+ add_executable(hyphy3-fel src/apps/hyphy_fel.cpp)
+diff --git a/include/hyphy/core/console.hpp b/include/hyphy/core/console.hpp
+index f2e6cd5..f55579e 100644
+--- a/include/hyphy/core/console.hpp
++++ b/include/hyphy/core/console.hpp
+@@ -25,13 +25,8 @@ namespace hyphy::core {
+ class Console {
+ public:
+     static bool is_terminal() {
+-#if defined(_WIN32)
+-        return isatty(STDOUT_FILENO) != 0;
+-#else
+-        const char* term = std::getenv("TERM");
+-        if (term && std::string(term) == "dumb") return false;
+-        return isatty(STDOUT_FILENO) != 0;
+-#endif
++        // no tty in biowasm, so it would output escape codes without this patch
++        return false;
+     }
+ 
+     static bool color_enabled() {
+diff --git a/include/hyphy/core/progress_bar.hpp b/include/hyphy/core/progress_bar.hpp
+index a88cc29..2f772b2 100644
+--- a/include/hyphy/core/progress_bar.hpp
++++ b/include/hyphy/core/progress_bar.hpp
+@@ -141,13 +141,8 @@ public:
+     }
+ 
+     static bool is_terminal() {
+-#if defined(_WIN32)
+-        return isatty(STDOUT_FILENO) != 0;
+-#else
+-        const char* term = std::getenv("TERM");
+-        if (term && std::string(term) == "dumb") return false;
+-        return isatty(STDOUT_FILENO) != 0;
+-#endif
++        // no tty in biowasm, so it would output escape codes without this patch
++        return false;
+     }
+ 
+     static int terminal_width() {
