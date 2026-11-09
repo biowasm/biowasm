@@ -177,6 +177,19 @@
 			]
 		},
 		{
+			"name": "diamond",
+			"url": "https://github.com/bbuchfink/diamond.git",
+			"programs": ["diamond", "diamond-simd"],
+			"description": "Accelerated protein sequence aligner (BLASTP/BLASTX)",
+			"categories": ["alignment", "proteins"],
+			"versions": [
+				{
+					"version": "2.2.8",
+					"branch": "v2.2.8"
+				}
+			]
+		},
+		{
 			"name": "fastp",
 			"url": "https://github.com/OpenGene/fastp.git",
 			"programs": ["fastp"],
