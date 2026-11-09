@@ -326,6 +326,19 @@
 			]
 		},
 		{
+			"name": "hyphy3",
+			"url": "https://github.com/veg/hyphy-3",
+			"programs": ["hyphy3", "hyphy3-simd"],
+			"description": "HyPhy 3: ground-up C++20 rewrite of the HyPhy phylogenetics platform, with FEL, MEME, BUSTED, aBSREL, RELAX, FUBAR, GARD and SLAC selection analyses behind one CLI driver",
+			"categories": ["phylogenetics"],
+			"versions": [
+				{
+					"version": "3.0.0",
+					"branch": "main"
+				}
+			]
+		},
+		{
 			"name": "ivar",
 			"url": "https://github.com/andersen-lab/ivar.git",
 			"programs": ["ivar"],
