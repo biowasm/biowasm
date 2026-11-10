@@ -257,6 +257,8 @@
   "muscle/3.8.1551/muscle.wasm": 208264,
   "muscle/5.1.0/muscle.js": 91777,
   "muscle/5.1.0/muscle.wasm": 547907,
+  "perbase/1.4.1/perbase.js": 94250,
+  "perbase/1.4.1/perbase.wasm": 2777728,
   "samtools/1.10/samtools.data": 120057,
   "samtools/1.10/samtools.js": 117520,
   "samtools/1.10/samtools.wasm": 1048019,
