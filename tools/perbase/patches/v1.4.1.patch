@@ -1,51 +1,110 @@
-diff --git a/src/lib/par_granges.rs b/src/lib/par_granges.rs
-index 330aadc..7f3cc58 100644
 --- a/src/lib/par_granges.rs
 +++ b/src/lib/par_granges.rs
-@@ -70,6 +70,7 @@ pub struct ParGranges<R: 'static + RegionProcessor + Send + Sync> {
+@@ -7,7 +7,6 @@ use crossbeam::channel::{Receiver, bounded};
+ use lazy_static::lazy_static;
+ use log::*;
+ use num_cpus;
+-use rayon::prelude::*;
+ use rust_htslib::{
+     bam::{HeaderView, IndexedReader, Read},
+     bcf::{Read as bcfRead, Reader},
+@@ -69,8 +68,6 @@ pub struct ParGranges<R: 'static + RegionProcessor + Send + Sync> {
+     chunksize: u32,
      /// A modifier to apply to the channel size formular that is (BYTES_INA_GIGABYTE * channel_size_modifier) * threads / size_of(R::P)
      channel_size_modifier: f64,
-     /// The rayon threadpool to operate in
-+    #[cfg(not(target_os = "emscripten"))]
-     pool: rayon::ThreadPool,
+-    /// The rayon threadpool to operate in
+-    pool: rayon::ThreadPool,
      /// The implementation of [RegionProcessor] that will be used to process regions
      processor: R,
-@@ -111,6 +112,7 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
+ }
+@@ -111,10 +108,6 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
  
          // Keep two around for main thread and thread running the pool
          let threads = std::cmp::max(threads.saturating_sub(2), 1);
-+        #[cfg(not(target_os = "emscripten"))]
-         let pool = rayon::ThreadPoolBuilder::new()
-             .num_threads(threads)
-             .build()
-@@ -126,6 +128,7 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
+-        let pool = rayon::ThreadPoolBuilder::new()
+-            .num_threads(threads)
+-            .build()
+-            .unwrap();
+ 
+         info!("Using {} worker threads.", threads);
+         Self {
+@@ -126,7 +119,6 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
              threads,
              chunksize: chunksize.unwrap_or(CHUNKSIZE),
              channel_size_modifier: channel_size_modifier.unwrap_or(CHANNEL_SIZE_MODIFIER),
-+            #[cfg(not(target_os = "emscripten"))]
-             pool,
+-            pool,
              processor,
          }
-@@ -169,6 +172,7 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
-     ///
-     /// Note, a common use case of this will be to fetch a region and do a pileup. The bounds of bases being looked at should still be
-     /// checked since a fetch will pull all reads that overlap the region in question.
-+    #[cfg(not(target_os = "emscripten"))]
-     pub fn process(self) -> Result<Receiver<R::P>> {
-         let channel_size: usize = ((BYTES_INA_GIGABYTE as f64 * self.channel_size_modifier).floor()
-             as usize
-@@ -278,6 +282,74 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
-         Ok(rxv)
+     }
+@@ -156,125 +148,70 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
+         Ok(())
      }
  
-+    /// Single-threaded [`ParGranges::process`] for WebAssembly, which has no threads to spawn.
-+    ///
-+    /// Same chunking and output order as the threaded version, but every region is processed on
-+    /// the calling thread before returning, so the channel is unbounded and holds all results.
-+    #[cfg(target_os = "emscripten")]
-+    pub fn process(self) -> Result<Receiver<R::P>> {
-+        self.validate()?;
-+
+-    /// Process each region.
++    /// Chunk the region set and apply `process_region` to each interval on the calling thread.
+     ///
+-    /// This method splits the sequences in the BAM/CRAM header into `chunksize` * `self.threads` regions (aka 'super chunks').
+-    /// It then queries that 'super chunk' against the intervals (either the BED file, or the whole genome broken up into `chunksize`
+-    /// regions). The results of that query are then processed by a pool of workers that apply `process_region` to reach interval to
+-    /// do perbase analysis on. The collected result for each region is then sent back over the returned `Receiver<R::P>` channel
+-    /// for the caller to use. The results will be returned in order according to the order of the intervals used to drive this method.
+-    ///
+-    /// While one 'super chunk' is being worked on by all workers, the last 'super chunks' results are being printed to either to
+-    /// a file or to STDOUT, in order.
+-    ///
+-    /// Note, a common use case of this will be to fetch a region and do a pileup. The bounds of bases being looked at should still be
+-    /// checked since a fetch will pull all reads that overlap the region in question.
++    /// Upstream fans these out over a rayon pool; with one thread the channel can be unbounded
++    /// and every region is processed before returning, which keeps the output order identical.
+     pub fn process(self) -> Result<Receiver<R::P>> {
+-        let channel_size: usize = ((BYTES_INA_GIGABYTE as f64 * self.channel_size_modifier).floor()
+-            as usize
+-            / std::mem::size_of::<R::P>())
+-            * self.threads;
+-        info!(
+-            "Creating channel of length {:?} (* 120 bytes to get mem)",
+-            channel_size
+-        );
+-
+         self.validate()?;
+ 
+-        let (snd, rxv) = bounded(channel_size);
+-        thread::spawn(move || {
+-            self.pool.install(|| {
+-                info!("Reading from {:?}", self.reads);
+-                let mut reader = IndexedReader::from_path(&self.reads).expect("Indexed BAM/CRAM");
+-                // If passed add ref_fasta
+-                if let Some(ref_fasta) = &self.ref_fasta {
+-                    reader.set_reference(ref_fasta).expect("Set ref");
+-                }
+-                // Get a copy of the header
+-                let header = reader.header().to_owned();
+-
+-                // Work out if we are restricted to a subset of sites
+-                let bed_intervals = if let Some(regions_bed) = &self.regions_bed {
+-                    Some(
+-                        Self::bed_to_intervals(&header, regions_bed, self.merge_regions)
+-                            .expect("Parsed BED to intervals"),
+-                    )
+-                } else {
+-                    None
+-                };
+-                let bcf_intervals = if let Some(regions_bcf) = &self.regions_bcf {
+-                    Some(
+-                        Self::bcf_to_intervals(&header, regions_bcf, self.merge_regions)
+-                            .expect("Parsed BCF/VCF to intervals"),
+-                    )
+-                } else {
+-                    None
+-                };
+-                let restricted_ivs = match (bed_intervals, bcf_intervals) {
+-                    (Some(bed_ivs), Some(bcf_ivs)) => {
+-                        Some(Self::merge_intervals(bed_ivs, bcf_ivs, self.merge_regions))
+-                    }
+-                    (Some(bed_ivs), None) => Some(bed_ivs),
+-                    (None, Some(bcf_ivs)) => Some(bcf_ivs),
+-                    (None, None) => None,
+-                };
 +        let (snd, rxv) = crossbeam::channel::unbounded();
 +        info!("Reading from {:?}", self.reads);
 +        let mut reader = IndexedReader::from_path(&self.reads).expect("Indexed BAM/CRAM");
@@ -53,7 +112,55 @@ index 330aadc..7f3cc58 100644
 +            reader.set_reference(ref_fasta).expect("Set ref");
 +        }
 +        let header = reader.header().to_owned();
-+
+ 
+-                let intervals = if let Some(restricted) = restricted_ivs {
+-                    restricted
+-                } else {
+-                    Self::header_to_intervals(&header, self.chunksize)
+-                        .expect("Parsed BAM/CRAM header to intervals")
+-                };
+-
+-                // The number positions to try to process in one batch
+-                let serial_step_size = self.chunksize.saturating_mul(self.threads as u32); // aka superchunk
+-                for (tid, intervals) in intervals.into_iter().enumerate() {
+-                    let tid: u32 = tid as u32;
+-                    let tid_end: u32 = header.target_len(tid).unwrap().try_into().unwrap();
+-                    info!("Processing TID {}:0-{}", tid, tid_end);
+-                    // Result holds the processed positions to be sent to writer
+-                    let mut result = vec![];
+-                    for chunk_start in (0..tid_end).step_by(serial_step_size as usize) {
+-                        let tid_name = std::str::from_utf8(header.tid2name(tid)).unwrap();
+-                        let chunk_end = std::cmp::min(chunk_start + serial_step_size, tid_end);
+-                        trace!(
+-                            "Batch Processing {}:{}-{}",
+-                            tid_name, chunk_start, chunk_end
+-                        );
+-                        let (r, _) = rayon::join(
+-                            || {
+-                                // Must be a vec so that par_iter works and results stay in order
+-                                let ivs: Vec<Interval<u32, ()>> =
+-                                    Lapper::<u32, ()>::find(&intervals, chunk_start, chunk_end)
+-                                        // Truncate intervals that extend forward or backward of chunk in question
+-                                        .map(|iv| Interval {
+-                                            start: std::cmp::max(iv.start, chunk_start),
+-                                            stop: std::cmp::min(iv.stop, chunk_end),
+-                                            val: (),
+-                                        })
+-                                        .collect();
+-                                ivs.into_par_iter()
+-                                    .flat_map(|iv| {
+-                                        trace!("Processing {}:{}-{}", tid_name, iv.start, iv.stop);
+-                                        self.processor.process_region(tid, iv.start, iv.stop)
+-                                    })
+-                                    .collect()
+-                            },
+-                            || {
+-                                result.into_iter().for_each(|p| {
+-                                    snd.send(p).expect("Sent a serializable to writer")
+-                                })
+-                            },
+-                        );
+-                        result = r;
 +        let bed_intervals = if let Some(regions_bed) = &self.regions_bed {
 +            Some(
 +                Self::bed_to_intervals(&header, regions_bed, self.merge_regions)
@@ -98,28 +205,27 @@ index 330aadc..7f3cc58 100644
 +                    let stop = std::cmp::min(iv.stop, chunk_end);
 +                    for p in self.processor.process_region(tid, start, stop) {
 +                        snd.send(p).expect("Sent a serializable to writer");
-+                    }
-+                }
+                     }
+-                    // Send final set of results
+-                    result
+-                        .into_iter()
+-                        .for_each(|p| snd.send(p).expect("Sent a serializable to writer"));
+                 }
+-            });
+-        });
 +            }
 +        }
 +        crate::utils::clear_indexed_reader();
-+        Ok(rxv)
-+    }
-+
-     // Convert the header into intervals of equally sized chunks. The last interval may be short.
-     fn header_to_intervals(header: &HeaderView, chunksize: u32) -> Result<Vec<Lapper<u32, ()>>> {
-         let mut intervals = vec![vec![]; header.target_count() as usize];
-diff --git a/src/lib/utils.rs b/src/lib/utils.rs
-index ef5d36f..52cc076 100644
+         Ok(rxv)
+     }
+ 
 --- a/src/lib/utils.rs
 +++ b/src/lib/utils.rs
-@@ -55,6 +55,13 @@ pub fn with_indexed_reader<T>(
+@@ -55,6 +55,11 @@ pub fn with_indexed_reader<T>(
      })
  }
  
-+/// Drop the cached reader. Native threads drop theirs when the worker pool exits; under
-+/// WebAssembly every call runs on the one thread that persists between `main()` calls.
-+#[cfg(target_os = "emscripten")]
++/// Drop the cached reader, which the one thread here keeps alive between `main()` calls.
 +pub fn clear_indexed_reader() {
 +    INDEXED_READER.with(|cell| cell.borrow_mut().take());
 +}
@@ -127,27 +233,23 @@ index ef5d36f..52cc076 100644
  /// Set rayon global thread pool size.
  ///
  /// # Errors
-@@ -161,6 +168,8 @@ pub fn get_writer<P: AsRef<Path>>(
+@@ -161,6 +166,8 @@ pub fn get_writer<P: AsRef<Path>>(
      threads: usize,
      compression_level: u32,
  ) -> Result<csv::Writer<Box<dyn Write>>> {
-+    #[cfg(target_os = "emscripten")]
++    // Everything runs on the calling thread here
 +    let threads = threads.min(1);
      let raw_writer: Box<dyn Write> = match &path {
          Some(path) if path.as_ref().to_str().unwrap() != "-" => {
              let writer = BufWriter::new(File::create(path)?);
-diff --git a/src/main.rs b/src/main.rs
-index 646510f..02cb8ec 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -34,7 +34,11 @@ impl Subcommand {
+@@ -34,7 +34,8 @@ impl Subcommand {
  }
  
  fn main() -> Result<()> {
-+    #[cfg(not(target_os = "emscripten"))]
-     env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
-+    // Aioli calls main() repeatedly in one instance, and the logger can only be installed once
-+    #[cfg(target_os = "emscripten")]
+-    env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
++    // main() runs repeatedly in one instance, and the logger can only be installed once
 +    let _ = env_logger::Builder::from_env(Env::default().default_filter_or("info")).try_init();
      if let Err(err) = Args::from_args().subcommand.run() {
          if utils::is_broken_pipe(&err) {

@@ -1,25 +1,26 @@
 <script src="https://biowasm.com/cdn/v3/aioli.js"></script>
 <script type="module">
-const CLI = await new Aioli(["perbase/1.4.1"], { printInterleaved: false });
+// perbase only reads indexed BAM/CRAM, so samtools turns the alignments below into one
+const CLI = await new Aioli(["perbase/1.4.1", "samtools/1.21"], { printInterleaved: false });
 
-// reads.bam is a coordinate-sorted, indexed BAM of these alignments to a 60bp contig "chrT":
-//   @HD  VN:1.6  SO:coordinate
-//   @SQ  SN:chrT  LN:60
-//   pair1  99  chrT  1  60  30M  =  21  50  ACGTTGCATGCAAGTCCGATTAGCATAGGA  IIIIIIIIIIIIIIIIIIIIIIIIIIIIII
-//   del1  0  chrT  5  60  10M2D10M  *  0  0  TGCATGCAAGCGATTAGCAT  IIIIIIIIIIIIIIIIIIII
-//   pair1  147  chrT  21  60  30M  =  1  -50  TAGCGTAGGATCCAGTTCAGGCATCGATCG  IIIIIIIIIIIIIIIIIIIIIIIIIIIIII
-//   ins1  16  chrT  31  60  5M2I10M  *  0  0  TCCAGTTTTCAGGCATC  IIIIIIIIIIIIIIIII
-//   dup1  1024  chrT  41  60  15M  *  0  0  GCATCGATCGGATAG  IIIIIIIIIIIIIII
-//   lowq1  0  chrT  46  5  15M  *  0  0  GATCGGATAGCTTAC  IIIIIIIIIIIIIII
-// pair1's mates overlap at 21-30 and disagree at position 25 (A vs G); del1 has a 2bp deletion.
-const bytes = b64 => new Blob([Uint8Array.from(atob(b64), c => c.charCodeAt(0))]);
+// pair1's mates overlap at 21-30 and disagree at position 25 (A vs G); del1 has a 2bp deletion
+const reads = `@HD	VN:1.6	SO:coordinate
+@SQ	SN:chrT	LN:60
+pair1	99	chrT	1	60	30M	=	21	50	ACGTTGCATGCAAGTCCGATTAGCATAGGA	IIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+del1	0	chrT	5	60	10M2D10M	*	0	0	TGCATGCAAGCGATTAGCAT	IIIIIIIIIIIIIIIIIIII
+pair1	147	chrT	21	60	30M	=	1	-50	TAGCGTAGGATCCAGTTCAGGCATCGATCG	IIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+ins1	16	chrT	31	60	5M2I10M	*	0	0	TCCAGTTTTCAGGCATC	IIIIIIIIIIIIIIIII
+dup1	1024	chrT	41	60	15M	*	0	0	GCATCGATCGGATAG	IIIIIIIIIIIIIII
+lowq1	0	chrT	46	5	15M	*	0	0	GATCGGATAGCTTAC	IIIIIIIIIIIIIII
+`;
 await CLI.mount([
-	{ name: "reads.bam", data: bytes("H4sIBAAAAAAA/wYAQkMCAFoAc3L0ZdRmYGBw8HDhDPOzMtQz4wz2t0rOzy9KycxLLEnlcggO5Az2s0rOKArh9PGzMjPgYgQqZwVikBCDDQMDAwAhXn/HRAAAAB+LCAQAAAAAAP8GAEJDAgDlAAtnQAA2G08hRoZkBjkoXwSIjYC4IDGzyJDhASMDg5BHi2KLokiTikSjk4SIowZe4A81hgWIWYFGM0ON/A8FILmU1BxDhgVAhhIQg2iw+WDjsRkZjuQyiGsnw10LAueAxiJc2+jkIeLYpOjRJOIkoSKhgt+13lAj5OCuFWAQRHNtZl6xIUMAkKEIdS3Q8A6Q6QoYxjlAjdOAGgd0Dgs/uudLCwwZPgAZYOc5NjqgmeEINUMX5FtWsBkM6Gbk5JcXQgxxbHKRENFoRHcKAP5i+prhAQAAH4sIBAAAAAAA/wYAQkMCABsAAwAAAAAAAAAAAA==") },
-	{ name: "reads.bam.bai", data: bytes("QkFJAQEAAAACAAAASRIAAAEAAAAAAFsAAAAAAAAAQQEAAAAASpIAAAIAAAAAAFsAAAAAAAAAQQEAAAAABgAAAAAAAAAAAAAAAAAAAAEAAAAAAFsAAAAAAAAAAAAAAAAA") },
+	{ name: "reads.sam", data: reads },
 	{ name: "ref.fa", data: ">chrT\nACGTTGCATGCAAGTCCGATTAGCATAGGATCCAGTTCAGGCATCGATCGGATAGCTTAC\n" },
 	{ name: "ref.fa.fai", data: "chrT\t60\t6\t60\t61\n" },
 	{ name: "regions.bed", data: "chrT\t19\t30\n" }
 ]);
+await CLI.exec("samtools view -b -o reads.bam reads.sam");
+await CLI.exec("samtools index reads.bam");
 
 // Per-base nucleotide counts over a BED region, counting overlapping mates once.
 // With the IUPAC strategy, the A/G disagreement at position 25 is reported as R.
