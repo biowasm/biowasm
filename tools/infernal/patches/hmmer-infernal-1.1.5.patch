@@ -1,0 +1,24 @@
+--- a/src/impl_sse/decoding.c
++++ b/src/impl_sse/decoding.c
+@@ -12,7 +12,7 @@
+ #include <stdio.h>
+ #include <math.h>
+ 
+-#include <x86intrin.h>
++#include <emmintrin.h>
+ 
+ #include "easel.h"
+ #include "esl_sse.h"
+--- a/src/impl_sse/p7_oprofile.c
++++ b/src/impl_sse/p7_oprofile.c
+@@ -669,7 +669,9 @@
+   uint8_t b;
+ 
+   sc  = -1.0f * roundf(om->scale_b * sc);                          /* ugh. sc is now an integer cost represented in a float...           */
+-  b   = (sc > 255 - om->bias_b) ? 255 : (uint8_t) sc + om->bias_b; /* and now we cast, saturate, and bias it to an unsigned char cost... */
++  /* (uint8_t) of a negative float wraps mod 256 on x86 but saturates to 0 here, which
++   * left nothing passing the MSV filter; do the arithmetic in int to get x86's answer. */
++  b   = (sc > 255 - om->bias_b) ? 255 : (uint8_t) ((int) sc + om->bias_b); /* and now we cast, saturate, and bias it to an unsigned char cost... */
+   return b;
+ }
+  

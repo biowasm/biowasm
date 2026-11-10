@@ -1,0 +1,117 @@
+--- a/easel.c
++++ b/easel.c
+@@ -40,6 +40,9 @@
+ #include "easel.h"
+ #include <syslog.h>
+ 
++/* getppid() is always 1 here, so Easel would log to syslog, whose unix socket aborts the module. */
++#define esl_is_daemon() (0)
++
+ /*****************************************************************
+  * 1. Exception and fatal error handling.
+  *****************************************************************/
+@@ -72,7 +77,7 @@ esl_fail(char *errbuf, const char *format, ...)
+       /* Check whether we are running as a daemon so we can do the
+        * right thing about logging instead of printing errors 
+        */
+-      if (getppid() != 1)
++      if (! esl_is_daemon())
+ 	{ // we aren't running as a daemon, so print the error normally
+ 	  va_start(ap, format);
+ 	  if (errbuf) vsnprintf(errbuf, eslERRBUFSIZE, format, ap);
+@@ -149,7 +154,7 @@ esl_exception(int errcode, int use_errno, char *sourcefile, int sourceline, char
+   else 
+     {
+       /* Check whether we are running as a daemon so we can do the right thing about logging instead of printing errors */
+-      if (getppid() != 1)
++      if (! esl_is_daemon())
+ 	{ // we're not running as a daemon, so print the error normally
+ 	  fprintf(stderr, "Fatal exception (source file %s, line %d):\n", sourcefile, sourceline);
+ 	  va_start(argp, format);
+@@ -307,7 +312,7 @@ esl_fatal(const char *format, ...)
+   int mpiflag;
+ #endif
+   /* Check whether we are running as a daemon so we can do the right thing about logging instead of printing errors */
+-  if (getppid() != 1)
++  if (! esl_is_daemon())
+     { // we're not running as a daemon, so print the error normally
+       va_start(argp, format);
+       vfprintf(stderr, format, argp);
+--- a/esl_buffer.c
++++ b/esl_buffer.c
+@@ -336,6 +336,10 @@ esl_buffer_OpenPipe(const char *filename, const char *cmdfmt, ESL_BUFFER **ret_b
+   if (filename && ! esl_FileExists(filename)) 
+     ESL_XFAIL(eslENOTFOUND, bf->errmsg, "couldn't read file %s", filename);
+ 
++  /* No popen() or /bin/sh here, and the stub aborts the module, so gzipped input must be decompressed first. */
++  ESL_XFAIL(eslENOTFOUND, bf->errmsg, "can't read %s through a pipe in WebAssembly (gzipped input must be decompressed first)",
++	    filename ? filename : cmdfmt);
++
+   if (filename) { if ((status = esl_sprintf(&cmd, cmdfmt, filename)) != eslOK) goto ERROR; }
+   else          { if ((status = esl_strdup(cmdfmt, -1, &cmd))        != eslOK) goto ERROR; }
+ 
+--- a/esl_cpu.c
++++ b/esl_cpu.c
+@@ -65,6 +65,7 @@ static int  cpu_has_avx512(void);
+ int
+ esl_cpu_has_sse(void)
+ {
++  return TRUE;   /* The SSE path is compiled in unconditionally. */
+ #ifdef eslENABLE_SSE
+   static int sse_support = -1;
+   if (sse_support < 0)
+@@ -201,18 +202,9 @@ esl_cpu_Get(void)
+ static void 
+ cpu_run_id(uint32_t eax, uint32_t ecx, uint32_t *abcd)
+ {
+-#if defined(_MSC_VER)
+-  __cpuidex(abcd, eax, ecx);
+-#else
+-  uint32_t ebx = 0;
+-  uint32_t edx = 0;
+-#if defined( __i386__ ) && defined ( __PIC__ )   /* in case of PIC under 32-bit EBX cannot be clobbered */
+-  __asm__ ( "movl %%ebx, %%edi \n\t cpuid \n\t xchgl %%ebx, %%edi" : "=D" (ebx), "+a" (eax), "+c" (ecx), "=d" (edx) );
+-#else
+-  __asm__ ( "cpuid" : "+b" (ebx), "+a" (eax), "+c" (ecx), "=d" (edx) );
+-#endif
+-  abcd[0] = eax; abcd[1] = ebx; abcd[2] = ecx; abcd[3] = edx;
+-#endif // ! _MSC_VER
++  /* No CPUID here; vector support is decided at compile time. */
++  (void) eax; (void) ecx;
++  abcd[0] = abcd[1] = abcd[2] = abcd[3] = 0;
+ }     
+ #endif // eslENABLE_SSE | eslENABLE_SSE4 | eslENABLE_AVX | eslENABLE_AVX512
+ 
+--- a/esl_sse.c
++++ b/esl_sse.c
+@@ -37,7 +37,7 @@
+ #include <math.h>
+ #include <float.h>
+ 
+-#include <x86intrin.h>
++#include <emmintrin.h>
+ 
+ #include "easel.h"
+ #include "esl_sse.h"
+--- a/esl_sse.h
++++ b/esl_sse.h
+@@ -22,7 +22,7 @@
+ #include "easel.h"
+ 
+ #include <stdio.h>
+-#include <x86intrin.h>	
++#include <emmintrin.h>	
+ 
+ 
+ /*****************************************************************
+--- a/m4/esl_sse.m4
++++ b/m4/esl_sse.m4
+@@ -50,7 +50,7 @@ AC_DEFUN([ESL_SSE], [
+ 
+     AC_LINK_IFELSE(
+       [AC_LANG_SOURCE([[
+-#include <x86intrin.h>
++#include <emmintrin.h>
+ #include <stdint.h>
+ int stub_sse(void) {
+ __m128i v1 = _mm_set1_epi32(42);

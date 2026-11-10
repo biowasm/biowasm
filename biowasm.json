@@ -339,6 +339,20 @@
 			]
 		},
 		{
+			"name": "infernal",
+			"url": "https://github.com/EddyRivasLab/infernal",
+			"sources": [{ "path": "easel", "url": "https://github.com/EddyRivasLab/easel.git", "branch": "infernal-1.1.5" }, { "path": "hmmer", "url": "https://github.com/EddyRivasLab/hmmer.git", "branch": "infernal-1.1.5" }, { "path": "simde", "url": "https://github.com/simd-everywhere/simde.git", "branch": "v0.8.2" }],
+			"programs": ["cmalign", "cmbuild", "cmcalibrate", "cmemit", "cmfetch", "cmscan", "cmsearch", "cmstat", "cmconvert", "cmpress"],
+			"description": "Searches DNA sequence databases for RNA structure and sequence similarities using covariance models",
+			"categories": ["alignment"],
+			"versions": [
+				{
+					"version": "1.1.5",
+					"branch": "infernal-1.1.5"
+				}
+			]
+		},
+		{
 			"name": "ivar",
 			"url": "https://github.com/andersen-lab/ivar.git",
 			"programs": ["ivar"],
