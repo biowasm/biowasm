@@ -6,15 +6,17 @@ on:
       env:
         description: "Environment"
         required: true
+        type: choice
+        options: [stg, prd]
         default: "stg"
       tools_to_compile:
         description: "Tools to compile to WebAssembly (comma-separated; 'all'; 'none')"
         required: true
         default: "seqtk"
       versions:
-        description: "Versions to compile (comma-separated)"
+        description: "Versions to compile (comma-separated; 'all' for every version of each tool)"
         required: true
-        default: "1.4"
+        default: "all"
 
 jobs:
   deploy:

@@ -105,7 +105,7 @@ if __name__ == "__main__":
 	parser.add_argument("--list", default=False, action="store_true", help="List tools available")
 	parser.add_argument("--dry-run", default=False, action="store_true", help="Dry run")
 	parser.add_argument("--tools", type=str, help="Tool to compile to WebAssembly")
-	parser.add_argument("--versions", type=str, help="Tool version(s)")
+	parser.add_argument("--versions", type=str, help="Tool version(s), comma-separated; 'all' for every version of each tool", default="all")
 	parser.add_argument("--env", type=str, help="Environment (stg, prd)", default="stg")
 	args = parser.parse_args()
 
@@ -123,7 +123,7 @@ if __name__ == "__main__":
 		# Compile all tools
 		tools = args.tools.split(",") if args.tools != "all" else [ t["name"] for t in CONFIG["tools"] ]
 		for tool_name in tools:
-			compile(tool_name, args.versions.split(",") if args.versions is not None else [])
+			compile(tool_name, args.versions.split(",") if args.versions not in (None, "", "all") else [])
 		print(f"Done. Run `bin/manifest.py --env {args.env}` to update the manifest.")
 	else:
 		parser.print_usage()
