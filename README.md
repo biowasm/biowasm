@@ -5,7 +5,7 @@
 ![Tests](https://github.com/biowasm/biowasm/workflows/Tests/badge.svg)
 ![Deploy](https://github.com/biowasm/biowasm/workflows/Deploy%20biowasm%20v3/badge.svg)
 
-A repository of genomics tools, compiled from C/C++ to WebAssembly so they can run in a web browser.
+A repository of genomics tools, compiled from C, C++ and Rust to WebAssembly so they can run in a web browser.
 
 ## Getting started
 
@@ -37,7 +37,7 @@ A repository of genomics tools, compiled from C/C++ to WebAssembly so they can r
 
 | Tool | Description | Link |
 |-|-|-|
-| biowasm | Recipes for compiling C/C++ genomics tools to WebAssembly | This repo |
+| biowasm | Recipes for compiling C, C++ and Rust genomics tools to WebAssembly | This repo |
 | biowasm CDN | Free server hosting pre-compiled tools for use in your apps | [biowasm.com/cdn](https://biowasm.com/cdn) |
 | Aioli | Tool for running these modules in a browser, inside WebWorkers | [biowasm/aioli](https://github.com/biowasm/aioli) |
 

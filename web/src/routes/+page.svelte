@@ -109,7 +109,7 @@ const USERS = [
 		<div class="h-100 p-5 rounded-3">
 			<h2 class="fs-4 fw-bold">Supported Tools</h2>
 			<p>
-				Biowasm supports many C/C++ bioinformatics tools (<LinkPackage tool="samtools" />, <LinkPackage tool="bedtools" />, <LinkPackage tool="bcftools" />, <LinkPackage tool="bowtie2" />, <LinkPackage tool="minimap2" />, <LinkPackage tool="fastp" />, <LinkPackage tool="wgsim" />, etc.)
+				Biowasm supports many C, C++ and Rust bioinformatics tools (<LinkPackage tool="samtools" />, <LinkPackage tool="bedtools" />, <LinkPackage tool="bcftools" />, <LinkPackage tool="bowtie2" />, <LinkPackage tool="minimap2" />, <LinkPackage tool="fastp" />, <LinkPackage tool="wgsim" />, <LinkPackage tool="perbase" />, <LinkPackage tool="rammap" />, etc.)
 				and general data wrangling utilities (<LinkPackage tool="jq" />, <LinkPackage tool="gawk" />, <LinkPackage tool="grep" />, <LinkPackage tool="sed" />, etc.)
 			</p>
 			<a href={CONFIG.url} class="btn btn-outline-primary" type="button">
