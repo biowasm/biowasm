@@ -36,6 +36,19 @@
 			]
 		},
 		{
+			"name": "amrfinderplus",
+			"url": "https://github.com/ncbi/amr.git",
+			"programs": ["amr_report", "dna_mutation", "fasta_check", "fasta_extract", "fasta2parts", "gff_check"],
+			"description": "Components of AMRFinderPlus: call acquired antimicrobial resistance genes from BLAST output against NCBI's reference database",
+			"categories": ["annotation", "variants"],
+			"versions": [
+				{
+					"version": "4.2.7",
+					"branch": "amrfinder_v4.2.7"
+				}
+			]
+		},
+		{
 			"name": "ASTER",
 			"url": "https://github.com/chaoszhang/ASTER.git",
 			"programs": ["astral", "astral-pro", "wastral", "caster-site", "caster-pair"],
