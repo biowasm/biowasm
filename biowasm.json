@@ -536,6 +536,32 @@
 			]
 		},
 		{
+			"name": "perbase",
+			"url": "https://github.com/sstadick/perbase",
+			"programs": ["perbase"],
+			"description": "Fast Rust tool for per-base depth and nucleotide pileup analysis of BAM/CRAM files",
+			"categories": ["alignment", "quality-control"],
+			"versions": [
+				{
+					"version": "1.4.1",
+					"branch": "v1.4.1"
+				}
+			]
+		},
+		{
+			"name": "rammap",
+			"url": "https://github.com/jwanglab/rammap",
+			"programs": ["rammap"],
+			"description": "Pure-Rust SIMD sequence aligner and read mapper that mirrors minimap2's interface and output",
+			"categories": ["alignment"],
+			"versions": [
+				{
+					"version": "1.2.0",
+					"branch": "v1.2.0"
+				}
+			]
+		},
+		{
 			"name": "samtools",
 			"url": "https://github.com/samtools/samtools.git",
 			"programs": ["samtools"],

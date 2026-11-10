@@ -54,6 +54,25 @@ function EM_GNU_STRCASESTR_LINEAR() {
 	sed -i 's|if test ${gl_cv_func_strcasestr_linear+y}|if true|g' configure
 }
 
+# Rust tools: install the toolchain pinned here and the Emscripten target. Rust links through
+# emcc, so EM_FLAGS still applies, but it has to reach the linker as -Clink-arg
+function EM_RUST() {
+	echo "Running EM_RUST..."
+	command -v cargo > /dev/null || {
+		curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain "${RUST_VERSION:-1.91.0}"
+		. "$HOME/.cargo/env"
+	}
+	rustup target add wasm32-unknown-emscripten
+	export CC_wasm32_unknown_emscripten=emcc
+	export AR_wasm32_unknown_emscripten=emar
+	export CARGO_TARGET_WASM32_UNKNOWN_EMSCRIPTEN_LINKER=em++
+}
+
+# The EM_FLAGS a Rust build needs, as -Clink-arg for rustc. Extra args are appended
+function EM_RUST_FLAGS() {
+	printf -- "-Clink-arg=%s " $EM_FLAGS "$@"
+}
+
 # Shared LZMA flags
 LZMA_VERSION="5.2.5"
 DIR_LZMA=../../htslib/src/xz-${LZMA_VERSION}/src/liblzma
@@ -62,4 +81,4 @@ LDFLAGS_LZMA="-L${DIR_LZMA}/.libs"
 
 # Export vars and functions
 export EM_FLAGS EM_FLAGS_SIMD EMCC_CFLAGS EM_CONFIGURE_FLAGS EM_CMAKE_FLAGS CFLAGS_LZMA LDFLAGS_LZMA;
-export -f EM_GNU_NANOSLEEP EM_GNU_STRCASESTR_LINEAR;
+export -f EM_GNU_NANOSLEEP EM_GNU_STRCASESTR_LINEAR EM_RUST EM_RUST_FLAGS;
