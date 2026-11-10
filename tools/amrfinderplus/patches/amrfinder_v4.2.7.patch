@@ -1,0 +1,74 @@
+--- a/common.cpp
++++ b/common.cpp
+@@ -43,7 +43,9 @@
+ #ifndef _MSC_VER
+   extern "C"
+   {
+-	  #include <execinfo.h>
++	  #if __has_include(<execinfo.h>)
++	    #include <execinfo.h>
++	  #endif
+ 	  #include <sys/types.h>
+ 	  #include <sys/stat.h>
+ 	  #include <unistd.h>
+@@ -209,7 +211,7 @@ bool initCommon ()
+ 
+   static_assert (SIZE_MAX == std::numeric_limits<size_t>::max ());
+ 
+-  static_assert (sizeof (size_t) == 8);
++  // size_t is 4 bytes on wasm32; no_index and the str2/hash helpers only need SIZE_MAX above
+ 
+   return true;
+ }
+@@ -285,7 +287,7 @@ namespace
+ string getStack ()
+ // Print function names:   // --> exec() ??
+ {
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) || ! __has_include(<execinfo.h>)
+   return "Stack trace is not implemented";
+ #else
+   string s;
+@@ -3969,12 +3971,15 @@ void Application::initEnvironment ()
+ 	execDir = getProgramDirName ();
+ 	if (execDir. empty ())
+ 		execDir = which (programArgs. front ());
++  if (execDir. empty ())
++    execDir = "/";  // argv[0] carries no path and there is no PATH to search
+   if (! isDirName (execDir))
+     throw logic_error ("Cannot identify the directory of the executable");
+   {
+     string s (programArgs. front ());
+     programName = rfindSplit (s, fileSlash);
+-    execDir = getDirName (path2canonical (execDir + programName));
++    if (fileExists (execDir + programName))  // the executable is not in the filesystem here
++      execDir = getDirName (path2canonical (execDir + programName));
+   }
+ 
+   string execDir_ (execDir);
+--- a/common.hpp
++++ b/common.hpp
+@@ -3901,17 +3901,18 @@ struct Stderr : Singleton<Stderr>
+ struct Warning : Singleton<Warning>
+ {
+ private:
+-  Stderr& stderr;
++  // musl defines stderr as a macro, so this member cannot carry that name
++  Stderr& stderr_;
+   const OColor oc;
+ public:  
+ 
+   
+   explicit Warning (Stderr &stderr_arg)
+-    : stderr (stderr_arg)
+-    , oc (cerr, Color::yellow /*PAR*/, true, ! stderr. quiet)  
+-    { stderr << "WARNING: "; }
++    : stderr_ (stderr_arg)
++    , oc (cerr, Color::yellow /*PAR*/, true, ! stderr_. quiet)  
++    { stderr_ << "WARNING: "; }
+  ~Warning ()
+-    { stderr << "\n"; }
++    { stderr_ << "\n"; }
+ };
+ 
+ 

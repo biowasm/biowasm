@@ -1,0 +1,31 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli([
+	{ tool: "amrfinderplus", version: "4.2.7", program: "amr_report" },
+	{ tool: "blast", version: "2.17.0", program: "makeblastdb" },
+	{ tool: "blast", version: "2.17.0", program: "blastp" }
+], { printInterleaved: false });
+
+// NCBI hosts the database so we mount it
+const DB = "https://ftp.ncbi.nlm.nih.gov/pathogen/Antimicrobial_resistance/AMRFinderPlus/database/4.2/2026-10-29.1";
+const [proteins, families] = await CLI.mount([`${DB}/AMRProt.fa`, `${DB}/fam.tsv`]);
+await CLI.mount([{ name: "query.faa", data: ">blaTEM-156\nMSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNIGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW\n" }]);
+
+// -blastdb_version 4: v5 not supported because of mmap requirement
+await CLI.exec(`makeblastdb -in ${proteins} -dbtype prot -blastdb_version 4 -out amr`);
+
+// The search parameters AMRFinderPlus uses, and the ten columns amr_report expects
+const blast = await CLI.exec("blastp", ["-query", "query.faa", "-db", "amr", "-out", "blastp.tsv",
+	"-task", "blastp-fast", "-comp_based_stats", "0", "-seg", "no", "-max_target_seqs", "10000",
+	"-dbsize", "10000", "-evalue", "1e-10", "-word_size", "5",
+	"-outfmt", "6 sseqid qseqid sstart send slen qstart qend qlen sseq qseq"]);
+
+// -nohmm: that would require download a 110MB file so we skip it
+const report = await CLI.exec("amr_report", ["-fam", families, "-blastp", "blastp.tsv",
+	"-organism", "", "-coverage_min", "0.5", "-nohmm"]);
+
+document.getElementById("output").textContent = report.stdout;
+</script>
+
+<h4>Resistance genes called in a single protein, against NCBI's reference database:</h4>
+<pre id="output">Loading...</pre>
