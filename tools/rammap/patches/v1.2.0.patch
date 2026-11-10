@@ -1,0 +1,27 @@
+diff --git a/rammap-core/Cargo.toml b/rammap-core/Cargo.toml
+index cf8d92b..28e899c 100644
+--- a/rammap-core/Cargo.toml
++++ b/rammap-core/Cargo.toml
+@@ -10,7 +10,7 @@ readme.workspace = true
+ # the crate is imported as `rammap`
+ [lib]
+ name = "rammap"
+-crate-type = ["cdylib", "rlib"]
++crate-type = ["rlib"]
+ 
+ [features]
+ default = ["parallel"]
+diff --git a/rammap/src/main.rs b/rammap/src/main.rs
+index bb668a8..579d075 100644
+--- a/rammap/src/main.rs
++++ b/rammap/src/main.rs
+@@ -441,7 +441,8 @@ fn main() -> anyhow::Result<()> {
+         } else {
+             log::LevelFilter::Warn
+         })
+-        .init();
++        .try_init()
++        .ok();
+ 
+     run(args.align)
+ }

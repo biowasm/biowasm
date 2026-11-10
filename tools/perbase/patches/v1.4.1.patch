@@ -1,0 +1,146 @@
+--- a/src/lib/par_granges.rs
++++ b/src/lib/par_granges.rs
+@@ -3,18 +3,17 @@
+ //! Iterates over chunked genomic regions in parallel.
+ use anyhow::{Context, Result, anyhow};
+ use bio::io::bed;
+-use crossbeam::channel::{Receiver, bounded};
++use crossbeam::channel::{Receiver, unbounded};
+ use lazy_static::lazy_static;
+ use log::*;
+ use num_cpus;
+-use rayon::prelude::*;
+ use rust_htslib::{
+     bam::{HeaderView, IndexedReader, Read},
+     bcf::{Read as bcfRead, Reader},
+ };
+ use rust_lapper::{Interval, Lapper};
+ use serde::Serialize;
+-use std::{convert::TryInto, path::PathBuf, thread};
++use std::{convert::TryInto, path::PathBuf};
+ 
+ const BYTES_INA_GIGABYTE: usize = 1024 * 1024 * 1024;
+ 
+@@ -69,8 +68,6 @@ pub struct ParGranges<R: 'static + RegionProcessor + Send + Sync> {
+     chunksize: u32,
+     /// A modifier to apply to the channel size formular that is (BYTES_INA_GIGABYTE * channel_size_modifier) * threads / size_of(R::P)
+     channel_size_modifier: f64,
+-    /// The rayon threadpool to operate in
+-    pool: rayon::ThreadPool,
+     /// The implementation of [RegionProcessor] that will be used to process regions
+     processor: R,
+ }
+@@ -111,10 +108,6 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
+ 
+         // Keep two around for main thread and thread running the pool
+         let threads = std::cmp::max(threads.saturating_sub(2), 1);
+-        let pool = rayon::ThreadPoolBuilder::new()
+-            .num_threads(threads)
+-            .build()
+-            .unwrap();
+ 
+         info!("Using {} worker threads.", threads);
+         Self {
+@@ -126,7 +119,6 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
+             threads,
+             chunksize: chunksize.unwrap_or(CHUNKSIZE),
+             channel_size_modifier: channel_size_modifier.unwrap_or(CHANNEL_SIZE_MODIFIER),
+-            pool,
+             processor,
+         }
+     }
+@@ -181,9 +173,9 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
+ 
+         self.validate()?;
+ 
+-        let (snd, rxv) = bounded(channel_size);
+-        thread::spawn(move || {
+-            self.pool.install(|| {
++        let (snd, rxv) = unbounded();
++        (move || {
++            (|| {
+                 info!("Reading from {:?}", self.reads);
+                 let mut reader = IndexedReader::from_path(&self.reads).expect("Indexed BAM/CRAM");
+                 // If passed add ref_fasta
+@@ -241,8 +233,7 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
+                             "Batch Processing {}:{}-{}",
+                             tid_name, chunk_start, chunk_end
+                         );
+-                        let (r, _) = rayon::join(
+-                            || {
++                        let r = (|| {
+                                 // Must be a vec so that par_iter works and results stay in order
+                                 let ivs: Vec<Interval<u32, ()>> =
+                                     Lapper::<u32, ()>::find(&intervals, chunk_start, chunk_end)
+@@ -253,19 +244,18 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
+                                             val: (),
+                                         })
+                                         .collect();
+-                                ivs.into_par_iter()
++                                ivs.into_iter()
+                                     .flat_map(|iv| {
+                                         trace!("Processing {}:{}-{}", tid_name, iv.start, iv.stop);
+                                         self.processor.process_region(tid, iv.start, iv.stop)
+                                     })
+                                     .collect()
+-                            },
+-                            || {
++                            })();
++                            (|| {
+                                 result.into_iter().for_each(|p| {
+                                     snd.send(p).expect("Sent a serializable to writer")
+                                 })
+-                            },
+-                        );
++                            })();
+                         result = r;
+                     }
+                     // Send final set of results
+@@ -273,8 +263,10 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
+                         .into_iter()
+                         .for_each(|p| snd.send(p).expect("Sent a serializable to writer"));
+                 }
+-            });
+-        });
++            })();
++        })();
++        // The one thread here persists between main() calls, so its reader would too
++        crate::utils::clear_indexed_reader();
+         Ok(rxv)
+     }
+ 
+--- a/src/lib/utils.rs
++++ b/src/lib/utils.rs
+@@ -55,6 +55,11 @@ pub fn with_indexed_reader<T>(
+     })
+ }
+ 
++/// Drop the cached reader, which the one thread here keeps alive between `main()` calls.
++pub fn clear_indexed_reader() {
++    INDEXED_READER.with(|cell| cell.borrow_mut().take());
++}
++
+ /// Set rayon global thread pool size.
+ ///
+ /// # Errors
+@@ -161,6 +166,8 @@ pub fn get_writer<P: AsRef<Path>>(
+     threads: usize,
+     compression_level: u32,
+ ) -> Result<csv::Writer<Box<dyn Write>>> {
++    // Everything runs on the calling thread here
++    let threads = threads.min(1);
+     let raw_writer: Box<dyn Write> = match &path {
+         Some(path) if path.as_ref().to_str().unwrap() != "-" => {
+             let writer = BufWriter::new(File::create(path)?);
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -34,7 +34,8 @@ impl Subcommand {
+ }
+ 
+ fn main() -> Result<()> {
+-    env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
++    // main() runs repeatedly in one instance, and the logger can only be installed once
++    let _ = env_logger::Builder::from_env(Env::default().default_filter_or("info")).try_init();
+     if let Err(err) = Args::from_args().subcommand.run() {
+         if utils::is_broken_pipe(&err) {
+             std::process::exit(0);

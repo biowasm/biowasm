@@ -67,7 +67,7 @@ $: activeHash = $page.url.hash || NAV[0].href;
 	<!-- ================================================================================ -->
 	<h4 id="introduction">Introduction</h4>
 	<p>
-		The biowasm project compiles popular C/C++ genomics tools to <a href="https://developer.mozilla.org/en-US/docs/WebAssembly" target="_blank">WebAssembly</a> so they can run in a web browser. Biowasm includes a JavaScript library called <strong>Aioli</strong> that helps you run these tools with very little setup, as we'll see below.
+		The biowasm project compiles popular C, C++ and Rust genomics tools to <a href="https://developer.mozilla.org/en-US/docs/WebAssembly" target="_blank">WebAssembly</a> so they can run in a web browser. Biowasm includes a JavaScript library called <strong>Aioli</strong> that helps you run these tools with very little setup, as we'll see below.
 	</p>
 
 
