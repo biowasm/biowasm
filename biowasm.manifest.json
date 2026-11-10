@@ -269,6 +269,8 @@
   "muscle/5.1.0/muscle.wasm": "muscle/5.1.0/muscle.wasm:89a8e9f8aa3a321d0c475d670870c16d",
   "perbase/1.4.1/perbase.js": "perbase/1.4.1/perbase.js:299f81da53a05d803935510c9f8d3fd9",
   "perbase/1.4.1/perbase.wasm": "perbase/1.4.1/perbase.wasm:e7e0ee12434405aa15d513faf25fd6b9",
+  "rammap/1.2.0/rammap.js": "rammap/1.2.0/rammap.js:09dfda01027b5436ef7478aa481209b8",
+  "rammap/1.2.0/rammap.wasm": "rammap/1.2.0/rammap.wasm:1a87281f26533a60f0fd5dadd62fa033",
   "samtools/1.10/samtools.data": "samtools/1.10/samtools.data:f35a875e664cd0a7f339f712df60c4c7",
   "samtools/1.10/samtools.js": "samtools/1.10/samtools.js:3dab01a93ed842d4103f673273c61a0d",
   "samtools/1.10/samtools.wasm": "samtools/1.10/samtools.wasm:f33a6c1b5ff05e4729bca8bb27b9d672",
