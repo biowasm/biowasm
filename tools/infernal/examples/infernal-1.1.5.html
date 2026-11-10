@@ -1,0 +1,55 @@
+<script src="https://biowasm.com/cdn/v3/aioli.js"></script>
+<script type="module">
+const CLI = await new Aioli(["infernal/cmbuild/1.1.5", "infernal/cmalign/1.1.5"], {
+  printInterleaved: false
+});
+
+// Structure-annotated alignment of 5 tRNAs, from Infernal's tutorial (tutorial/tRNA5.sto)
+const alignment = `# STOCKHOLM 1.0
+
+tRNA1             GCGGAUUUAGCUCAGUUGGG.AGAGCGCCAGACUGAAGAUCUGGAGGUCC
+tRNA2             UCCGAUAUAGUGUAAC.GGCUAUCACAUCACGCUUUCACCGUGGAGA.CC
+tRNA3             UCCGUGAUAGUUUAAU.GGUCAGAAUGGGCGCUUGUCGCGUGCCAGA.UC
+tRNA4             GCUCGUAUGGCGCAGU.GGU.AGCGCAGCAGAUUGCAAAUCUGUUGGUCC
+tRNA5             GGGCACAUGGCGCAGUUGGU.AGCGCGCUUCCCUUGCAAGGAAGAGGUCA
+#=GC SS_cons      <<<<<<<..<<<<.........>>>>.<<<<<.......>>>>>.....<
+
+tRNA1             UGUGUUCGAUCCACAGAAUUCGCA
+tRNA2             GGGGUUCGACUCCCCGUAUCGGAG
+tRNA3             GGGGUUCAAUUCCCCGUCGCGGAG
+tRNA4             UUAGUUCGAUCCUGAGUGCGAGCU
+tRNA5             UCGGUUCGAUUCCGGUUGCGUCCA
+#=GC SS_cons      <<<<.......>>>>>>>>>>>>.
+//
+`;
+
+// Three tRNAs from the Methanobrevibacter ruminantium genome (from tutorial/mrum-tRNAs10.fa)
+const sequences = `>mrum-tRNA.1
+GGAGCUAUAGCUCAAUGGCAGAGCGUUUGGCUGACAUCCAAAAGGUUAUGGGUUCGAUUC
+CCUUUAGCCCCA
+>mrum-tRNA.6
+GCUUCUAUGGGGUAAUCGGCAAACCCAUCGGACUUUCGAUCCGAUAAUCCGGGUUCAAAU
+CCCGGUAGAAGCA
+>mrum-tRNA.9
+GCCGGGGUGGCUCAGCUGGUUAGAGCGCACGGCUCAUAGGGUAACUAAGCGUGCUCUGAC
+UUUUUUCCUGGGAUACCGUGAGAUCGCGGGUUCGAAUCCCGCCCCCGGCA
+`;
+
+await CLI.mount([
+  { name: "tRNA5.sto", data: alignment },
+  { name: "mrum-tRNAs.fa", data: sequences }
+]);
+
+// Build a covariance model from the alignment, then align new sequences to it
+const build = await CLI.exec("cmbuild tRNA5.cm tRNA5.sto");
+const align = await CLI.exec("cmalign tRNA5.cm mrum-tRNAs.fa");
+
+document.getElementById("build").innerHTML = build.stdout;
+document.getElementById("align").innerHTML = align.stdout;
+</script>
+
+<h4>Output of <code>cmbuild tRNA5.cm tRNA5.sto</code>:</h4>
+<pre id="build">Loading...</pre>
+
+<h4>Output of <code>cmalign tRNA5.cm mrum-tRNAs.fa</code>:</h4>
+<pre id="align">Loading...</pre>

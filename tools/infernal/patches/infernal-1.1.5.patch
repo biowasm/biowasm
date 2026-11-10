@@ -1,0 +1,79 @@
+diff --git a/configure.ac b/configure.ac
+index 1ef622ee..cdc13487 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -464,7 +464,7 @@ if test "$impl_choice" = "sse"; then
+  				 [[_MM_SET_FLUSH_ZERO_MODE (_MM_FLUSH_ZERO_ON);
+ 				 ]])],
+ 	[ AC_MSG_RESULT([yes])
+-          AC_DEFINE([HAVE_FLUSH_ZERO_MODE], 1, [Processor supports flush-to-zero mode])],
++          :],
+ 	[ AC_MSG_RESULT([no])]
+   )
+   CFLAGS="$esl_save_cflags"
+diff --git a/src/cm_file.c b/src/cm_file.c
+index a6d4376c..e57a5c83 100644
+--- a/src/cm_file.c
++++ b/src/cm_file.c
+@@ -866,7 +866,7 @@ cm_file_WriteBinary(FILE *fp, int format, CM_t *cm, off_t *opt_fp7_offset)
+     if (fwrite((char *) &(cm->fp7_evparam[CM_p7_GFLAMBDA]), sizeof(float), 1, fp) != 1) return eslFAIL;
+   }
+   if (cm->flags & CMH_EXPTAIL_STATS) { 
+-    long dbsize_long;
++    int64_t dbsize_long; /* long is 32 bits on wasm32, which breaks .i1m compatibility with 64-bit hosts. */
+     for(z = 0; z < EXP_NMODES; z++) {
+       /* make sure our dbsize values can be cast to a long reliably,
+        * even on 32 bit systems (<= 2 Gb), they certainly should be,
+@@ -874,11 +874,11 @@ cm_file_WriteBinary(FILE *fp, int format, CM_t *cm, off_t *opt_fp7_offset)
+        * i31.)
+        */
+       if(cm->expA[z]->dbsize > (2000. * 1000000.)) ESL_EXCEPTION(eslEINVAL, "invalid dbsize (too big)");
+-      dbsize_long = (long) cm->expA[z]->dbsize + 0.5;
++      dbsize_long = (int64_t) cm->expA[z]->dbsize + 0.5;
+       if (fwrite((char *) &(cm->expA[z]->lambda),    sizeof(double), 1, fp) != 1) return eslFAIL;
+       if (fwrite((char *) &(cm->expA[z]->mu_extrap), sizeof(double), 1, fp) != 1) return eslFAIL;
+       if (fwrite((char *) &(cm->expA[z]->mu_orig),   sizeof(double), 1, fp) != 1) return eslFAIL;
+-      if (fwrite((char *) &(dbsize_long),            sizeof(long),   1, fp) != 1) return eslFAIL;
++      if (fwrite((char *) &(dbsize_long),            sizeof(int64_t), 1, fp) != 1) return eslFAIL;
+       if (fwrite((char *) &(cm->expA[z]->nrandhits), sizeof(int),    1, fp) != 1) return eslFAIL;
+       if (fwrite((char *) &(cm->expA[z]->tailp),     sizeof(double), 1, fp) != 1) return eslFAIL;
+     }
+@@ -2255,14 +2255,14 @@ read_bin_1p1_cm(CM_FILE *cmfp, int read_fp7, ESL_ALPHABET **ret_abc, CM_t **opt_
+     if (! fread((char *) &tmp_fp7_gflambda, sizeof(float), 1, cmfp->f))         ESL_XFAIL(eslEFORMAT, cmfp->errbuf, "failed to read additional P7 E-value stats");
+   }
+   if (cm->flags & CMH_EXPTAIL_STATS) { 
+-    long dbsize_long;
++    int64_t dbsize_long;
+     ESL_ALLOC(cm->expA, sizeof(ExpInfo_t *) * EXP_NMODES);
+     for(x = 0; x < EXP_NMODES; x++) {
+       cm->expA[x] = CreateExpInfo();
+       if (! fread((char *) &(cm->expA[x]->lambda),    sizeof(double), 1, cmfp->f))        ESL_XFAIL(eslEFORMAT, cmfp->errbuf, "failed to read CM E-value stats");
+       if (! fread((char *) &(cm->expA[x]->mu_extrap), sizeof(double), 1, cmfp->f))        ESL_XFAIL(eslEFORMAT, cmfp->errbuf, "failed to read CM E-value stats");
+       if (! fread((char *) &(cm->expA[x]->mu_orig),   sizeof(double), 1, cmfp->f))        ESL_XFAIL(eslEFORMAT, cmfp->errbuf, "failed to read CM E-value stats");
+-      if (! fread((char *) &(dbsize_long),            sizeof(long),   1, cmfp->f))        ESL_XFAIL(eslEFORMAT, cmfp->errbuf, "failed to read CM E-value stats");
++      if (! fread((char *) &(dbsize_long),            sizeof(int64_t), 1, cmfp->f))        ESL_XFAIL(eslEFORMAT, cmfp->errbuf, "failed to read CM E-value stats");
+       cm->expA[x]->dbsize = (double) dbsize_long;
+       if (! fread((char *) &(cm->expA[x]->nrandhits), sizeof(int),    1, cmfp->f))        ESL_XFAIL(eslEFORMAT, cmfp->errbuf, "failed to read CM E-value stats");
+       if (! fread((char *) &(cm->expA[x]->tailp),     sizeof(double), 1, cmfp->f))        ESL_XFAIL(eslEFORMAT, cmfp->errbuf, "failed to read CM E-value stats");
+diff --git a/src/impl_sse/cm_optimized.c b/src/impl_sse/cm_optimized.c
+index 15d4196b..e7fc1a39 100644
+--- a/src/impl_sse/cm_optimized.c
++++ b/src/impl_sse/cm_optimized.c
+@@ -419,7 +419,7 @@ biased_byteify(CM_CONSENSUS *ccm, float sc)
+ 
+   sc  = -1.0f * roundf(ccm->scale_b * sc);                          /* ugh. sc is now an integer cost represented in a float...
+     */
+-  b   = (sc > 255 - ccm->bias_b) ? 255 : (uint8_t) sc + ccm->bias_b; /* and now we cast, saturate, and bias it to an unsigned char cost
++  b   = (sc > 255 - ccm->bias_b) ? 255 : (uint8_t) ((int) sc + ccm->bias_b); /* and now we cast, saturate, and bias it to an unsigned char cost
+ ... */
+   return b;
+ }
+@@ -435,7 +435,7 @@ unbiased_byteify(CM_CONSENSUS *ccm, float sc)
+   uint8_t b;
+ 
+   sc  = -1.0f * roundf(ccm->scale_b * sc);       /* ugh. sc is now an integer cost represented in a float...    */
+-  b   = (sc > 255.) ? 255 : (uint8_t) sc;       /* and now we cast and saturate it to an unsigned char cost... */
++  b   = (sc > 255.) ? 255 : (uint8_t) (int) sc;       /* and now we cast and saturate it to an unsigned char cost... */
+   return b;
+ }
+ 

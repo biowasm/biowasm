@@ -1,0 +1,618 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -31,6 +31,7 @@ option(AARCH64 "AARCH64" OFF)
+ option(LOONGARCH64 "LOONGARCH64" OFF)
+ option(WITH_ZSTD "WITH_ZSTD" OFF)
+ option(CROSS_COMPILE "CROSS_COMPILE" OFF)
++option(WASM_SIMD "WASM_SIMD" OFF)
+ 
+ # experimental options not suitable for deployment purposes
+ option(EXTRA "EXTRA" OFF)
+@@ -329,6 +330,14 @@ endif(X86)
+ #  endif()
+ #endif(ARM)
+ 
++# Build the SSE4.1 kernels against Emscripten's SSE-to-SIMD128 lowering, dropping the
++# x86-only -mpopcnt/-mcx16/-msahf and defining __POPCNT__ by hand.
++if(WASM_SIMD)
++  add_definitions(-DWITH_SSE4_1)
++  add_library(arch_sse4_1 OBJECT ${DISPATCH_OBJECTS})
++  target_compile_options(arch_sse4_1 PUBLIC -DDISPATCH_ARCH=ARCH_SSE4_1 -DARCH_ID=1 -D__POPCNT__ -msimd128 -mssse3 -msse4.1 -msse4.2)
++endif()
++
+ check_symbol_exists(getauxval "sys/auxv.h" HAVE_GETAUXVAL)
+ if(AARCH64)
+   add_definitions(-DWITH_NEON)
+@@ -387,6 +396,7 @@ set(OBJECTS
+         src/lib/murmurhash/MurmurHash3.cpp
+         src/output/paf_format.cpp
+         src/util/system/system.cpp
++        src/util/system/pthread_shim.cpp
+         src/util/memory/mem_profile.cpp
+         src/util/sequence/sequence.cpp
+         src/tools/tools.cpp
+@@ -534,10 +544,16 @@ elseif(ARM OR AARCH64)
+   else()
+     add_executable(diamond $<TARGET_OBJECTS:arch_generic> ${OBJECTS} ${ZSTD_OBJ})
+   endif()
++elseif(WASM_SIMD)
++  add_executable(diamond $<TARGET_OBJECTS:arch_generic> $<TARGET_OBJECTS:arch_sse4_1> ${OBJECTS} ${ZSTD_OBJ})
+ else()
+   add_executable(diamond $<TARGET_OBJECTS:arch_generic> ${OBJECTS} ${ZSTD_OBJ})
+ endif()
+ 
++if(WASM_SIMD)
++  set_target_properties(diamond PROPERTIES OUTPUT_NAME diamond-simd)
++endif()
++
+ if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+   target_compile_options(diamond PUBLIC /Zc:__cplusplus)
+ endif()
+--- a/src/align/culling.cpp
++++ b/src/align/culling.cpp
+@@ -106,7 +106,9 @@ static It output_range(const It begin, const It end, const Search::Config& cfg)
+ 			++i;
+ 	}
+ 	else {
+-		i += std::min((ptrdiff_t)cfg.max_target_seqs, end - begin);
++		// -k0 sets max_target_seqs to INT64_MAX, which as a 32-bit ptrdiff_t is -1, so
++		// compare in 64 bit and narrow afterwards.
++		i += (ptrdiff_t)std::min<int64_t>(cfg.max_target_seqs, end - begin);
+ 		while (--i > begin && i->filter_evalue == DBL_MAX);
+ 		++i;
+ 	}
+--- a/src/basic/config.cpp
++++ b/src/basic/config.cpp
+@@ -787,7 +787,12 @@ Config::Config(int argc, const char **argv, bool check_io, CommandLineParser& pa
+ #ifndef NDEBUG
+ 	*log_stream << "Assertions enabled." << endl;
+ #endif
+-	set_option(threads_, (int)std::thread::hardware_concurrency());
++	// Everything runs on the calling thread here, and ips4o's barrier spins forever
++	// with more than one.
++	threads_ = 1;
++	threads_align = 0;
++	output_threads = 1;
++	load_threads = 1;
+ 
+ 	switch (command) {
+ 	case Config::makedb:
+@@ -883,6 +888,9 @@ Config::Config(int argc, const char **argv, bool check_io, CommandLineParser& pa
+ 
+ 	oid_title_max = 0;
+ 
++	// main() runs repeatedly in one module and these globals are never switched back,
++	// so a blastp after a blastx would read its proteins as DNA.
++	input_value_traits = value_traits = amino_acid_traits;
+ 	if (command == blastx || command == blastn)
+ 		input_value_traits = nucleotide_traits;
+ 
+--- a/src/cluster/count_seeds.cpp
++++ b/src/cluster/count_seeds.cpp
+@@ -136,7 +136,7 @@ pair<vector<vector<HyperLogLog>>, vector<uint64_t>> count_distinct_seeds(Job& jo
+ 			ss << counters.back()[i].estimate() << (i + 1 < counters.back().size() ? "," : "");
+ 		}
+ 		letters.push_back(block->seqs().letters());
+-		job.log("Counting distinct seeds. Minichunk=%lli/%lli letters=%" PRIu64 " distinct seeds=", v + 1, n, (uint64_t)block->seqs().letters());
++		job.log("Counting distinct seeds. Minichunk=%lli/%lli letters=%" PRIu64 " distinct seeds=", (long long)(v + 1), (long long)n, (uint64_t)block->seqs().letters());
+ 		job.log_raw(ss.str());
+ 	}
+ 	return std::make_pair(counters, letters);
+--- a/src/cluster/data.cpp
++++ b/src/cluster/data.cpp
+@@ -72,7 +72,7 @@ struct QueueAbortGuard {
+ static tuple<OId, uint64_t, uint64_t> write_reps(Job& job, const VolumedFile& volumes, size_t idx, const RepWriteConfig& cfg,
+ 	const vector<OId>& clustering,
+ 	atomic<OId>& count_all, atomic<OId>& min_all, atomic<OId>& max_all) {
+-	job.log("Writing representatives. Volume=%lli/%lli Records=%s", idx + 1, volumes.size(), Util::String::format(volumes[idx].record_count).c_str());
++	job.log("Writing representatives. Volume=%lli/%lli Records=%s", (long long)(idx + 1), (long long)volumes.size(), Util::String::format(volumes[idx].record_count).c_str());
+ 
+ 	const SequenceFile::Flags flags = SequenceFile::Flags::SEQS | SequenceFile::Flags::TITLES | SequenceFile::Flags::NEED_LETTER_COUNT;
+ 	string out_file = cfg.single_out_file ? cfg.output_path : cfg.output_path + std::to_string(idx) + ".faa";
+--- a/src/cluster/lin_index.cpp
++++ b/src/cluster/lin_index.cpp
+@@ -64,7 +64,7 @@ void build_lin_indices(Job& job, const VolumedFile& volumes) {
+ 			finished.fetch_add();
+ 			continue;
+ 		}
+-		job.log("Building seed index. Block=%lli/%lli", v + 1, n);
++		job.log("Building seed index. Block=%lli/%lli", (long long)(v + 1), (long long)n);
+ 		// The positions stored in the index refer to the order of the block on disk,
+ 		// which is left as it is: the index keeps the length of the sequence a seed
+ 		// comes from, so the pivot of a seed can be selected without sorting the block
+--- a/src/cluster/multinode.cpp
++++ b/src/cluster/multinode.cpp
+@@ -109,7 +109,7 @@ static void run_block_combos(Job& job, const VolumedFile& superblocks, const str
+ 		if (r > 0)
+ 			seed_hit_table.reset(new vector<BitVector>());
+ 		for (int i = 0; i <= r; ++i) {
+-			job.log("Searching blocks. Blocks=%lli,%lli", r + 1, i + 1);
++			job.log("Searching blocks. Blocks=%lli,%lli", (long long)(r + 1), (long long)(i + 1));
+ 			/*if (!seed_hit_table->empty()) {
+ 				for (size_t i = 0; i < seed_hit_table->size(); ++i)
+ 					job.log("Seed hit table paired positions shape %zu: %zu/%zu", i, seed_hit_table->operator[](i).one_count(), seed_hit_table->operator[](i).size());
+@@ -267,7 +267,7 @@ void multinode() {
+ 			job.log("Approximate sequence id cutoff = %f", config.approx_min_id.get(0));
+ 		else
+ 			job.log("Sequence id cutoff = %f", config.min_id);
+-		job.log("#Volumes = %lli", volumes.size());
++		job.log("#Volumes = %lli", (long long)volumes.size());
+ 	}
+ 
+ 	if (max_open_files_per_process() < 1024) {
+--- a/src/legacy/dmnd/dmnd.cpp
++++ b/src/legacy/dmnd/dmnd.cpp
+@@ -49,7 +49,8 @@ const uint32_t ReferenceHeader::current_db_version_nucl = 4;
+ 
+ void serialize(File &s, const ReferenceHeader2 &h)
+ {
+-	s.write(big_endian_byteswap(sizeof(ReferenceHeader2)));
++	// The prefix is read back as uint64_t, but size_t is 32 bit on wasm32.
++	s.write(big_endian_byteswap((uint64_t)sizeof(ReferenceHeader2)));
+ 	s.write(h.hash, sizeof(h.hash));
+ 	s.write(big_endian_byteswap(h.taxon_array_offset));
+ 	s.write(big_endian_byteswap(h.taxon_array_size));
+--- a/src/run/double_indexed.cpp
++++ b/src/run/double_indexed.cpp
+@@ -78,7 +78,7 @@ static const string stack_join_redo = label_join + "_redo";
+ static const string stack_join_done = label_join + "_done";
+ 
+ static bool use_query_index(const size_t table_size) {
+-	return table_size <= std::max(MAX_HASH_SET_SIZE, 32 * MEGABYTES);
++	return table_size <= std::max<uint64_t>(MAX_HASH_SET_SIZE, 32 * MEGABYTES);
+ }
+ 
+ static string get_ref_part_file_name(const string & prefix, size_t query, string suffix="") {
+--- a/src/tools/greedy_vertex_cover.cpp
++++ b/src/tools/greedy_vertex_cover.cpp
+@@ -159,7 +159,9 @@ static RadixedTable edge_pass_one(const string& base_dir, const OId max_oid, boo
+ 	function<void(int64_t, const char*, const char*)> fn2([&](int64_t, const char* begin, const char* end) {
+ 		size_t line_count = 0;
+ 		Util::String::LineIterator it(begin, end);
+-		thread_local BufferArray buffers(file_array, RADIX_COUNT);
++		// Not thread_local: on one thread it would not flush into file_array until exit,
++		// losing every edge.
++		BufferArray buffers(file_array, RADIX_COUNT);
+ 		string query, target;
+ 		OId q, t;
+ 		double qcov, tcov, weight;
+--- a/src/util/data_structures/deque.h
++++ b/src/util/data_structures/deque.h
+@@ -221,7 +221,8 @@ private:
+ 
+ 	void new_bucket() {
+ 		buckets.emplace_back();
+-		buckets.back().reserve(N);
++		// No reserve(N): 2^28 records is ~3.8 GB, more than a wasm32 heap, and N must stay
++		// since Iterator addresses records by bucket and offset.
+ 	}
+ 
+ 	std::list<Bucket> buckets;
+--- a/src/util/data_structures/hash_set.h
++++ b/src/util/data_structures/hash_set.h
+@@ -78,49 +78,11 @@ public:
+ 
+ 	bool contains(uint64_t key) const
+ 	{
+-#ifdef USE_AVX
+-		const uint64_t hash = _hash()(key);
+-		fp* p = table.get() + modulo<_mod>(hash >> (sizeof(fp) * 8), size_);
+-		__m256i r = _mm256_loadu_si256((const __m256i*)p);
+-		__m256i z = _mm256_setzero_si256();
+-		const int zm = _mm256_movemask_epi8(_mm256_cmpeq_epi8(r, z));
+-		if (zm == 0)
+-			return true;
+-
+-		const fp f = finger_print(hash);
+-		__m256i fr = _mm256_set1_epi8(f);
+-		const int fm = _mm256_movemask_epi8(_mm256_cmpeq_epi8(r, fr));
+-		return fm != 0;
+-#elif defined(__SSE2__)
+-		const uint64_t hash = _hash()(key);
+-		fp* p = table + modulo<_mod>(hash >> (sizeof(fp) * 8), size_);
+-		__m128i r = _mm_loadu_si128((const __m128i*)p);
+-		__m128i z = _mm_setzero_si128();
+-		const int zm = _mm_movemask_epi8(_mm_cmpeq_epi8(r, z));
+-		if (zm == 0)
+-			return true;
+-
+-		const fp f = finger_print(hash);
+-		__m128i fr = _mm_set1_epi8(f);
+-		const int fm = _mm_movemask_epi8(_mm_cmpeq_epi8(r, fr));
+-		return fm != 0;
+-#elif defined(__ARM_NEON)
+-		const uint64_t hash = _hash()(key);
+-		fp* p = table + modulo<_mod>(hash >> (sizeof(fp) * 8), size_);
+-		uint8x16_t r = vld1q_u8(p);
+-		uint8x16_t z = vdupq_n_u8(0);
+-                uint64x2_t zm = vreinterpretq_u64_u8(vceqq_u8(r, z));
+-		if ((vgetq_lane_u64(zm, 0) | vgetq_lane_u64(zm, 1)) == 0)
+-			return true;
+-
+-		const fp f = finger_print(hash);
+-		uint8x16_t fr = vdupq_n_u8(f);
+-                uint64x2_t fm = vreinterpretq_u64_u8(vceqq_u8(r, fr));
+-		return (vgetq_lane_u64(fm, 0) | vgetq_lane_u64(fm, 1)) != 0;
+-#else
++		// One implementation for every target: the vectorised ones answer true for any
++		// window with no empty slot, and a build that mixes the two sizes its seed
++		// arrays from one answer and fills them from the other.
+ 		fp* p;
+ 		return get_entry(key, p);
+-#endif
+ 	}
+ 
+ 	void insert(uint64_t key)
+--- a/src/util/data_structures/queue.h
++++ b/src/util/data_structures/queue.h
+@@ -25,223 +25,77 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ #include <utility>
+ #include "../parallel/semaphore.h"
+ 
++
++#include <deque>
++
++// Upstream's bounded ring blocks its producer on a semaphore nothing wakes on one
++// thread; same interface, but an unbounded deque that never waits.
+ template <class T>
+ class Queue {
+ 
+ public:
+     using value_type = T;
+ 
+-#if _MSC_VER || __GNUC__ >= 5
+-    static_assert(std::is_default_constructible_v<T>, "T must be default constructible");
+-#endif
+-
+-    explicit Queue(size_t capacity, int producer_count, int consumer_count, T poison_pill)
+-        : capacity_(round_up_to_power_of_two(capacity ? capacity : 1)),
+-        mask_(capacity_ - 1),
+-        producer_count_(producer_count),
++    explicit Queue(size_t, int producer_count, int consumer_count, T poison_pill)
++        : producer_count_(producer_count),
+         consumer_count_(consumer_count),
+         poison_pill_(std::move(poison_pill)),
+-#if defined(__cpp_aligned_new) && __cpp_aligned_new >= 201606L
+-        buffer_(static_cast<Cell*>(::operator new[](capacity_ * sizeof(Cell), std::align_val_t{ alignof(Cell) }))),
+-#else
+-        buffer_(static_cast<Cell*>(::operator new[](capacity_ * sizeof(Cell)))),        
+-#endif
+-        enqueue_pos_(0),
+-        dequeue_pos_(0),
+-        pills_received_(0) {
++        pills_received_(0),
++        aborted_(false) {
+         assert(producer_count == 1 || consumer_count == 1);
+-        for (size_t i = 0; i < capacity_; ++i) {
+-            new (&buffer_[i]) Cell();
+-            buffer_[i].seq.store(i, std::memory_order_relaxed);
+-        }
+-    }
+-
+-    ~Queue() {
+-        T tmp;
+-        while (try_dequeue(tmp)) {}
+-
+-        for (size_t i = 0; i < capacity_; ++i) {
+-            buffer_[i].~Cell();
+-        }
+-#if defined(__cpp_aligned_new) && __cpp_aligned_new >= 201606L
+-        ::operator delete[](buffer_, std::align_val_t{ alignof(Cell) });
+-#else
+-        ::operator delete[](buffer_);
+-#endif
+     }
+ 
+     Queue(const Queue&) = delete;
+     Queue& operator=(const Queue&) = delete;
+ 
+-    void enqueue(const T& v) { (void)emplace_impl(v); }
+-    void enqueue(T&& v) { (void)emplace_impl(std::move(v)); }
+-    bool enqueue_or_abort(const T& v) { return emplace_impl(v); }
+-    bool enqueue_or_abort(T&& v) { return emplace_impl(std::move(v)); }
+-   
++    void enqueue(const T& v) { queue_.push_back(v); }
++    void enqueue(T&& v) { queue_.push_back(std::move(v)); }
++    bool enqueue_or_abort(const T& v) { if (aborted_) return false; queue_.push_back(v); return true; }
++    bool enqueue_or_abort(T&& v) { if (aborted_) return false; queue_.push_back(std::move(v)); return true; }
++
++    bool try_dequeue(T& out) {
++        if (queue_.empty())
++            return false;
++        out = std::move(queue_.front());
++        queue_.pop_front();
++        return true;
++    }
++
+     bool wait_and_dequeue(T& out) {
+-        while (true) {
+-            items_.acquire();
+-            if (aborted_.load(std::memory_order_acquire))
+-                return false;
+-            while (!try_dequeue(out)) {
+-                if (aborted_.load(std::memory_order_acquire))
+-                    return false;
+-                std::this_thread::yield();
+-            }
+-            spaces_.release();
++        while (!aborted_ && try_dequeue(out)) {
+             if (out == poison_pill_) {
+-                if (producer_count_ > 1) {
+-                    size_t seen = pills_received_.fetch_add(1, std::memory_order_relaxed) + 1;
+-                    if (seen == static_cast<size_t>(producer_count_)) {
+-                        return false;
+-                    }
++                if (producer_count_ > 1 && ++pills_received_ < (size_t)producer_count_)
+                     continue;
+-                }
+                 return false;
+             }
+-
+             return true;
+         }
++        return false;
+     }
+ 
+-    bool empty() const {
+-        return approx_size() == 0;
+-    }
+-
+-    size_t capacity() const { return capacity_; }
+-
+-    size_t approx_size() const {
+-        size_t enq = enqueue_pos_.load(std::memory_order_relaxed);
+-        size_t deq = dequeue_pos_.load(std::memory_order_relaxed);
+-        return enq >= deq ? (enq - deq) : 0;
+-    }
++    bool empty() const { return queue_.empty(); }
++    size_t capacity() const { return queue_.size(); }
++    size_t approx_size() const { return queue_.size(); }
+ 
+     // call once per producer
+     void close() {
+-        if (aborted_.load(std::memory_order_acquire))
++        if (aborted_)
+             return;
+-        for (int i = 0; i < consumer_count_; ++i) {
++        for (int i = 0; i < consumer_count_; ++i)
+             enqueue(poison_pill_);
+-        }
+     }
+ 
+-    void abort() {
+-        if (!aborted_.exchange(true, std::memory_order_acq_rel)) {
+-            spaces_.release(producer_count_ + consumer_count_ + 1);
+-            items_.release(consumer_count_ + 1);
+-        }
+-    }
++    void abort() { aborted_ = true; }
+ 
+-    int producer_count() const {
+-		return producer_count_;
+-    }
++    int producer_count() const { return producer_count_; }
+ 
+ private:
+ 
+-    struct Cell {
+-        struct Storage {
+-            alignas(T) unsigned char storage[sizeof(T)];
+-        };
+-        std::atomic<size_t> seq;
+-        Storage storage;
+-        char pad[(64 - ((sizeof(std::atomic<size_t>) + sizeof(Storage)) % 64)) % 64];
+-        Cell() : seq(0) {}
+-    };
+-
+-    static constexpr bool is_power_of_two(size_t x) {
+-        return (x & (x - 1)) == 0;
+-    }
+-
+-    static size_t round_up_to_power_of_two(size_t x) {
+-        if (is_power_of_two(x)) return x;
+-        --x;
+-        for (size_t i = 1; i < sizeof(size_t) * 8; i <<= 1)
+-            x |= x >> i;
+-        return x + 1;
+-    }
+-
+-    static T* cell_value_ptr(Cell* c) noexcept {
+-#if defined(__cpp_lib_launder) && __cpp_lib_launder >= 201606L
+-        return std::launder(reinterpret_cast<T*>(c->storage.storage));
+-#else
+-#warning "old compiler missing support for std::launder"
+-        return reinterpret_cast<T*>(&c->storage);
+-#endif
+-    }
+-
+-    size_t index(size_t pos) const noexcept { return pos & mask_; }
+-
+-    template <class... Args>
+-    bool emplace_impl(Args&&... args) {
+-        if (aborted_.load(std::memory_order_acquire))
+-            return false;
+-        spaces_.acquire();
+-        if (aborted_.load(std::memory_order_acquire))
+-            return false;
+-        size_t pos = enqueue_pos_.load(std::memory_order_relaxed);
+-        for (;;) {
+-            if (aborted_.load(std::memory_order_acquire))
+-                return false;
+-            Cell* cell = &buffer_[index(pos)];
+-            size_t seq = cell->seq.load(std::memory_order_acquire);
+-            intptr_t dif = static_cast<intptr_t>(seq) - static_cast<intptr_t>(pos);
+-
+-            if (dif == 0) {
+-                if (enqueue_pos_.compare_exchange_weak(pos, pos + 1, std::memory_order_relaxed)) {
+-                    new (cell_value_ptr(cell)) T(std::forward<Args>(args)...);
+-                    cell->seq.store(pos + 1, std::memory_order_release);
+-                    items_.release();                    
+-                    return true;
+-                }
+-            }
+-            else {
+-                std::this_thread::yield();
+-                pos = enqueue_pos_.load(std::memory_order_relaxed);
+-            }
+-        }
+-    }
+-
+-    bool try_dequeue(T& out) {
+-        size_t pos = dequeue_pos_.load(std::memory_order_relaxed);
+-        for (;;) {
+-            Cell* cell = &buffer_[index(pos)];
+-            size_t seq = cell->seq.load(std::memory_order_acquire);
+-            intptr_t dif = static_cast<intptr_t>(seq) - static_cast<intptr_t>(pos + 1);
+-            if (dif == 0) {
+-                if (dequeue_pos_.compare_exchange_weak(
+-                    pos, pos + 1,
+-                    std::memory_order_relaxed,
+-                    std::memory_order_relaxed)) {
+-                    T* p = cell_value_ptr(cell);
+-                    out = std::move(*p);
+-                    p->~T();
+-                    cell->seq.store(pos + capacity_, std::memory_order_release);
+-                    return true;
+-                }
+-            }
+-            else if (dif < 0) {
+-                return false;
+-            }
+-            else {
+-                std::this_thread::yield();
+-                pos = dequeue_pos_.load(std::memory_order_relaxed);
+-            }
+-        }
+-    }
+-
+-    const size_t capacity_;
+-    const size_t mask_;
++    std::deque<T> queue_;
+     const int producer_count_;
+     const int consumer_count_;
+     const T poison_pill_;
+-    Cell* const buffer_;
+-    alignas(64) std::atomic<size_t> enqueue_pos_;
+-    char _pad0[(64 - sizeof(enqueue_pos_) % 64) % 64]{};
+-    alignas(64) std::atomic<size_t> dequeue_pos_;
+-    char _pad1[(64 - sizeof(dequeue_pos_) % 64) % 64]{};
+-    CountingSemaphore<> items_{ (ptrdiff_t)0 };
+-    CountingSemaphore<> spaces_{ (ptrdiff_t)capacity_ };
+-    std::atomic<size_t> pills_received_;
+-    std::atomic<bool> aborted_{ false };
++    size_t pills_received_;
++    bool aborted_;
+ 
+ };
+--- a/src/util/io/file.h
++++ b/src/util/io/file.h
+@@ -29,9 +29,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ #include "compressor.h"
+ #include "util/memory/memory_resource.h"
+ 
+-const size_t MEGABYTES = 1 << 20;
+-const size_t GIGABYTES = 1 << 30;
+-const size_t KILOBYTES = 1 << 10;
++// 64 bit: size_t is 32 bit on wasm32, where e.g. 4 * GIGABYTES silently wraps to 0
++const uint64_t MEGABYTES = 1ULL << 20;
++const uint64_t GIGABYTES = 1ULL << 30;
++const uint64_t KILOBYTES = 1ULL << 10;
+ 
+ struct Temporary {};
+ 
+--- a/src/util/simd.cpp
++++ b/src/util/simd.cpp
+@@ -62,6 +62,11 @@ namespace SIMD {
+ int flags = 0;
+ 
+ Arch init_arch() {
++#ifdef WITH_SSE4_1
++	// WebAssembly has no CPUID: a module is built for one instruction set, so report it.
++	flags |= SSSE3 | POPCNT | SSE4_1;
++	return Arch::SSE4_1;
++#endif
+ #if defined(__aarch64__) | defined(__arm__)
+ 
+ #if defined(__aarch64__)
+--- a/src/util/util.cpp
++++ b/src/util/util.cpp
+@@ -49,6 +49,10 @@ void cleanup() {
+ 		delete message_stream;
+ 	if (log_stream != &std::cerr)
+ 		delete log_stream;
++	// main() runs once per command in one module, so put the streams back as they were
++	// at startup rather than leaving the next run a dangling pointer.
++	message_stream = new Nullostream;
++	log_stream = new Nullostream;
+ }
+ 
+ #ifndef _MSC_VER
+--- /dev/null
++++ b/src/util/system/pthread_shim.cpp
+@@ -0,0 +1,66 @@
++/* Single-threaded stand-in for pthread_create/join/detach: without -pthread a module
++   cannot start a thread at all, so the body is recorded here and run on the calling
++   thread at join time, by which point its producer has closed the queue it reads.
++   Handles count up from 1 so std::thread::id keeps spawn order under std::map, which
++   is the order SimpleThreadPool::join_all() replays them in. */
++
++#include <pthread.h>
++#include <stddef.h>
++#include <vector>
++
++namespace {
++
++struct DeferredThread {
++	void* (*fn)(void*);
++	void* arg;
++	void* ret;
++	bool ran;
++};
++
++std::vector<DeferredThread>& registry() {
++	static std::vector<DeferredThread>* r = new std::vector<DeferredThread>(1);
++	return *r;
++}
++
++void run_once(size_t handle) {
++	if (handle == 0 || handle >= registry().size())
++		return;
++	// Not a reference: the body may itself call pthread_create and reallocate.
++	if (registry()[handle].ran)
++		return;
++	registry()[handle].ran = true;
++	void* (*fn)(void*) = registry()[handle].fn;
++	void* arg = registry()[handle].arg;
++	void* ret = fn(arg);
++	registry()[handle].ret = ret;
++}
++
++}
++
++extern "C" {
++
++int pthread_create(pthread_t* thread, const pthread_attr_t*, void* (*start_routine)(void*), void* arg) {
++	DeferredThread t;
++	t.fn = start_routine;
++	t.arg = arg;
++	t.ret = NULL;
++	t.ran = false;
++	registry().push_back(t);
++	*thread = (pthread_t)(registry().size() - 1);
++	return 0;
++}
++
++int pthread_join(pthread_t thread, void** retval) {
++	const size_t handle = (size_t)thread;
++	run_once(handle);
++	if (retval != NULL)
++		*retval = (handle > 0 && handle < registry().size()) ? registry()[handle].ret : NULL;
++	return 0;
++}
++
++int pthread_detach(pthread_t thread) {
++	run_once((size_t)thread);
++	return 0;
++}
++
++}
