@@ -72,7 +72,7 @@
                                  // Must be a vec so that par_iter works and results stay in order
                                  let ivs: Vec<Interval<u32, ()>> =
                                      Lapper::<u32, ()>::find(&intervals, chunk_start, chunk_end)
-@@ -253,19 +244,16 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
+@@ -253,19 +244,18 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
                                              val: (),
                                          })
                                          .collect();
@@ -85,19 +85,18 @@
                                      .collect()
 -                            },
 -                            || {
--                                result.into_iter().for_each(|p| {
--                                    snd.send(p).expect("Sent a serializable to writer")
--                                })
++                            })();
++                            (|| {
+                                 result.into_iter().for_each(|p| {
+                                     snd.send(p).expect("Sent a serializable to writer")
+                                 })
 -                            },
 -                        );
-+                        })();
-+                        result.into_iter().for_each(|p| {
-+                            snd.send(p).expect("Sent a serializable to writer")
-+                        });
++                            })();
                          result = r;
                      }
                      // Send final set of results
-@@ -273,8 +261,10 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
+@@ -273,8 +263,10 @@ impl<R: RegionProcessor + Send + Sync> ParGranges<R> {
                          .into_iter()
                          .for_each(|p| snd.send(p).expect("Sent a serializable to writer"));
                  }
